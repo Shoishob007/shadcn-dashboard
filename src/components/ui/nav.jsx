@@ -1,0 +1,148 @@
+"use client";
+
+import Link from "next/link";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+
+export function Nav({ links, isCollapsed }) {
+  const pathName = usePathname();
+  const [openMenus, setOpenMenus] = useState({});
+
+  const toggleSubmenu = (index) => {
+    setOpenMenus((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
+  return (
+    <TooltipProvider>
+      <div
+        data-collapsed={isCollapsed}
+        className="group flex flex-col gap-4 pt-10 data-[collapsed=true]:py-10"
+      >
+        <nav className="grid gap-1 pr-10 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+          {links.map((link, index) => (
+            <div key={index}>
+              {/* Top-level menu item */}
+              {isCollapsed ? (
+                <Tooltip delayDuration={0}>
+                  <TooltipTrigger asChild>
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        buttonVariants({
+                          variant: link.href === pathName ? "default" : "ghost",
+                          size: "icon",
+                        }),
+                        "h-9 w-9",
+                        link.variant === "default" &&
+                          "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
+                      )}
+                    >
+                      <link.icon className="h-4 w-4" />
+                      <span className="sr-only">{link.title}</span>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="right"
+                    className="flex items-center gap-4"
+                  >
+                    {link.title}
+                    {link.label && (
+                      <span className="ml-auto text-muted-foreground">
+                        {link.label}
+                      </span>
+                    )}
+                  </TooltipContent>
+                </Tooltip>
+              ) : (
+                <div>
+                  {/* Use Link for top-level items without submenus */}
+                  {link.submenu ? (
+                    <button
+                      onClick={() => toggleSubmenu(index)}
+                      className={cn(
+                        buttonVariants({
+                          variant: link.href === pathName ? "default" : "ghost",
+                          size: "sm",
+                        }),
+                        link.variant === "default" &&
+                          "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
+                        "justify-start flex items-center w-full"
+                      )}
+                    >
+                      <link.icon className="mr-2 h-4 w-4" />
+                      {link.title}
+                      <span className="ml-auto">
+                        {openMenus[index] ? (
+                          <ChevronUp className="h-4 w-4" />
+                        ) : (
+                          <ChevronDown className="h-4 w-4" />
+                        )}
+                      </span>
+                    </button>
+                  ) : (
+                    // Directly use Link for items without submenus
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        buttonVariants({
+                          variant: link.href === pathName ? "default" : "ghost",
+                          size: "sm",
+                        }),
+                        link.variant === "default" &&
+                          "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
+                        "justify-start flex items-center w-full"
+                      )}
+                    >
+                      <link.icon className="mr-2 h-4 w-4" />
+                      {link.title}
+                    </Link>
+                  )}
+
+                  {/* Submenu */}
+                  {link.submenu && (
+                    <div
+                      className={cn(
+                        "ml-6 flex-col space-y-1 overflow-hidden transition-max-height duration-300 ease-in-out",
+                        openMenus[index] ? "max-h-screen" : "max-h-0"
+                      )}
+                    >
+                      {link.submenu.map((subLink, subIndex) => (
+                        <Link
+                          key={subIndex}
+                          href={subLink.href}
+                          className={cn(
+                            buttonVariants({
+                              variant:
+                                subLink.href === pathName ? "default" : "ghost",
+                              size: "sm",
+                            }),
+                            "justify-start flex items-center w-full "
+                          )}
+                        >
+                          <subLink.icon className="mr-2 h-4 w-4" />
+                          {subLink.title}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        </nav>
+      </div>
+    </TooltipProvider>
+  );
+}
