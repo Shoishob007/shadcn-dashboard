@@ -21,26 +21,26 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { jobSchema } from "../../../schemas/jobFormSchema";
+
 const CreateJobForm = ({ onClose }) => {
-  const [jobData, setJobData] = useState({
-    title: "",
-    description: "",
-    requirements: "",
-    designation: "",
-    jobCategory: "Full-Time",
-    jobType: "Onsite",
-    salaryRange: "",
-    category: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm({
+    resolver: zodResolver(jobSchema),
+    defaultValues: {
+      jobCategory: "full-time",
+      jobType: "onsite",
+    },
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setJobData({ ...jobData, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Job data:", jobData);
+  const onSubmit = (data) => {
+    console.log("Job data:", data);
     onClose();
   };
 
@@ -56,7 +56,7 @@ const CreateJobForm = ({ onClose }) => {
           </CardHeader>
           <CardContent>
             <form
-              onSubmit={handleSubmit}
+              onSubmit={handleSubmit(onSubmit)}
               className="grid grid-cols-1 md:grid-cols-2 gap-4"
             >
               <div className="flex flex-col">
@@ -66,10 +66,14 @@ const CreateJobForm = ({ onClose }) => {
                 <Input
                   id="title"
                   name="title"
-                  value={jobData.title}
-                  onChange={handleChange}
+                  {...register("title")}
                   required
                 />
+                {errors.title && (
+                  <span className="text-xs text-red-500">
+                    {errors.title.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -79,10 +83,14 @@ const CreateJobForm = ({ onClose }) => {
                 <Input
                   id="designation"
                   name="designation"
-                  value={jobData.designation}
-                  onChange={handleChange}
+                  {...register("designation")}
                   required
                 />
+                {errors.designation && (
+                  <span className="text-xs text-red-500">
+                    {errors.designation.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -92,10 +100,14 @@ const CreateJobForm = ({ onClose }) => {
                 <Textarea
                   id="description"
                   name="description"
-                  value={jobData.description}
-                  onChange={handleChange}
+                  {...register("description")}
                   required
                 />
+                {errors.description && (
+                  <span className="text-xs text-red-500">
+                    {errors.description.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -105,10 +117,14 @@ const CreateJobForm = ({ onClose }) => {
                 <Textarea
                   id="requirements"
                   name="requirements"
-                  value={jobData.requirements}
-                  onChange={handleChange}
+                  {...register("requirements")}
                   required
                 />
+                {errors.requirements && (
+                  <span className="text-xs text-red-500">
+                    {errors.requirements.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -118,10 +134,7 @@ const CreateJobForm = ({ onClose }) => {
                 <Select
                   id="jobCategory"
                   name="jobCategory"
-                  value={jobData.jobCategory}
-                  onValueChange={(value) =>
-                    setJobData({ ...jobData, jobCategory: value })
-                  }
+                  onValueChange={(value) => setValue("jobCategory", value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select Category" />
@@ -132,6 +145,11 @@ const CreateJobForm = ({ onClose }) => {
                     <SelectItem value="contractual">Contractual</SelectItem>
                   </SelectContent>
                 </Select>
+                {errors.jobCategory && (
+                  <span className="text-xs text-red-500">
+                    {errors.jobCategory.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -141,10 +159,7 @@ const CreateJobForm = ({ onClose }) => {
                 <Select
                   id="jobType"
                   name="jobType"
-                  value={jobData.jobType}
-                  onValueChange={(value) =>
-                    setJobData({ ...jobData, jobType: value })
-                  }
+                  onValueChange={(value) => setValue("jobType", value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select Nature" />
@@ -155,6 +170,11 @@ const CreateJobForm = ({ onClose }) => {
                     <SelectItem value="hybrid">Hybrid</SelectItem>
                   </SelectContent>
                 </Select>
+                {errors.jobType && (
+                  <span className="text-xs text-red-500">
+                    {errors.jobType.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -164,10 +184,16 @@ const CreateJobForm = ({ onClose }) => {
                 <Input
                   id="salaryRange"
                   name="salaryRange"
-                  value={jobData.salaryRange}
-                  onChange={handleChange}
-                  required
+                  {...register("salaryRange", {
+                    valueAsNumber: true,
+                    required: "Salary range is required",
+                  })}
                 />
+                {errors.salaryRange && (
+                  <span className="text-xs text-red-500">
+                    {errors.salaryRange.message}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -178,7 +204,7 @@ const CreateJobForm = ({ onClose }) => {
                   id="deadline"
                   name="deadline"
                   type="date"
-                  onChange={handleChange}
+                  {...register("deadline")}
                 />
               </div>
             </form>
@@ -188,7 +214,7 @@ const CreateJobForm = ({ onClose }) => {
               Cancel
             </Button>
 
-            <Button type="submit" onClick={handleSubmit}>
+            <Button type="submit" onClick={handleSubmit(onSubmit)}>
               Create
             </Button>
           </CardFooter>
