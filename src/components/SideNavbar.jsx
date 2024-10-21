@@ -38,7 +38,6 @@ export default function SideNavbar() {
   }, [session, status]);
 
   // By adding a loading state and ensuring session data is consistent, I can mitigate the risk of hydration issues.
-
   if (status === "loading") {
     return <div>Loading...</div>; 
   }
