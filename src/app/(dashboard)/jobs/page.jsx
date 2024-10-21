@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -10,6 +9,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
