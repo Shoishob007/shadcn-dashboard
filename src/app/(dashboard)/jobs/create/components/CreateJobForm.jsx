@@ -21,7 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const CreateJobModal = ({ onClose }) => {
+const CreateJobForm = ({ onClose }) => {
   const [jobData, setJobData] = useState({
     title: "",
     description: "",
@@ -45,19 +45,24 @@ const CreateJobModal = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
-      <div className="p-4 rounded-lg shadow-lg w-full max-w-md">
+    <div className="flex justify-center">
+      <div className="p-4 rounded-lg w-full">
         <Card>
-          <CardHeader>
-            <CardTitle className="text-xl font-bold">Create Job</CardTitle>
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-bold">Create Job</CardTitle>
             <CardDescription>
               Please fill up all the fields to create a new job!
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            >
               <div className="flex flex-col">
-                <Label htmlFor="title">Job Title</Label>
+                <Label htmlFor="title" className="mb-2">
+                  Job Title
+                </Label>
                 <Input
                   id="title"
                   name="title"
@@ -66,28 +71,11 @@ const CreateJobModal = ({ onClose }) => {
                   required
                 />
               </div>
+
               <div className="flex flex-col">
-                <Label htmlFor="description">Job Description</Label>
-                <Textarea
-                  id="description"
-                  name="description"
-                  value={jobData.description}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="flex flex-col">
-                <Label htmlFor="requirements">Job Requirements</Label>
-                <Input
-                  id="requirements"
-                  name="requirements"
-                  value={jobData.requirements}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="flex flex-col">
-                <Label htmlFor="designation">Job Designation</Label>
+                <Label htmlFor="designation" className="mb-2">
+                  Job Designation
+                </Label>
                 <Input
                   id="designation"
                   name="designation"
@@ -96,18 +84,37 @@ const CreateJobModal = ({ onClose }) => {
                   required
                 />
               </div>
+
               <div className="flex flex-col">
-                <Label htmlFor="salaryRange">Salary Range</Label>
-                <Input
-                  id="salaryRange"
-                  name="salaryRange"
-                  value={jobData.salaryRange}
+                <Label htmlFor="description" className="mb-2">
+                  Job Description
+                </Label>
+                <Textarea
+                  id="description"
+                  name="description"
+                  value={jobData.description}
                   onChange={handleChange}
                   required
                 />
               </div>
+
               <div className="flex flex-col">
-                <Label htmlFor="jobCategory">Job Category</Label>
+                <Label htmlFor="requirements" className="mb-2">
+                  Job Requirements
+                </Label>
+                <Textarea
+                  id="requirements"
+                  name="requirements"
+                  value={jobData.requirements}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="flex flex-col">
+                <Label htmlFor="jobCategory" className="mb-2">
+                  Job Category
+                </Label>
                 <Select
                   id="jobCategory"
                   name="jobCategory"
@@ -126,8 +133,11 @@ const CreateJobModal = ({ onClose }) => {
                   </SelectContent>
                 </Select>
               </div>
+
               <div className="flex flex-col">
-                <Label htmlFor="jobType">Job Nature</Label>
+                <Label htmlFor="jobType" className="mb-2">
+                  Job Nature
+                </Label>
                 <Select
                   id="jobType"
                   name="jobType"
@@ -148,7 +158,22 @@ const CreateJobModal = ({ onClose }) => {
               </div>
 
               <div className="flex flex-col">
-                <Label htmlFor="deadline">Application Deadline</Label>
+                <Label htmlFor="salaryRange" className="mb-2">
+                  Salary Range
+                </Label>
+                <Input
+                  id="salaryRange"
+                  name="salaryRange"
+                  value={jobData.salaryRange}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="flex flex-col">
+                <Label htmlFor="deadline" className="mb-2">
+                  Application Deadline
+                </Label>
                 <Input
                   id="deadline"
                   name="deadline"
@@ -158,12 +183,13 @@ const CreateJobModal = ({ onClose }) => {
               </div>
             </form>
           </CardContent>
-          <CardFooter className="flex justify-between">
+          <CardFooter className="flex justify-around">
             <Button variant="outline" onClick={onClose}>
               Cancel
             </Button>
+
             <Button type="submit" onClick={handleSubmit}>
-              Deploy
+              Create
             </Button>
           </CardFooter>
         </Card>
@@ -172,4 +198,4 @@ const CreateJobModal = ({ onClose }) => {
   );
 };
 
-export default CreateJobModal;
+export default CreateJobForm;

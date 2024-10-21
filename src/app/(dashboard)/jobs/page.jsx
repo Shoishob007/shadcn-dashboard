@@ -250,7 +250,7 @@ export default function JobsData() {
   });
 
   return (
-    <div className="w-full bg-white py-2 px-6 rounded-lg shadow-md ">
+    <div className="w-full bg-white py-2 px-6 rounded-lg shadow-md h-full items-center">
       <div className="flex items-center justify-center py-4 ">
         <Input
           placeholder="Filter jobs..."
