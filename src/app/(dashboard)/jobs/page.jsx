@@ -250,8 +250,8 @@ export default function JobsData() {
   });
 
   return (
-    <div className="w-full">
-      <div className="flex items-center py-4">
+    <div className="w-full bg-white py-2 px-6 rounded-lg shadow-md ">
+      <div className="flex items-center justify-center py-4 ">
         <Input
           placeholder="Filter jobs..."
           value={table.getColumn("title")?.getFilterValue() || ""}

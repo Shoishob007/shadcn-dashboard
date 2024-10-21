@@ -18,7 +18,7 @@ const SearchComponent = ({ onSearch }) => {
   return (
     <div className="relative flex items-center text-center">
       <Search
-        className="absolute right-3 text-gray-500 text-sm"
+        className="absolute right-3 text-gray-500 text-sm w-5 h-5"
         onClick={onSearch}
       />
       <Input
@@ -26,7 +26,7 @@ const SearchComponent = ({ onSearch }) => {
         value={searchValue}
         onChange={handleInputChange}
         placeholder="Search..."
-        className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-gray-900"
+        className="border border-gray-300 rounded-md px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-gray-900"
       />
     </div>
   );

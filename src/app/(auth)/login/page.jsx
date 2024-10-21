@@ -13,12 +13,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "../schemas/formSchemas";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useToast } from "../../../hooks/use-toast";
 
 export default function LoginForm() {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+  });
   const router = useRouter();
   const { toast } = useToast();
   const [error, setError] = React.useState("");
@@ -31,22 +39,26 @@ export default function LoginForm() {
       callbackUrl: "/",
     });
 
-    toast({
-      title: "Signed In!",
-      description: "You have signed in successfully.",
-      variant: "success",
-    });
-
     if (result?.error) {
       setError(result.error);
+      toast({
+        title: "Can't Sign in!",
+        description: "Invalid credentials",
+        variant: "destructive",
+      });
     } else if (result?.url) {
       router.push(result.url);
+      toast({
+        title: "Signed In!",
+        description: "You have signed in successfully.",
+        variant: "success",
+      });
     }
   };
 
   return (
     <main className="flex justify-center items-center h-full">
-      <Card className="mx-auto max-w-sm">
+      <Card className="mx-auto max-w-sm shadow-md">
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Sign In</CardTitle>
           <CardDescription>
@@ -65,6 +77,11 @@ export default function LoginForm() {
                   {...register("email")}
                   required
                 />
+                {errors.email && (
+                  <span className="text-xs text-red-500">
+                    {errors.email.message}
+                  </span>
+                )}
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
@@ -77,6 +94,12 @@ export default function LoginForm() {
                   placeholder="******"
                   {...register("password")}
                 />
+
+                {errors.password && (
+                  <span className="text-xs text-red-500">
+                    {errors.password.message}
+                  </span>
+                )}
                 <Link
                   href="#"
                   className="ml-auto inline-block text-xs hover:underline"

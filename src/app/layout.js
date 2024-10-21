@@ -11,12 +11,12 @@ import VerticalNavbar from "@/components/VerticalNavbar";
 export default function RootLayout({ children, session }) {
   return (
     <html lang="en">
-      <body className={cn("min-h-screen w-full bg-white text-black flex")}>
+      <body className={cn("min-h-screen w-full bg-gray-100 text-black flex")}>
         <SessionProvider session={session}>
           <SideNavbar />
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full min-h-screen">
             <VerticalNavbar className="p-4" />
-            <div className="p-8 w-full">{children}</div>
+            <div className="flex-grow p-8 rounded-lg ml-2 mr-4">{children}</div>
           </div>
 
           <Toaster />

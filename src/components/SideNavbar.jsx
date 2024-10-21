@@ -1,6 +1,6 @@
 /** @format */
 "use client";
-
+import { cn } from "../lib/utils";
 import { useEffect, useState } from "react";
 import { Nav } from "./ui/nav";
 import {
@@ -27,7 +27,7 @@ export default function SideNavbar() {
   const pathname = usePathname();
 
   const onlyWidth = useWindowWidth();
-  const mobileWidth = onlyWidth < 850;
+  const mobileWidth = onlyWidth < 768;
 
   function toggleSidebar() {
     setIsCollapsed(!isCollapsed);
@@ -39,14 +39,19 @@ export default function SideNavbar() {
   }, [session, status]);
 
   return (
-    <div className="relative min-w-[80px] border-r px-4 pb-10 pt-6">
+    <div
+      className={cn(
+        "relative border-r px-4 pb-10 pt-6 bg-white my-2 mr-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out",
+        isCollapsed ? "w-20" : "w-56"
+      )}
+    >
       <div className="items-center text-center mx-auto">
         <Image
           src="/assests/hh-logo.png"
           alt="Google Logo"
-          width={100}
-          height={100}
-          className="mr-2 rounded-full items-center text-center inline"
+          width={60}
+          height={60}
+          className={`mr-2 rounded-full items-center text-center inline`}
         />
       </div>
       {!mobileWidth && (
@@ -56,7 +61,7 @@ export default function SideNavbar() {
             variant="secondary"
             className=" rounded-full p-2"
           >
-            <ChevronRight />
+            <ChevronRight className="h-6 w-6" />
           </Button>
         </div>
       )}
@@ -96,18 +101,18 @@ export default function SideNavbar() {
           {
             title: "Jobs",
             href: "#",
-            icon: Newspaper,
+            icon: BriefcaseBusiness,
             variant: "ghost",
             submenu: [
               {
                 title: "View All Jobs",
                 href: "/jobs",
-                icon: Newspaper,
+                icon: BriefcaseBusiness,
               },
               {
                 title: "Create Job",
                 href: "/jobs/create",
-                icon: Newspaper,
+                icon: BriefcaseBusiness,
               },
             ],
           },
@@ -151,11 +156,11 @@ export default function SideNavbar() {
                 variant: "ghost",
                 onClick: () => {
                   signOut({ redirect: false });
-                  toast({
-                    title: "Signed Out!",
-                    description: "You have signed out successfully.",
-                    variant: "success",
-                  });
+                  // toast({
+                  //   title: "Signed Out!",
+                  //   description: "You have signed out successfully.",
+                  //   variant: "success",
+                  // });
                 },
                 isActive: false,
               }

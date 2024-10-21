@@ -6,6 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { resetPassSchema } from "../schemas/formSchemas";
 
 const ResetPasswordForm = () => {
   const [password, setPassword] = useState("");
@@ -14,9 +17,17 @@ const ResetPasswordForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(resetPassSchema),
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
+    console.log(data);
+    const { password, confirmPassword } = data;
 
     if (password !== confirmPassword) {
       toast({
@@ -29,7 +40,7 @@ const ResetPasswordForm = () => {
 
     try {
       const response = await fetch(
-        "https://hhapi.codemonks.xyz/api/users/reset-password",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/users/reset-password`,
         {
           method: "POST",
           headers: {
@@ -61,28 +72,36 @@ const ResetPasswordForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
       <div>
         <Label htmlFor="password">New Password</Label>
         <Input
           id="password"
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          {...register("password")}
           placeholder="******"
           required
         />
+        {errors.password && (
+          <span className="text-xs text-red-500">
+            {errors.password.message}
+          </span>
+        )}
       </div>
       <div>
         <Label htmlFor="confirm-password">Confirm New Password</Label>
         <Input
           id="confirm-password"
           type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          {...register("confirmPassword")}
           placeholder="******"
           required
         />
+        {errors.confirmPassword && (
+          <span className="text-xs text-red-500">
+            {errors.confirmPassword.message}
+          </span>
+        )}
       </div>
       <Button type="submit" className="w-full">
         Reset Password

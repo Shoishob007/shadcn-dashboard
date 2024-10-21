@@ -99,11 +99,11 @@ export default function Home() {
         ))}
       </section>
       <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
-        <CardContent>
+        <CardContent className="bg-white">
           <p className="p-4 font-semibold">Total Applicants</p>
           <BarChart />
         </CardContent>
-        <CardContent className="flex justify-between gap-4">
+        <CardContent className="flex justify-between gap-4 bg-white">
           <section>
             <p>Top Employees</p>
             <p className="text-sm text-gray-400">

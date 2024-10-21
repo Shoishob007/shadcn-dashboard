@@ -63,7 +63,7 @@ const data = [
 
 export default function BarChart() {
   return (
-    <ResponsiveContainer width={"100%"} height={350}>
+      <ResponsiveContainer width={"100%"} height={350} >
       <BarGraph data={data}>
         <XAxis
           dataKey={"name"}
@@ -82,5 +82,6 @@ export default function BarChart() {
         <Bar dataKey={"total"} radius={[4, 4, 0, 0]} />
       </BarGraph>
     </ResponsiveContainer>
+    
   );
 }
