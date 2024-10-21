@@ -46,8 +46,8 @@ export default function SideNavbar() {
   return (
     <div
       className={cn(
-        "relative border-r px-4 pb-10 pt-6 bg-white my-2 mr-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out",
-        isCollapsed ? "w-20" : "w-56"
+        "relative border-r pb-10 pt-6 bg-white my-2 mr-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out",
+        isCollapsed ? "w-20" : "w-52"
       )}
     >
       <div className="items-center text-center mx-auto">
@@ -81,13 +81,13 @@ export default function SideNavbar() {
           },
           {
             title: "Applicants",
-            href: "/applicants",
+            href: "#",
             icon: UsersRound,
             variant: "ghost",
             submenu: [
               {
                 title: "View Applicants",
-                href: "/applicants/view-all",
+                href: "/applicants",
                 icon: UsersRound,
               },
               {

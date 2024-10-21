@@ -215,6 +215,7 @@ export const columns = [
               Copy job ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
+            <DropdownMenuItem>View Applicants</DropdownMenuItem>
             <DropdownMenuItem>Edit Post</DropdownMenuItem>
             <DropdownMenuItem>Delete Post</DropdownMenuItem>
           </DropdownMenuContent>
@@ -315,7 +316,7 @@ export default function JobsData() {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="text-center">
+                    <TableCell key={cell.id} className="text-center text-xs">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
