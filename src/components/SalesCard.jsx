@@ -5,9 +5,9 @@ import React from "react";
 
 export default function ApplicantsCard(props) {
   return (
-    <div className="flex flex-wrap justify-between gap-3 ">
+    <div className="flex flex-wrap justify-between gap-3 bg-white">
       <section className="flex justify-between gap-3 ">
-        <div className=" h-12 w-12 rounded-full bg-gray-100 p-1">
+        <div className=" h-12 w-12 rounded-full bg-white p-1">
           <img
             width={200}
             height={200}

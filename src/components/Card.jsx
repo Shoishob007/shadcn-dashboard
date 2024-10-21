@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 export default function Card({ label, icon: Icon, amount, discription, href }) {
   return (
-    <CardContent>
+    <CardContent className="bg-white">
       <section className="flex justify-between gap-2">
         <p className="text-sm">{label}</p>
         <Icon className="h-4 w-4 text-gray-400" />

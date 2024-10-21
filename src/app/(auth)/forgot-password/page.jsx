@@ -3,8 +3,8 @@ import Link from "next/link";
 
 export default function ForgotPasswordPage() {
   return (
-    <main className="flex justify-center items-center h-screen">
-      <div className="max-w-md w-full p-4 border-2 rounded-md">
+    <main className="flex justify-center items-center h-full">
+      <div className="max-w-md w-full p-4 border-2 rounded-lg shadow-md bg-white">
         <h1 className="text-2xl font-bold text-center mb-2">
           Forgot Password?
         </h1>
