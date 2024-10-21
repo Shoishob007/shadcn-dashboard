@@ -16,7 +16,7 @@ export default function RootLayout({ children, session }) {
           <SideNavbar />
           <div className="flex flex-col w-full min-h-screen">
             <VerticalNavbar className="p-4" />
-            <div className="flex-grow p-8 rounded-lg ml-2 mr-4">{children}</div>
+            <div className="flex-grow p-2 rounded-lg ml-2 mr-4">{children}</div>
           </div>
 
           <Toaster />
