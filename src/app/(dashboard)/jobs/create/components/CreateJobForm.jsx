@@ -209,7 +209,7 @@ const CreateJobForm = ({ onClose }) => {
               </div>
             </form>
           </CardContent>
-          <CardFooter className="flex justify-around">
+          <CardFooter className="flex justify-center gap-10">
             <Button variant="outline" onClick={onClose}>
               Cancel
             </Button>
