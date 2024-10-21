@@ -12,6 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema } from "../schemas/formSchemas";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
@@ -19,7 +21,13 @@ import { signIn } from "next-auth/react";
 import VerificationSent from "../components/VerificationSent";
 
 export default function RegisterForm() {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(registerSchema),
+  });
   const router = useRouter();
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
@@ -70,11 +78,11 @@ export default function RegisterForm() {
         </main>
       ) : (
         <main className="flex justify-center items-center h-full">
-          <Card className="mx-auto max-w-sm">
+          <Card className="mx-auto max-w-sm shadow-md">
             <CardHeader className="text-center">
               <CardTitle className="text-xl">Sign Up</CardTitle>
               <CardDescription>
-                Enter your information to create an account
+                Enter your account information to create an account
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -88,6 +96,11 @@ export default function RegisterForm() {
                       placeholder="Max Verstappen"
                       required
                     />
+                    {errors.name && (
+                      <span className="text-xs text-red-500">
+                        {errors.name.message}
+                      </span>
+                    )}
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="email">Email</Label>
@@ -98,6 +111,11 @@ export default function RegisterForm() {
                       placeholder="m@example.com"
                       required
                     />
+                    {errors.email && (
+                      <span className="text-xs text-red-500">
+                        {errors.email.message}
+                      </span>
+                    )}
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="password">Password</Label>
@@ -107,6 +125,11 @@ export default function RegisterForm() {
                       type="password"
                       placeholder="******"
                     />
+                    {errors.password && (
+                      <span className="text-xs text-red-500">
+                        {errors.password.message}
+                      </span>
+                    )}
                   </div>
                   <div className="grid gap-2 text-sm">
                     <Label htmlFor="role">Select your role</Label>
@@ -119,6 +142,7 @@ export default function RegisterForm() {
                       <option value="org">Organization</option>
                       <option value="applicant">Applicant</option>
                     </select>
+                    {errors.role && <span>{errors.role.message}</span>}
                   </div>
                   <Button type="submit" className="w-full">
                     Create an account

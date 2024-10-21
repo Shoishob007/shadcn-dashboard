@@ -28,9 +28,9 @@ export function Nav({ links, isCollapsed }) {
     <TooltipProvider>
       <div
         data-collapsed={isCollapsed}
-        className="group flex flex-col gap-4 pt-10 data-[collapsed=true]:py-10"
+        className="group flex flex-col gap-4 pt-10 data-[collapsed=true]:py-6 data-[collapsed=true]:pt-12"
       >
-        <nav className="grid gap-1 pr-10 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+        <nav className="grid gap-1 pr-10 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-1">
           {links.map((link, index) => (
             <div key={index}>
               {/* Top-level menu item */}
@@ -44,7 +44,7 @@ export function Nav({ links, isCollapsed }) {
                           variant: link.href === pathName ? "default" : "ghost",
                           size: "icon",
                         }),
-                        "h-9 w-9",
+                        "h-10 w-10",
                         link.variant === "default" &&
                           "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
                       )}
