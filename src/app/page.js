@@ -95,7 +95,7 @@ export default function Home() {
           </div>
         ) : (
           <div>
-            <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 lg:grid-cols-3 mb-4 hover:border-gray-950">
+            <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 lg:grid-cols-3 mb-4">
               {cardData.map((d, i) => (
                 <Link href={d.href || "#"} key={i}>
                   <Card
@@ -108,11 +108,11 @@ export default function Home() {
               ))}
             </section>
             <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
-              <CardContent className="bg-white">
+              <CardContent className="bg-white hover:border-gray-950">
                 <p className="p-4 font-semibold">Total Applicants</p>
                 <BarChart />
               </CardContent>
-              <CardContent className="flex justify-between gap-4 bg-white">
+              <CardContent className="flex justify-between gap-4 bg-white hover:border-gray-950">
                 <section>
                   <p>Top Employees</p>
                   <p className="text-sm text-gray-400">

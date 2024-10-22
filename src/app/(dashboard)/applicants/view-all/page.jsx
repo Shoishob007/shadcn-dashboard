@@ -42,8 +42,6 @@ const data = [
     status: "Applied",
     CVScore: 50,
     deadline: new Date("2024-11-01"),
-    postedOn: new Date("2024-10-15"),
-    interviewSchedule: new Date("2024-11-10"),
   },
   {
     id: "3u1reuv4",
@@ -73,7 +71,6 @@ const data = [
     status: "Applied",
     CVScore: 50,
     deadline: new Date("2024-11-01"),
-    interviewSchedule: new Date("2024-11-10"),
   },
   {
     id: "bhqecj4p",
@@ -204,9 +201,14 @@ export const columns = [
       </Button>
     ),
     cell: ({ row }) => {
+      const status = row.getValue("status").toLowerCase();
       const date = row.getValue("interviewSchedule");
       return (
-        <div className="text-center">{date.toLocaleDateString("en-US")}</div>
+        <div className="text-center">
+          {status === "applied" || !date
+            ? "N/A"
+            : date.toLocaleDateString("en-US")}
+        </div>
       );
     },
   },
