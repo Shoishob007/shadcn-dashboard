@@ -55,6 +55,28 @@ const cardData = [
   },
 ];
 
+const applicantCardData = [
+  {
+    label: "Applicants Overview",
+    amount: "16",
+    discription: "+3 since last month",
+    icon: CalendarDays,
+    href: "/applicants-overview",
+  },
+  {
+    label: "Upcoming Interviews",
+    amount: "10",
+    discription: "+3 since last month",
+    icon: CalendarDays,
+  },
+  {
+    label: "Recent Job Postings",
+    amount: "18",
+    discription: "+1 since last month",
+    icon: CalendarDays,
+  },
+]
+
 const employeeData = [
   {
     name: "Olivia Martin",
@@ -91,7 +113,20 @@ export default function Home() {
       {
         role === 'applicant' ? (
           <div>
-            <div>Applicant</div>
+            <div>
+              <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 lg:grid-cols-3 mb-4 hover:border-gray-950">
+                {applicantCardData.map((d, i) => (
+                  <Link href={d.href || "#"} key={i}>
+                    <Card
+                      amount={d.amount}
+                      discription={d.discription}
+                      icon={d.icon}
+                      label={d.label}
+                    />
+                  </Link>
+                ))}
+              </section>
+            </div>
           </div>
         ) : (
           <div>
