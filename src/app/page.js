@@ -58,7 +58,7 @@ const cardData = [
 const applicantCardData = [
   {
     label: "Applicants Overview",
-    amount: "16",
+    amount: "5",
     discription: "+3 since last month",
     icon: CalendarDays,
     href: "/applicants-overview",

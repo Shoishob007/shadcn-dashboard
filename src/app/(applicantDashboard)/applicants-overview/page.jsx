@@ -39,7 +39,7 @@ const data = [
     company: "ABC Limited",
     designation: "Junior Backend Developer",
     salary: 40000,
-    status: "open",
+    status: "applied",
     role: "Backend",
     deadline: new Date("2024-12-31"),
     postedOn: new Date("2024-10-15"),
@@ -50,7 +50,7 @@ const data = [
     company: "FintechHub",
     designation: "Junior Full-Stack Engineer",
     salary: 30000,
-    status: "open",
+    status: "rejected",
     role: "fullstack",
     deadline: new Date("2024-12-31"),
     postedOn: new Date("2024-10-15"),
@@ -61,7 +61,7 @@ const data = [
     company: "CDE Company",
     designation: "Junior Frontend Engineer",
     salary: 20000,
-    status: "open",
+    status: "shortlisted",
     role: "frontend",
     deadline: new Date("2024-12-31"),
     postedOn: new Date("2024-10-15"),
@@ -72,7 +72,7 @@ const data = [
     company: "FintechHub",
     designation: "Senior QA Engineer",
     salary: 70000,
-    status: "open",
+    status: "applied",
     role: "QA",
     deadline: new Date("2024-12-31"),
     postedOn: new Date("2024-10-15"),
@@ -83,7 +83,7 @@ const data = [
     company: "ABC Company",
     designation: "Junior Backend Engineer",
     salary: 30000,
-    status: "open",
+    status: "shortlisted",
     role: "Backend",
     deadline: new Date("2024-12-31"),
     postedOn: new Date("2024-10-15"),
@@ -212,6 +212,11 @@ export const columns = [
     cell: ({ row }) => {
       const job = row.original;
 
+      const [open, setOpen] = React.useState(false);
+      const handleViewDetails = (id) => {
+          setOpen(true);
+      }
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -228,7 +233,7 @@ export const columns = [
               Copy job ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View Details</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleViewDetails(job.id)}>View Details</DropdownMenuItem>
             <DropdownMenuItem>Edit Job</DropdownMenuItem>
             <DropdownMenuItem>Delete Job</DropdownMenuItem>
           </DropdownMenuContent>
@@ -243,6 +248,8 @@ export default function ApplicantsOverview() {
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
+
+  
 
   const table = useReactTable({
     data,
