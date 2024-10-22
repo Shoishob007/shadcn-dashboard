@@ -87,7 +87,7 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-5 w-full">
       <PageTitle title="Dashboard" />
-      
+
       {
         role === 'applicant' ? (
           <div>
@@ -95,18 +95,17 @@ export default function Home() {
           </div>
         ) : (
           <div>
-            <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 lg:grid-cols-3">
-      <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 lg:grid-cols-3 hover:border-gray-950">
-        {cardData.map((d, i) => (
-          <Link href={d.href || "#"} key={i}>
-            <Card
-              amount={d.amount}
-              discription={d.discription}
-              icon={d.icon}
-              label={d.label}
-            />
-          </Link>
-        ))}
+            <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 lg:grid-cols-3 mb-4 hover:border-gray-950">
+              {cardData.map((d, i) => (
+                <Link href={d.href || "#"} key={i}>
+                  <Card
+                    amount={d.amount}
+                    discription={d.discription}
+                    icon={d.icon}
+                    label={d.label}
+                  />
+                </Link>
+              ))}
             </section>
             <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
               <CardContent className="bg-white">
@@ -133,6 +132,6 @@ export default function Home() {
           </div>
         )
       }
-    </div>
+    </div >
   );
 }
