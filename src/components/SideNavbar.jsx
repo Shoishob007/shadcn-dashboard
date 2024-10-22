@@ -9,6 +9,7 @@ import {
   UsersRound,
   Settings,
   ChevronRight,
+  ChevronLeft,
   KeyRound,
   Newspaper,
   CalendarDays,
@@ -28,6 +29,10 @@ export default function SideNavbar() {
 
   const onlyWidth = useWindowWidth();
   const mobileWidth = onlyWidth < 768;
+
+  useEffect(() => {
+    setIsCollapsed(mobileWidth);
+  }, [mobileWidth]);
 
   function toggleSidebar() {
     setIsCollapsed(!isCollapsed);
@@ -49,19 +54,26 @@ export default function SideNavbar() {
         <Image
           src="/assests/hh-logo.png"
           alt="Google Logo"
-          width={60}
-          height={60}
+          width={80}
+          height={80}
           className={`mr-2 rounded-full items-center text-center inline`}
         />
       </div>
       {!mobileWidth && (
-        <div className="absolute right-[-20px] top-16">
+        <div className="absolute right-[-15px] top-18">
           <Button
             onClick={toggleSidebar}
-            variant="secondary"
+            variant="outline"
             className=" rounded-full p-2"
           >
-            <ChevronRight className="h-6 w-6" />
+            <span
+              className={cn(
+                "transition-transform duration-300 ease-in-out",
+                isCollapsed ? "rotate-0" : "rotate-[180deg]"
+              )}
+            >
+              <ChevronRight className="h-6 w-6" />
+            </span>
           </Button>
         </div>
       )}
@@ -118,10 +130,15 @@ export default function SideNavbar() {
           },
           {
             title: "Interviews",
-            href: "/interviews",
+            href: "#",
             icon: CalendarDays,
             variant: "ghost",
             submenu: [
+              {
+                title: "All Interviews",
+                href: "/interviews",
+                icon: CalendarDays,
+              },
               {
                 title: "Schedule Interview",
                 href: "/interviews/schedule",
