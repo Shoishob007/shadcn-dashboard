@@ -1,11 +1,11 @@
 /** @format */
 "use client";
 
+import { useWindowWidth } from "@react-hook/window-size";
+import { Bell, User } from "lucide-react";
 import Link from "next/link";
 import { cn } from "../lib/utils";
 import SearchComponent from "./SearchComponent";
-import { Bell, User } from "lucide-react";
-import { useWindowWidth } from "@react-hook/window-size";
 
 const VerticalNavbar = () => {
   const handleSearch = (query) => {

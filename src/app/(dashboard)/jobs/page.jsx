@@ -10,6 +10,17 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 
+import {
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import * as React from "react";
+
 const JobsPage = () => {
   const router = useRouter();
 

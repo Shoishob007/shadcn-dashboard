@@ -1,25 +1,24 @@
 /** @format */
 "use client";
-import { cn } from "../lib/utils";
-import { useEffect, useState } from "react";
-import { Nav } from "./ui/nav";
+import { useWindowWidth } from "@react-hook/window-size";
 import {
   BriefcaseBusiness,
-  LayoutDashboard,
-  UsersRound,
-  Settings,
+  CalendarDays,
   ChevronRight,
   ChevronLeft,
   KeyRound,
-  Newspaper,
-  CalendarDays,
+  LayoutDashboard,
+  Settings,
+  UsersRound
 } from "lucide-react";
-import { Button } from "../components/ui/button";
-import { useWindowWidth } from "@react-hook/window-size";
-import { useSession, signOut } from "next-auth/react";
-import { usePathname } from "next/navigation";
-import { useToast } from "../hooks/use-toast";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Button } from "../components/ui/button";
+import { useToast } from "../hooks/use-toast";
+import { cn } from "../lib/utils";
+import { Nav } from "./ui/nav";
 
 export default function SideNavbar() {
   const { toast } = useToast();
@@ -42,6 +41,12 @@ export default function SideNavbar() {
     console.log("Session status:", status);
     console.log("Session data:", session);
   }, [session, status]);
+
+// By adding a loading state and ensuring session data is consistent, I can mitigate the risk of hydration issues.
+
+  if (status === "loading") {
+    return <div>Loading...</div>; 
+  }
 
   return (
     <div
@@ -216,3 +221,4 @@ export default function SideNavbar() {
     </div>
   );
 }
+
