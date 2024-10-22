@@ -282,7 +282,7 @@ export default function ApplicantsData() {
   });
 
   return (
-    <div className="w-full bg-white py-2 px-4 rounded-lg shadow-md h-full items-center">
+    <div className=" bg-white py-2 px-2 mr-2 rounded-lg shadow-md h-full items-center">
       <div className="flex items-center justify-center py-4 ">
         <Input
           placeholder="Filter applicant..."
@@ -295,7 +295,7 @@ export default function ApplicantsData() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className="ml-1 h-4 w-4" />
+              Columns <ChevronDown className=" h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

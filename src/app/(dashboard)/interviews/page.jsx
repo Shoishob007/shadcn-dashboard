@@ -4,7 +4,7 @@ import InterviewSchedule from "./schedule/page";
 
 const Interviews = () => {
   return (
-    <div className="flex flex-col md:flex-row justify-center h-full items-center text-center gap-12 md:gap-20 p-10">
+    <div className="flex flex-col justify-start h-full gap-2">
       <InterviewUpcoming />
       <InterviewSchedule />
     </div>
