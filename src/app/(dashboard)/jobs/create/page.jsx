@@ -2,7 +2,22 @@
 
 import { useState } from "react";
 import CreateJobForm from "./components/CreateJobForm";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 const CreateJobPage = () => {
   const [showForm, setShowForm] = useState(false);
@@ -11,28 +26,29 @@ const CreateJobPage = () => {
   const handleCloseForm = () => setShowForm(false);
 
   return (
-    <div className="relative flex flex-col items-center justify-center h-full p-6">
+    <div className="relative flex flex-col items-center text-center justify-center h-full space-y-6">
       {!showForm ? (
-        <>
-          <h1 className="text-2xl font-bold mb-4 transition-opacity duration-300 ease-in-out">
-            Jobs Dashboard
-          </h1>
-
-          <Button
-            onClick={handleOpenForm}
-            className="px-4 py-2 rounded-lg transition-opacity duration-300 ease-in-out"
-          >
-            Create Job
-          </Button>
-        </>
+        <Card className="w-2/3 sm:w-full max-w-lg p-4 shadow-lg">
+          <CardHeader>
+            <CardTitle className="text-xl md:text-2xl font-bold">
+              Create your job
+            </CardTitle>
+            <CardDescription className="space-y-3">
+              Post a new job and find the perfect candidates.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col items-center justify-center space-y-4">
+            <CardDescription className="text-center text-sm">
+              Fill out the form to create a new job posting and start finding
+              applicants today.
+            </CardDescription>
+            <Button onClick={handleOpenForm} size="lg" className="w-full">
+              Create Job
+            </Button>
+          </CardContent>
+        </Card>
       ) : (
-        <div
-          className={`absolute top-0 left-0 w-full h-full transition-transform duration-400 ease-in-out transform ${
-            showForm ? "translate-y-0" : "-translate-y-full"
-          }`}
-        >
-          <CreateJobForm onClose={handleCloseForm} />
-        </div>
+        <CreateJobForm onClose={handleCloseForm} />
       )}
     </div>
   );

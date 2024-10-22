@@ -7,14 +7,16 @@ const InterviewSchedule = () => {
   const [date, setDate] = useState(new Date());
 
   return (
-    <div className="rounded-lg flex flex-col gap-5 items-center  h-full justify-center">
-      <h1 className="text-xl">Scheduled Interviews</h1>
-      <Calendar
-        mode="single"
-        selected={date}
-        onSelect={setDate}
-        className="rounded-lg border bg-white shadow-md"
-      />
+    <div className="h-full flex items-center justify-center">
+      <div className="rounded-lg flex flex-col gap-4 items-center justify-center bg-white shadow-md p-8 max-w-md mx-auto">
+        <h1 className="text-xl">Scheduled Interviews</h1>
+        <Calendar
+          mode="single"
+          selected={date}
+          onSelect={setDate}
+          className="rounded-lg"
+        />
+      </div>
     </div>
   );
 };
