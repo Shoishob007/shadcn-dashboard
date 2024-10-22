@@ -3,9 +3,9 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-export default function Card({ label, icon: Icon, amount, discription, href }) {
+export default function Card({ label, icon: Icon, amount, discription }) {
   return (
-    <CardContent className="bg-white">
+    <CardContent className="bg-white hover:border-gray-950">
       <section className="flex justify-between gap-2">
         <p className="text-sm">{label}</p>
         <Icon className="h-4 w-4 text-gray-400" />
