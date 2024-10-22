@@ -10,7 +10,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -214,6 +214,16 @@ export const columns = [
     enableHiding: false,
     cell: ({ row }) => {
       const job = row.original;
+      const { toast } = useToast();
+
+      const handleShortlist = () => {
+        /* Here goes the logic for shortlisting */
+        toast({
+          title: "Success",
+          description: "Applicant shortlisted!",
+          variant: "success",
+        });
+      };
 
       return (
         <DropdownMenu>
@@ -232,8 +242,10 @@ export const columns = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View Applicant</DropdownMenuItem>
-            <DropdownMenuItem>Shortlist</DropdownMenuItem>
-            <DropdownMenuItem>Hire</DropdownMenuItem>
+            <DropdownMenuItem>Download CV</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleShortlist()}>
+              Shortlist
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -271,9 +283,9 @@ export default function JobsData() {
       <div className="flex items-center justify-center py-4 ">
         <Input
           placeholder="Filter applicant..."
-          value={table.getColumn("jobTitle")?.getFilterValue() || ""}
+          value={table.getColumn("applicantName")?.getFilterValue() || ""}
           onChange={(event) =>
-            table.getColumn("jobTitle")?.setFilterValue(event.target.value)
+            table.getColumn("applicantName")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
