@@ -1,19 +1,20 @@
 /** @format */
 
 "use client";
-import Link from "next/link";
+import BarChart from "@/components/BarChart";
+import Card, { CardContent } from "@/components/Card";
 import PageTitle from "@/components/PageTitle";
+import { role } from "@/components/RoleManagement";
+import ApplicantsCard from "@/components/SalesCard";
 import {
-  Briefcase,
-  Users,
-  ArchiveX,
   Activity,
+  ArchiveX,
+  Briefcase,
   CalendarDays,
   Loader,
+  Users,
 } from "lucide-react";
-import Card, { CardContent } from "@/components/Card";
-import BarChart from "@/components/BarChart";
-import ApplicantsCard from "@/components/SalesCard";
+import Link from "next/link";
 
 const cardData = [
   {
@@ -86,6 +87,15 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-5 w-full">
       <PageTitle title="Dashboard" />
+      
+      {
+        role === 'applicant' ? (
+          <div>
+            <div>Applicant</div>
+          </div>
+        ) : (
+          <div>
+            <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 lg:grid-cols-3">
       <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 lg:grid-cols-3 hover:border-gray-950">
         {cardData.map((d, i) => (
           <Link href={d.href || "#"} key={i}>
@@ -97,29 +107,32 @@ export default function Home() {
             />
           </Link>
         ))}
-      </section>
-      <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
-        <CardContent className="bg-white">
-          <p className="p-4 font-semibold">Total Applicants</p>
-          <BarChart />
-        </CardContent>
-        <CardContent className="flex justify-between gap-4 bg-white">
-          <section>
-            <p>Top Employees</p>
-            <p className="text-sm text-gray-400">
-              Top contributors from last three months
-            </p>
-          </section>
-          {employeeData.map((d, i) => (
-            <ApplicantsCard
-              key={i}
-              email={d.email}
-              name={d.name}
-              position={d.position}
-            />
-          ))}
-        </CardContent>
-      </section>
+            </section>
+            <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
+              <CardContent className="bg-white">
+                <p className="p-4 font-semibold">Total Applicants</p>
+                <BarChart />
+              </CardContent>
+              <CardContent className="flex justify-between gap-4 bg-white">
+                <section>
+                  <p>Top Employees</p>
+                  <p className="text-sm text-gray-400">
+                    Top contributors from last three months
+                  </p>
+                </section>
+                {employeeData.map((d, i) => (
+                  <ApplicantsCard
+                    key={i}
+                    email={d.email}
+                    name={d.name}
+                    position={d.position}
+                  />
+                ))}
+              </CardContent>
+            </section>
+          </div>
+        )
+      }
     </div>
   );
 }

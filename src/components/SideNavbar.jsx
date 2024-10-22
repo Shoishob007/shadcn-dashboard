@@ -2,12 +2,14 @@
 "use client";
 import { useWindowWidth } from "@react-hook/window-size";
 import {
+  Bell,
   BriefcaseBusiness,
+  Calendar,
   CalendarDays,
   ChevronRight,
-  ChevronLeft,
   KeyRound,
   LayoutDashboard,
+  Search,
   Settings,
   UsersRound
 } from "lucide-react";
@@ -18,6 +20,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../components/ui/button";
 import { useToast } from "../hooks/use-toast";
 import { cn } from "../lib/utils";
+import { role } from "./RoleManagement";
 import { Nav } from "./ui/nav";
 
 export default function SideNavbar() {
@@ -28,10 +31,6 @@ export default function SideNavbar() {
 
   const onlyWidth = useWindowWidth();
   const mobileWidth = onlyWidth < 768;
-
-  useEffect(() => {
-    setIsCollapsed(mobileWidth);
-  }, [mobileWidth]);
 
   function toggleSidebar() {
     setIsCollapsed(!isCollapsed);
@@ -49,8 +48,12 @@ export default function SideNavbar() {
   }
 
   return (
-    <div
+    <>
+    {
+      role === 'applicant' ? (
+        <div
       className={cn(
+        "relative border-r px-4 pb-10 pt-6 bg-white my-2 mr-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out",
         "relative border-r pb-10 pt-6 bg-white my-2 mr-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out",
         isCollapsed ? "w-20" : "w-56"
       )}
@@ -59,26 +62,190 @@ export default function SideNavbar() {
         <Image
           src="/assests/hh-logo.png"
           alt="Google Logo"
-          width={80}
-          height={80}
+          width={60}
+          height={60}
           className={`mr-2 rounded-full items-center text-center inline`}
         />
       </div>
       {!mobileWidth && (
-        <div className="absolute right-[-15px] top-18">
+        <div className="absolute right-[-20px] top-16">
           <Button
             onClick={toggleSidebar}
-            variant="outline"
+            variant="secondary"
             className=" rounded-full p-2"
           >
-            <span
-              className={cn(
-                "transition-transform duration-300 ease-in-out",
-                isCollapsed ? "rotate-0" : "rotate-[180deg]"
-              )}
-            >
-              <ChevronRight className="h-6 w-6" />
-            </span>
+            <ChevronRight className="h-6 w-6" />
+          </Button>
+        </div>
+      )}
+      <Nav
+        isCollapsed={mobileWidth ? true : isCollapsed}
+        links={[
+          // Applicant Menu and submenu
+          {
+            title: "Dashboard",
+            href: "/",
+            icon: LayoutDashboard,
+            variant: "default",
+            submenu: [
+              {
+                title: "Application overview",
+                href: "/jobs",
+                icon: BriefcaseBusiness,
+              },
+              {
+                title: "Upcoming interviewers",
+                href: "/jobs/applied",
+                icon: BriefcaseBusiness,
+              },
+              {
+                title: "Recent job postings",
+                href: "/jobs/applied",
+                icon: BriefcaseBusiness,
+              },
+            ],
+          },
+          {
+            title: "Profile management",
+            href: "/profile management",
+            icon: UsersRound,
+            variant: "ghost",
+            submenu: [
+              {
+                title: "View profile",
+                href: "/jobs",
+                icon: BriefcaseBusiness,
+              },
+              {
+                title: "Edit  profile",
+                href: "/jobs/applied",
+                icon: BriefcaseBusiness,
+              },
+            ],
+          },
+          {
+            title: "Job Search",
+            href: "/job-search",
+            icon: BriefcaseBusiness,
+            variant: "ghost",
+            submenu: [
+              {
+                title: "Search for Jobs",
+                href: "/job-search",
+                icon: Search,
+              },
+            ],
+          },
+          {
+            title: "My Applications",
+            href: "/interviews",
+            icon: CalendarDays,
+            variant: "ghost",
+            submenu: [
+              {
+                title: "View Applications",
+                href: "/interviews/upcoming",
+                icon: Search,
+              },
+            ],
+          },
+          {
+            title: "Interview Schedule",
+            href: "#",
+            icon: Calendar,
+            variant: "ghost",
+            submenu: [
+              {
+                title: "View up interviews",
+                href: "/interviews/upcoming",
+                icon: Calendar,
+              },
+          ],
+          },
+          {
+            title: "Notifications",
+            href: "#",
+            icon: Calendar,
+            variant: "ghost",
+            submenu: [
+              {
+                title: "View Notifications",
+                href: "/interviews/upcoming",
+                icon: Bell,
+              },
+              {
+                title: "Notification settings",
+                href: "/interviews/upcoming",
+                icon: Settings,
+              },
+          ],
+          },
+          // Auth
+          status === "authenticated"
+            ? {
+                title: "Logout",
+                href: "#",
+                icon: KeyRound,
+                variant: "ghost",
+                onClick: () => {
+                  signOut({ redirect: false });
+                  // toast({
+                  //   title: "Signed Out!",
+                  //   description: "You have signed out successfully.",
+                  //   variant: "success",
+                  // });
+                },
+                isActive: false,
+              }
+            : 
+            {
+                title: "Get Started",
+                href: "#",
+                icon: KeyRound,
+                variant: "ghost",
+                submenu: [
+                  {
+                    title: "Login",
+                    href: "/login",
+                    icon: KeyRound,
+                    isActive: pathname === "/login",
+                  },
+                  {
+                    title: "Register",
+                    href: "/register",
+                    icon: KeyRound,
+                    isActive: pathname === "/register",
+                  },
+                ],
+              },
+        ]}
+      />
+        </div>
+      ) : (
+        // Organization Menu and submenu
+        <div
+      className={cn(
+        "relative border-r px-4 pb-10 pt-6 bg-white my-2 mr-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out",
+        isCollapsed ? "w-20" : "w-56"
+      )}
+    >
+      <div className="items-center text-center mx-auto">
+        <Image
+          src="/assests/hh-logo.png"
+          alt="Google Logo"
+          width={60}
+          height={60}
+          className={`mr-2 rounded-full items-center text-center inline`}
+        />
+      </div>
+      {!mobileWidth && (
+        <div className="absolute right-[-20px] top-16">
+          <Button
+            onClick={toggleSidebar}
+            variant="secondary"
+            className=" rounded-full p-2"
+          >
+            <ChevronRight className="h-6 w-6" />
           </Button>
         </div>
       )}
@@ -93,11 +260,13 @@ export default function SideNavbar() {
           },
           {
             title: "Applicants",
-            href: "#",
+            href: "/applicants",
             icon: UsersRound,
             variant: "ghost",
             submenu: [
               {
+                title: "View Applicants",
+                href: "/applicants/view-all",
                 title: "Applicants Dashboard",
                 href: "/applicants",
                 icon: UsersRound,
@@ -145,15 +314,10 @@ export default function SideNavbar() {
           },
           {
             title: "Interviews",
-            href: "#",
+            href: "/interviews",
             icon: CalendarDays,
             variant: "ghost",
             submenu: [
-              {
-                title: "All Interviews",
-                href: "/interviews",
-                icon: CalendarDays,
-              },
               {
                 title: "Schedule Interview",
                 href: "/interviews/schedule",
@@ -218,7 +382,10 @@ export default function SideNavbar() {
               },
         ]}
       />
-    </div>
+        </div>
+      )
+    }
+    </>
   );
 }
 
