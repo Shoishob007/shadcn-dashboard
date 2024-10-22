@@ -96,6 +96,7 @@ export default function Home() {
         ) : (
           <div>
             <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 lg:grid-cols-3">
+      <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 lg:grid-cols-3 hover:border-gray-950">
         {cardData.map((d, i) => (
           <Link href={d.href || "#"} key={i}>
             <Card

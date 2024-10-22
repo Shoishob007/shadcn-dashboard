@@ -30,7 +30,7 @@ export function Nav({ links, isCollapsed }) {
         data-collapsed={isCollapsed}
         className="group flex flex-col gap-4 pt-10 data-[collapsed=true]:py-6 data-[collapsed=true]:pt-12"
       >
-        <nav className="grid gap-1 pr-10 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-1">
+        <nav className="grid gap-1 pl-3 pr-4 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-1">
           {links.map((link, index) => (
             <div key={index}>
               {/* Top-level menu item */}
@@ -78,7 +78,7 @@ export function Nav({ links, isCollapsed }) {
                         }),
                         link.variant === "default" &&
                           "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
-                        "justify-start flex items-center w-full"
+                        "justify-start flex items-center w-full mb-1"
                       )}
                     >
                       <link.icon className="mr-2 h-4 w-4" />
@@ -102,7 +102,7 @@ export function Nav({ links, isCollapsed }) {
                         }),
                         link.variant === "default" &&
                           "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
-                        "justify-start flex items-center w-full"
+                        "justify-start flex items-center w-full "
                       )}
                     >
                       <link.icon className="mr-2 h-4 w-4" />
@@ -114,7 +114,7 @@ export function Nav({ links, isCollapsed }) {
                   {link.submenu && (
                     <div
                       className={cn(
-                        "ml-6 flex-col space-y-1 overflow-hidden transition-max-height duration-300 ease-in-out",
+                        "ml-6 flex-col space-y-2 overflow-hidden transition-max-height duration-300 ease-in-out",
                         openMenus[index] ? "max-h-screen" : "max-h-0"
                       )}
                     >

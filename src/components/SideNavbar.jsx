@@ -54,6 +54,7 @@ export default function SideNavbar() {
         <div
       className={cn(
         "relative border-r px-4 pb-10 pt-6 bg-white my-2 mr-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out",
+        "relative border-r pb-10 pt-6 bg-white my-2 mr-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out",
         isCollapsed ? "w-20" : "w-56"
       )}
     >
@@ -266,6 +267,13 @@ export default function SideNavbar() {
               {
                 title: "View Applicants",
                 href: "/applicants/view-all",
+                title: "Applicants Dashboard",
+                href: "/applicants",
+                icon: UsersRound,
+              },
+              {
+                title: "View All Applicants",
+                href: "/applicants/view-all",
                 icon: UsersRound,
               },
               {
@@ -288,8 +296,13 @@ export default function SideNavbar() {
             variant: "ghost",
             submenu: [
               {
-                title: "View All Jobs",
+                title: "Jobs Dashboard",
                 href: "/jobs",
+                icon: BriefcaseBusiness,
+              },
+              {
+                title: "View All Jobs",
+                href: "/jobs/view",
                 icon: BriefcaseBusiness,
               },
               {
