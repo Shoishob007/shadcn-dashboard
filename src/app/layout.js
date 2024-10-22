@@ -16,27 +16,27 @@ export default function RootLayout({ children, session }) {
       <body className={cn("min-h-screen w-full bg-gray-100 text-black flex")}>
         {role === 'applicant' ? (
           <SessionProvider session={session}>
-          {/* SideNavbar */}
-          <SideNavbar/>
-          
-          {/* Vertical Navbar */}
-          <div className="flex flex-col w-full min-h-screen">
-            <VerticalNavbar/>
+            {/* SideNavbar */}
+            <SideNavbar />
 
-            {/* content area */}
-            <div className="flex-grow p-2 rounded-lg ml-2 mr-4">{children}</div>
-          </div>
-          <Toaster />
-        </SessionProvider>
+            {/* Vertical Navbar */}
+            <div className="flex flex-col w-full min-h-screen">
+              <VerticalNavbar />
+
+              {/* content area */}
+              <div className="flex-grow p-2 rounded-lg ml-2 mr-4">{children}</div>
+            </div>
+            <Toaster />
+          </SessionProvider>
         ) : (
           <SessionProvider session={session}>
-          <SideNavbar />
-          <div className="flex flex-col w-full min-h-screen">
-            <VerticalNavbar className="p-4" />
-            <div className="flex-grow p-2 rounded-lg ml-2 mr-4">{children}</div>
-          </div>
-          <Toaster />
-        </SessionProvider>
+            <SideNavbar />
+            <div className="flex flex-col w-full min-h-screen">
+              <VerticalNavbar className="p-4" />
+              <div className="flex-grow p-2 rounded-lg">{children}</div>
+            </div>
+            <Toaster />
+          </SessionProvider>
         )}
 
       </body>

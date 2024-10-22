@@ -1,22 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { Calendar } from "@/components/ui/calendar";
+import ShortListedApplicants from "../../applicants/shortlisted/page";
 
 const InterviewSchedule = () => {
-  const [date, setDate] = useState(new Date());
-
   return (
-    <div className="h-full flex items-center justify-center">
-      <div className="rounded-lg flex flex-col gap-4 items-center justify-center bg-white shadow-md p-8 max-w-md mx-auto">
-        <h1 className="text-xl">Scheduled Interviews</h1>
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          className="rounded-lg"
-        />
-      </div>
+    <div className="bg-white pt-4 rounded-lg shadow-md">
+      <h2 className="text-center text-lg md:text-xl font-semibold">
+        Scheduled Interviews
+      </h2>
+      <ShortListedApplicants />
     </div>
   );
 };
