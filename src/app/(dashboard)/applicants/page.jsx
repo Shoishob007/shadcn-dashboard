@@ -18,8 +18,8 @@ const ApplicantsPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center h-full justify-center text-center space-y-4">
-      <div className="w-2/3 md:w-full grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="flex flex-col items-center h-full justify-center text-center space-y-4 mr-2">
+      <div className="w-2/3 md:w-full grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* For applicants data */}
         <Card
           className="cursor-pointer hover:border-gray-950 transition-shadow duration-300 ease-in-out"

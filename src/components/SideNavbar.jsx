@@ -41,10 +41,10 @@ export default function SideNavbar() {
     setIsCollapsed(!isCollapsed);
   }
 
-  useEffect(() => {
-    console.log("Session status:", status);
-    console.log("Session data:", session);
-  }, [session, status]);
+  // useEffect(() => {
+  //   console.log("Session status:", status);
+  //   console.log("Session data:", session);
+  // }, [session, status]);
 
   // By adding a loading state and ensuring session data is consistent, I can mitigate the risk of hydration issues.
 

@@ -1,35 +1,35 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import {
-    flexRender,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    useReactTable,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 
 const data = [
@@ -88,7 +88,6 @@ const data = [
     deadline: new Date("2024-12-31"),
     postedOn: new Date("2024-10-15"),
   },
-  
 ];
 
 export const columns = [
@@ -142,7 +141,9 @@ export const columns = [
     accessorKey: "designation",
     header: () => <div className="text-center">Designation</div>,
     cell: ({ row }) => (
-      <div className="text-center capitalize">{row.getValue("designation")}</div>
+      <div className="text-center capitalize">
+        {row.getValue("designation")}
+      </div>
     ),
   },
   {
@@ -157,9 +158,7 @@ export const columns = [
       </Button>
     ),
     cell: ({ row }) => (
-      <div className="text-center">
-        {row.getValue("role")}
-      </div>
+      <div className="text-center">{row.getValue("role")}</div>
     ),
   },
   {
@@ -170,7 +169,7 @@ export const columns = [
       return <div className="text-center font-medium">{salary}</div>;
     },
   },
-  
+
   {
     accessorKey: "deadline",
     header: ({ column }) => (
@@ -214,8 +213,8 @@ export const columns = [
 
       const [open, setOpen] = React.useState(false);
       const handleViewDetails = (id) => {
-          setOpen(true);
-      }
+        setOpen(true);
+      };
 
       return (
         <DropdownMenu>
@@ -233,7 +232,9 @@ export const columns = [
               Copy job ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => handleViewDetails(job.id)}>View Details</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleViewDetails(job.id)}>
+              View Details
+            </DropdownMenuItem>
             <DropdownMenuItem>Edit Job</DropdownMenuItem>
             <DropdownMenuItem>Delete Job</DropdownMenuItem>
           </DropdownMenuContent>
@@ -248,8 +249,6 @@ export default function ApplicantsOverview() {
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
-
-  
 
   const table = useReactTable({
     data,

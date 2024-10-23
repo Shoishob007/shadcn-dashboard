@@ -36,6 +36,14 @@ export default function RegisterForm() {
     const { name, email, password, role } = data;
     const provider = "credentials";
     try {
+      const payload = {
+        name,
+        provider,
+        email,
+        password,
+        role,
+      };
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/users`,
         {
@@ -43,7 +51,7 @@ export default function RegisterForm() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ provider, name, email, password, role }),
+          body: JSON.stringify(payload),
         }
       );
 
