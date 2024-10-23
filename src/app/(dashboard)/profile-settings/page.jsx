@@ -8,7 +8,6 @@ import { usePathname } from "next/navigation";
 
 const ProfileSetting = () => {
   const pathname = usePathname();
-  console.log("Path name from the Main page : ", pathname);
   const { status, data: session } = useSession();
   const [formData, setFormData] = useState({
     name: session?.user?.name || "",

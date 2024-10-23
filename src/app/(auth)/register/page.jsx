@@ -77,8 +77,8 @@ export default function RegisterForm() {
   return (
     <>
       {submitted ? (
-        <main className="flex justify-center items-center h-screen">
-          <div className="max-w-md w-full p-4 border-2 rounded-md">
+        <main className="flex justify-center items-center h-full">
+          <div className="max-w-md w-full p-4 border-2 rounded-lg shadow-md bg-white">
             <div className="flex justify-center text-center gap-2">
               <VerificationSent onBackToLogin={handleBackToLogin} />
             </div>

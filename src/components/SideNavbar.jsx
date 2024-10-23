@@ -22,7 +22,6 @@ import { useToast } from "../hooks/use-toast";
 import { cn } from "../lib/utils";
 import { role } from "./RoleManagement";
 import { Nav } from "./ui/nav";
-import logo from "../../public/assests/dummy-logo.png";
 
 export default function SideNavbar() {
   const { toast } = useToast();
@@ -360,6 +359,7 @@ export default function SideNavbar() {
                     variant: "ghost",
                     onClick: () => {
                       signOut({ redirect: false });
+                      console.log("Sign out clicked");
                       // toast({
                       //   title: "Signed Out!",
                       //   description: "You have signed out successfully.",
