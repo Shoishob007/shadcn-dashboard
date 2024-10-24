@@ -23,7 +23,7 @@ const ApplicantsPage = () => {
         {/* For applicants data */}
         <Card
           className="cursor-pointer hover:border-gray-950 transition-shadow duration-300 ease-in-out"
-          onClick={() => handleNavigation("/applicants/view-all")}
+          onClick={() => handleNavigation("/applicants/view")}
         >
           <CardHeader>
             <CardTitle>View All Applicants</CardTitle>

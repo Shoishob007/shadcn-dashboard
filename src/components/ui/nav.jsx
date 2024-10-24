@@ -10,10 +10,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function Nav({ links, isCollapsed }) {
+  const router = useRouter();
   const pathName = usePathname();
   const [openMenus, setOpenMenus] = useState({});
 
@@ -28,6 +29,9 @@ export function Nav({ links, isCollapsed }) {
     if (link.onClick) {
       e.preventDefault();
       link.onClick();
+    } 
+    else {
+      router.push(link.href);
     }
   };
 

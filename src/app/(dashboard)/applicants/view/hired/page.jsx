@@ -1,7 +1,5 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-
-import * as React from "react";
+import { useMemo, useState, useCallback } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -10,8 +8,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {  ChevronDown } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -28,80 +25,93 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { data } from "../components/data";
-import { columns } from "../components/columns";
+import { columns } from "../../components/applicantsColumns";
+import { applicantsData } from "../../components/applicantsData";
 
-export default function ApplicantsData() {
-  const [sorting, setSorting] = React.useState([]);
-  const [columnFilters, setColumnFilters] = React.useState([]);
-  const [columnVisibility, setColumnVisibility] = React.useState({});
-  const [rowSelection, setRowSelection] = React.useState({});
+const ITEMS_PER_PAGE = 10;
+
+export default function HiredApplicants() {
+  const [sorting, setSorting] = useState([]);
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [columnVisibility, setColumnVisibility] = useState({});
+  const [rowSelection, setRowSelection] = useState({});
+
+  const data = useMemo(() => {
+    return applicantsData.filter((d) => d.status === "hired");
+  }, []);
 
   const table = useReactTable({
     data,
     columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
+    pageCount: Math.ceil(data.length / ITEMS_PER_PAGE),
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination: {
+        pageSize: ITEMS_PER_PAGE,
+        pageIndex: 0,
+      },
     },
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    enableRowSelection: true,
   });
 
+  const handleFilter = useCallback(
+    (event) => {
+      table.getColumn("applicantName")?.setFilterValue(event.target.value);
+    },
+    [table]
+  );
+
   return (
-    <div className=" bg-white py-2 px-2 mr-2 rounded-lg shadow-md h-full items-center">
-      <div className="flex items-center justify-center py-4 ">
+    <div className="bg-white py-2 px-2 mr-2 rounded-lg shadow-md h-full">
+      <div className="flex items-center justify-between py-4">
         <Input
           placeholder="Filter applicant..."
-          value={table.getColumn("applicantName")?.getFilterValue() || ""}
-          onChange={(event) =>
-            table.getColumn("applicantName")?.setFilterValue(event.target.value)
-          }
+          value={table.getColumn("applicantName")?.getFilterValue() ?? ""}
+          onChange={handleFilter}
           className="max-w-sm"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className=" h-4 w-4" />
+            <Button variant="outline">
+              Columns <ChevronDown className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
+              .map((column) => (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  className="capitalize"
+                  checked={column.getIsVisible()}
+                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                >
+                  {column.id}
+                </DropdownMenuCheckboxItem>
+              ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
-      <div className="rounded-lg border overflow-x-auto">
-        <Table className="max-w-full">
+      <div className="rounded-lg border overflow-hidden">
+        <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="p-0">
+              <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="text-center p-0">
+                  <TableHead key={header.id} className="text-center">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -113,7 +123,6 @@ export default function ApplicantsData() {
               </TableRow>
             ))}
           </TableHeader>
-
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
@@ -144,8 +153,9 @@ export default function ApplicantsData() {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+
+      <div className="flex items-center justify-between py-4">
+        <div className="text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>

@@ -224,12 +224,12 @@ export default function SideNavbar() {
         },
         {
           title: "View All Applicants",
-          href: "/applicants/view-all",
+          href: "/applicants/view",
           icon: UsersRound,
         },
         {
           title: "Shortlisted Applicants",
-          href: "/applicants/shortlisted",
+          href: "/applicants/view/shortlisted",
           icon: UsersRound,
         },
       ],
