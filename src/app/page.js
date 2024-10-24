@@ -12,6 +12,7 @@ import {
   Briefcase,
   CalendarDays,
   Loader,
+  TableOfContents,
   Users,
 } from "lucide-react";
 import Link from "next/link";
@@ -68,20 +69,22 @@ const applicantCardData = [
     label: "Applicants Overview",
     amount: "5",
     discription: "+3 since last month",
-    icon: CalendarDays,
-    href: "/applicants-overview",
+    icon: TableOfContents,
+    href: "/overview",
   },
   {
     label: "Upcoming Interviews",
     amount: "10",
     discription: "+3 since last month",
     icon: CalendarDays,
+    href: "/upcoming-interviews",
   },
   {
     label: "Recent Job Postings",
     amount: "18",
     discription: "+1 since last month",
     icon: CalendarDays,
+    href: "/recent-job-postings",
   },
 ]
 

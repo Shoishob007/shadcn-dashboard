@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   Search,
   Settings,
+  TableOfContents,
   UsersRound,
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
@@ -22,20 +23,20 @@ import { useToast } from "../hooks/use-toast";
 import { cn } from "../lib/utils";
 import { role } from "./RoleManagement";
 import { Nav } from "./ui/nav";
-
+ 
 export default function SideNavbar() {
   const { toast } = useToast();
   const { status, data: session } = useSession();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
-
+ 
   const onlyWidth = useWindowWidth();
   const mobileWidth = onlyWidth < 768;
-
+ 
   useEffect(() => {
     setIsCollapsed(mobileWidth);
   }, [mobileWidth]);
-
+ 
   const handleSignOut = async () => {
     try {
       await signOut({ redirect: false });
@@ -54,22 +55,22 @@ export default function SideNavbar() {
       });
     }
   };
-
+ 
   function toggleSidebar() {
     setIsCollapsed(!isCollapsed);
   }
-
+ 
   // useEffect(() => {
   //   console.log("Session status:", status);
   //   console.log("Session data:", session);
   // }, [session, status]);
-
+ 
   // By adding a loading state and ensuring session data is consistent, I can mitigate the risk of hydration issues.
-
+ 
   if (status === "loading") {
     return <div>Loading...</div>;
   }
-
+ 
   const getAuthLinks = () => {
     if (status === "authenticated") {
       return {
@@ -101,7 +102,6 @@ export default function SideNavbar() {
       ],
     };
   };
-
   const applicantLinks = [
     {
       title: "Dashboard",
@@ -111,6 +111,8 @@ export default function SideNavbar() {
       submenu: [
         {
           title: "Application overview",
+          href: "/overview",
+          icon: TableOfContents,
           href: "/jobs",
           icon: BriefcaseBusiness,
         },
@@ -121,14 +123,14 @@ export default function SideNavbar() {
         },
         {
           title: "Recent job postings",
-          href: "/jobs/applied",
+          href: "/job-postings",
           icon: BriefcaseBusiness,
         },
       ],
     },
     {
       title: "Profile management",
-      href: "/profile-management",
+      href: "/profile",
       icon: UsersRound,
       variant: "ghost",
       submenu: [
@@ -147,12 +149,12 @@ export default function SideNavbar() {
     {
       title: "Job Search",
       href: "/job-search",
-      icon: BriefcaseBusiness,
+      icon: Search,
       variant: "ghost",
       submenu: [
         {
           title: "Search for Jobs",
-          href: "/job-search",
+          href: "/job-search/search-for-jobs",
           icon: Search,
         },
       ],
@@ -203,7 +205,7 @@ export default function SideNavbar() {
     },
     getAuthLinks(),
   ];
-
+ 
   const organizationLinks = [
     {
       title: "Dashboard",
@@ -224,12 +226,12 @@ export default function SideNavbar() {
         },
         {
           title: "View All Applicants",
-          href: "/applicants/view",
+          href: "/applicants/view-all",
           icon: UsersRound,
         },
         {
           title: "Shortlisted Applicants",
-          href: "/applicants/view/shortlisted",
+          href: "/applicants/shortlisted",
           icon: UsersRound,
         },
       ],
@@ -295,7 +297,7 @@ export default function SideNavbar() {
     },
     getAuthLinks(),
   ];
-
+ 
   return (
     <>
       <div
@@ -332,3 +334,4 @@ export default function SideNavbar() {
     </>
   );
 }
+ 

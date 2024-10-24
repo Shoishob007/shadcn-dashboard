@@ -1,8 +1,8 @@
 /* eslint-disable import/no-anonymous-default-export */
 import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 import LinkedInProvider from "next-auth/providers/linkedin";
 // Asdfgh@11
 
