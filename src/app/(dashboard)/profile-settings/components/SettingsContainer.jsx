@@ -1,6 +1,6 @@
 "use client";
 
-import ApplicantsData from "../../applicants/view-all/page";
+import ApplicantsData from "../../applicants/view/page";
 import GeneralSettings from "../(all components)/general/page";
 import ProfileSettings from "../(all components)/profile/page";
 import PasswordSettings from "../(all components)/password/page";

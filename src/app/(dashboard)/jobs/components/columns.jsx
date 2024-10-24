@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import * as React from "react";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
@@ -21,8 +22,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { jobData as data } from "../components/jobData";
-
-console.log(data);
 
 export const jobColumns = [
   {
@@ -65,16 +64,27 @@ export const jobColumns = [
   {
     accessorKey: "status",
     header: () => <div className="text-center">Status</div>,
-    cell: ({ row }) => (
-      <div className="text-center capitalize">{row.getValue("status")}</div>
-    ),
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+      const backgroundColor =
+        status === "open"
+          ? "bg-green-400 p-1 rounded-lg"
+          : status === "closed"
+          ? "bg-red-400 p-1 rounded-lg"
+          : "";
+      return (
+        <div className={`text-center capitalize ${backgroundColor}`}>
+          {row.getValue("status")}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "salary",
     header: () => <div className="text-center">Salary</div>,
     cell: ({ row }) => {
       const salary = row.getValue("salary");
-      return <div className="text-center font-medium">{salary}</div>;
+      return <div className={`text-center font-medium`}>{salary}</div>;
     },
   },
   {

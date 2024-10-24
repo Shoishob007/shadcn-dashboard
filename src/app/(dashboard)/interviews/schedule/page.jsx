@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import ShortListedApplicants from "../../applicants/shortlisted/page";
+import ShortListedApplicants from "../../applicants/view/shortlisted/page";
 
 const InterviewSchedule = () => {
   return (
