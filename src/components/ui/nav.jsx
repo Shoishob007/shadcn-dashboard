@@ -24,6 +24,13 @@ export function Nav({ links, isCollapsed }) {
     }));
   };
 
+  const handleItemClick = (link, e) => {
+    if (link.onClick) {
+      e.preventDefault();
+      link.onClick();
+    }
+  };
+
   return (
     <TooltipProvider>
       <div
@@ -37,21 +44,21 @@ export function Nav({ links, isCollapsed }) {
               {isCollapsed ? (
                 <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
-                    <Link
-                      href={link.href}
+                    <div
+                      onClick={(e) => handleItemClick(link, e)}
                       className={cn(
                         buttonVariants({
                           variant: link.href === pathName ? "default" : "ghost",
                           size: "icon",
                         }),
-                        "h-10 w-10",
+                        "h-10 w-10 cursor-pointer",
                         link.variant === "default" &&
                           "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
                       )}
                     >
                       <link.icon className="h-4 w-4" />
                       <span className="sr-only">{link.title}</span>
-                    </Link>
+                    </div>
                   </TooltipTrigger>
                   <TooltipContent
                     side="right"
@@ -93,8 +100,8 @@ export function Nav({ links, isCollapsed }) {
                     </button>
                   ) : (
                     // Directly use Link for items without submenus
-                    <Link
-                      href={link.href}
+                    <div
+                      onClick={(e) => handleItemClick(link, e)}
                       className={cn(
                         buttonVariants({
                           variant: link.href === pathName ? "default" : "ghost",
@@ -102,12 +109,12 @@ export function Nav({ links, isCollapsed }) {
                         }),
                         link.variant === "default" &&
                           "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
-                        "justify-start flex items-center w-full mb-1"
+                        "justify-start flex items-center w-full mb-1 cursor-pointer"
                       )}
                     >
                       <link.icon className="mr-2 h-4 w-4" />
                       {link.title}
-                    </Link>
+                    </div>
                   )}
 
                   {/* Submenu */}
