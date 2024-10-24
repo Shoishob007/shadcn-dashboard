@@ -12,7 +12,11 @@ const nextConfig = {
                 ]
             }
         ]
-    }
+    },
+
+    images: {
+        domains: ['github.com', 'avatars.githubusercontent.com'], // Add any other domains you need
+    },
 }
 
 module.exports = nextConfig

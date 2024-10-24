@@ -9,7 +9,10 @@ import {
 } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 99394ec9d210795bb64fc8827deb07e39a3b082c
 const JobsPage = () => {
   const router = useRouter();
 

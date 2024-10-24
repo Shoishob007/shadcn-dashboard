@@ -14,6 +14,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
  
 export function Nav({ links, isCollapsed }) {
+  const router = useRouter();
   const pathName = usePathname();
   const [openMenus, setOpenMenus] = useState({});
  

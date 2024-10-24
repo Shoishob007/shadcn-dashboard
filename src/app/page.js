@@ -23,36 +23,44 @@ const cardData = [
     amount: "40",
     discription: "+5 from last three months",
     icon: Briefcase,
-    href: "/jobs",
+    href: "/jobs/view",
   },
   {
     label: "Applicants Hired",
     amount: "150",
     discription: "+25 from last three months",
     icon: Users,
+    href: "/applicants/view/hired",
   },
   {
     label: "Active Jobs",
     amount: "30",
     discription: "+6 since last month",
     icon: Activity,
+    href: "/jobs/view/open",
+
   },
   {
     label: "Closed Jobs",
     amount: "10",
     discription: "+2 since last month",
     icon: ArchiveX,
+    href: "/jobs/view/closed",
+
   },
   {
     label: "Upcoming Interviews",
     amount: "10",
     discription: "+10 since last month",
     icon: CalendarDays,
+    href: "/interviews/upcoming",
   },
   {
     label: "Applicants Status",
     discription: "Click to view status",
     icon: Loader,
+    href: "/applicants/view",
+
   },
 ];
 

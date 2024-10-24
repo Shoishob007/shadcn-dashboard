@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useMemo, useState, useCallback } from "react";
 
 import {
   flexRender,
@@ -29,8 +29,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { jobColumns as columns } from "../components/columns.jsx";
-import { jobData as data } from "../components/jobData";
+import { jobColumns as columns } from "../../components/columns.jsx";
+import { jobData } from "../../components/jobData.js";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -39,6 +39,10 @@ export default function JobsData() {
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
+
+  const data = useMemo(() => {
+    return jobData.filter((d) => d.status === "closed");
+  }, []);
 
   const table = useReactTable({
     data,

@@ -36,6 +36,14 @@ export default function RegisterForm() {
     const { name, email, password, role } = data;
     const provider = "credentials";
     try {
+      const payload = {
+        name,
+        provider,
+        email,
+        password,
+        role,
+      };
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/users`,
         {
@@ -43,7 +51,7 @@ export default function RegisterForm() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ provider, name, email, password, role }),
+          body: JSON.stringify(payload),
         }
       );
 
@@ -69,8 +77,8 @@ export default function RegisterForm() {
   return (
     <>
       {submitted ? (
-        <main className="flex justify-center items-center h-screen">
-          <div className="max-w-md w-full p-4 border-2 rounded-md">
+        <main className="flex justify-center items-center h-full">
+          <div className="max-w-md w-full p-4 border-2 rounded-lg shadow-md bg-white">
             <div className="flex justify-center text-center gap-2">
               <VerificationSent onBackToLogin={handleBackToLogin} />
             </div>

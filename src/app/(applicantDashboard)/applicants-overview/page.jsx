@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
-import * as React from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -11,7 +10,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -35,52 +34,59 @@ import {
 
 const data = [
   {
-    id: "m5gr84i9",
-    jobTitle: "Full-Stack Engineer",
-    applicantName: "Shoishob Al-Baki",
-    applicantEmail: "shoishob@hotmail.com",
-    status: "Applied",
-    CVScore: 50,
-    deadline: new Date("2024-11-01"),
+    id: "1",
+    title: "Backend Developer",
+    company: "ABC Limited",
+    designation: "Junior Backend Developer",
+    salary: 40000,
+    status: "applied",
+    role: "Backend",
+    deadline: new Date("2024-12-31"),
+    postedOn: new Date("2024-10-15"),
   },
   {
-    id: "3u1reuv4",
-    jobTitle: "Software Engineer",
-    applicantName: "Ataullah",
-    applicantEmail: "ataullah@gmail.com",
-    status: "Hired",
-    CVScore: 65,
-    deadline: new Date("2024-11-05"),
-    interviewSchedule: new Date("2024-11-14"),
+    id: "2",
+    title: "Full-Stack Developer",
+    company: "FintechHub",
+    designation: "Junior Full-Stack Engineer",
+    salary: 30000,
+    status: "rejected",
+    role: "fullstack",
+    deadline: new Date("2024-12-31"),
+    postedOn: new Date("2024-10-15"),
   },
   {
-    id: "derv1ws0",
-    jobTitle: "Human Resources Manager",
-    applicantName: "Shoikot Arfin",
-    applicantEmail: "arfin@outlook.com",
-    status: "Shortlisted",
-    CVScore: 50,
-    deadline: new Date("2024-11-01"),
-    interviewSchedule: new Date("2024-11-10"),
+    id: "3",
+    title: "Frontend Developer",
+    company: "CDE Company",
+    designation: "Junior Frontend Engineer",
+    salary: 20000,
+    status: "shortlisted",
+    role: "frontend",
+    deadline: new Date("2024-12-31"),
+    postedOn: new Date("2024-10-15"),
   },
   {
-    id: "5kma53ae",
-    jobTitle: "Marketing Manager",
-    applicantName: "Shoishob Al-Baki",
-    applicantEmail: "shoishob@hotmain.com",
-    status: "Applied",
-    CVScore: 50,
-    deadline: new Date("2024-11-01"),
+    id: "4",
+    title: "QA Engineer",
+    company: "FintechHub",
+    designation: "Senior QA Engineer",
+    salary: 70000,
+    status: "applied",
+    role: "QA",
+    deadline: new Date("2024-12-31"),
+    postedOn: new Date("2024-10-15"),
   },
   {
-    id: "bhqecj4p",
-    jobTitle: "QA Engineer",
-    applicantName: "Ashfaq Tanzim",
-    applicantEmail: "ashfaq@gmail.com",
-    status: "Hired",
-    CVScore: 60,
-    deadline: new Date("2024-10-01"),
-    interviewSchedule: new Date("2024-10-10"),
+    id: "5",
+    title: "Backend Engineer",
+    company: "ABC Company",
+    designation: "Junior Backend Engineer",
+    salary: 30000,
+    status: "shortlisted",
+    role: "Backend",
+    deadline: new Date("2024-12-31"),
+    postedOn: new Date("2024-10-15"),
   },
 ];
 
@@ -109,68 +115,61 @@ export const columns = [
   },
 
   {
-    accessorKey: "jobTitle",
+    accessorKey: "company",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Job Title
+        Company
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
 
     cell: ({ row }) => (
-      <div className="text-center capitalize">{row.getValue("jobTitle")}</div>
+      <div className="text-center capitalize">{row.getValue("company")}</div>
     ),
   },
   {
-    accessorKey: "applicantName",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Applicant Name
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
+    accessorKey: "title",
+    header: () => <div className="text-center">Job Title</div>,
+    cell: ({ row }) => (
+      <div className="text-center capitalize">{row.getValue("title")}</div>
     ),
-
+  },
+  {
+    accessorKey: "designation",
+    header: () => <div className="text-center">Designation</div>,
     cell: ({ row }) => (
       <div className="text-center capitalize">
-        {row.getValue("applicantName")}
+        {row.getValue("designation")}
       </div>
     ),
   },
   {
-    accessorKey: "applicantEmail",
-    header: () => <div className="text-center">Email</div>,
-    cell: ({ row }) => (
-      <div className="text-center">{row.getValue("applicantEmail")}</div>
-    ),
-  },
-  {
-    accessorKey: "status",
-    header: () => <div className="text-center">Status</div>,
-    cell: ({ row }) => (
-      <div className="text-center capitalize">{row.getValue("status")}</div>
-    ),
-  },
-  {
-    accessorKey: "CVScore",
+    accessorKey: "role",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        CV Score
+        Role
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ row }) => (
-      <div className="text-center font-medium">{row.getValue("CVScore")}</div>
+      <div className="text-center">{row.getValue("role")}</div>
     ),
   },
+  {
+    accessorKey: "salary",
+    header: () => <div className="text-center">Salary</div>,
+    cell: ({ row }) => {
+      const salary = row.getValue("salary");
+      return <div className="text-center font-medium">{salary}</div>;
+    },
+  },
+
   {
     accessorKey: "deadline",
     header: ({ column }) => (
@@ -178,7 +177,7 @@ export const columns = [
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        <div className="text-center font-medium">Deadline</div>
+        <div className="text-center font-medium">deadline</div>
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
@@ -190,42 +189,31 @@ export const columns = [
     },
   },
   {
-    accessorKey: "interviewSchedule",
+    accessorKey: "status",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Interview Date
+        Status
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => {
-      const status = row.getValue("status").toLowerCase();
-      const date = row.getValue("interviewSchedule");
-      return (
-        <div className="text-center">
-          {status === "applied" || !date
-            ? "N/A"
-            : date.toLocaleDateString("en-US")}
-        </div>
-      );
-    },
+    cell: ({ row }) => (
+      <div className="text-center capitalize font-medium">
+        {row.getValue("status")}
+      </div>
+    ),
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
       const job = row.original;
-      const { toast } = useToast();
 
-      const handleShortlist = () => {
-        /* Here goes the logic for shortlisting */
-        toast({
-          title: "Success",
-          description: "Applicant shortlisted!",
-          variant: "success",
-        });
+      const [open, setOpen] = React.useState(false);
+      const handleViewDetails = (id) => {
+        setOpen(true);
       };
 
       return (
@@ -241,14 +229,14 @@ export const columns = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(job.id)}
             >
-              Copy applicant ID
+              Copy job ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View Applicant</DropdownMenuItem>
-            <DropdownMenuItem>Download CV</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleShortlist()}>
-              Shortlist
+            <DropdownMenuItem onClick={() => handleViewDetails(job.id)}>
+              View Details
             </DropdownMenuItem>
+            <DropdownMenuItem>Edit Job</DropdownMenuItem>
+            <DropdownMenuItem>Delete Job</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -256,7 +244,7 @@ export const columns = [
   },
 ];
 
-export default function ApplicantsData() {
+export default function ApplicantsOverview() {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -282,20 +270,20 @@ export default function ApplicantsData() {
   });
 
   return (
-    <div className=" bg-white py-2 px-2 mr-2 rounded-lg shadow-md h-full items-center">
+    <div className="w-full bg-white py-2 px-6 rounded-lg shadow-md h-full items-center">
       <div className="flex items-center justify-center py-4 ">
         <Input
-          placeholder="Filter applicant..."
-          value={table.getColumn("applicantName")?.getFilterValue() || ""}
+          placeholder="Filter jobs..."
+          value={table.getColumn("title")?.getFilterValue() || ""}
           onChange={(event) =>
-            table.getColumn("applicantName")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className=" h-4 w-4" />
+              Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -320,13 +308,13 @@ export default function ApplicantsData() {
         </DropdownMenu>
       </div>
 
-      <div className="rounded-lg border overflow-x-auto">
-        <Table className="max-w-full">
+      <div className="rounded-md border">
+        <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="p-0">
+              <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="text-center p-0">
+                  <TableHead key={header.id} className="text-center">
                     {header.isPlaceholder
                       ? null
                       : flexRender(

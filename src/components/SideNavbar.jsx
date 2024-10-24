@@ -102,7 +102,6 @@ export default function SideNavbar() {
       ],
     };
   };
- 
   const applicantLinks = [
     {
       title: "Dashboard",
@@ -114,6 +113,8 @@ export default function SideNavbar() {
           title: "Application overview",
           href: "/overview",
           icon: TableOfContents,
+          href: "/jobs",
+          icon: BriefcaseBusiness,
         },
         {
           title: "Upcoming interviewers",

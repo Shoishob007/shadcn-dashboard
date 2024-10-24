@@ -21,9 +21,11 @@ const InterviewUpcoming = () => {
   };
 
   return (
-    <div className="h-full grid grid-cols-1 md:grid-cols-2 justify-start gap-10 p-10">
-      <div className="rounded-lg flex flex-col gap-4 items-center justify-center bg-white shadow-md m-6 p-2 md:p-4">
-        <h2 className=" text-lg md:text-xl font-semibold">Upcoming Interviews</h2>
+    <div className="h-full grid grid-cols-1 md:grid-cols-2 justify-start gap-10 p-6">
+      <div className="rounded-lg flex flex-col gap-4 items-center justify-center bg-white shadow-md m-8 p-2 md:p-6">
+        <h2 className=" text-lg md:text-xl font-semibold">
+          Upcoming Interviews
+        </h2>
         <Calendar
           mode="single"
           selected={date}
@@ -40,7 +42,7 @@ const InterviewUpcoming = () => {
         </div>
       </div>
 
-      <div className="bg-white shadow-md p-4 rounded-lg m-6">
+      <div className="bg-white shadow-md p-2 md:p-6 rounded-lg m-8">
         <h2 className="text-lg md:text-xl font-semibold mb-4 text-center">
           Events on {date.toDateString()}
         </h2>
