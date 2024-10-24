@@ -74,7 +74,37 @@ export const data = [
       jobRequirements: "Proficiency in backend frameworks like Node.js and Express, along with database technologies like MongoDB. Ability to write efficient server-side logic.",
       employmentType: "part-time",
       salaryRange: "28,000 - 35,000 BDT"
-    }
+    },
+    {
+      id: "6",
+      title: "Backend Engineer",
+      company: "ABC Company",
+      designation: "Junior Backend Engineer",
+      salary: 30000,
+      status: "applied",
+      role: "Backend",
+      deadline: new Date("2024-12-31"),
+      postedOn: new Date("2024-10-15"),
+      description: "Assist in the development and maintenance of backend systems, ensuring robust API functionality and data processing. Collaborate with the frontend team to support seamless communication between the client and server in scalable applications.",
+      jobRequirements: "Proficiency in backend frameworks like Node.js and Express, along with database technologies like MongoDB. Ability to write efficient server-side logic.",
+      employmentType: "part-time",
+      salaryRange: "28,000 - 35,000 BDT"
+    },
+    {
+      id: "7",
+      title: "Backend Engineer",
+      company: "ABC Company",
+      designation: "Junior Backend Engineer",
+      salary: 30000,
+      status: "applied",
+      role: "Backend",
+      deadline: new Date("2024-12-31"),
+      postedOn: new Date("2024-10-15"),
+      description: "Assist in the development and maintenance of backend systems, ensuring robust API functionality and data processing. Collaborate with the frontend team to support seamless communication between the client and server in scalable applications.",
+      jobRequirements: "Proficiency in backend frameworks like Node.js and Express, along with database technologies like MongoDB. Ability to write efficient server-side logic.",
+      employmentType: "part-time",
+      salaryRange: "28,000 - 35,000 BDT"
+    },
 ];
 
 // recent job postings data

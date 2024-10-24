@@ -110,15 +110,13 @@ export default function SideNavbar() {
       variant: "default",
       submenu: [
         {
-          title: "Application overview",
+          title: "Applicants overview",
           href: "/overview",
           icon: TableOfContents,
-          href: "/jobs",
-          icon: BriefcaseBusiness,
         },
         {
-          title: "Upcoming interviewers",
-          href: "/jobs/applied",
+          title: "Upcoming interviews",
+          href: "/upcoming-interviews",
           icon: BriefcaseBusiness,
         },
         {
@@ -130,19 +128,14 @@ export default function SideNavbar() {
     },
     {
       title: "Profile management",
-      href: "/profile",
+      href: "#",
       icon: UsersRound,
       variant: "ghost",
       submenu: [
         {
-          title: "View profile",
-          href: "/jobs",
-          icon: BriefcaseBusiness,
-        },
-        {
-          title: "Edit profile",
-          href: "/jobs/applied",
-          icon: BriefcaseBusiness,
+          title: "Profile",
+          href: "/profile",
+          icon: UsersRound,
         },
       ],
     },

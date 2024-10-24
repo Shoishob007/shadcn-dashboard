@@ -299,15 +299,15 @@ export const columns = [
                                             <h2 className="text-xs">{jobDetails.company}</h2>
                                             <div className="flex items-center gap-3">
                                                 <div className="flex items-center gap-1 mt-2">
-                                                    <span > <Briefcase className="text-[6px]" /> </span>
+                                                    <span > <Briefcase className="w-4" /> </span>
                                                     <h3 className="capitalize text-black">{jobDetails.employmentType}</h3>
                                                 </div>
                                                 <div className="flex items-center gap-1 mt-2">
-                                                    <span className="text-[6px]"><Loader /></span>
+                                                    <span><Loader className="w-4" /></span>
                                                     <h3 className="capitalize text-black">{jobDetails.status}</h3>
                                                 </div>
                                                 <div className="flex items-center gap-1 mt-2">
-                                                    <span > <Tag className="text-[6px]" /> </span>
+                                                    <span > <Tag className="w-4" /> </span>
                                                     <h3 className="capitalize text-black">{jobDetails.salaryRange} Monthly</h3>
                                                 </div>
                                             </div>
@@ -351,7 +351,7 @@ export const columns = [
   },
 ];
 
-export default function Overview() {
+export default function ApplicantsOverview() {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
