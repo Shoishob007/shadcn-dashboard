@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "../components/ui/button";
@@ -300,13 +301,15 @@ export default function SideNavbar() {
         )}
       >
         <div className="items-center text-center mx-auto">
-          <Image
-            src="/assests/hh-logo.png"
-            alt="Logo"
-            width={80}
-            height={80}
-            className="mr-2 rounded-full items-center text-center inline"
-          />
+          <Link href={'/'}>
+            <Image
+              src="/assests/hh-logo.png"
+              alt="Logo"
+              width={80}
+              height={80}
+              className="mr-2 rounded-full items-center text-center inline"
+            />
+          </Link>
         </div>
         {!mobileWidth && (
           <div className="absolute right-[-20px] top-16">
