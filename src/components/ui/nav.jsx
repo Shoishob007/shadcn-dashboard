@@ -29,6 +29,8 @@ export function Nav({ links, isCollapsed }) {
     if (link.onClick) {
       e.preventDefault();
       link.onClick();
+    } else {
+      router.push(link.href)
     }
   };
  
