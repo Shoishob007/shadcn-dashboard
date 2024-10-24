@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
  
 export function Nav({ links, isCollapsed }) {
