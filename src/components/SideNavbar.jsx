@@ -142,13 +142,13 @@ export default function SideNavbar() {
     },
     {
       title: "Job Search",
-      href: "/job-search",
+      href: "#",
       icon: Search,
       variant: "ghost",
       submenu: [
         {
           title: "Search for Jobs",
-          href: "/job-search/search-for-jobs",
+          href: "/search",
           icon: Search,
         },
       ],
