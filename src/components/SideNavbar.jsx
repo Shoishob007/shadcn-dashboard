@@ -69,7 +69,11 @@ export default function SideNavbar() {
   // By adding a loading state and ensuring session data is consistent, I can mitigate the risk of hydration issues.
  
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col-reverse items-center justify-center h-40">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
   }
  
   const getAuthLinks = () => {

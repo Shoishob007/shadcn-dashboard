@@ -13,9 +13,17 @@ export const authOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             authorization: {
                 params: {
+                    scope: [
+                        "https://www.googleapis.com/auth/userinfo.email",
+                        "https://www.googleapis.com/auth/userinfo.profile",
+                        "https://www.googleapis.com/auth/calendar.readonly",
+                        "https://www.googleapis.com/auth/calendar.events"
+                    ].join(" "),
                     prompt: "consent",
                     access_type: "offline",
-                },
+                    response_type: "code"
+                }
+
             },
 
         }),
@@ -92,6 +100,7 @@ export const authOptions = {
         }),
     ],
     secret: process.env.NEXTAUTH_SECRET,
+    // debug: process.env.NODE_ENV === 'development',
     pages: {
         signIn: '/login',
         error: '/auth/error',
@@ -113,7 +122,7 @@ export const authOptions = {
             // console.log('JWT Callback - Token after:', token);
 
             if (account) {
-                console.log("Account : ", account)
+                // console.log("Account : ", account)
                 token.accessToken = account.access_token;
                 token.idToken = account.id_token;
                 token.provider = account.provider
@@ -126,7 +135,7 @@ export const authOptions = {
             // console.log("Session Callback - Token:", token);
 
             if (token) {
-                console.log("token:", token);
+                // console.log("token:", token);
                 session.user.id = token.id || null;
                 session.user.name = token.name || null;
                 session.user.email = token.email || null;

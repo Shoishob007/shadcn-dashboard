@@ -116,7 +116,7 @@ export default function LoginForm() {
               </Button>
               <Button
                 className="w-full bg-red-500 hover:bg-red-400 flex items-center justify-center gap-5"
-                onClick={() => signIn("google")}
+                onClick={() => signIn("google", { callbackUrl: "/" })}
               >
                 Sign in with Google
                 <Image
