@@ -11,10 +11,12 @@ import {
   LayoutDashboard,
   Search,
   Settings,
+  TableOfContents,
   UsersRound,
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "../components/ui/button";
@@ -22,20 +24,20 @@ import { useToast } from "../hooks/use-toast";
 import { cn } from "../lib/utils";
 import { role } from "./RoleManagement";
 import { Nav } from "./ui/nav";
-
+ 
 export default function SideNavbar() {
   const { toast } = useToast();
   const { status, data: session } = useSession();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
-
+ 
   const onlyWidth = useWindowWidth();
   const mobileWidth = onlyWidth < 768;
-
+ 
   useEffect(() => {
     setIsCollapsed(mobileWidth);
   }, [mobileWidth]);
-
+ 
   const handleSignOut = async () => {
     try {
       await signOut({ redirect: false });
@@ -54,18 +56,18 @@ export default function SideNavbar() {
       });
     }
   };
-
+ 
   function toggleSidebar() {
     setIsCollapsed(!isCollapsed);
   }
-
+ 
   // useEffect(() => {
   //   console.log("Session status:", status);
   //   console.log("Session data:", session);
   // }, [session, status]);
-
+ 
   // By adding a loading state and ensuring session data is consistent, I can mitigate the risk of hydration issues.
-
+ 
   if (status === "loading") {
     return (
       <div className="flex flex-col-reverse items-center justify-center h-40">
@@ -73,7 +75,7 @@ export default function SideNavbar() {
       </div>
     );
   }
-
+ 
   const getAuthLinks = () => {
     if (status === "authenticated") {
       return {
@@ -105,7 +107,6 @@ export default function SideNavbar() {
       ],
     };
   };
-
   const applicantLinks = [
     {
       title: "Dashboard",
@@ -114,100 +115,95 @@ export default function SideNavbar() {
       variant: "default",
       submenu: [
         {
-          title: "Application overview",
-          href: "/jobs",
-          icon: BriefcaseBusiness,
+          title: "Applicants overview",
+          href: "/overview",
+          icon: TableOfContents,
         },
         {
-          title: "Upcoming interviewers",
-          href: "/jobs/applied",
+          title: "Upcoming interviews",
+          href: "/upcoming-interviews",
           icon: BriefcaseBusiness,
         },
         {
           title: "Recent job postings",
-          href: "/jobs/applied",
+          href: "/job-postings",
           icon: BriefcaseBusiness,
         },
       ],
     },
     {
       title: "Profile management",
-      href: "/profile-management",
+      href: "#",
       icon: UsersRound,
       variant: "ghost",
       submenu: [
         {
-          title: "View profile",
-          href: "/jobs",
-          icon: BriefcaseBusiness,
-        },
-        {
-          title: "Edit profile",
-          href: "/jobs/applied",
-          icon: BriefcaseBusiness,
+          title: "Profile",
+          href: "/profile/view",
+          icon: UsersRound,
         },
       ],
     },
     {
       title: "Job Search",
-      href: "/job-search",
-      icon: BriefcaseBusiness,
+      href: "#",
+      icon: Search,
       variant: "ghost",
       submenu: [
         {
           title: "Search for Jobs",
-          href: "/job-search",
+          href: "/search",
           icon: Search,
         },
       ],
     },
     {
       title: "My Applications",
-      href: "/interviews",
+      href: "/applications",
       icon: CalendarDays,
       variant: "ghost",
       submenu: [
         {
           title: "View Applications",
-          href: "/interviews/upcoming",
+          href: "/applications/view",
           icon: Search,
         },
       ],
     },
     {
       title: "Interview Schedule",
-      href: "#",
+      href: "/interview-schedule",
       icon: Calendar,
       variant: "ghost",
       submenu: [
         {
           title: "View up interviews",
-          href: "/interviews/upcoming",
+          href: "/interview-schedule/upcoming",
           icon: Calendar,
         },
       ],
     },
     {
       title: "Notifications",
-      href: "#",
+      href: "/notification",
       icon: Bell,
       variant: "ghost",
       submenu: [
         {
           title: "View Notifications",
-          href: "/notifications",
+          href: "/notification/view",
           icon: Bell,
         },
         {
           title: "Notification settings",
-          href: "/notifications/settings",
+          href: "/notification/settings",
           icon: Settings,
         },
       ],
     },
     getAuthLinks(),
   ];
-
+ 
   const organizationLinks = [
     {
       title: "Dashboard",
@@ -228,12 +224,12 @@ export default function SideNavbar() {
         },
         {
           title: "View All Applicants",
-          href: "/applicants/view",
+          href: "/applicants/view-all",
           icon: UsersRound,
         },
         {
           title: "Shortlisted Applicants",
-          href: "/applicants/view/shortlisted",
+          href: "/applicants/shortlisted",
           icon: UsersRound,
         },
       ],
@@ -299,7 +295,7 @@ export default function SideNavbar() {
     },
     getAuthLinks(),
   ];
-
+ 
   return (
     <>
       <div
@@ -309,13 +305,15 @@ export default function SideNavbar() {
         )}
       >
         <div className="items-center text-center mx-auto">
-          <Image
-            src="/assests/hh-logo.png"
-            alt="Logo"
-            width={80}
-            height={80}
-            className="mr-2 rounded-full items-center text-center inline"
-          />
+          <Link href={'/'}>
+            <Image
+              src="/assests/hh-logo.png"
+              alt="Logo"
+              width={80}
+              height={80}
+              className="mr-2 rounded-full items-center text-center inline"
+            />
+          </Link>
         </div>
         {!mobileWidth && (
           <Button
@@ -339,3 +337,4 @@ export default function SideNavbar() {
     </>
   );
 }
+ 
