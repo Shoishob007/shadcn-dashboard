@@ -155,26 +155,26 @@ export default function SideNavbar() {
     },
     {
       title: "My Applications",
-      href: "/interviews",
+      href: "/applications",
       icon: CalendarDays,
       variant: "ghost",
       submenu: [
         {
           title: "View Applications",
-          href: "/interviews/upcoming",
+          href: "/applications/view",
           icon: Search,
         },
       ],
     },
     {
       title: "Interview Schedule",
-      href: "#",
+      href: "/interview-schedule",
       icon: Calendar,
       variant: "ghost",
       submenu: [
         {
           title: "View up interviews",
-          href: "/interviews/upcoming",
+          href: "/interview-schedule/upcoming",
           icon: Calendar,
         },
       ],
