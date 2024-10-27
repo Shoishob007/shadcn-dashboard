@@ -135,7 +135,7 @@ export default function SideNavbar() {
       submenu: [
         {
           title: "Profile",
-          href: "/profile",
+          href: "/profile/view",
           icon: UsersRound,
         },
       ],
@@ -181,18 +181,18 @@ export default function SideNavbar() {
     },
     {
       title: "Notifications",
-      href: "#",
+      href: "/notification",
       icon: Bell,
       variant: "ghost",
       submenu: [
         {
           title: "View Notifications",
-          href: "/notifications",
+          href: "/notification/view",
           icon: Bell,
         },
         {
           title: "Notification settings",
-          href: "/notifications/settings",
+          href: "/notification/settings",
           icon: Settings,
         },
       ],
