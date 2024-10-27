@@ -41,9 +41,6 @@ import { ArrowUpDown, Briefcase, Loader, MoreHorizontal, Tag } from "lucide-reac
 import { useState } from "react";
 
 
-
-// TODO: This table will show the upcoming interview list with details
-
 export const columns = [
     {
       id: "select",
