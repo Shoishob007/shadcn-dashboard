@@ -54,13 +54,13 @@ const InterviewSchedule = () => {
 
   const getEventStatus = (eventDate) => {
     if (isPast(eventDate) && !isToday(eventDate)) {
-      return { label: "Past", className: "bg-gray-500" };
+      return { label: "Past", className: "bg-gray-100 text-gray-600" };
     }
     if (isToday(eventDate)) {
-      return { label: "Today", className: "bg-green-500" };
+      return { label: "Today", className: "bg-green-100 text-green-600" };
     }
     if (isTomorrow(eventDate)) {
-      return { label: "Tomorrow", className: "bg-blue-500" };
+      return { label: "Tomorrow", className: "bg-blue-100 text-blue-600" };
     }
     const daysAway = differenceInDays(eventDate, new Date());
     return {

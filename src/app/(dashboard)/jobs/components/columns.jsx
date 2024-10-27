@@ -68,12 +68,20 @@ export const jobColumns = [
       const status = row.getValue("status");
       const backgroundColor =
         status === "open"
-          ? "bg-green-400 p-1 rounded-lg"
+          ? "bg-green-100 p-1 rounded-lg"
           : status === "closed"
-          ? "bg-red-400 p-1 rounded-lg"
+          ? "bg-red-100 p-1 rounded-lg"
+          : "";
+      const textColor =
+        status === "open"
+          ? "text-green-600 p-1 rounded-lg"
+          : status === "closed"
+          ? "text-red-600 p-1 rounded-lg"
           : "";
       return (
-        <div className={`text-center capitalize ${backgroundColor}`}>
+        <div
+          className={`text-center capitalize ${textColor} ${backgroundColor} font-semibold`}
+        >
           {row.getValue("status")}
         </div>
       );
