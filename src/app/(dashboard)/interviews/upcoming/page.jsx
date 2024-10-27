@@ -85,23 +85,23 @@ const InterviewUpcoming = () => {
   if (status === "unauthenticated") {
     return (
       <div className="flex justify-center items-center h-full">
-        Please sign in to access your calendar
+        Please sign in to access your calendar to see upcoming interviews
       </div>
     );
   }
 
   return (
     <div className="h-full grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
-      <Card className="p-6 space-y-4 flex flex-col gap-6">
+      <Card className="p-3 sm:p-6 space-y-4 flex flex-col sm:gap-6">
         <div className="flex items-center justify-around">
-          <h2 className="text-xl font-semibold flex items-center gap-2 p-4 px-6">
-            <CalendarDays className="h-6 w-6" />
+          <h2 className=" text-lg sm:text-xl font-semibold flex items-center gap-2 sm:p-4 p-3 px-4 sm:px-6">
+            <CalendarDays className="h-5 sm:h-6 w-5 sm:w-6" />
             Calendar
           </h2>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button size="sm">
-                <Plus className="w-6" />
+                <Plus className="w-5 sm:w-6" />
                 Add
               </Button>
             </DialogTrigger>
@@ -109,7 +109,7 @@ const InterviewUpcoming = () => {
               <DialogHeader>
                 <DialogTitle>Schedule New Interview</DialogTitle>
               </DialogHeader>
-              <div className="space-y-4 py-4">
+              <div className="space-y-2 sm:space-y-4 py-2 sm:py-4">
                 <div className="space-y-2">
                   <Label>Title</Label>
                   <Input
@@ -159,10 +159,10 @@ const InterviewUpcoming = () => {
         />
       </Card>
 
-      <Card className="p-6 ">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold flex items-center gap-2">
-            <Clock className="h-6 w-6" />
+      <Card className="p-4 sm:p-6 ">
+        <div className="flex items-center justify-between mb-3 sm:mb-6">
+          <h2 className="sm:text-xl text-base font-semibold flex items-center gap-2">
+            <Clock className="sm:h-6 sm:w-6 w-5 h-5" />
             Events for {format(date, "MMMM d, yyyy")}
           </h2>
         </div>
@@ -172,10 +172,12 @@ const InterviewUpcoming = () => {
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
         ) : events.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {events.map((event, index) => (
-              <Card key={index} className="p-4">
-                <h3 className="font-semibold text-lg">{event.summary}</h3>
+              <Card key={index} className="sm:p-4 p-3">
+                <h3 className="sm:font-semibold text-base sm:text-lg">
+                  {event.summary}
+                </h3>
                 <p className="text-sm text-muted-foreground">
                   {format(
                     new Date(event.start.dateTime || event.start.date),

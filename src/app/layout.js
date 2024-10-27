@@ -13,32 +13,41 @@ import "./globals.css";
 export default function RootLayout({ children, session }) {
   return (
     <html lang="en">
-      <body className={cn("min-h-screen w-full bg-gray-100 text-black flex")}>
+      <body className={cn("min-h-screen w-full bg-gray-100 text-black")}>
         {role === 'applicant' ? (
           <SessionProvider session={session}>
-            {/* SideNavbar */}
-            <SideNavbar />
+            <div className="flex h-screen overflow-hidden">
+              {/* Fixed SideNavbar */}
+              <div className="flex-shrink-0">
+                <SideNavbar />
+              </div>
 
-            {/* Vertical Navbar */}
-            <div className="flex flex-col w-full min-h-screen">
-              <VerticalNavbar />
-
-              {/* content area */}
-              <div className="flex-grow p-2 rounded-lg ml-2 mr-4">{children}</div>
+              {/* Scrollable content area */}
+              <div className="flex-1 flex flex-col overflow-hidden">
+                <VerticalNavbar />
+                <div className="flex-1 overflow-y-auto p-4">
+                  {children}
+                </div>
+              </div>
             </div>
             <Toaster />
           </SessionProvider>
         ) : (
           <SessionProvider session={session}>
-            <SideNavbar />
-            <div className="flex flex-col w-full min-h-screen">
-              <VerticalNavbar className="p-4" />
-              <div className="flex-grow p-2 rounded-lg">{children}</div>
+            <div className="flex h-screen overflow-hidden">
+              <div className="flex-shrink-0">
+                <SideNavbar />
+              </div>
+              <div className="flex-1 flex flex-col overflow-hidden">
+                <VerticalNavbar />
+                <div className="flex-1 overflow-y-auto p-4">
+                  {children}
+                </div>
+              </div>
             </div>
             <Toaster />
           </SessionProvider>
         )}
-
       </body>
     </html>
   );

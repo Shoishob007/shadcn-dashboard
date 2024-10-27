@@ -269,13 +269,13 @@ export default function SideNavbar() {
           icon: CalendarDays,
         },
         {
-          title: "Schedule Interview",
-          href: "/interviews/schedule",
+          title: "Upcoming Interviews",
+          href: "/interviews/upcoming",
           icon: CalendarDays,
         },
         {
-          title: "Upcoming Interviews",
-          href: "/interviews/upcoming",
+          title: "Schedule Interview",
+          href: "/interviews/schedule",
           icon: CalendarDays,
         },
       ],
@@ -300,7 +300,7 @@ export default function SideNavbar() {
     <>
       <div
         className={cn(
-          "relative border-r px-4 pb-10 pt-6 bg-white my-2 mr-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out",
+          "h-screen sticky top-0 border-r px-4 pb-10 pt-6 bg-white my-2 mr-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out overflow-y-auto",
           isCollapsed ? "w-20" : "w-56"
         )}
       >
@@ -316,15 +316,18 @@ export default function SideNavbar() {
           </Link>
         </div>
         {!mobileWidth && (
-          <div className="absolute right-[-20px] top-16">
-            <Button
-              onClick={toggleSidebar}
-              variant="secondary"
-              className="rounded-full p-2"
-            >
-              <ChevronRight className="h-6 w-6" />
-            </Button>
-          </div>
+          <Button
+            onClick={toggleSidebar}
+            variant="none"
+            className="absolute -right-[-3px] top-16 rounded-full p-1 transition-transform duration-200"
+            style={{
+              transform: `translateX(${isCollapsed ? "0" : "0"}) rotate(${
+                isCollapsed ? "0" : "180deg"
+              })`,
+            }}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
         )}
         <Nav
           isCollapsed={mobileWidth ? true : isCollapsed}

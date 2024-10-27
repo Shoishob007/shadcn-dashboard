@@ -45,7 +45,7 @@ const CreateJobForm = ({ onClose }) => {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center w-full">
       <div className="p-4 rounded-lg w-full">
         <Card>
           <CardHeader className="text-center">

@@ -34,7 +34,7 @@ const SettingsNav = ({ currentPath }) => {
       icon: Share2,
     },
     {
-      href: "/applicants/view-all",
+      href: "/applicants/view",
       label: "Applications",
       icon: Users,
     },

@@ -19,7 +19,7 @@ const SettingsContainer = ({ currentPath }) => {
         return <PasswordSettings />;
       case "/profile-settings/social":
         return <SocialSettings />;
-      case "/applicants/view-all":
+      case "/applicants/view":
         return <ApplicantsData />;
       case "/profile-settings/branches":
         return <BranchSettings />;

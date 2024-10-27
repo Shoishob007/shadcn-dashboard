@@ -53,6 +53,23 @@ const ApplicantsPage = () => {
           </CardContent>
         </Card>
       </div>
+      <div className="">
+        <Card
+          className="cursor-pointer hover:border-gray-950 transition-shadow duration-300 ease-in-out"
+          onClick={() => handleNavigation("/applicants/hired")}
+        >
+          <CardHeader>
+            <CardTitle>View Hired Applicants</CardTitle>
+            <CardDescription>
+              Browse and manage the hired applicants
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-sm">
+            Click to view all the hired applicants along with the respective
+            designation.
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
