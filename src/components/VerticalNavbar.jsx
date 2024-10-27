@@ -7,6 +7,15 @@ import Link from "next/link";
 import { cn } from "../lib/utils";
 import SearchComponent from "./SearchComponent";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 const VerticalNavbar = () => {
   const handleSearch = (query) => {
     console.log("Searching for:", query);
@@ -50,7 +59,20 @@ const VerticalNavbar = () => {
         }`}
       >
         <SearchComponent onSearch={handleSearch} />
-        <Bell className="w-5 h-5" />
+        {/* Notification dropdown */}
+        <section>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Bell className="w-5 h-5" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Notification</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>View Notifications</DropdownMenuItem>
+              <DropdownMenuItem>Notification Settings</DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+        </section>
         <User className="w-5 h-5" />
       </div>
 
