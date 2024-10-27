@@ -46,7 +46,6 @@ const InterviewSchedule = () => {
         );
       });
       setAllEvents(sortedEvents);
-      console.log(allEvents);
     } catch (error) {
       console.error("Error fetching events:", error);
     }
@@ -92,7 +91,7 @@ const InterviewSchedule = () => {
   if (status === "loading") {
     return (
       <div className="flex justify-center items-center h-full">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-8 w-8"></div>
       </div>
     );
   }
@@ -100,40 +99,36 @@ const InterviewSchedule = () => {
   if (status === "unauthenticated") {
     return (
       <div className="flex justify-center items-center h-full">
-        <Card className="p-6">
-          <p className="text-center text-muted-foreground">
-            Please sign in to access your calendar
-          </p>
-        </Card>
+        Please sign in to access your calendar to see scheduled interviews
       </div>
     );
   }
 
   return (
-    <div className="p-4 h-full">
-      <Card className="p-6">
-        <div className="flex items-center justify-center mb-6 ">
-          <h2 className="text-2xl font-semibold flex items-center gap-2">
-            <CalendarClock className="h-6 w-6" />
+    <div className="sm:p-4 h-full">
+      <Card className="p-4 sm:py-8 sm:px-6 border-none shadow-md">
+        <div className="flex items-center justify-center mb-4 ">
+          <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
+            <CalendarClock className="h-5 sm:h-6 w-5 sm:w-6" />
             Scheduled Interviews
           </h2>
         </div>
 
         {loading ? (
           <div className="flex items-center justify-center h-full">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            <div className="animate-spin rounded-full h-8 w-8"></div>
           </div>
         ) : allEvents.length > 0 ? (
-          <div className="space-y-6">
+          <div className="space-y-3">
             {groupEventsByDate(allEvents).map(([date, events]) => (
               <div key={date} className="space-y-3">
                 <div className="flex items-center gap-2">
-                  <CalendarIcon className="h-5 w-5 text-muted-foreground" />
-                  <h3 className="font-semibold">
+                  <CalendarIcon className="h-4 sm:h-5 w-4 sm:w-5 text-muted-foreground" />
+                  <h3 className="text-sm sm:text-base">
                     {format(new Date(date), "EEEE, MMMM d, yyyy")}
                   </h3>
                 </div>
-                <div className="space-y-3 pl-5">
+                <div className="space-y-2 sm:pl-5">
                   {events.map((event) => {
                     const eventDate = new Date(
                       event.start.dateTime || event.start.date
@@ -144,7 +139,7 @@ const InterviewSchedule = () => {
                       <Card
                         key={event.id}
                         className={cn(
-                          "p-4",
+                          "p-3",
                           isPast(eventDate) &&
                             !isToday(eventDate) &&
                             "opacity-75"
@@ -153,14 +148,14 @@ const InterviewSchedule = () => {
                         <div className="flex justify-between items-start">
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
-                              <h4 className="font-semibold text-lg">
+                              <h4 className="text-sm sm:text-base">
                                 {event.summary}
                               </h4>
                               <Badge className={status.className}>
                                 {status.label}
                               </Badge>
                             </div>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-xs text-muted-foreground">
                               {format(eventDate, "h:mm a")} -{" "}
                               {format(
                                 new Date(event.end.dateTime || event.end.date),
@@ -168,7 +163,7 @@ const InterviewSchedule = () => {
                               )}
                             </p>
                             {event.description && (
-                              <p className="text-sm mt-2">
+                              <p className="text-xs sm:text-sm mt-2">
                                 {event.description}
                               </p>
                             )}

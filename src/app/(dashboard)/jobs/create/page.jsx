@@ -10,14 +10,6 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
 
 const CreateJobPage = () => {
   const [showForm, setShowForm] = useState(false);
@@ -26,9 +18,9 @@ const CreateJobPage = () => {
   const handleCloseForm = () => setShowForm(false);
 
   return (
-    <div className="relative flex flex-col items-center text-center justify-center h-full space-y-6">
+    <div className="flex flex-col items-center text-center justify-center h-full space-y-6">
       {!showForm ? (
-        <Card className="w-2/3 sm:w-full max-w-lg p-4 shadow-lg">
+        <Card className="sm:w-full max-w-lg p-4 shadow-lg">
           <CardHeader>
             <CardTitle className="text-xl md:text-2xl font-bold">
               Create your job

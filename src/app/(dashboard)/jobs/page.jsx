@@ -51,6 +51,36 @@ const JobsPage = () => {
             Click to create a new job posting.
           </CardContent>
         </Card>
+
+        <Card
+          className="cursor-pointer hover:border-gray-950 transition-shadow duration-300 ease-in-out"
+          onClick={() => handleNavigation("/jobs/view/open")}
+        >
+          <CardHeader>
+            <CardTitle>View Open Jobs</CardTitle>
+            <CardDescription>
+              Browse and manage all the open jobs on the platform.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-sm">
+            Click to view the list of available open job positions.
+          </CardContent>
+        </Card>
+
+        <Card
+          className="cursor-pointer hover:border-gray-950 transition-shadow duration-300 ease-in-out"
+          onClick={() => handleNavigation("/jobs/view/closed")}
+        >
+          <CardHeader>
+            <CardTitle>View Closed Jobs</CardTitle>
+            <CardDescription>
+              Browse and manage all the closed jobs on the platform.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-sm">
+            Click to view the list of available closed job positions.
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

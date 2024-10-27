@@ -29,8 +29,7 @@ export function Nav({ links, isCollapsed }) {
     if (link.onClick) {
       e.preventDefault();
       link.onClick();
-    } 
-    else {
+    } else {
       router.push(link.href);
     }
   };
@@ -78,7 +77,6 @@ export function Nav({ links, isCollapsed }) {
                 </Tooltip>
               ) : (
                 <div>
-                  {/* Use Link for top-level items without submenus */}
                   {link.submenu ? (
                     <button
                       onClick={() => toggleSubmenu(index)}
@@ -103,7 +101,6 @@ export function Nav({ links, isCollapsed }) {
                       </span>
                     </button>
                   ) : (
-                    // Directly use Link for items without submenus
                     <div
                       onClick={(e) => handleItemClick(link, e)}
                       className={cn(

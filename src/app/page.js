@@ -15,6 +15,7 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
+import InterviewSchedule from "./(dashboard)/interviews/schedule/page";
 
 const cardData = [
   {
@@ -151,9 +152,9 @@ export default function Home() {
               ))}
             </section>
             <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
-              <CardContent className="bg-white hover:border-gray-950">
-                <p className="p-4 font-semibold">Total Applicants</p>
-                <BarChart />
+              <CardContent className="bg-white hover:border-gray-950 ">
+                <p className="text-xl font-semibold text-center">Interviews</p>
+                <InterviewSchedule className="shadow-none" />
               </CardContent>
               <CardContent className="flex justify-between gap-4 bg-white hover:border-gray-950">
                 <section>
