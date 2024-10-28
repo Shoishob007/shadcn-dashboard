@@ -28,10 +28,10 @@ const ProfileSetting = () => {
         <div className="flex gap-3 md:gap-0 flex-col-reverse md:flex-row md:justify-between items-center p-6">
           <div className="flex gap-4 items-center">
             <Image
-              src="/assests/checkmark.png"
+              src="/assests/hh-logo.png"
               alt="Checkmark"
-              width={60}
-              height={60}
+              width={80}
+              height={80}
               className="text-center mx-auto"
             />
             <div className="flex flex-col">

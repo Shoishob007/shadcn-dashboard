@@ -95,7 +95,7 @@ export default function RegisterForm() {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
-                <div className="grid gap-4">
+                <div className="grid gap-3">
                   <div className="grid gap-2">
                     <Label htmlFor="provider">Full Name</Label>
                     <Input
@@ -156,7 +156,7 @@ export default function RegisterForm() {
                     Create an account
                   </Button>
                   <Button
-                    className="w-full bg-red-500 hover:bg-red-400 flex items-center justify-center gap-5"
+                    className="w-full bg-red-500 hover:bg-red-400 flex items-center justify-center gap-4"
                     onClick={() => signIn("google")}
                   >
                     Sign up with Google
@@ -169,7 +169,7 @@ export default function RegisterForm() {
                     />
                   </Button>
                   <Button
-                    className="w-full bg-blue-500 hover:bg-blue-400 flex items-center justify-center gap-5"
+                    className="w-full bg-blue-500 hover:bg-blue-400 flex items-center justify-center gap-4"
                     onClick={() => signIn("github")}
                   >
                     Sign up with GitHub
@@ -182,7 +182,7 @@ export default function RegisterForm() {
                     />
                   </Button>
                 </div>
-                <div className="mt-4 text-center text-sm">
+                <div className="mt-2 text-center text-sm">
                   Already have an account?{" "}
                   <Link href="/login" className="hover:underline">
                     Sign in
