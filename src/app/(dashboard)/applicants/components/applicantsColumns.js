@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+ 
 export const columns = [
   {
     id: "select",
@@ -76,12 +76,18 @@ export const columns = [
       const status = row.getValue("status");
       const backgroundColor =
         status === "hired"
-          ? "bg-green-400"
+          ? "bg-green-100"
           : status === "applied"
-            ? "bg-fuchsia-300"
-            : "bg-yellow-300";
+            ? "bg-fuchsia-100"
+            : "bg-yellow-100";
+      const textColor =
+        status === "hired"
+          ? "text-green-700"
+          : status === "applied"
+            ? "text-fuchsia-700"
+            : "text-yellow-600";
       return (
-        <div className={`text-center capitalize ${backgroundColor} p-1 rounded-lg`}>
+        <div className={`text-center capitalize ${textColor} ${backgroundColor} p-1 rounded-lg font-semibold`}>
           {status}
         </div>
       );
@@ -147,7 +153,7 @@ export const columns = [
     cell: ({ row }) => {
       const job = row.original;
       const { toast } = useToast();
-
+ 
       const handleShortlist = () => {
         toast({
           title: "Success",
@@ -155,7 +161,7 @@ export const columns = [
           variant: "success",
         });
       };
-
+ 
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
