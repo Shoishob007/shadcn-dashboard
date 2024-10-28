@@ -43,7 +43,6 @@ export function Nav({ links, isCollapsed }) {
         <nav className="grid gap-1 pl-0 pr-4 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-1">
           {links.map((link, index) => (
             <div key={index}>
-              {/* Top-level menu item */}
               {isCollapsed ? (
                 <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
@@ -118,7 +117,6 @@ export function Nav({ links, isCollapsed }) {
                     </div>
                   )}
 
-                  {/* Submenu */}
                   {link.submenu && (
                     <div
                       className={cn(
@@ -136,7 +134,7 @@ export function Nav({ links, isCollapsed }) {
                                 subLink.href === pathName ? "default" : "ghost",
                               size: "sm",
                             }),
-                            "justify-start flex items-center w-full "
+                            "justify-start flex items-center w-full"
                           )}
                         >
                           <subLink.icon

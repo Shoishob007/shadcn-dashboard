@@ -1,6 +1,6 @@
 /** @format */
 "use client";
- 
+
 import { role } from "@/components/RoleManagement";
 import SideNavbar from "@/components/SideNavbar";
 import { Toaster } from "@/components/ui/toaster";
@@ -9,13 +9,31 @@ import { SessionProvider } from "next-auth/react";
 import { cn } from "../lib/utils";
 import { usePathname } from "next/navigation";
 import "./globals.css";
- 
- 
+import { useEffect, useState } from "react";
+import { useWindowWidth } from "@react-hook/window-size";
+
 export default function RootLayout({ children, session }) {
   const pathName = usePathname();
   const isAuthPage = ["/login", "/register", "/verify", "/reset-password", "/forgot-password"].some((route) =>
     pathName.includes(route)
-  ); return (
+  );
+
+  const onlyWidth = useWindowWidth();
+  const mobileWidth = onlyWidth < 768;
+
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  useEffect(() => {
+    if (mobileWidth) {
+      setIsCollapsed(true);
+    }
+  }, [mobileWidth]);
+
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
+  return (
     <html lang="en">
       <body className={cn("min-h-screen w-full bg-gray-100 text-black")}>
         <SessionProvider session={session}>
@@ -28,15 +46,16 @@ export default function RootLayout({ children, session }) {
               </div>
             </div>
           ) : (
-            <div className="flex h-screen overflow-hidden">
-              {/* Fixed SideNavbar */}
-              <div className="flex-shrink-0">
-                <SideNavbar />
+            <div className="flex flex-col h-screen overflow-hidden">
+              <div className="sticky top-0 z-50">
+                <VerticalNavbar isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} setIsCollapsed={setIsCollapsed} />
               </div>
- 
-              {/* Scrollable content area */}
-              <div className="flex-1 flex flex-col overflow-hidden">
-                <VerticalNavbar />
+
+              <div className="flex flex-1 overflow-hidden">
+                <div className="flex-shrink-0">
+                  <SideNavbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+                </div>
+
                 <div className="flex-1 overflow-y-auto p-4">
                   {children}
                 </div>

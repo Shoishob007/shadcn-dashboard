@@ -1,17 +1,14 @@
 /** @format */
 "use client";
-import { useWindowWidth } from "@react-hook/window-size";
 import {
   Bell,
   BriefcaseBusiness,
   Calendar,
   CalendarDays,
-  ChevronRight,
   KeyRound,
   LayoutDashboard,
   Search,
   Settings,
-  TableOfContents,
   UsersRound,
   Circle,
 } from "lucide-react";
@@ -19,25 +16,18 @@ import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Button } from "../components/ui/button";
 import { useToast } from "../hooks/use-toast";
 import { cn } from "../lib/utils";
 import { role } from "./RoleManagement";
 import { Nav } from "./ui/nav";
+import { useWindowWidth } from "@react-hook/window-size";
 
-export default function SideNavbar() {
+export default function SideNavbar({ isCollapsed }) {
   const { toast } = useToast();
   const { status, data: session } = useSession();
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
-
   const onlyWidth = useWindowWidth();
   const mobileWidth = onlyWidth < 768;
-
-  useEffect(() => {
-    setIsCollapsed(mobileWidth);
-  }, [mobileWidth]);
 
   const handleSignOut = async () => {
     try {
@@ -57,17 +47,6 @@ export default function SideNavbar() {
       });
     }
   };
-
-  function toggleSidebar() {
-    setIsCollapsed(!isCollapsed);
-  }
-
-  // useEffect(() => {
-  //   console.log("Session status:", status);
-  //   console.log("Session data:", session);
-  // }, [session, status]);
-
-  // By adding a loading state and ensuring session data is consistent, I can mitigate the risk of hydration issues.
 
   if (status === "loading") {
     return (
@@ -108,6 +87,7 @@ export default function SideNavbar() {
       ],
     };
   };
+
   const applicantLinks = [
     {
       title: "Dashboard",
@@ -301,7 +281,7 @@ export default function SideNavbar() {
     <>
       <div
         className={cn(
-          "h-screen sticky top-0 border-r px-4 pb-10 pt-6 bg-white my-2 mr-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out overflow-y-auto",
+          "h-[calc(100vh-5rem)] sticky border-r px-4 pb-10 pt-6 bg-white my-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out overflow-y-auto",
           isCollapsed ? "w-20" : "w-56"
         )}
       >
@@ -316,22 +296,8 @@ export default function SideNavbar() {
             />
           </Link>
         </div>
-        {!mobileWidth && (
-          <Button
-            onClick={toggleSidebar}
-            variant="none"
-            className="absolute -right-[-3px] top-16 rounded-full p-1 transition-transform duration-200"
-            style={{
-              transform: `translateX(${isCollapsed ? "0" : "0"}) rotate(${
-                isCollapsed ? "0" : "180deg"
-              })`,
-            }}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        )}
         <Nav
-          isCollapsed={mobileWidth ? true : isCollapsed}
+          isCollapsed={isCollapsed}
           links={role === "applicant" ? applicantLinks : organizationLinks}
         />
       </div>
