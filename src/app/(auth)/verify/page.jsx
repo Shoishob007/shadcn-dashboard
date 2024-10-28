@@ -22,7 +22,7 @@ export default function VerifyPage() {
 
     try {
       const response = await fetch(
-        `https://hhapi.codemonks.xyz/api/users/verify/${token}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/users/verify/${token}`,
         {
           method: "POST",
           headers: {
@@ -55,7 +55,7 @@ export default function VerifyPage() {
 
   return (
     <main className="flex justify-center items-center h-screen">
-      <div className="max-w-md w-full p-4 border-2 rounded-lg text-center bg-white">
+      <div className="max-w-md w-full p-6 border-2 rounded-lg text-center bg-white">
         <h1 className="text-2xl font-bold text-center mb-2">Verify Account</h1>
         <p className="text-sm font-semi-bold text-center mb-4">
           Click the button to verify your account
@@ -65,7 +65,7 @@ export default function VerifyPage() {
           variant="default"
           className="text-center mx-auto items-center"
         >
-          Verify Account
+          Verify Email
         </Button>
       </div>
     </main>
