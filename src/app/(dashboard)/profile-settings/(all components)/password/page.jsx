@@ -39,6 +39,7 @@ export default function PasswordSettings() {
               onChange={(e) =>
                 setFormData({ ...formData, currentPassword: e.target.value })
               }
+              placeholder="******"
             />
           </div>
 
@@ -51,6 +52,7 @@ export default function PasswordSettings() {
               onChange={(e) =>
                 setFormData({ ...formData, newPassword: e.target.value })
               }
+              placeholder="******"
             />
           </div>
 
@@ -63,6 +65,7 @@ export default function PasswordSettings() {
               onChange={(e) =>
                 setFormData({ ...formData, confirmPassword: e.target.value })
               }
+              placeholder="******"
             />
           </div>
         </div>

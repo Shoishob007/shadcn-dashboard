@@ -39,7 +39,7 @@ const ApplicantsPage = () => {
         {/* for shortlisted applicants */}
         <Card
           className="cursor-pointer hover:border-gray-950 transition-shadow duration-300 ease-in-out"
-          onClick={() => handleNavigation("/applicants/shortlisted")}
+          onClick={() => handleNavigation("/applicants/view/shortlisted")}
         >
           <CardHeader>
             <CardTitle>View Shortlisted Applicants</CardTitle>
@@ -56,7 +56,7 @@ const ApplicantsPage = () => {
       <div className="">
         <Card
           className="cursor-pointer hover:border-gray-950 transition-shadow duration-300 ease-in-out"
-          onClick={() => handleNavigation("/applicants/hired")}
+          onClick={() => handleNavigation("/applicants/view/hired")}
         >
           <CardHeader>
             <CardTitle>View Hired Applicants</CardTitle>

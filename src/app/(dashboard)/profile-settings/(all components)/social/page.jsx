@@ -30,16 +30,6 @@ export default function SocialSettings() {
 
   const socialLinks = [
     {
-      name: "github",
-      icon: Github,
-      placeholder: "https://github.com/username",
-    },
-    {
-      name: "twitter",
-      icon: Twitter,
-      placeholder: "https://twitter.com/username",
-    },
-    {
       name: "linkedin",
       icon: Linkedin,
       placeholder: "https://linkedin.com/in/username",
@@ -48,6 +38,16 @@ export default function SocialSettings() {
       name: "facebook",
       icon: Facebook,
       placeholder: "https://facebook.com/username",
+    },
+    {
+      name: "github",
+      icon: Github,
+      placeholder: "https://github.com/username",
+    },
+    {
+      name: "twitter",
+      icon: Twitter,
+      placeholder: "https://twitter.com/username",
     },
     {
       name: "instagram",
@@ -60,6 +60,15 @@ export default function SocialSettings() {
       placeholder: "https://youtube.com/@username",
     },
   ];
+
+  const iconColors = {
+    github: "text-gray-800",
+    twitter: "text-blue-400",
+    linkedin: "text-sky-600",
+    facebook: "text-blue-600",
+    instagram: "text-pink-500",
+    youtube: "text-red-600",
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4 mr-2">
@@ -77,7 +86,7 @@ export default function SocialSettings() {
           {socialLinks.map(({ name, icon: Icon, placeholder }) => (
             <div key={name} className="space-y-2">
               <Label htmlFor={name} className="flex items-center gap-2">
-                <Icon className="w-4 h-4 ml-2" />
+                <Icon className={`w-4 h-4 ml-2 ${iconColors[name]}`} />
                 {name.charAt(0).toUpperCase() + name.slice(1)}
               </Label>
               <Input

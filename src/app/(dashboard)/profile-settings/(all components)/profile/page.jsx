@@ -25,14 +25,16 @@ export default function ProfileSettings() {
     e.preventDefault();
     // Handle form submission
     console.log("Profile updated:", formData);
-    toast
+    toast;
   };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4 mr-2">
       <form onSubmit={handleSubmit} className="p-6 space-y-6">
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold tracking-tight">Edit Profile</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">
+            Edit Profile
+          </h2>
           <p className="text-sm text-muted-foreground">
             Customize your public profile information.
           </p>
@@ -107,6 +109,7 @@ export default function ProfileSettings() {
               onChange={(e) =>
                 setFormData({ ...formData, company: e.target.value })
               }
+              placeholder="XYZ"
             />
           </div>
 
@@ -118,6 +121,7 @@ export default function ProfileSettings() {
               onChange={(e) =>
                 setFormData({ ...formData, position: e.target.value })
               }
+              placeholder="Example Developer"
             />
           </div>
 
@@ -129,7 +133,7 @@ export default function ProfileSettings() {
               onChange={(e) =>
                 setFormData({ ...formData, bio: e.target.value })
               }
-              placeholder="Tell us about yourself"
+              placeholder="Tell us about your organization"
               rows={4}
             />
           </div>

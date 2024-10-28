@@ -10,10 +10,10 @@ const ProfileSetting = () => {
   const pathname = usePathname();
   const { status, data: session } = useSession();
   const [formData, setFormData] = useState({
-    name: session?.user?.name || "",
-    email: session?.user?.email || "",
+    name: session?.user?.name,
+    email: session?.user?.email,
     password: "",
-    image: session?.user?.image || "",
+    image: session?.user?.image,
   });
 
   // useEffect(() => {
@@ -35,8 +35,8 @@ const ProfileSetting = () => {
               className="text-center mx-auto"
             />
             <div className="flex flex-col">
-              <h1 className="font-semibold text-lg text-gray-600">
-                ORG Name / Settings
+              <h1 className="font-semibold text-base md:text-lg text-gray-600">
+                {formData.name} / Settings
               </h1>
               <p className="text-sm text-gray-600">
                 Update your profile information
