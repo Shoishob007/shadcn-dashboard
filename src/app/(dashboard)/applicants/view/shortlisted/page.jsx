@@ -78,7 +78,7 @@ export default function ShortListedApplicants() {
   );
 
   return (
-    <div className="w-full bg-white py-2 px-2 rounded-lg shadow-md h-full items-center">
+    <div className="w-full bg-white p-4 rounded-lg shadow-md h-full items-center">
       <div className="flex items-center justify-center py-4 ">
         <Input
           placeholder="Filter applicant..."

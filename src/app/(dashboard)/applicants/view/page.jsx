@@ -72,7 +72,7 @@ export default function ApplicantsData() {
   );
 
   return (
-    <div className=" bg-white py-2 px-2 mr-2 rounded-lg shadow-md h-full items-center">
+    <div className=" bg-white p-4 rounded-lg shadow-md h-full items-center">
       <div className="flex items-center justify-center py-4 ">
         <Input
           placeholder="Filter applicant..."

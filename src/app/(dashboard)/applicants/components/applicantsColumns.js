@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
- 
+
 export const columns = [
   {
     id: "select",
@@ -133,7 +133,7 @@ export const columns = [
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Interview Date
+        Interview
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
@@ -153,7 +153,7 @@ export const columns = [
     cell: ({ row }) => {
       const job = row.original;
       const { toast } = useToast();
- 
+
       const handleShortlist = () => {
         toast({
           title: "Success",
@@ -161,7 +161,7 @@ export const columns = [
           variant: "success",
         });
       };
- 
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

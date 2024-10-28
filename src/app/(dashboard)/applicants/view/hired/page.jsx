@@ -73,7 +73,7 @@ export default function HiredApplicants() {
   );
 
   return (
-    <div className="bg-white py-2 px-2 mr-2 rounded-lg shadow-md h-full">
+    <div className="bg-white p-4 rounded-lg shadow-md h-full">
       <div className="flex items-center justify-between py-4">
         <Input
           placeholder="Filter applicant..."
@@ -111,7 +111,7 @@ export default function HiredApplicants() {
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="text-center">
+                  <TableHead key={header.id} className="text-center p-0">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
