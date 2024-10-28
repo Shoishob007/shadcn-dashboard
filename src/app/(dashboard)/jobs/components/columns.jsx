@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import * as React from "react";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-
+ 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { jobData as data } from "../components/jobData";
-
+ 
 export const jobColumns = [
   {
     id: "select",
@@ -68,12 +68,20 @@ export const jobColumns = [
       const status = row.getValue("status");
       const backgroundColor =
         status === "open"
-          ? "bg-green-400 p-1 rounded-lg"
+          ? "bg-green-100 p-1 rounded-lg"
           : status === "closed"
-          ? "bg-red-400 p-1 rounded-lg"
+          ? "bg-red-100 p-1 rounded-lg"
+          : "";
+      const textColor =
+        status === "open"
+          ? "text-green-600 p-1 rounded-lg"
+          : status === "closed"
+          ? "text-red-600 p-1 rounded-lg"
           : "";
       return (
-        <div className={`text-center capitalize ${backgroundColor}`}>
+        <div
+          className={`text-center capitalize ${textColor} ${backgroundColor} font-semibold`}
+        >
           {row.getValue("status")}
         </div>
       );
@@ -146,17 +154,17 @@ export const jobColumns = [
     cell: ({ row }) => {
       const job = row.original;
       const [jobData, setJobData] = React.useState(data);
-
+ 
       const handleEditClick = () => {
         const selected = jobData.find((item) => item.id === job.id);
         console.log("Selected : ", selected);
         setSelectedJob({ ...selected });
         setIsDialogOpen(true);
       };
-
+ 
       const [isDialogOpen, setIsDialogOpen] = React.useState(false);
       const [selectedJob, setSelectedJob] = React.useState(null);
-
+ 
       const handleFormChange = (e) => {
         const { name, value } = e.target;
         setSelectedJob((prevJob) => ({
@@ -164,7 +172,7 @@ export const jobColumns = [
           [name]: value,
         }));
       };
-
+ 
       const handleFormSubmit = () => {
         const updatedData = data.map((job) =>
           job.id === selectedJob.id ? selectedJob : job
@@ -173,7 +181,7 @@ export const jobColumns = [
         console.log("Updated Data : ", updatedData);
         setIsDialogOpen(false);
       };
-
+ 
       return (
         <>
           <DropdownMenu>
@@ -198,7 +206,7 @@ export const jobColumns = [
               <DropdownMenuItem>Delete Job</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
+ 
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogContent>
               <DialogHeader>
