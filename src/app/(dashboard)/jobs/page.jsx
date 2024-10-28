@@ -1,14 +1,13 @@
 "use client";
 
-import React from "react";
-import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 const JobsPage = () => {
   const router = useRouter();

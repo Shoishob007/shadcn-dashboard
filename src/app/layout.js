@@ -1,6 +1,6 @@
 /** @format */
 "use client";
-
+ 
 import { role } from "@/components/RoleManagement";
 import SideNavbar from "@/components/SideNavbar";
 import { Toaster } from "@/components/ui/toaster";
@@ -9,8 +9,8 @@ import { SessionProvider } from "next-auth/react";
 import { cn } from "../lib/utils";
 import { usePathname } from "next/navigation";
 import "./globals.css";
-
-
+ 
+ 
 export default function RootLayout({ children, session }) {
   const pathName = usePathname();
   const isAuthPage = ["/login", "/register", "/verify", "/reset-password", "/forgot-password"].some((route) =>
@@ -33,7 +33,7 @@ export default function RootLayout({ children, session }) {
               <div className="flex-shrink-0">
                 <SideNavbar />
               </div>
-
+ 
               {/* Scrollable content area */}
               <div className="flex-1 flex flex-col overflow-hidden">
                 <VerticalNavbar />

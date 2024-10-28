@@ -1,30 +1,30 @@
 "use client";
-
-import Link from "next/link";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { cn } from "@/lib/utils";
+ 
 import { buttonVariants } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-
+ 
 export function Nav({ links, isCollapsed }) {
   const router = useRouter();
   const pathName = usePathname();
   const [openMenus, setOpenMenus] = useState({});
-
+ 
   const toggleSubmenu = (index) => {
     setOpenMenus((prev) => ({
       ...prev,
       [index]: !prev[index],
     }));
   };
-
+ 
   const handleItemClick = (link, e) => {
     if (link.onClick) {
       e.preventDefault();
@@ -33,7 +33,7 @@ export function Nav({ links, isCollapsed }) {
       router.push(link.href);
     }
   };
-
+ 
   return (
     <TooltipProvider>
       <div
@@ -117,7 +117,7 @@ export function Nav({ links, isCollapsed }) {
                       {link.title}
                     </div>
                   )}
-
+ 
                   {/* Submenu */}
                   {link.submenu && (
                     <div
