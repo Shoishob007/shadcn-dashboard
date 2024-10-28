@@ -26,7 +26,7 @@ const SearchComponent = ({ onSearch }) => {
         value={searchValue}
         onChange={handleInputChange}
         placeholder="Search..."
-        className="border border-gray-300 rounded-md px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-gray-900"
+        className="border border-gray-300 rounded-md px-2 py-1 w-full max-w-md min-w-[80px] sm:min-w-[200px] md:min-w-[250px] lg:min-w-[300px] focus:outline-none focus:ring-2 focus:ring-gray-900"
       />
     </div>
   );

@@ -2,7 +2,7 @@
 "use client";
 
 import { useWindowWidth } from "@react-hook/window-size";
-import { Bell, ArrowRight, User } from "lucide-react";
+import { Bell, ArrowRight, User, Search } from "lucide-react";
 import Link from "next/link";
 import { cn } from "../lib/utils";
 import SearchComponent from "./SearchComponent";
@@ -40,7 +40,7 @@ const VerticalNavbar = ({ isCollapsed, toggleSidebar }) => {
   return (
     <nav
       className={`bg-white ml-4 my-2 mr-4 py-2 px-6 rounded-lg text-gray-400 shadow-md border-t-2 text-sm flex items-center
-        ${mobileWidth ? "justify-start" : "justify-between"}`}
+        ${mobileWidth ? "justify-center" : "justify-between"}`}
     >
       <div
         className={`flex flex-col space-y-2 transition-all duration-300 ease-in-out`}
@@ -89,7 +89,21 @@ const VerticalNavbar = ({ isCollapsed, toggleSidebar }) => {
       <div
         className={`flex items-center gap-5 transition-all duration-300 ease-in-out`}
       >
-        <SearchComponent onSearch={handleSearch} />
+        {isCollapsed && !manua ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button variant="ghost">
+                <Search className="w-5 h-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <SearchComponent onSearch={handleSearch} />
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <SearchComponent onSearch={handleSearch} />
+        )}
+
         {/* Notification dropdown */}
         <section>
           <DropdownMenu>

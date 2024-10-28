@@ -22,14 +22,23 @@ export default function RootLayout({ children, session }) {
   const mobileWidth = onlyWidth < 768;
 
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isManuallyExpanded, setIsManuallyExpanded] = useState(false);
 
   useEffect(() => {
-    if (mobileWidth) {
+    if (mobileWidth && !isManuallyExpanded) {
       setIsCollapsed(true);
+    } else if (!mobileWidth) {
+      setIsCollapsed(false);
+      setIsManuallyExpanded(false);
     }
-  }, [mobileWidth]);
+  }, [mobileWidth, isManuallyExpanded]);
 
   const toggleSidebar = () => {
+    if (isCollapsed) {
+      setIsManuallyExpanded(true);
+    } else {
+      setIsManuallyExpanded(false);
+    }
     setIsCollapsed(!isCollapsed);
   };
 
