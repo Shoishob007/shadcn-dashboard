@@ -13,7 +13,7 @@ import {
   Settings,
   TableOfContents,
   UsersRound,
-  Circle
+  Circle,
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
@@ -25,20 +25,20 @@ import { useToast } from "../hooks/use-toast";
 import { cn } from "../lib/utils";
 import { role } from "./RoleManagement";
 import { Nav } from "./ui/nav";
- 
+
 export default function SideNavbar() {
   const { toast } = useToast();
   const { status, data: session } = useSession();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
- 
+
   const onlyWidth = useWindowWidth();
   const mobileWidth = onlyWidth < 768;
- 
+
   useEffect(() => {
     setIsCollapsed(mobileWidth);
   }, [mobileWidth]);
- 
+
   const handleSignOut = async () => {
     try {
       await signOut({ redirect: false });
@@ -57,18 +57,18 @@ export default function SideNavbar() {
       });
     }
   };
- 
+
   function toggleSidebar() {
     setIsCollapsed(!isCollapsed);
   }
- 
+
   // useEffect(() => {
   //   console.log("Session status:", status);
   //   console.log("Session data:", session);
   // }, [session, status]);
- 
+
   // By adding a loading state and ensuring session data is consistent, I can mitigate the risk of hydration issues.
- 
+
   if (status === "loading") {
     return (
       <div className="flex flex-col-reverse items-center justify-center h-40">
@@ -76,7 +76,7 @@ export default function SideNavbar() {
       </div>
     );
   }
- 
+
   const getAuthLinks = () => {
     if (status === "authenticated") {
       return {
@@ -96,13 +96,13 @@ export default function SideNavbar() {
         {
           title: "Login",
           href: "/login",
-          icon: KeyRound,
+          icon: Circle,
           isActive: pathname === "/login",
         },
         {
           title: "Register",
           href: "/register",
-          icon: KeyRound,
+          icon: Circle,
           isActive: pathname === "/register",
         },
       ],
@@ -118,17 +118,17 @@ export default function SideNavbar() {
         {
           title: "Applicants overview",
           href: "/overview",
-          icon: TableOfContents,
+          icon: Circle,
         },
         {
           title: "Upcoming interviews",
           href: "/upcoming-interviews",
-          icon: BriefcaseBusiness,
+          icon: Circle,
         },
         {
           title: "Recent job postings",
           href: "/job-postings",
-          icon: BriefcaseBusiness,
+          icon: Circle,
         },
       ],
     },
@@ -141,7 +141,7 @@ export default function SideNavbar() {
         {
           title: "Profile",
           href: "/profile/view",
-          icon: UsersRound,
+          icon: Circle,
         },
       ],
     },
@@ -154,7 +154,7 @@ export default function SideNavbar() {
         {
           title: "Search for Jobs",
           href: "/search",
-          icon: Search,
+          icon: Circle,
         },
       ],
     },
@@ -167,7 +167,7 @@ export default function SideNavbar() {
         {
           title: "View Applications",
           href: "/applications/view",
-          icon: Search,
+          icon: Circle,
         },
       ],
     },
@@ -180,7 +180,7 @@ export default function SideNavbar() {
         {
           title: "View up interviews",
           href: "/interview-schedule/upcoming",
-          icon: Calendar,
+          icon: Circle,
         },
       ],
     },
@@ -193,18 +193,18 @@ export default function SideNavbar() {
         {
           title: "View Notifications",
           href: "/notification/view",
-          icon: Bell,
+          icon: Circle,
         },
         {
           title: "Notification settings",
           href: "/notification/settings",
-          icon: Settings,
+          icon: Circle,
         },
       ],
     },
     getAuthLinks(),
   ];
- 
+
   const organizationLinks = [
     {
       title: "Dashboard",
@@ -221,17 +221,17 @@ export default function SideNavbar() {
         {
           title: "Applicants Dashboard",
           href: "/applicants",
-          icon: UsersRound,
+          icon: Circle,
         },
         {
           title: "View All Applicants",
           href: "/applicants/view",
-          icon: UsersRound,
+          icon: Circle,
         },
         {
           title: "Shortlisted Applicants",
           href: "/applicants/view/shortlisted",
-          icon: UsersRound,
+          icon: Circle,
         },
       ],
     },
@@ -244,17 +244,17 @@ export default function SideNavbar() {
         {
           title: "Jobs Dashboard",
           href: "/jobs",
-          icon: BriefcaseBusiness,
+          icon: Circle,
         },
         {
           title: "View All Jobs",
           href: "/jobs/view",
-          icon: BriefcaseBusiness,
+          icon: Circle,
         },
         {
           title: "Create Job",
           href: "/jobs/create",
-          icon: BriefcaseBusiness,
+          icon: Circle,
         },
       ],
     },
@@ -267,17 +267,17 @@ export default function SideNavbar() {
         {
           title: "Interview Dates",
           href: "/interviews",
-          icon: CalendarDays,
+          icon: Circle,
         },
         {
           title: "Upcoming Interviews",
           href: "/interviews/upcoming",
-          icon: CalendarDays,
+          icon: Circle,
         },
         {
           title: "Schedule Interview",
           href: "/interviews/schedule",
-          icon: CalendarDays,
+          icon: Circle,
         },
       ],
     },
@@ -290,13 +290,13 @@ export default function SideNavbar() {
         {
           title: "Profile Settings",
           href: "/profile-settings",
-          icon: Settings,
+          icon: Circle,
         },
       ],
     },
     getAuthLinks(),
   ];
- 
+
   return (
     <>
       <div
@@ -306,7 +306,7 @@ export default function SideNavbar() {
         )}
       >
         <div className="items-center text-center mx-auto">
-          <Link href={'/'}>
+          <Link href={"/"}>
             <Image
               src="/assests/hh-logo.png"
               alt="Logo"
@@ -338,4 +338,3 @@ export default function SideNavbar() {
     </>
   );
 }
- 
