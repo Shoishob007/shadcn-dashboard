@@ -39,7 +39,7 @@ const VerticalNavbar = ({ isCollapsed, toggleSidebar }) => {
 
   return (
     <nav
-      className={`bg-white ml-2 my-2 mr-4 py-2 px-6 rounded-lg text-gray-400 shadow-md border-t-2 text-sm flex items-center
+      className={`bg-white ml-4 my-2 mr-4 py-2 px-6 rounded-lg text-gray-400 shadow-md border-t-2 text-sm flex items-center
         ${mobileWidth ? "justify-start" : "justify-between"}`}
     >
       <div

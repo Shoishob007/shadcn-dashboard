@@ -281,7 +281,7 @@ export default function SideNavbar({ isCollapsed }) {
     <>
       <div
         className={cn(
-          "h-[calc(100vh-5rem)] sticky border-r px-4 pb-10 pt-6 bg-white my-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out overflow-y-auto",
+          "h-[calc(100vh-1rem)] sticky border-r px-4 pb-10 pt-6 bg-white my-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out overflow-y-auto",
           isCollapsed ? "w-20" : "w-56"
         )}
       >

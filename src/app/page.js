@@ -16,7 +16,7 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
-import InterviewSchedule from "./(dashboard)/interviews/schedule/page";
+import InterviewSchedule from "./(main-dashboard)/(dashboard)/interviews/schedule/page";
 
 const cardData = [
   {
@@ -139,27 +139,27 @@ export default function Home() {
                 ))}
               </section>
               <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
-              <CardContent className="bg-white hover:border-gray-950">
-                <p className="p-4 font-semibold">Total Applicants</p>
-                <BarChart />
-              </CardContent>
-              <CardContent className="flex justify-between gap-4 bg-white hover:border-gray-950">
-                <section>
-                  <p>Top Employees</p>
-                  <p className="text-sm text-gray-400">
-                    Top contributors from last three months
-                  </p>
-                </section>
-                {employeeData.map((d, i) => (
-                  <ApplicantsCard
-                    key={i}
-                    email={d.email}
-                    name={d.name}
-                    position={d.position}
-                  />
-                ))}
-              </CardContent>
-            </section>
+                <CardContent className="bg-white hover:border-gray-950">
+                  <p className="p-4 font-semibold">Total Applicants</p>
+                  <BarChart />
+                </CardContent>
+                <CardContent className="flex justify-between gap-4 bg-white hover:border-gray-950">
+                  <section>
+                    <p>Top Employees</p>
+                    <p className="text-sm text-gray-400">
+                      Top contributors from last three months
+                    </p>
+                  </section>
+                  {employeeData.map((d, i) => (
+                    <ApplicantsCard
+                      key={i}
+                      email={d.email}
+                      name={d.name}
+                      position={d.position}
+                    />
+                  ))}
+                </CardContent>
+              </section>
             </div>
           </div>
         ) : (

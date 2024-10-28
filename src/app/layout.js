@@ -46,16 +46,16 @@ export default function RootLayout({ children, session }) {
               </div>
             </div>
           ) : (
-            <div className="flex flex-col h-screen overflow-hidden">
-              <div className="sticky top-0 z-50">
-                <VerticalNavbar isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} setIsCollapsed={setIsCollapsed} />
+            <div className="flex h-screen overflow-hidden">
+
+              <div className="flex-shrink-0">
+                <SideNavbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
               </div>
+              <div className="flex flex-col flex-1 overflow-hidden">
 
-              <div className="flex flex-1 overflow-hidden">
-                <div className="flex-shrink-0">
-                  <SideNavbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+                <div className="sticky top-0">
+                  <VerticalNavbar isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} setIsCollapsed={setIsCollapsed} />
                 </div>
-
                 <div className="flex-1 overflow-y-auto p-4">
                   {children}
                 </div>
