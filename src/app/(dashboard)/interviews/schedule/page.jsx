@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
- 
+
 import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,18 +15,18 @@ import {
 } from "date-fns";
 import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
- 
+
 const InterviewSchedule = () => {
   const { data: session, status } = useSession();
   const [allEvents, setAllEvents] = useState([]);
   const [loading, setLoading] = useState(true);
- 
+
   useEffect(() => {
     if (status === "authenticated") {
       fetchAllEvents();
     }
   }, [status]);
- 
+
   const fetchAllEvents = async () => {
     setLoading(true);
     try {
@@ -34,7 +34,7 @@ const InterviewSchedule = () => {
       const today = new Date();
       const thirtyDaysFromNow = new Date();
       thirtyDaysFromNow.setDate(today.getDate() + 30);
- 
+
       const events = await loadGoogleScheduledCalendarEvents(
         today,
         thirtyDaysFromNow
@@ -51,24 +51,32 @@ const InterviewSchedule = () => {
     }
     setLoading(false);
   };
- 
+
   const getEventStatus = (eventDate) => {
     if (isPast(eventDate) && !isToday(eventDate)) {
-      return { label: "Past", className: "bg-gray-100 text-gray-600" };
+      return {
+        label: "Past",
+        className: "bg-red-100 text-red-600 hover:bg-red-50",
+      };
     }
     if (isToday(eventDate)) {
-      return { label: "Today", className: "bg-green-100 text-green-600" };
+      return {
+        label: "Today",
+        className: "bg-green-100 text-green-600 hover:bg-green-50",
+      };
     }
     if (isTomorrow(eventDate)) {
-      return { label: "Tomorrow", className: "bg-blue-100 text-blue-600" };
+      return {
+        label: "Tomorrow",
+        className: "bg-blue-100 text-blue-600 hover:bg-blue-50",
+      };
     }
     const daysAway = differenceInDays(eventDate, new Date());
     return {
       label: `${daysAway} days away`,
-      className: "bg-primary",
     };
   };
- 
+
   const groupEventsByDate = (events) => {
     const grouped = events.reduce((acc, event) => {
       const date = format(
@@ -81,13 +89,13 @@ const InterviewSchedule = () => {
       acc[date].push(event);
       return acc;
     }, {});
- 
+
     return Object.entries(grouped).sort(
       ([dateA], [dateB]) =>
         new Date(dateA).getTime() - new Date(dateB).getTime()
     );
   };
- 
+
   if (status === "loading") {
     return (
       <div className="flex justify-center items-center h-full">
@@ -95,7 +103,7 @@ const InterviewSchedule = () => {
       </div>
     );
   }
- 
+
   if (status === "unauthenticated") {
     return (
       <div className="flex justify-center items-center h-full">
@@ -103,7 +111,7 @@ const InterviewSchedule = () => {
       </div>
     );
   }
- 
+
   return (
     <div className="sm:p-4 h-full">
       <Card className="p-4 sm:py-8 sm:px-6 border-none shadow-md">
@@ -113,7 +121,7 @@ const InterviewSchedule = () => {
             Scheduled Interviews
           </h2>
         </div>
- 
+
         {loading ? (
           <div className="flex items-center justify-center h-full">
             <div className="animate-spin rounded-full h-8 w-8"></div>
@@ -134,7 +142,7 @@ const InterviewSchedule = () => {
                       event.start.dateTime || event.start.date
                     );
                     const status = getEventStatus(eventDate);
- 
+
                     return (
                       <Card
                         key={event.id}
@@ -151,7 +159,12 @@ const InterviewSchedule = () => {
                               <h4 className="text-sm sm:text-base">
                                 {event.summary}
                               </h4>
-                              <Badge className={status.className}>
+                              <Badge
+                                className={cn(
+                                  status.className,
+                                  "hover:transition-colors duration-200"
+                                )}
+                              >
                                 {status.label}
                               </Badge>
                             </div>
@@ -185,5 +198,5 @@ const InterviewSchedule = () => {
     </div>
   );
 };
- 
+
 export default InterviewSchedule;

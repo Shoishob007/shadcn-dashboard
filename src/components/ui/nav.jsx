@@ -1,5 +1,5 @@
 "use client";
- 
+
 import { buttonVariants } from "@/components/ui/button";
 import {
   Tooltip,
@@ -12,19 +12,19 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
- 
+
 export function Nav({ links, isCollapsed }) {
   const router = useRouter();
   const pathName = usePathname();
   const [openMenus, setOpenMenus] = useState({});
- 
+
   const toggleSubmenu = (index) => {
     setOpenMenus((prev) => ({
       ...prev,
       [index]: !prev[index],
     }));
   };
- 
+
   const handleItemClick = (link, e) => {
     if (link.onClick) {
       e.preventDefault();
@@ -33,7 +33,7 @@ export function Nav({ links, isCollapsed }) {
       router.push(link.href);
     }
   };
- 
+
   return (
     <TooltipProvider>
       <div
@@ -117,7 +117,7 @@ export function Nav({ links, isCollapsed }) {
                       {link.title}
                     </div>
                   )}
- 
+
                   {/* Submenu */}
                   {link.submenu && (
                     <div
@@ -139,7 +139,10 @@ export function Nav({ links, isCollapsed }) {
                             "justify-start flex items-center w-full "
                           )}
                         >
-                          <subLink.icon className="mr-2 h-4 w-4" />
+                          <subLink.icon
+                            className="mr-1"
+                            style={{ width: "12px", height: "12px" }}
+                          />
                           {subLink.title}
                         </Link>
                       ))}
