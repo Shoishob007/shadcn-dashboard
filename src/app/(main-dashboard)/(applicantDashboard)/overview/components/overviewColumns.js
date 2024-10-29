@@ -1,29 +1,28 @@
 "use client";
-import { ArrowUpDown, Briefcase, ChevronDown, Loader, MoreHorizontal, Tag } from "lucide-react";
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-  } from "@/components/ui/dialog";
-  import { Checkbox } from "@/components/ui/checkbox";
-  import companyLogo from '../../../../../public/assests/dummy-logo.png';
-  import { Button } from "@/components/ui/button";
-  import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu";
-import { data } from "../page";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import { ArrowUpDown, Briefcase, Loader, MoreHorizontal, Tag } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
+import companyLogo from '../../../../../../public/assests/dummy-logo.png';
+import { data } from "../page";
 
 export const columns = [
     {
