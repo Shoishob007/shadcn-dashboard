@@ -1,14 +1,16 @@
+"use client";
+import { useWindowWidth } from "@react-hook/window-size";
 import {
   Bell,
   BriefcaseBusiness,
   Calendar,
   CalendarDays,
+  Circle,
   KeyRound,
   LayoutDashboard,
   Search,
   Settings,
   UsersRound,
-  Circle,
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
@@ -18,7 +20,6 @@ import { useToast } from "../hooks/use-toast";
 import { cn } from "../lib/utils";
 import { role } from "./RoleManagement";
 import { Nav } from "./ui/nav";
-import { useWindowWidth } from "@react-hook/window-size";
 
 export default function SideNavbar({ isCollapsed }) {
   const { toast } = useToast();
@@ -157,7 +158,7 @@ export default function SideNavbar({ isCollapsed }) {
       submenu: [
         {
           title: "View up interviews",
-          href: "/interview-schedule/upcoming",
+          href: "/interview-schedule",
           icon: Circle,
         },
       ],
