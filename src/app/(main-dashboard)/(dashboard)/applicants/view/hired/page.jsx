@@ -80,7 +80,7 @@ export default function HiredApplicants() {
   return (
     <>
       {" "}
-      <PageTitle title={pageTitle} className={"pb-4"} />
+      <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
       <div className="bg-white p-4 rounded-lg shadow-md h-full">
         <div className="flex items-center justify-between py-4">
           <Input

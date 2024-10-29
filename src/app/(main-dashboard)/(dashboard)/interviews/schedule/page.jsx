@@ -120,7 +120,7 @@ const InterviewSchedule = () => {
   return (
     <>
       {" "}
-      <PageTitle title={pageTitle} />
+      <PageTitle title={pageTitle} className={"ml-2"} />
       <div className="h-full">
         <Card className="p-4 sm:py-8 sm:px-6 border-none shadow-md">
           <div className="flex items-center justify-center mb-4 ">

@@ -75,7 +75,9 @@ const ForgotPasswordForm = () => {
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
           <div>
-            <Label htmlFor="password">Put your accessible email</Label>
+            <Label htmlFor="password" className="font-medium">
+              Put your accessible email
+            </Label>
             <Input
               id="email"
               type="email"

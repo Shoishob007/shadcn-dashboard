@@ -22,7 +22,7 @@ const JobsPage = () => {
 
   return (
     <div className="flex flex-col space-y-4 w-full">
-      <PageTitle title={pageTitle} />
+      <PageTitle title={pageTitle} className={"ml-2"} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-2/3 md:w-full text-center">
         {/* For jobs data */}

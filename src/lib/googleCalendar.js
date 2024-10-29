@@ -122,3 +122,67 @@ export async function createCalendarEvent(event) {
         throw error;
     }
 }
+
+export async function updateCalendarEvent(eventId, updatedEvent) {
+    try {
+        const session = await getSession();
+        if (!session?.accessToken) {
+            throw new Error('Authentication required');
+        }
+
+        const response = await fetch(
+            `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events/${eventId}`,
+            {
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${session.accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...updatedEvent,
+                    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                }),
+            }
+        );
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error?.message || 'Failed to update event');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error updating calendar event:', error);
+        throw error;
+    }
+}
+
+export async function deleteCalendarEvent(eventId) {
+    try {
+        const session = await getSession();
+        if (!session?.accessToken) {
+            throw new Error('Authentication required');
+        }
+
+        const response = await fetch(
+            `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events/${eventId}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${session.accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error?.message || 'Failed to delete event');
+        }
+
+        return { message: 'Event deleted successfully' };
+    } catch (error) {
+        console.error('Error deleting calendar event:', error);
+        throw error;
+    }
+}

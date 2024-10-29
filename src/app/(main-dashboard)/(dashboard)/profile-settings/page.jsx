@@ -27,7 +27,7 @@ const ProfileSetting = () => {
 
   return (
     <>
-      <PageTitle title={pageTitle} className={"pb-4"} />
+      <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
 
       <div className="flex flex-col gap-10 justify-center h-full">
         <div className="bg-white p-6 rounded-lg shadow-md">
