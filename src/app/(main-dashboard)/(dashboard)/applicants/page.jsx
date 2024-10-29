@@ -1,16 +1,15 @@
 "use client";
 
-import React from "react";
-import { usePathname, useRouter } from "next/navigation";
+import PageTitle from "@/components/PageTitle";
+import FormatTitle from "@/components/TitleFormatter";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
-import PageTitle from "@/components/PageTitle";
-import FormatTitle from "@/components/TitleFormatter";
+import { usePathname, useRouter } from "next/navigation";
 
 const ApplicantsPage = () => {
   const router = useRouter();

@@ -1,17 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Calendar } from "@/components/ui/calendar";
+import PageTitle from "@/components/PageTitle";
+import FormatTitle from "@/components/TitleFormatter";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Calendar } from "@/components/ui/calendar";
 import { Card } from "@/components/ui/card";
 import { CalendarDays, Clock, Plus } from "lucide-react";
 import {
   loadGoogleUpcomingCalendarEvents,
   createCalendarEvent,
-  updateCalendarEvent,
-  deleteCalendarEvent,
 } from "@/lib/googleCalendar";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
@@ -22,10 +20,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import PageTitle from "@/components/PageTitle";
 import { usePathname } from "next/navigation";
-import FormatTitle from "@/components/TitleFormatter";
 import EventForm from "./components/EventForm";
 
 const InterviewUpcoming = () => {

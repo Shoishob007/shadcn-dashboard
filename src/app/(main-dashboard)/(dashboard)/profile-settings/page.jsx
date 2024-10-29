@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import SettingsNav from "./components/SettingsNav";
-import SettingsContainer from "./components/SettingsContainer";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
 import PageTitle from "@/components/PageTitle";
 import FormatTitle from "@/components/TitleFormatter";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import SettingsContainer from "./components/SettingsContainer";
+import SettingsNav from "./components/SettingsNav";
 
 const ProfileSetting = () => {
   const pathname = usePathname();
