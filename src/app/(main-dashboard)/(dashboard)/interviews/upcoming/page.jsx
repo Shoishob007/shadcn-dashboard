@@ -1,18 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Calendar } from "@/components/ui/calendar";
+import PageTitle from "@/components/PageTitle";
+import FormatTitle from "@/components/TitleFormatter";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Calendar } from "@/components/ui/calendar";
 import { Card } from "@/components/ui/card";
-import { CalendarDays, Clock, Plus } from "lucide-react";
-import {
-  loadGoogleUpcomingCalendarEvents,
-  createCalendarEvent,
-} from "@/lib/googleCalendar";
-import { format } from "date-fns";
-import { useSession } from "next-auth/react";
 import {
   Dialog,
   DialogContent,
@@ -20,10 +13,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import PageTitle from "@/components/PageTitle";
+import {
+  createCalendarEvent,
+  loadGoogleUpcomingCalendarEvents,
+} from "@/lib/googleCalendar";
+import { format } from "date-fns";
+import { CalendarDays, Clock, Plus } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import FormatTitle from "@/components/TitleFormatter";
+import { useEffect, useState } from "react";
 
 const InterviewUpcoming = () => {
   const { data: session, status } = useSession();
@@ -97,7 +97,7 @@ const InterviewUpcoming = () => {
 
   return (
     <>
-      <PageTitle title={pageTitle} />
+      <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
       <div className="h-full grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card className="p-3 sm:p-6 space-y-4 flex flex-col sm:gap-6">
           <div className="flex items-center justify-center sm:gap-4">
@@ -181,24 +181,37 @@ const InterviewUpcoming = () => {
           ) : events.length > 0 ? (
             <div className="space-y-3 sm:space-y-4">
               {events.map((event, index) => (
-                <Card key={index} className="sm:p-4 p-3 border shadow-none">
-                  <h3 className="sm:font-semibold text-sm sm:text-base">
-                    {event.summary}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {format(
-                      new Date(event.start.dateTime || event.start.date),
-                      "h:mm a"
-                    )}{" "}
-                    -{" "}
-                    {format(
-                      new Date(event.end.dateTime || event.end.date),
-                      "h:mm a"
+                <Card
+                  key={index}
+                  className="sm:p-4 p-3 border shadow-none flex justify-between"
+                >
+                  <div>
+                    <h3 className="sm:font-semibold text-sm sm:text-base">
+                      {event.summary}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {format(
+                        new Date(event.start.dateTime || event.start.date),
+                        "h:mm a"
+                      )}{" "}
+                      -{" "}
+                      {format(
+                        new Date(event.end.dateTime || event.end.date),
+                        "h:mm a"
+                      )}
+                    </p>
+                    {event.description && (
+                      <p className="mt-2 text-sm">{event.description}</p>
                     )}
-                  </p>
-                  {event.description && (
-                    <p className="mt-2 text-sm">{event.description}</p>
-                  )}
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <Button size="sm" variant="success">
+                      Edit
+                    </Button>
+                    <Button size="sm" variant="destructive">
+                      Delete
+                    </Button>
+                  </div>
                 </Card>
               ))}
             </div>

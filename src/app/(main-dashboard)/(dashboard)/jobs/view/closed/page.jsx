@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useCallback } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import {
   flexRender,
@@ -29,11 +29,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import PageTitle from "@/components/PageTitle.jsx";
+import FormatTitle from "@/components/TitleFormatter.js";
+import { usePathname } from "next/navigation.js";
 import { jobColumns as columns } from "../../components/columns.jsx";
 import { jobData } from "../../components/jobData.js";
-import PageTitle from "@/components/PageTitle.jsx";
-import { usePathname } from "next/navigation.js";
-import FormatTitle from "@/components/TitleFormatter.js";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -83,7 +83,7 @@ export default function JobsData() {
 
   return (
     <>
-      <PageTitle title={pageTitle} className={"pb-4"} />
+      <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
 
       <div className="w-full bg-white py-2 px-6 rounded-lg shadow-md h-full items-center">
         <div className="flex items-center justify-center py-4 ">

@@ -83,7 +83,7 @@ export default function JobsData() {
 
   return (
     <>
-      <PageTitle title={pageTitle} className={"pb-4"} />
+      <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
 
       <div className="w-full bg-white py-2 px-6 rounded-lg shadow-md h-full items-center">
         <div className="flex items-center justify-center py-4 ">

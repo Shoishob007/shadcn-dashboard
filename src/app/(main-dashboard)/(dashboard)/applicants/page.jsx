@@ -1,16 +1,15 @@
 "use client";
 
-import React from "react";
-import { usePathname, useRouter } from "next/navigation";
+import PageTitle from "@/components/PageTitle";
+import FormatTitle from "@/components/TitleFormatter";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
-import PageTitle from "@/components/PageTitle";
-import FormatTitle from "@/components/TitleFormatter";
+import { usePathname, useRouter } from "next/navigation";
 
 const ApplicantsPage = () => {
   const router = useRouter();
@@ -25,7 +24,7 @@ const ApplicantsPage = () => {
   return (
     <>
       {" "}
-      <PageTitle title={pageTitle} className={"pb-4"} />
+      <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
       <div className="flex flex-col space-y-4 mr-2 items-center  text-center justify-center">
         <div className="w-2/3 md:w-full grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* For applicants data */}

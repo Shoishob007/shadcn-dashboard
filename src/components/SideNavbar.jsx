@@ -133,7 +133,7 @@ export default function SideNavbar({ isCollapsed }) {
       submenu: [
         {
           title: "Search for Jobs",
-          href: "/search",
+          href: "/job-search",
           icon: Circle,
         },
       ],
@@ -153,7 +153,7 @@ export default function SideNavbar({ isCollapsed }) {
     },
     {
       title: "Interview Schedule",
-      href: "/interview-schedule",
+      href: "#",
       icon: Calendar,
       variant: "ghost",
       submenu: [

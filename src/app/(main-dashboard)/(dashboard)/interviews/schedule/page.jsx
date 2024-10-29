@@ -1,23 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Card } from "@/components/ui/card";
+import PageTitle from "@/components/PageTitle";
+import FormatTitle from "@/components/TitleFormatter";
 import { Badge } from "@/components/ui/badge";
-import { CalendarClock, Calendar as CalendarIcon } from "lucide-react";
+import { Card } from "@/components/ui/card";
 import { loadGoogleScheduledCalendarEvents } from "@/lib/googleCalendar";
+import { cn } from "@/lib/utils";
 import {
+  differenceInDays,
   format,
+  isPast,
   isToday,
   isTomorrow,
-  isPast,
-  differenceInDays,
 } from "date-fns";
+import { CalendarClock, Calendar as CalendarIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import FormatTitle from "@/components/TitleFormatter";
-import PageTitle from "@/components/PageTitle";
+import { useEffect, useState } from "react";
 
 const InterviewSchedule = () => {
   const { data: session, status } = useSession();
@@ -120,7 +120,7 @@ const InterviewSchedule = () => {
   return (
     <>
       {" "}
-      <PageTitle title={pageTitle} />
+      <PageTitle title={pageTitle} className={"ml-2"} />
       <div className="h-full">
         <Card className="p-4 sm:py-8 sm:px-6 border-none shadow-md">
           <div className="flex items-center justify-center mb-4 ">
