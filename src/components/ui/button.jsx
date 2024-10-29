@@ -20,8 +20,8 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         slider: "hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        success:
-          "bg-emerald-500 text-primary-foreground shadow hover:bg-emerald-500/90",
+        editsuccess: "bg-green-100 text-green-600 shadow hover:bg-green-200/90",
+        deletesuccess: "bg-red-100 text-red-600 shadow hover:bg-red-200/90",
       },
       size: {
         default: "h-9 px-4 py-2",

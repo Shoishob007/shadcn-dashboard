@@ -6,6 +6,13 @@ import FormatTitle from "@/components/TitleFormatter";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Card } from "@/components/ui/card";
+import { CalendarDays, Clock, Plus } from "lucide-react";
+import {
+  loadGoogleUpcomingCalendarEvents,
+  createCalendarEvent,
+} from "@/lib/googleCalendar";
+import { format } from "date-fns";
+import { useSession } from "next-auth/react";
 import {
   Dialog,
   DialogContent,
@@ -13,17 +20,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  createCalendarEvent,
-  loadGoogleUpcomingCalendarEvents,
-} from "@/lib/googleCalendar";
-import { format } from "date-fns";
-import { CalendarDays, Clock, Plus } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import EventForm from "./components/EventForm";
 
 const InterviewUpcoming = () => {
   const { data: session, status } = useSession();
@@ -35,6 +33,8 @@ const InterviewUpcoming = () => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState(null);
   const pathname = usePathname();
   const pageTitle = FormatTitle(pathname);
 
@@ -72,14 +72,54 @@ const InterviewUpcoming = () => {
         end: { dateTime: endDateTime.toISOString() },
       });
 
-      setNewEventTitle("");
-      setNewEventDescription("");
-      setStartTime("");
-      setEndTime("");
-      setIsDialogOpen(false);
+      resetForm();
       fetchEvents();
     } catch (error) {
       console.error("Error creating event:", error);
+    }
+  };
+
+  const resetForm = () => {
+    setNewEventTitle("");
+    setNewEventDescription("");
+    setStartTime("");
+    setEndTime("");
+    setIsDialogOpen(false);
+    setIsEditDialogOpen(false);
+    setSelectedEventId(null);
+  };
+
+  const handleEditEvent = async () => {
+    try {
+      const startDateTime = new Date(date);
+      const [startHours, startMinutes] = startTime.split(":");
+      startDateTime.setHours(parseInt(startHours), parseInt(startMinutes));
+
+      const endDateTime = new Date(date);
+      const [endHours, endMinutes] = endTime.split(":");
+      endDateTime.setHours(parseInt(endHours), parseInt(endMinutes));
+
+      await updateCalendarEvent(selectedEventId, {
+        summary: newEventTitle,
+        description: newEventDescription,
+        start: { dateTime: startDateTime.toISOString() },
+        end: { dateTime: endDateTime.toISOString() },
+      });
+
+      resetForm();
+      fetchEvents();
+      setIsEditDialogOpen(false);
+    } catch (error) {
+      console.error("Error updating event:", error);
+    }
+  };
+
+  const handleDeleteEvent = async (eventId) => {
+    try {
+      await deleteCalendarEvent(eventId);
+      fetchEvents();
+    } catch (error) {
+      console.error("Error deleting event:", error);
     }
   };
 
@@ -116,45 +156,17 @@ const InterviewUpcoming = () => {
                 <DialogHeader>
                   <DialogTitle>Schedule New Interview</DialogTitle>
                 </DialogHeader>
-                <div className="space-y-2 sm:space-y-4 py-2 sm:py-4">
-                  <div className="space-y-2">
-                    <Label>Title</Label>
-                    <Input
-                      value={newEventTitle}
-                      onChange={(e) => setNewEventTitle(e.target.value)}
-                      placeholder="Interview with Candidate"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Description</Label>
-                    <Input
-                      value={newEventDescription}
-                      onChange={(e) => setNewEventDescription(e.target.value)}
-                      placeholder="Interview details..."
-                    />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label>Start Time</Label>
-                      <Input
-                        type="time"
-                        value={startTime}
-                        onChange={(e) => setStartTime(e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>End Time</Label>
-                      <Input
-                        type="time"
-                        value={endTime}
-                        onChange={(e) => setEndTime(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <Button onClick={handleCreateEvent} className="w-full">
-                    Create Interview
-                  </Button>
-                </div>
+                <EventForm
+                  title={newEventTitle}
+                  setTitle={setNewEventTitle}
+                  description={newEventDescription}
+                  setDescription={setNewEventDescription}
+                  startTime={startTime}
+                  setStartTime={setStartTime}
+                  endTime={endTime}
+                  setEndTime={setEndTime}
+                  onSubmit={handleCreateEvent}
+                />
               </DialogContent>
             </Dialog>
           </div>
@@ -205,10 +217,29 @@ const InterviewUpcoming = () => {
                     )}
                   </div>
                   <div className="flex flex-col gap-1">
-                    <Button size="sm" variant="success">
+                    <Button
+                      size="sm"
+                      variant="editsuccess"
+                      onClick={() => {
+                        setSelectedEventId(event.id);
+                        setNewEventTitle(event.summary);
+                        setNewEventDescription(event.description);
+                        setStartTime(
+                          format(new Date(event.start.dateTime), "HH:mm")
+                        );
+                        setEndTime(
+                          format(new Date(event.end.dateTime), "HH:mm")
+                        );
+                        setIsEditDialogOpen(true);
+                      }}
+                    >
                       Edit
                     </Button>
-                    <Button size="sm" variant="destructive">
+                    <Button
+                      size="sm"
+                      variant="deletesuccess"
+                      onClick={() => handleDeleteEvent(event.id)}
+                    >
                       Delete
                     </Button>
                   </div>
@@ -221,6 +252,26 @@ const InterviewUpcoming = () => {
             </div>
           )}
         </Card>
+
+        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Edit Event</DialogTitle>
+            </DialogHeader>
+            <EventForm
+              title={newEventTitle}
+              setTitle={setNewEventTitle}
+              description={newEventDescription}
+              setDescription={setNewEventDescription}
+              startTime={startTime}
+              setStartTime={setStartTime}
+              endTime={endTime}
+              setEndTime={setEndTime}
+              onSubmit={handleEditEvent}
+              isEditing={true}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
     </>
   );
