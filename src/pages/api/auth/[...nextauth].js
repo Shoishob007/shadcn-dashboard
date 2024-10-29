@@ -135,7 +135,7 @@ export const authOptions = {
             // console.log("Session Callback - Token:", token);
 
             if (token) {
-                // console.log("token:", token);
+                // console.log("session:", session);
                 session.user.id = token.id || null;
                 session.user.name = token.name || null;
                 session.user.email = token.email || null;

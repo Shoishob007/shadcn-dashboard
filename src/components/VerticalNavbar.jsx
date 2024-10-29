@@ -16,11 +16,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 const VerticalNavbar = ({ isCollapsed, toggleSidebar }) => {
   const { status, data: session } = useSession();
+  console.log(session);
 
   const handleSearch = (query) => {
     console.log("Searching for:", query);
@@ -105,7 +105,27 @@ const VerticalNavbar = ({ isCollapsed, toggleSidebar }) => {
             </DropdownMenuContent>
           </DropdownMenu>
         </section>
-        <User className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
+
+        <section>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <User className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="mr-6">
+              <DropdownMenuLabel>User Profile</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link href="/profile-settings">View Profile Settings</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="/profile-settings/password">Change password</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="#">Try Enterprize</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </section>
       </div>
 
       {/* {mobileWidth && (

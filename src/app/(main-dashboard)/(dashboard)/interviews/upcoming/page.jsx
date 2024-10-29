@@ -97,7 +97,7 @@ const InterviewUpcoming = () => {
 
   return (
     <>
-      <PageTitle title={pageTitle} />
+      <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
       <div className="h-full grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card className="p-3 sm:p-6 space-y-4 flex flex-col sm:gap-6">
           <div className="flex items-center justify-center sm:gap-4">
@@ -181,24 +181,37 @@ const InterviewUpcoming = () => {
           ) : events.length > 0 ? (
             <div className="space-y-3 sm:space-y-4">
               {events.map((event, index) => (
-                <Card key={index} className="sm:p-4 p-3 border shadow-none">
-                  <h3 className="sm:font-semibold text-sm sm:text-base">
-                    {event.summary}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {format(
-                      new Date(event.start.dateTime || event.start.date),
-                      "h:mm a"
-                    )}{" "}
-                    -{" "}
-                    {format(
-                      new Date(event.end.dateTime || event.end.date),
-                      "h:mm a"
+                <Card
+                  key={index}
+                  className="sm:p-4 p-3 border shadow-none flex justify-between"
+                >
+                  <div>
+                    <h3 className="sm:font-semibold text-sm sm:text-base">
+                      {event.summary}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {format(
+                        new Date(event.start.dateTime || event.start.date),
+                        "h:mm a"
+                      )}{" "}
+                      -{" "}
+                      {format(
+                        new Date(event.end.dateTime || event.end.date),
+                        "h:mm a"
+                      )}
+                    </p>
+                    {event.description && (
+                      <p className="mt-2 text-sm">{event.description}</p>
                     )}
-                  </p>
-                  {event.description && (
-                    <p className="mt-2 text-sm">{event.description}</p>
-                  )}
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <Button size="sm" variant="success">
+                      Edit
+                    </Button>
+                    <Button size="sm" variant="destructive">
+                      Delete
+                    </Button>
+                  </div>
                 </Card>
               ))}
             </div>

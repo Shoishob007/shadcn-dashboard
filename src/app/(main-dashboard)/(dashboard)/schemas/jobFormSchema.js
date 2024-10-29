@@ -7,6 +7,6 @@ export const jobSchema = z.object({
     requirements: z.string().min(8, "Put valid requirements"),
     jobCategory: z.string(),
     jobType: z.string(),
-    salaryRange: z.number().min(3, "Salary range is required"),
+    salaryRange: z.string().min(3, "Salary range is required"),
     deadline: z.string().optional(),
 });

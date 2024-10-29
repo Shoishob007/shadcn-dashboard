@@ -89,7 +89,7 @@ const ResetPasswordForm = () => {
         )}
       </div>
       <div>
-        <Label htmlFor="confirm-password">Confirm New Password</Label>
+        <Label htmlFor="confirm-password" className="font-medium">Confirm New Password</Label>
         <Input
           id="confirm-password"
           type="password"

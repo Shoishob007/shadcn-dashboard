@@ -185,7 +185,6 @@ const CreateJobForm = ({ onClose }) => {
                   id="salaryRange"
                   name="salaryRange"
                   {...register("salaryRange", {
-                    valueAsNumber: true,
                     required: "Salary range is required",
                   })}
                 />

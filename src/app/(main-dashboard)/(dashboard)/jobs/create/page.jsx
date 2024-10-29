@@ -25,7 +25,7 @@ const CreateJobPage = () => {
   return (
     <>
       {" "}
-      <PageTitle title={pageTitle} className={"pb-4"} />
+      <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
       <div className="flex flex-col items-center text-center justify-center h-full space-y-4">
         {!showForm ? (
           <Card className="sm:w-full max-w-lg p-4 shadow-lg">
