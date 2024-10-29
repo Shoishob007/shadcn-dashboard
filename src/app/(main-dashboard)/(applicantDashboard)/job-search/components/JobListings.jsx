@@ -16,7 +16,7 @@ import { useState } from "react";
 const demoJobs = [
     { id: 1, title: "Frontend Developer", company: "Rokomari", location: "Dhaka", type: "Full-Time", salary: "60,000 BDT" },
     { id: 2, title: "Full Stack Developer", company: "Bit Software Solutions", location: "Dhaka", type: "Contract", salary: "75,000 BDT" },
-    { id: 3, title: "Backend Developer", company: "Qzency", location: "Remote", type: "Part-Time", salary: "50,000 BDT" },
+    { id: 3, title: "Backend Developer", company: "Qzency", location: "Remote", type: "Internship", salary: "50,000 BDT" },
     { id: 4, title: "React Developer", company: "EchoLogyx", location: "Chittagong", type: "Full-Time", salary: "70,000 BDT" },
     { id: 5, title: "Node.js Developer", company: "Aykori Digital", location: "Remote", type: "Internship", salary: "30,000 BDT" },
     { id: 6, title: "UI/UX Designer", company: "Mediusware", location: "Sylhet", type: "Full-Time", salary: "65,000 BDT" },
@@ -39,7 +39,11 @@ const JobListings = () => {
             job.location.toLowerCase().includes(searchTerm)
         );
         setFilteredJobs(filtered);
-    };             
+    }; 
+    
+    //  className={`${job.status === 'Full-Time' ? "bg-green -200 text-green-600" : ${job.status === 'Internship' ? "" : ""}} px-2 py-1`}
+
+    
     
     return (
         <div>
@@ -54,20 +58,25 @@ const JobListings = () => {
                 />
             </div>
             <section className='grid grid-cols-3 gap-4 mt-4'>
-                {filteredJobs.map((job) => (
-                     <Card key={job.id} className="shadow-lg border rounded-lg flex flex-col">
-                        <CardHeader>
-                            <CardTitle className="text-lg font-bold">{job.title} at {job.company}</CardTitle>
-                            <CardDescription className="text-sm text-gray-600">{job.location} - {job.type}</CardDescription>
-                        </CardHeader>
-                        <CardContent className="flex justify-between items-center flex-grow">
-                            <p className="text-lg font-semibold text-green-600">Salary: {job.salary}</p>
-                        </CardContent>
-                        <CardFooter className="flex justify-end">
-                            <Button>Apply Now</Button>
-                        </CardFooter>
-                 </Card>
-                ))}
+                {filteredJobs.map((job) => {
+                    const typeBgColor = job.type === 'Full-Time' ? "bg-green-200 text-green-600" : job.type === 'Internship' ? "bg-purple-200 text-purple-600" : job.type === 'Contract' ? "bg-blue-200 text-blue-600" : "bg-black text-white";
+                    
+                    
+                    return (
+                        <Card key={job.id} className="shadow-lg border rounded-lg flex flex-col">
+                           <CardHeader>
+                               <CardTitle className="text-lg font-bold">{job.title} at {job.company}</CardTitle>
+                               <CardDescription className="text-sm text-gray-600">{job.location} - <span className={`${typeBgColor} p-1 rounded`}>{job.type}</span></CardDescription>
+                           </CardHeader>
+                           <CardContent className="flex justify-between items-center flex-grow">
+                               <p className="text-lg font-semibold text-green-600">Salary: {job.salary}</p>
+                           </CardContent>
+                           <CardFooter className="flex justify-end">
+                               <Button>Apply Now</Button>
+                           </CardFooter>
+                    </Card>
+                   )
+                })}
             </section>
         </div>
     );
