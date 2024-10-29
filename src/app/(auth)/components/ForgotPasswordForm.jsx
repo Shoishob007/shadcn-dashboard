@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import VerificationSent from "./VerificationSent";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { forgotPassSchema } from "../schemas/formSchemas";
+import VerificationSent from "./VerificationSent";
 
 const ForgotPasswordForm = () => {
   const [email, setEmail] = useState("");

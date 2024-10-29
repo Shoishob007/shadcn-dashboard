@@ -1,14 +1,6 @@
 "use client";
-import { useMemo, useState, useCallback } from "react";
-import {
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { ChevronDown } from "lucide-react";
+import PageTitle from "@/components/PageTitle";
+import FormatTitle from "@/components/TitleFormatter";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -25,11 +17,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { ChevronDown } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useCallback, useMemo, useState } from "react";
 import { columns } from "../../components/applicantsColumns";
 import { applicantsData } from "../../components/applicantsData";
-import PageTitle from "@/components/PageTitle";
-import { usePathname } from "next/navigation";
-import FormatTitle from "@/components/TitleFormatter";
 
 const ITEMS_PER_PAGE = 10;
 

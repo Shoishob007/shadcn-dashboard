@@ -1,6 +1,6 @@
 "use client";
 
-import { data as importedData } from "@/components/DataManagement";
+import { data, data as importedData } from "@/components/DataManagement";
 import PageTitle from "@/components/PageTitle";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -39,6 +39,8 @@ import {
 } from "@tanstack/react-table";
 import { ArrowUpDown, Briefcase, Loader, MoreHorizontal, Tag } from "lucide-react";
 import { useState } from "react";
+import companyLogo from '../../../../../public/assests/dummy-logo.png';
+import Image from "next/image";
 
 
 export const columns = [

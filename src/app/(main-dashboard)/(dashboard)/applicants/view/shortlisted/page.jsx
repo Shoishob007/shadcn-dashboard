@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
-import { useMemo, useState, useCallback } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import {
   flexRender,
@@ -12,8 +12,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { ChevronDown } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import PageTitle from "@/components/PageTitle";
+import FormatTitle from "@/components/TitleFormatter";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -30,11 +30,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { applicantsData } from "../../components/applicantsData";
-import { columns } from "../../components/applicantsColumns";
-import PageTitle from "@/components/PageTitle";
+import { ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
-import FormatTitle from "@/components/TitleFormatter";
+import { columns } from "../../components/applicantsColumns";
+import { applicantsData } from "../../components/applicantsData";
 
 const ITEMS_PER_PAGE = 10;
 

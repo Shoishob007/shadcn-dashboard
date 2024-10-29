@@ -1,18 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Calendar } from "@/components/ui/calendar";
+import PageTitle from "@/components/PageTitle";
+import FormatTitle from "@/components/TitleFormatter";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Calendar } from "@/components/ui/calendar";
 import { Card } from "@/components/ui/card";
-import { CalendarDays, Clock, Plus } from "lucide-react";
-import {
-  loadGoogleUpcomingCalendarEvents,
-  createCalendarEvent,
-} from "@/lib/googleCalendar";
-import { format } from "date-fns";
-import { useSession } from "next-auth/react";
 import {
   Dialog,
   DialogContent,
@@ -20,10 +13,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import PageTitle from "@/components/PageTitle";
+import {
+  createCalendarEvent,
+  loadGoogleUpcomingCalendarEvents,
+} from "@/lib/googleCalendar";
+import { format } from "date-fns";
+import { CalendarDays, Clock, Plus } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import FormatTitle from "@/components/TitleFormatter";
+import { useEffect, useState } from "react";
 
 const InterviewUpcoming = () => {
   const { data: session, status } = useSession();
