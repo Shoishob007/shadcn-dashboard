@@ -31,6 +31,9 @@ import {
 
 import { jobColumns as columns } from "../../components/columns.jsx";
 import { jobData } from "../../components/jobData.js";
+import PageTitle from "@/components/PageTitle.jsx";
+import { usePathname } from "next/navigation.js";
+import FormatTitle from "@/components/TitleFormatter.js";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -39,6 +42,8 @@ export default function JobsData() {
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
+  const pathname = usePathname();
+  const pageTitle = FormatTitle(pathname);
 
   const data = useMemo(() => {
     return jobData.filter((d) => d.status === "open");
@@ -78,6 +83,8 @@ export default function JobsData() {
 
   return (
     <>
+      <PageTitle title={pageTitle} className={"pb-4"} />
+
       <div className="w-full bg-white py-2 px-6 rounded-lg shadow-md h-full items-center">
         <div className="flex items-center justify-center py-4 ">
           <Input

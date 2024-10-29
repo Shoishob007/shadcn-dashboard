@@ -15,11 +15,16 @@ import {
 } from "date-fns";
 import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
+import FormatTitle from "@/components/TitleFormatter";
+import PageTitle from "@/components/PageTitle";
 
 const InterviewSchedule = () => {
   const { data: session, status } = useSession();
   const [allEvents, setAllEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const pathname = usePathname();
+  const pageTitle = FormatTitle(pathname);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -113,7 +118,10 @@ const InterviewSchedule = () => {
   }
 
   return (
-    <div className="sm:p-4 h-full">
+    <>
+      {" "}
+      <PageTitle title={pageTitle} />
+      <div className="h-full">
         <Card className="p-4 sm:py-8 sm:px-6 border-none shadow-md">
           <div className="flex items-center justify-center mb-4 ">
             <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
@@ -147,7 +155,7 @@ const InterviewSchedule = () => {
                         <Card
                           key={event.id}
                           className={cn(
-                            "p-3",
+                            "p-3  shadow-none",
                             isPast(eventDate) &&
                               !isToday(eventDate) &&
                               "opacity-75"
@@ -197,7 +205,8 @@ const InterviewSchedule = () => {
             </div>
           )}
         </Card>
-    </div>
+      </div>
+    </>
   );
 };
 

@@ -281,18 +281,18 @@ export default function SideNavbar({ isCollapsed }) {
     <>
       <div
         className={cn(
-          "h-[calc(100vh-1rem)] sticky border-r px-4 pb-10 pt-6 bg-white my-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out overflow-y-auto",
-          isCollapsed ? "w-20" : "w-56"
+          "h-[calc(100vh-1rem)] sticky border-r pb-10 pt-6 bg-white my-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out overflow-y-auto",
+          isCollapsed ? "w-16" : "w-56"
         )}
       >
-        <div className="items-center text-center mx-auto">
-          <Link href={"/"}>
+        <div className="items-center text-center sm:mx-auto">
+          <Link href={"/"} className="rounded-full">
             <Image
               src="/assests/hh-logo.png"
               alt="Logo"
-              width={80}
-              height={80}
-              className="mr-2 rounded-full items-center text-center inline"
+              width={120}
+              height={120}
+              className="rounded-full items-center text-center inline"
             />
           </Link>
         </div>

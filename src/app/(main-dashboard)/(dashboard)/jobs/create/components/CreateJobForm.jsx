@@ -46,7 +46,7 @@ const CreateJobForm = ({ onClose }) => {
 
   return (
     <div className="flex justify-center w-full">
-      <div className="p-4 rounded-lg w-full">
+      <div className="rounded-lg w-full">
         <Card>
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold">Create Job</CardTitle>

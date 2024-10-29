@@ -1,5 +1,7 @@
 "use client";
 
+import PageTitle from "@/components/PageTitle";
+import FormatTitle from "@/components/TitleFormatter";
 import {
   Card,
   CardContent,
@@ -7,18 +9,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const JobsPage = () => {
   const router = useRouter();
+  const pathname = usePathname();
+  const pageTitle = FormatTitle(pathname);
 
   const handleNavigation = (route) => {
     router.push(route);
   };
 
   return (
-    <div className="flex flex-col items-center h-full justify-center text-center space-y-4 w-full">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-2/3 md:w-full">
+    <div className="flex flex-col space-y-4 w-full">
+      <PageTitle title={pageTitle} />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-2/3 md:w-full text-center">
         {/* For jobs data */}
         <Card
           className="cursor-pointer hover:border-gray-950 transition-shadow duration-300 ease-in-out"

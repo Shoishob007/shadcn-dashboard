@@ -4,9 +4,14 @@ import React from "react";
 import InterviewUpcoming from "./upcoming/page";
 import InterviewSchedule from "./schedule/page";
 import { useSession } from "next-auth/react";
+import PageTitle from "@/components/PageTitle";
+import { usePathname } from "next/navigation";
+import FormatTitle from "@/components/TitleFormatter";
 
 const Interviews = () => {
   const { data: session, status } = useSession();
+  const pathname = usePathname();
+  const pageTitle = FormatTitle(pathname);
 
   if (status === "unauthenticated") {
     return (
@@ -17,10 +22,12 @@ const Interviews = () => {
   }
 
   return (
-    <div className="flex flex-col justify-start h-full">
-      <InterviewUpcoming />
-      <InterviewSchedule />
-    </div>
+    <>
+      <div className="flex flex-col justify-start h-full gap-6">
+        <InterviewUpcoming />
+        <InterviewSchedule />
+      </div>
+    </>
   );
 };
 
