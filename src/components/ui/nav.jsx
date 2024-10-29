@@ -38,7 +38,7 @@ export function Nav({ links, isCollapsed }) {
     <TooltipProvider>
       <div
         data-collapsed={isCollapsed}
-        className="group flex flex-col gap-4 pt-10 data-[collapsed=true]:py-6 data-[collapsed=true]:pt-12"
+        className="group flex flex-col gap-4 pt-10 data-[collapsed=true]:py-6 data-[collapsed=true]:pt-12 px-4"
       >
         <nav className="grid gap-1 pl-0 pr-4 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-1">
           {links.map((link, index) => (

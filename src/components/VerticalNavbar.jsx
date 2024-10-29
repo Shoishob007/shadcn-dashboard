@@ -39,13 +39,13 @@ const VerticalNavbar = ({ isCollapsed, toggleSidebar }) => {
 
   return (
     <nav
-      className={`bg-white ml-4 my-2 mr-4 py-2 px-6 rounded-lg text-gray-400 shadow-md border-t-2 text-sm flex items-center
+      className={`bg-white ml-4 my-2 mr-4 py-2 px-2 sm:px-6 rounded-lg text-gray-500 shadow-md border-t-2 text-sm flex items-center
         ${mobileWidth ? "justify-center" : "justify-between"}`}
     >
       <div
         className={`flex flex-col space-y-2 transition-all duration-300 ease-in-out`}
       >
-        <ul className="flex space-x-8 items-center">
+        <ul className="flex space-x-4 items-center">
           <li className="items-center text-center">
             <Button
               onClick={toggleSidebar}
@@ -87,30 +87,17 @@ const VerticalNavbar = ({ isCollapsed, toggleSidebar }) => {
       </div>
 
       <div
-        className={`flex items-center gap-5 transition-all duration-300 ease-in-out`}
+        className={`flex items-center ml-2 gap-2 sm:gap-5 transition-all duration-300 ease-in-out`}
       >
-        {isCollapsed ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Button variant="ghost">
-                <Search className="w-5 h-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <SearchComponent onSearch={handleSearch} />
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ) : (
-          <SearchComponent onSearch={handleSearch} />
-        )}
+        <SearchComponent onSearch={handleSearch} />
 
         {/* Notification dropdown */}
         <section>
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <Bell className="w-5 h-5" />
+              <Bell className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="mr-4">
               <DropdownMenuLabel>Notification</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>View Notifications</DropdownMenuItem>
@@ -118,7 +105,7 @@ const VerticalNavbar = ({ isCollapsed, toggleSidebar }) => {
             </DropdownMenuContent>
           </DropdownMenu>
         </section>
-        <User className="w-5 h-5" />
+        <User className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
       </div>
 
       {/* {mobileWidth && (
