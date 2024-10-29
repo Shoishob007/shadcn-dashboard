@@ -89,7 +89,7 @@ const VerticalNavbar = ({ isCollapsed, toggleSidebar }) => {
       <div
         className={`flex items-center gap-5 transition-all duration-300 ease-in-out`}
       >
-        {isCollapsed && !manua ? (
+        {isCollapsed ? (
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Button variant="ghost">
