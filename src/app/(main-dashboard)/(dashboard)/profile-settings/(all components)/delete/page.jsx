@@ -10,16 +10,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
 import { AlertTriangle } from "lucide-react";
+import useDeleteProfileStore from "@/stores/profile-settings/useDeleteProfileStore";
 
 export default function DeleteAccount() {
-  const [password, setPassword] = useState("");
+  const { formData, setFormData, deleteProfile, resetFormData } =
+    useDeleteProfileStore();
 
   const handleDelete = (e) => {
     e.preventDefault();
     // Handle account deletion
-    console.log("Account deletion requested");
+    deleteProfile(formData.password);
+    resetFormData();
   };
 
   return (
@@ -44,8 +46,8 @@ export default function DeleteAccount() {
               <Input
                 id="password"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={(e) => setFormData({ password: e.target.value })}
                 placeholder="Enter your password"
                 className="max-w-md"
               />
@@ -56,7 +58,8 @@ export default function DeleteAccount() {
           <Button
             variant="destructive"
             onClick={handleDelete}
-            disabled={!password}
+            disabled={!formData.password}
+            type="submit"
           >
             Delete Account
           </Button>

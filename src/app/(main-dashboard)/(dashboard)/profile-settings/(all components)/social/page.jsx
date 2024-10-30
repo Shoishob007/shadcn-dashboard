@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import useSocialStore from "@/stores/profile-settings/useSocialStore";
 import {
   Github,
   Twitter,
@@ -13,19 +13,11 @@ import {
 } from "lucide-react";
 
 export default function SocialSettings() {
-  const [formData, setFormData] = useState({
-    github: "",
-    twitter: "",
-    linkedin: "",
-    facebook: "",
-    instagram: "",
-    youtube: "",
-  });
+  const { formData, setFormData, saveSocial } = useSocialStore();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Social profiles updated:", formData);
+    saveSocial(formData);
   };
 
   const socialLinks = [
@@ -92,9 +84,7 @@ export default function SocialSettings() {
               <Input
                 id={name}
                 value={formData[name]}
-                onChange={(e) =>
-                  setFormData({ ...formData, [name]: e.target.value })
-                }
+                onChange={(e) => setFormData({ [name]: e.target.value })}
                 placeholder={placeholder}
               />
             </div>

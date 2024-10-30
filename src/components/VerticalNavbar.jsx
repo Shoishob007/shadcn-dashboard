@@ -20,7 +20,6 @@ import { useSession } from "next-auth/react";
 
 const VerticalNavbar = ({ isCollapsed, toggleSidebar }) => {
   const { status, data: session } = useSession();
-  console.log(session);
 
   const handleSearch = (query) => {
     console.log("Searching for:", query);
