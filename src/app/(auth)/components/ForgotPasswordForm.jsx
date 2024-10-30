@@ -6,15 +6,14 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { forgotPassSchema } from "../schemas/formSchemas";
 import VerificationSent from "./VerificationSent";
+import useForgotPasswordStore from "@/stores/authStore/useForgotPasswordStore";
 
 const ForgotPasswordForm = () => {
-  const [email, setEmail] = useState("");
-  const [emailSent, setEmailSent] = useState(false);
-  const { toast } = useToast();
+  const { email, emailSent, setEmail, sendVerificationEmail, resetState } =
+    useForgotPasswordStore();
   const router = useRouter();
   const {
     register,
@@ -26,45 +25,12 @@ const ForgotPasswordForm = () => {
 
   const onSubmit = async (data) => {
     const { email } = data;
-
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/users/forgot-password`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email }),
-        }
-      );
-
-      console.log(response);
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Email submission failed.");
-      }
-
-      toast({
-        title: "Success",
-        description: "A verification link was sent to your email",
-        variant: "success",
-      });
-
-      setEmail("");
-      setEmailSent(true);
-    } catch (error) {
-      console.error("Error:", error);
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
+    setEmail(email);
+    await sendVerificationEmail(email);
   };
 
   const handleBackToLogin = () => {
+    resetState();
     router.push("/login");
   };
 
