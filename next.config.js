@@ -1,4 +1,5 @@
 const nextConfig = {
+    /*
     crossOrigin: 'anonymous',
     async headers() {
         return [
@@ -17,6 +18,16 @@ const nextConfig = {
     images: {
         domains: ['github.com', 'avatars.githubusercontent.com'], // Add any other domains you need
     },
+    */
+
+    images: {
+        remotePatterns: [
+          {
+            protocol: 'https',
+            hostname: '**',
+          },
+        ],
+      },
 }
 
 module.exports = nextConfig
