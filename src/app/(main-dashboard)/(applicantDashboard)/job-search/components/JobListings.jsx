@@ -40,8 +40,6 @@ const JobListings = () => {
         );
         setFilteredJobs(filtered);
     }; 
-    
-    //  className={`${job.status === 'Full-Time' ? "bg-green -200 text-green-600" : ${job.status === 'Internship' ? "" : ""}} px-2 py-1`}
 
     
     
@@ -60,8 +58,6 @@ const JobListings = () => {
             <section className='grid grid-cols-3 gap-4 mt-4'>
                 {filteredJobs.map((job) => {
                     const typeBgColor = job.type === 'Full-Time' ? "bg-green-200 text-green-600" : job.type === 'Internship' ? "bg-purple-200 text-purple-600" : job.type === 'Contract' ? "bg-blue-200 text-blue-600" : "bg-black text-white";
-                    
-                    
                     return (
                         <Card key={job.id} className="shadow-lg border rounded-lg flex flex-col">
                            <CardHeader>
@@ -72,7 +68,7 @@ const JobListings = () => {
                                <p className="text-lg font-semibold text-green-600">Salary: {job.salary}</p>
                            </CardContent>
                            <CardFooter className="flex justify-end">
-                               <Button>Apply Now</Button>
+                               <Button>View Details</Button>
                            </CardFooter>
                     </Card>
                    )
