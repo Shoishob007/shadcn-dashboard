@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,9 +16,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../schemas/formSchemas";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useToast } from "@/hooks/use-toast";
 import { signIn } from "next-auth/react";
 import VerificationSent from "../components/VerificationSent";
+import useRegisterStore from "@/stores/authStore/useRegisterStore";
 
 export default function RegisterForm() {
   const {
@@ -29,48 +29,16 @@ export default function RegisterForm() {
     resolver: zodResolver(registerSchema),
   });
   const router = useRouter();
-  const { toast } = useToast();
-  const [submitted, setSubmitted] = useState(false);
+  const { formData, setFormData, registerUser, submitted, resetFormData } =
+    useRegisterStore();
 
   const onSubmit = async (data) => {
-    const { name, email, password, role } = data;
-    const provider = "credentials";
-    try {
-      const payload = {
-        name,
-        provider,
-        email,
-        password,
-        role,
-      };
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/users`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
-      }
-
-      // console.log("Registration Successful", response);
-      toast({ title: "Registration Successful" });
-
-      setSubmitted(true);
-    } catch (error) {
-      console.error("Registration Failed:", error);
-      toast({ title: "Registration Failed", description: error.message });
-    }
+    setFormData(data);
+    await registerUser(data);
   };
 
   const handleBackToLogin = () => {
+    resetFormData();
     router.push("/login");
   };
 

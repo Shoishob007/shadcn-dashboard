@@ -17,7 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../schemas/formSchemas";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useToast } from "../../../hooks/use-toast";
+import useLoginStore from "@/stores/authStore/useLoginStore";
 
 export default function LoginForm() {
   const {
@@ -28,32 +28,12 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
   const router = useRouter();
-  const { toast } = useToast();
-  const [error, setError] = React.useState("");
+  const { formData, setFormData, loginUser, resetFormData } = useLoginStore();
 
   const onSubmit = async (data) => {
-    const result = await signIn("credentials", {
-      redirect: false,
-      email: data.email,
-      password: data.password,
-      callbackUrl: "/",
-    });
-
-    if (result?.error) {
-      setError(result.error);
-      toast({
-        title: "Can't Sign in!",
-        description: "Invalid credentials",
-        variant: "destructive",
-      });
-    } else if (result?.url) {
-      router.push(result.url);
-      toast({
-        title: "Signed In!",
-        description: "You have signed in successfully.",
-        variant: "success",
-      });
-    }
+    setFormData(data);
+    await loginUser(data, router);
+    resetFormData();
   };
 
   return (

@@ -6,13 +6,10 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { resetPassSchema } from "../schemas/formSchemas";
 
 const ResetPasswordForm = () => {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const { toast } = useToast();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -26,7 +23,6 @@ const ResetPasswordForm = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
     const { password, confirmPassword } = data;
 
     if (password !== confirmPassword) {
