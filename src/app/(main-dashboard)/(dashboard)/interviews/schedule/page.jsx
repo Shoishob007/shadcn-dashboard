@@ -5,8 +5,8 @@ import PageTitle from "@/components/PageTitle";
 import FormatTitle from "@/components/TitleFormatter";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { loadGoogleScheduledCalendarEvents } from "@/lib/googleCalendar";
 import { cn } from "@/lib/utils";
+import useScheduledInterviewsStore from "@/stores/interviews/useScheduledInterviewsStore";
 import {
   differenceInDays,
   format,
@@ -17,45 +17,20 @@ import {
 import { CalendarClock, Calendar as CalendarIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const InterviewSchedule = () => {
   const { data: session, status } = useSession();
-  const [allEvents, setAllEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
   const pathname = usePathname();
   const pageTitle = FormatTitle(pathname);
+
+  const { allEvents, loading, fetchAllEvents } = useScheduledInterviewsStore();
 
   useEffect(() => {
     if (status === "authenticated") {
       fetchAllEvents();
     }
   }, [status]);
-
-  const fetchAllEvents = async () => {
-    setLoading(true);
-    try {
-      // Events for the next 30 days
-      const today = new Date();
-      const thirtyDaysFromNow = new Date();
-      thirtyDaysFromNow.setDate(today.getDate() + 30);
-
-      const events = await loadGoogleScheduledCalendarEvents(
-        today,
-        thirtyDaysFromNow
-      );
-      const sortedEvents = events.sort((a, b) => {
-        return (
-          new Date(a.start.dateTime || a.start.date).getTime() -
-          new Date(b.start.dateTime || b.start.date).getTime()
-        );
-      });
-      setAllEvents(sortedEvents);
-    } catch (error) {
-      console.error("Error fetching events:", error);
-    }
-    setLoading(false);
-  };
 
   const getEventStatus = (eventDate) => {
     if (isPast(eventDate) && !isToday(eventDate)) {

@@ -7,10 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Card } from "@/components/ui/card";
 import { CalendarDays, Clock, Plus } from "lucide-react";
-import {
-  loadGoogleUpcomingCalendarEvents,
-  createCalendarEvent,
-} from "@/lib/googleCalendar";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 import {
@@ -22,106 +18,44 @@ import {
 } from "@/components/ui/dialog";
 import { usePathname } from "next/navigation";
 import EventForm from "./components/EventForm";
+import useUpcomingInterviewStore from "@/stores/interviews/useUpcomingInterviewStore";
+import { useEffect } from "react";
 
 const InterviewUpcoming = () => {
   const { data: session, status } = useSession();
-  const [date, setDate] = useState(new Date());
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [newEventTitle, setNewEventTitle] = useState("");
-  const [newEventDescription, setNewEventDescription] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [selectedEventId, setSelectedEventId] = useState(null);
   const pathname = usePathname();
   const pageTitle = FormatTitle(pathname);
+
+  const {
+    date,
+    events,
+    loading,
+    newEventTitle,
+    newEventDescription,
+    startTime,
+    endTime,
+    isDialogOpen,
+    isEditDialogOpen,
+    selectedEventId,
+    setDate,
+    setNewEventTitle,
+    setNewEventDescription,
+    setStartTime,
+    setEndTime,
+    setIsDialogOpen,
+    setIsEditDialogOpen,
+    setSelectedEventId,
+    fetchEvents,
+    handleCreateEvent,
+    handleEditEvent,
+    handleDeleteEvent,
+  } = useUpcomingInterviewStore();
 
   useEffect(() => {
     if (status === "authenticated") {
       fetchEvents();
     }
   }, [date, status]);
-
-  const fetchEvents = async () => {
-    setLoading(true);
-    try {
-      const calendarEvents = await loadGoogleUpcomingCalendarEvents(date);
-      setEvents(calendarEvents);
-    } catch (error) {
-      console.error("Error fetching events:", error);
-    }
-    setLoading(false);
-  };
-
-  const handleCreateEvent = async () => {
-    try {
-      const startDateTime = new Date(date);
-      const [startHours, startMinutes] = startTime.split(":");
-      startDateTime.setHours(parseInt(startHours), parseInt(startMinutes));
-
-      const endDateTime = new Date(date);
-      const [endHours, endMinutes] = endTime.split(":");
-      endDateTime.setHours(parseInt(endHours), parseInt(endMinutes));
-
-      await createCalendarEvent({
-        summary: newEventTitle,
-        description: newEventDescription,
-        start: { dateTime: startDateTime.toISOString() },
-        end: { dateTime: endDateTime.toISOString() },
-      });
-
-      resetForm();
-      fetchEvents();
-    } catch (error) {
-      console.error("Error creating event:", error);
-    }
-  };
-
-  const resetForm = () => {
-    setNewEventTitle("");
-    setNewEventDescription("");
-    setStartTime("");
-    setEndTime("");
-    setIsDialogOpen(false);
-    setIsEditDialogOpen(false);
-    setSelectedEventId(null);
-  };
-
-  const handleEditEvent = async () => {
-    try {
-      const startDateTime = new Date(date);
-      const [startHours, startMinutes] = startTime.split(":");
-      startDateTime.setHours(parseInt(startHours), parseInt(startMinutes));
-
-      const endDateTime = new Date(date);
-      const [endHours, endMinutes] = endTime.split(":");
-      endDateTime.setHours(parseInt(endHours), parseInt(endMinutes));
-
-      await updateCalendarEvent(selectedEventId, {
-        summary: newEventTitle,
-        description: newEventDescription,
-        start: { dateTime: startDateTime.toISOString() },
-        end: { dateTime: endDateTime.toISOString() },
-      });
-
-      resetForm();
-      fetchEvents();
-      setIsEditDialogOpen(false);
-    } catch (error) {
-      console.error("Error updating event:", error);
-    }
-  };
-
-  const handleDeleteEvent = async (eventId) => {
-    try {
-      await deleteCalendarEvent(eventId);
-      fetchEvents();
-    } catch (error) {
-      console.error("Error deleting event:", error);
-    }
-  };
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -141,7 +75,7 @@ const InterviewUpcoming = () => {
       <div className="h-full grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card className="p-3 sm:p-6 space-y-4 flex flex-col sm:gap-6">
           <div className="flex items-center justify-center sm:gap-4">
-            <h2 className=" text-lg sm:text-xl font-semibold flex items-center gap-2 sm:p-4 p-3 px-4 sm:px-6">
+            <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2 sm:p-4 p-3 px-4 sm:px-6">
               <CalendarDays className="h-5 sm:h-6 w-5 sm:w-6" />
               Calendar
             </h2>
@@ -165,7 +99,10 @@ const InterviewUpcoming = () => {
                   setStartTime={setStartTime}
                   endTime={endTime}
                   setEndTime={setEndTime}
-                  onSubmit={handleCreateEvent}
+                  onSubmit={() => {
+                    handleCreateEvent();
+                    setIsDialogOpen(false);
+                  }}
                 />
               </DialogContent>
             </Dialog>
@@ -192,9 +129,9 @@ const InterviewUpcoming = () => {
             </div>
           ) : events.length > 0 ? (
             <div className="space-y-3 sm:space-y-4">
-              {events.map((event, index) => (
+              {events.map((event) => (
                 <Card
-                  key={index}
+                  key={event.id}
                   className="sm:p-4 p-3 border shadow-none flex justify-between"
                 >
                   <div>
@@ -206,7 +143,7 @@ const InterviewUpcoming = () => {
                         new Date(event.start.dateTime || event.start.date),
                         "h:mm a"
                       )}{" "}
-                      -{" "}
+                      -
                       {format(
                         new Date(event.end.dateTime || event.end.date),
                         "h:mm a"
@@ -248,11 +185,12 @@ const InterviewUpcoming = () => {
             </div>
           ) : (
             <div className="text-center text-muted-foreground py-8">
-              No events scheduled for this date
+              No events scheduled for this date.
             </div>
           )}
         </Card>
 
+        {/* Edit Event Dialog */}
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
           <DialogContent>
             <DialogHeader>
@@ -267,7 +205,10 @@ const InterviewUpcoming = () => {
               setStartTime={setStartTime}
               endTime={endTime}
               setEndTime={setEndTime}
-              onSubmit={handleEditEvent}
+              onSubmit={() => {
+                handleEditEvent(); // Call the edit event function
+                setIsEditDialogOpen(false); // Close dialog after submission
+              }}
               isEditing={true}
             />
           </DialogContent>

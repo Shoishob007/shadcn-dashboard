@@ -1,30 +1,33 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
 import Image from "next/image";
 import { toast } from "@/hooks/use-toast";
+import useProfileStore from "@/stores/profile-settings/useProfileStore";
+import { useEffect } from "react";
 
 export default function ProfileSettings() {
   const { data: session } = useSession();
-  const [formData, setFormData] = useState({
-    name: session?.user?.name || "",
-    email: session?.user?.email || "",
-    location: "",
-    bio: "",
-    website: "",
-    company: "",
-    position: "",
-    achievements: "",
-  });
+  const { formData, setFormData, saveProfile, loading } =
+    useProfileStore();
+
+  useEffect(() => {
+    if (session?.user) {
+      setFormData({
+        name: session.user.name || "",
+        email: session.user.email || "",
+      });
+    }
+  }, [session]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
     console.log("Profile updated:", formData);
+    saveProfile(session.user);
     toast;
   };
 
@@ -57,9 +60,7 @@ export default function ProfileSettings() {
             <Input
               id="name"
               value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
+              onChange={(e) => setFormData({ name: e.target.value })}
               placeholder={session?.user.name}
             />
           </div>
@@ -70,9 +71,7 @@ export default function ProfileSettings() {
               id="email"
               type="email"
               value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
+              onChange={(e) => setFormData({ email: e.target.value })}
               placeholder={session?.user.email}
             />
           </div>
@@ -82,9 +81,7 @@ export default function ProfileSettings() {
             <Input
               id="location"
               value={formData.location}
-              onChange={(e) =>
-                setFormData({ ...formData, location: e.target.value })
-              }
+              onChange={(e) => setFormData({ location: e.target.value })}
               placeholder="City, Country"
             />
           </div>
@@ -94,9 +91,7 @@ export default function ProfileSettings() {
             <Input
               id="website"
               value={formData.website}
-              onChange={(e) =>
-                setFormData({ ...formData, website: e.target.value })
-              }
+              onChange={(e) => setFormData({ website: e.target.value })}
               placeholder="https://example.com"
             />
           </div>
@@ -106,9 +101,7 @@ export default function ProfileSettings() {
             <Input
               id="company"
               value={formData.company}
-              onChange={(e) =>
-                setFormData({ ...formData, company: e.target.value })
-              }
+              onChange={(e) => setFormData({ company: e.target.value })}
               placeholder="XYZ"
             />
           </div>
@@ -118,9 +111,7 @@ export default function ProfileSettings() {
             <Input
               id="position"
               value={formData.position}
-              onChange={(e) =>
-                setFormData({ ...formData, position: e.target.value })
-              }
+              onChange={(e) => setFormData({ position: e.target.value })}
               placeholder="Example Developer"
             />
           </div>
@@ -130,9 +121,7 @@ export default function ProfileSettings() {
             <Textarea
               id="bio"
               value={formData.bio}
-              onChange={(e) =>
-                setFormData({ ...formData, bio: e.target.value })
-              }
+              onChange={(e) => setFormData({ bio: e.target.value })}
               placeholder="Tell us about your organization"
               rows={4}
             />
@@ -143,9 +132,7 @@ export default function ProfileSettings() {
             <Textarea
               id="achievements"
               value={formData.achievements}
-              onChange={(e) =>
-                setFormData({ ...formData, achievements: e.target.value })
-              }
+              onChange={(e) => setFormData({ achievements: e.target.value })}
               placeholder="List your major achievements"
               rows={4}
             />
@@ -153,7 +140,9 @@ export default function ProfileSettings() {
         </div>
 
         <div className="flex justify-end">
-          <Button type="submit">Save Profile</Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? "Saving..." : "Save Profile"}
+          </Button>
         </div>
       </form>
     </div>

@@ -1,20 +1,23 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { toast } from "@/hooks/use-toast";
+import usePasswordStore from "@/stores/profile-settings/usePasswordStore";
 
 export default function PasswordSettings() {
-  const [formData, setFormData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
+  const { formData, setFormData, savePassword, resetFormData } =
+    usePasswordStore();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle password change
-    console.log("Password change submitted:", formData);
+    if (formData.newPassword !== formData.confirmPassword) {
+      toast({ title: "Passwords do not match", variant: "destructive" });
+      return;
+    }
+    savePassword(formData);
+    resetFormData();
   };
 
   return (
@@ -36,9 +39,7 @@ export default function PasswordSettings() {
               id="currentPassword"
               type="password"
               value={formData.currentPassword}
-              onChange={(e) =>
-                setFormData({ ...formData, currentPassword: e.target.value })
-              }
+              onChange={(e) => setFormData({ currentPassword: e.target.value })}
               placeholder="******"
             />
           </div>
@@ -49,9 +50,7 @@ export default function PasswordSettings() {
               id="newPassword"
               type="password"
               value={formData.newPassword}
-              onChange={(e) =>
-                setFormData({ ...formData, newPassword: e.target.value })
-              }
+              onChange={(e) => setFormData({ newPassword: e.target.value })}
               placeholder="******"
             />
           </div>
@@ -62,9 +61,7 @@ export default function PasswordSettings() {
               id="confirmPassword"
               type="password"
               value={formData.confirmPassword}
-              onChange={(e) =>
-                setFormData({ ...formData, confirmPassword: e.target.value })
-              }
+              onChange={(e) => setFormData({ confirmPassword: e.target.value })}
               placeholder="******"
             />
           </div>

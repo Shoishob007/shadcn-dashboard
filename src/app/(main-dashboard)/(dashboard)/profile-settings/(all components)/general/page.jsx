@@ -1,21 +1,29 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import useGeneralStore from "@/stores/profile-settings/useGeneralStore";
+import { useEffect } from "react";
 
 export default function GeneralSettings() {
   const { data: session } = useSession();
-  const [formData, setFormData] = useState({
-    name: session?.user?.name || "",
-    email: session?.user?.email || "",
-  });
+  const { formData, setFormData, saveInfo } = useGeneralStore();
+
+  useEffect(() => {
+    if (session?.user) {
+      setFormData({
+        name: session.user.name || "",
+        email: session.user.email || "",
+      });
+    }
+  }, [session]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission
-    console.log("Form submitted:", formData);
+    saveInfo(session.user);
   };
 
   return (
@@ -37,7 +45,7 @@ export default function GeneralSettings() {
               id="name"
               value={formData.name}
               onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
+                setFormData({ name: e.target.value })
               }
               placeholder="Your name"
             />
@@ -50,7 +58,7 @@ export default function GeneralSettings() {
               type="email"
               value={formData.email}
               onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
+                setFormData({ email: e.target.value })
               }
               placeholder="your.email@example.com"
             />
