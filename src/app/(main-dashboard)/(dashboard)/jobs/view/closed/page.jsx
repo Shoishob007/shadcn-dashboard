@@ -34,6 +34,7 @@ import FormatTitle from "@/components/TitleFormatter.js";
 import { usePathname } from "next/navigation.js";
 import { jobColumns as columns } from "../../components/columns.jsx";
 import { jobData } from "../../components/jobData.js";
+import OurPagination from "@/components/Pagination.jsx";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -176,22 +177,7 @@ export default function JobsData() {
             {table.getFilteredRowModel().rows.length} row(s) selected.
           </div>
           <div className="space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Next
-            </Button>
+            <OurPagination table={table} />
           </div>
         </div>
       </div>
