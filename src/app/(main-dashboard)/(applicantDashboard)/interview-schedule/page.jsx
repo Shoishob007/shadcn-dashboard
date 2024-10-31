@@ -23,6 +23,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import companyLogo from '../../../../../public/assests/dummy-logo.png';
+import logo from '../../../../../public/assests/h-logo.png';
 
 // Interview list data
 export const interviewList = [
@@ -207,29 +208,41 @@ const UpcomingInterviews = () => {
     <div>
        <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
       {/* Ucoming interview cards */}
-      <section className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <section className="grid grid-cols-1 gap-5">
         {
           shortlisted.map(data => (
             <Card key={data.id} className="shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg flex flex-col">
       <CardContent className="p-4  rounded-t-lg flex-grow">
+        <div className="flex items-center">
+          <Image
+            src={logo}
+            alt="logo"
+            width={120}
+          />
+          <div className="">
+            <p className=" font-medium">{data.jobTitle} - {data.position}</p>
+            <h2 className="text-sm text-gray-500 font-medium">{data.company}</h2>
+          </div>
+        </div>
         
-        <p className="text-gray-700 font-medium mt-1">{data.jobTitle} - {data.position}</p>
-        <h2 className="text-sm text-gray-500 font-semibold">{data.company}</h2>
         <div className="flex items-center justify-between mt-3">
           <div>
             <p className="text-gray-500 text-sm">Interview Date</p>
-            <p className="text-black text-sm font-semibold">{data.date}</p>
+            <p className="text-black text-sm font-medium">{data.date}</p>
           </div>
           <div>
             <p className="text-gray-500 text-sm">Time</p>
-            <p className="text-black text-sm font-semibold">{data.time}</p>
+            <p className="text-black text-sm font-medium">{data.time}</p>
           </div>
         </div>
         <div className="mt-3">
           <p className="text-gray-500 text-sm">Salary</p>
-          <p className="text-black text-sm font-semibold">{data.salary}</p>
+          <p className="text-black text-sm font-medium">{data.salary}</p>
         </div>
-        <p className="text-gray-600 mt-3 text-sm">{data.details}</p>
+        <div className="mt-3">
+          <p className="text-gray-500 text-sm">Description</p>
+          <p className="text-black text-sm ">{data.details}</p>
+        </div>
       </CardContent>
       <CardFooter className="flex justify-end p-4 border-t">
         <Button onClick={() => handleDetails(data.id)} className="">Details</Button>
@@ -258,7 +271,7 @@ const UpcomingInterviews = () => {
                                                 width={40}
                                             />
                                             <div>
-                                                <h1 className="text-black font-semibold">{interviewDetails.title}</h1>
+                                                <h1 className="text-black font-medium">{interviewDetails.title}</h1>
                                                 <h2 className="text-xs">{interviewDetails.company}</h2>
                                                 <div className="flex items-center gap-3">
                                                     <div className="flex items-center gap-1 mt-2">

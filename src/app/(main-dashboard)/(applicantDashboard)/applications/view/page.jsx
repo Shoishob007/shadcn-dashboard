@@ -289,16 +289,16 @@ export const columns = [
       const status = row.getValue("status");
       const backgroundColor =
         status === "applied"
-          ? "bg-blue-100"
+          ? "bg-fuchsia-100"
           : status === "shortlisted"
-            ? "bg-fuchsia-100"
+            ? "bg-green-100"
             : status === 'rejected' ? "bg-red-100"
             : "bg-yellow-100";
       const textColor =
         status === "applied"
-          ? "text-blue-700"
+          ? "text-fuchsia-600"
           : status === "shortlisted"
-            ? "text-fuchsia-700" 
+            ? "text-green-700" 
             : status === 'rejected' ? "text-red-600"
             : "text-yellow-600";
       return (
@@ -342,8 +342,6 @@ export const columns = [
               <DropdownMenuItem onClick={() => handleViewDetails(job.id)}>
                 View Details
               </DropdownMenuItem>
-              <DropdownMenuItem>Edit Job</DropdownMenuItem>
-              <DropdownMenuItem>Delete Job</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <Dialog open={open} onOpenChange={setOpen}>
@@ -482,7 +480,7 @@ const viewApplications = () => {
        <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
 
       {/* My applications table */}
-      <section className="mt-4">
+      <section className="">
         <div className="w-full bg-white py-2 px-6 rounded-lg shadow-md h-full items-center">
           <div className="flex items-center justify-center py-4 ">
             <Input

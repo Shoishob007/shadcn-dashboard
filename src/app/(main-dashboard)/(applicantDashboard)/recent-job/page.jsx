@@ -4,15 +4,23 @@ import FormatTitle from "@/components/TitleFormatter";
 import { Button } from "@/components/ui/button";
 import {
     Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle
+    CardContent
 } from "@/components/ui/card";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { BriefcaseBusiness, Clock, DollarSign, Loader, MapPin, Tag } from "lucide-react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import logo from '../../../../../public/assests/h-logo.png';
 
 // recent jobs data
 export const jobs = [
@@ -204,6 +212,8 @@ const RecentJobPostings = () => {
 
     const [filteredJobs, setFilteredJobs] = useState(jobs);
     const [searchTerm, setSearchTerm] = useState('');
+    const [open, setOpen] = useState(false);
+  const [jobDetails, setJobDetails] = useState(null);
 
     const handleSearch = (e) => {
         const searchTerm = e.target.value.toLowerCase();
@@ -215,7 +225,15 @@ const RecentJobPostings = () => {
             job.location.toLowerCase().includes(searchTerm)
         );
         setFilteredJobs(filtered);
-    }; 
+    };
+
+    
+    const handleDetails = (id) => {
+        const jobDetailsData = jobs.find(d => d.id === id);
+        setJobDetails(jobDetailsData);
+        setOpen(true);  
+      }
+      const closeDialog = () => setOpen(false);
     return (
         <div>
             <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
@@ -232,26 +250,135 @@ const RecentJobPostings = () => {
 
                     />
                 </div>
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4'>
+                <div className='grid grid-cols-1 gap-4 mt-4'>
                     {filteredJobs.map((job) => {
                         const statusBgColor = job.status === 'open' ? "bg-green-200 text-green-600" : job.status === 'closed' ? "bg-red-200 text-red-600" : "bg-black text-white"
                         return (
-                            <Card key={job.id} className="shadow-lg border rounded-lg flex flex-col">
-                                <CardHeader>
-                                    <CardTitle className="text-lg font-bold">{job.jobTitle} at {job.company}</CardTitle>
-                                    <CardDescription className="text-sm text-gray-600">{job.location} - <span className={`${statusBgColor} p-1 rounded`}>{job.status}</span> - <span>{job.jobType}</span></CardDescription>
-                                </CardHeader>
-                                <CardContent className="flex justify-between items-center flex-grow">
-                                    <p className="font-semibold">Salary: {job.salary}</p>
+                            <Card key={job.id} className="p-4 shadow-lg border rounded-lg flex flex-col">
+                                <CardContent className="">
+                                    <div>
+                                        <div className="flex items-center gap-1">
+                                            <Image
+                                                src={logo}
+                                                alt="logo"
+                                                width={120}
+                                            />
+                                            <div>
+                                                <div className="font-semibold text-lg">
+                                                    <span>{job.jobTitle}</span>, <span>{job.company}</span>
+                                                </div>
+                                                <div className="flex items-center gap-4 mt-2">
+                                                    <div className="flex items-center gap-1">
+                                                        <span> <MapPin strokeWidth={0.5} /> </span>
+                                                        <span className="text-gray-600">{job.location}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-1.5">
+                                                        <span> <BriefcaseBusiness strokeWidth={0.5} /> </span>
+                                                        <span className="text-gray-600">{job.jobType}</span>
+                                                    </div>
+                                                    <div className="">
+                                                        <button className={`${statusBgColor} py-0.5 px-2 rounded`}>{job.status}</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="mt-3">
+                                            <p className="text-gray-400  text-sm ">{job.details}</p>
+                                        </div>
+                                        <div className="mt-2">
+                                            <div className="flex items-center gap-4">
+                                                <div>
+                                                    <span className="text-gray-400 mr-2">Position:</span> 
+                                                    <span>{job.position}</span>
+                                                </div>
+                                                <div>
+                                                    <span className="text-gray-400 mr-2">Role:</span> 
+                                                    <span>{job.role}</span>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center mt-3">
+                                                <span><DollarSign strokeWidth={0.5} /></span>
+                                                <span>{job.salary}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center justify-end">
+                                        <Button onClick={() => handleDetails(job.id)}>View Details</Button>
+                                    </div>
                                 </CardContent>
-                                <CardFooter className="flex justify-end">
-                                    <Button>View Details</Button>
-                                </CardFooter>
                      </Card>
                         )
                     })}
                 </div>
             </section>
+            
+            <section>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+          </DialogTrigger>
+          <DialogContent>
+          <DialogHeader>
+                    <DialogTitle>Job Details</DialogTitle>
+                    <DialogDescription>
+                        <section className="mt-3">
+                            {
+                                jobDetails && (
+                                    <>
+                                      <div className="flex items-center gap-2">
+                                            <Image
+                                                src={logo}
+                                                width={40}
+                                            />
+                                            <div>
+                                                <h1 className="text-black font-semibold">{jobDetails.title}</h1>
+                                                <h2 className="text-xs">{jobDetails.company}</h2>
+                                                <div className="flex items-center gap-3">
+                                                    <div className="flex items-center gap-1 mt-2">
+                                                        <span > <Clock className="w-4" /> </span>
+                                                        <h3 className="capitalize text-black">{jobDetails.time}</h3>
+                                                    </div>
+                                                    <div className="flex items-center gap-1 mt-2">
+                                                        <span><Loader className="w-4" /></span>
+                                                        <h3 className="capitalize text-black">{jobDetails.status}</h3>
+                                                    </div>
+                                                    <div className="flex items-center gap-1 mt-2">
+                                                        <span > <Tag className="w-4" /> </span>
+                                                        <h3 className="capitalize text-black">{jobDetails.salary} Monthly</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                      </div>
+                                        <div className="mt-3">
+                                            <h1 className="text-black font-medium">Job Description</h1>
+                                            <p className="text-xs mt-1">{jobDetails.details}</p>
+                                        </div>
+                                        
+                                        <div className="mt-3 flex items-center justify-between">
+                                            <div className="flex items-center gap-1">
+                                                <h1>Designation:</h1> <span className="text-black">{jobDetails.position}</span>
+                                            </div>
+                                            <div className="flex items-center gap-1">
+                                            <h1>Role:</h1> <span className="text-black capitalize">{jobDetails.role}</span>
+                                            </div>
+                                        </div>
+                                        <div className="mt-3">
+                                            <h1 className="text-black font-medium">Interview Date</h1>
+                                            <p className="text-xs mt-1">{jobDetails.date}</p>
+                                        </div>
+                                        
+                                    </>
+                                )
+                            }
+                        </section>
+                    </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant='outline' onClick={closeDialog}>Close</Button>
+            <Button onClick={closeDialog}>Apply now</Button>
+          </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </section>
         </div>
     );
 };

@@ -137,16 +137,16 @@ export const columns = [
         const status = row.getValue("status");
       const backgroundColor =
         status === "applied"
-          ? "bg-blue-100"
+          ? "bg-fuchsia-100"
           : status === "shortlisted"
-            ? "bg-fuchsia-100"
+            ? "bg-green-100"
             : status === 'rejected' ? "bg-red-100"
             : "bg-yellow-100";
       const textColor =
         status === "applied"
-          ? "text-blue-700"
+          ? "text-fuchsia-700"
           : status === "shortlisted"
-            ? "text-fuchsia-700" 
+            ? "text-green-700" 
             : status === 'rejected' ? "text-red-600"
             : "text-yellow-600";
       return (
@@ -191,8 +191,6 @@ export const columns = [
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => handleViewDetails(job.id)}>View Details</DropdownMenuItem>
-                  <DropdownMenuItem>Edit Job</DropdownMenuItem>
-                  <DropdownMenuItem>Delete Job</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             <Dialog open={open} onOpenChange={setOpen}>
