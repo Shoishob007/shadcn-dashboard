@@ -2,7 +2,7 @@
 "use client";
 
 import { useWindowWidth } from "@react-hook/window-size";
-import { Bell, ArrowRight, User, Search } from "lucide-react";
+import { ArrowRight, Bell, User } from "lucide-react";
 import Link from "next/link";
 import { cn } from "../lib/utils";
 import SearchComponent from "./SearchComponent";

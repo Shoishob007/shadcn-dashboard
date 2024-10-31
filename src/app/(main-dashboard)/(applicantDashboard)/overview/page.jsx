@@ -10,7 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, Briefcase, ChevronDown, Loader, MoreHorizontal, Tag } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 
@@ -18,14 +18,12 @@ import { useState } from "react";
 import PageTitle from "@/components/PageTitle";
 import { Button } from "@/components/ui/button";
 
+import FormatTitle from "@/components/TitleFormatter";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
@@ -36,7 +34,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export const data = [
     {
@@ -120,6 +118,9 @@ export const data = [
 
 
 export default function ApplicantsOverview() {
+  const pathname = usePathname();
+  const pageTitle = FormatTitle(pathname);
+  
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -148,7 +149,7 @@ export default function ApplicantsOverview() {
 
   return (
     <>
-      <PageTitle title={'Applicants Overview'} />
+      <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
       <section className="mt-4">
         <div className="w-full bg-white py-2 px-6 rounded-lg shadow-md h-full items-center">
           <div className="flex items-center justify-center py-4 ">

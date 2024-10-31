@@ -85,37 +85,103 @@ const applicantCardData = [
     amount: "18",
     discription: "+1 since last month",
     icon: CalendarDays,
-    href: "/recent-job-postings",
+    href: "/recent-job",
   },
 ]
 
-const employeeData = [
+const jobs = [
   {
-    name: "Olivia Martin",
-    email: "olivia.martin@email.com",
-    position: "Full-Stack Engineer",
+      id: 1,
+      date: '2024-10-30',
+      time: '10:00 AM',
+      company: 'GoProgs Technologies Pvt. Ltd.',
+      jobTitle: 'Frontend Developer',
+      position: 'Junior Developer',
+      role: 'Frontend Development',
+      salary: '50,000 BDT', // Monthly salary
+      deadline: '2024-10-28',
+      status: 'open',
+      location : 'Dhaka',
+      jobType: 'full-time',
+      details: 'Interview for the frontend developer position, focusing on React.js and Tailwind CSS proficiency.',
   },
   {
-    name: "Jackson Lee",
-    email: "isabella.nguyen@email.com",
-    position: "DevOps Engineer",
+      id: 2,
+      date: '2024-11-05',
+      time: '02:00 PM',
+      company: 'Rocket Systems',
+      jobTitle: 'React.js Developer',
+      position: 'Mid-Level Developer',
+      role: 'Frontend Development',
+      salary: '58,333 BDT', // Monthly salary
+      deadline: '2024-11-02',
+      status: 'open',
+      location : 'Khulna',
+      jobType: 'full-time',
+      details: 'React.js developer interview focusing on advanced JavaScript and component-based architecture.',
   },
   {
-    name: "Isabella Nguyen",
-    email: "isabella.nguyen@email.com",
-    position: "Sales Manager",
+      id: 3,
+      date: '2024-11-10',
+      time: '11:00 AM',
+      company: 'Bit Software Solutions Ltd.',
+      jobTitle: 'Full Stack Developer',
+      position: 'Senior Developer',
+      role: 'Full Stack Development',
+      salary: '75,000 BDT', // Monthly salary
+      deadline: '2024-11-07',
+      status: 'open',
+      location : 'Dhaka',
+      jobType: 'full-time',
+      details: 'Full-stack role involving both backend (Node.js) and frontend (React.js) development tasks.',
   },
   {
-    name: "William Kim",
-    email: "will@email.com",
-    position: "Marketing Lead",
+      id: 4,
+      date: '2024-11-12',
+      time: '09:00 AM',
+      company: 'Tech Innovations',
+      jobTitle: 'Software Engineer',
+      position: 'Entry-Level Developer',
+      role: 'Software Development',
+      salary: '45,833 BDT', // Monthly salary
+      deadline: '2024-11-10',
+      status: 'closed',
+      jobType: 'full-time',
+      location: 'Dhaka',
+      details: 'Interview focusing on problem-solving skills and knowledge of programming fundamentals.',
   },
   {
-    name: "Sofia Davis",
-    email: "sofia.davis@email.com",
-    position: "Junior Executive",
+      id: 5,
+      date: '2024-11-15',
+      time: '03:30 PM',
+      company: 'Creative Solutions Co.',
+      jobTitle: 'UI/UX Designer',
+      position: 'Mid-Level Designer',
+      role: 'Design',
+      salary: '54,167 BDT', // Monthly salary
+      deadline: '2024-11-13',
+      status: 'open',
+      location : 'Dhaka',
+      jobType: 'contractual',
+      details: 'UI/UX design interview emphasizing user-centered design principles and portfolio review.',
   },
-];
+  {
+      id: 6,
+      date: '2024-11-20',
+      time: '01:00 PM',
+      company: 'Dev Team Ltd.',
+      jobTitle: 'DevOps Engineer',
+      position: 'Senior Engineer',
+      role: 'DevOps',
+      salary: '70,833 BDT', // Monthly salary
+      deadline: '2024-11-18',
+      status: 'open',
+      location : 'Dhaka',
+      jobType: 'contractual',
+      details: 'DevOps interview focusing on CI/CD processes and cloud infrastructure management.',
+  },
+]
+
 
 export default function Home() {
   return (
@@ -140,23 +206,25 @@ export default function Home() {
               </section>
               <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
                 <CardContent className="bg-white hover:border-gray-950">
-                  <p className="p-4 font-semibold">Total Applicants</p>
+                  <p className="p-4 font-semibold">Total Applied Jobs</p>
                   <BarChart />
                 </CardContent>
                 <CardContent className="flex justify-between gap-4 bg-white hover:border-gray-950">
                   <section>
-                    <p>Top Employees</p>
+                    <p> Recent Job Postings </p>
                     <p className="text-sm text-gray-400">
-                      Top contributors from last three months
+                      Recent jobs from last months
                     </p>
                   </section>
-                  {employeeData.map((d, i) => (
-                    <ApplicantsCard
-                      key={i}
-                      email={d.email}
-                      name={d.name}
-                      position={d.position}
-                    />
+                  {jobs.map((d, i) => (
+                    <Link href={'/recent-job'}>
+                        <ApplicantsCard
+                        key={i}
+                        email={d.jobTitle}
+                        name={d.company}
+                        position={d.position}
+                      />
+                    </Link>
                   ))}
                 </CardContent>
               </section>

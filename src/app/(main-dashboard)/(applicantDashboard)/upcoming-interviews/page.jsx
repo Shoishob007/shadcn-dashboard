@@ -1,34 +1,7 @@
 "use client";
 
-import { data, data as importedData } from "@/components/DataManagement";
 import PageTitle from "@/components/PageTitle";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import FormatTitle from "@/components/TitleFormatter";
 import {
   flexRender,
   getCoreRowModel,
@@ -37,323 +10,346 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, Briefcase, Loader, MoreHorizontal, Tag } from "lucide-react";
-import { useState } from "react";
-import companyLogo from '../../../../../public/assests/dummy-logo.png';
-import Image from "next/image";
+import { ChevronDown } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useMemo, useState } from "react";
+import { columns } from './components/upcomingInterviewColumns';
 
 
-export const columns = [
-    {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
+
+import { Button } from "@/components/ui/button";
+
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+export const shortlisted = [
+  {
+    id: "1",
+    title: "Backend Developer",
+    company: "ABC Limited",
+    designation: "Junior Backend Developer",
+    salary: 40000,
+    status: "applied",
+    role: "Backend",
+    deadline: new Date("2024-11-30"),
+    postedOn: new Date("2024-10-15"),
+    description: "Join our dynamic backend team to build, maintain, and optimize scalable APIs and server-side applications. Work closely with frontend teams to ensure smooth data flow and system performance in a collaborative environment.",
+    jobRequirements: "Proficiency in Node.js, Express, MongoDB, REST APIs. Experience with database management and server-side logic.",
+    employmentType: "full-time",
+    salaryRange: "35,000 - 45,000 BDT"
+  },
+  {
+    id: "2",
+    title: "Full-Stack Developer",
+    company: "FintechHub",
+    designation: "Junior Full-Stack Engineer",
+    salary: 30000,
+    status: "rejected",
+    role: "fullstack",
+    deadline: new Date("2024-11-25"),
+    postedOn: new Date("2024-10-15"),
+    description: "Take part in designing and implementing full-stack web applications. Collaborate with frontend and backend teams to deliver efficient, reliable solutions using modern web development frameworks and tools in a fast-paced environment.",
+    jobRequirements: "Strong skills in JavaScript, React.js, Node.js, and database management. Understanding of RESTful APIs and version control systems.",
+    employmentType: "contractual",
+    salaryRange: "25,000 - 35,000 BDT"
+  },
+  {
+    id: "3",
+    title: "Frontend Developer",
+    company: "CDE Company",
+    designation: "Junior Frontend Engineer",
+    salary: 20000,
+    status: "shortlisted",
+    role: "frontend",
+    deadline: new Date("2024-12-29"),
+    postedOn: new Date("2024-10-15"),
+    description: "Develop responsive and user-friendly interfaces using modern JavaScript frameworks. Work closely with backend developers to integrate APIs and ensure smooth user experiences. A great opportunity to refine frontend skills and creativity.",
+    jobRequirements: "Experience in React.js, JavaScript, HTML5, CSS3, and API integration. Familiarity with frontend frameworks like Tailwind CSS is a plus.",
+    employmentType: "full-time",
+    salaryRange: "18,000 - 25,000 BDT"
+  },
+  {
+    id: "4",
+    title: "QA Engineer",
+    company: "FintechHub",
+    designation: "Senior QA Engineer",
+    salary: 70000,
+    status: "applied",
+    role: "QA",
+    deadline: new Date("2024-12-10"),
+    postedOn: new Date("2024-10-15"),
+    description: "Lead the quality assurance process for software products, identifying and fixing bugs through rigorous testing. Collaborate with developers to improve code quality, ensuring releases meet high standards of reliability and performance.",
+    jobRequirements: "Experience with software testing, bug tracking tools, and automation frameworks. Strong analytical skills for troubleshooting and quality improvement.",
+    employmentType: "full-time",
+    salaryRange: "65,000 - 75,000 BDT"
+  },
+  {
+    id: "5",
+    title: "Backend Engineer",
+    company: "ABC Company",
+    designation: "Junior Backend Engineer",
+    salary: 30000,
+    status: "shortlisted",
+    role: "Backend",
+    deadline: new Date("2024-12-05"),
+    postedOn: new Date("2024-10-15"),
+    description: "Assist in the development and maintenance of backend systems, ensuring robust API functionality and data processing. Collaborate with the frontend team to support seamless communication between the client and server in scalable applications.",
+    jobRequirements: "Proficiency in backend frameworks like Node.js and Express, along with database technologies like MongoDB. Ability to write efficient server-side logic.",
+    employmentType: "part-time",
+    salaryRange: "28,000 - 35,000 BDT"
+  },
+  {
+    id: "6",
+    title: "Backend Developer",
+    company: "FGH Limited",
+    designation: "Junior Backend Developer",
+    salary: 40000,
+    status: "shortlisted",
+    role: "Backend",
+    deadline: new Date("2024-11-30"),
+    postedOn: new Date("2024-10-15"),
+    description: "Join our dynamic backend team to build, maintain, and optimize scalable APIs and server-side applications. Work closely with frontend teams to ensure smooth data flow and system performance in a collaborative environment.",
+    jobRequirements: "Proficiency in Node.js, Express, MongoDB, REST APIs. Experience with database management and server-side logic.",
+    employmentType: "full-time",
+    salaryRange: "35,000 - 45,000 BDT"
+  },
+  {
+    id: "7",
+    title: "Full-Stack Developer",
+    company: "FintechHub",
+    designation: "Junior Full-Stack Engineer",
+    salary: 30000,
+    status: "shortlisted",
+    role: "fullstack",
+    deadline: new Date("2024-11-25"),
+    postedOn: new Date("2024-10-15"),
+    description: "Take part in designing and implementing full-stack web applications. Collaborate with frontend and backend teams to deliver efficient, reliable solutions using modern web development frameworks and tools in a fast-paced environment.",
+    jobRequirements: "Strong skills in JavaScript, React.js, Node.js, and database management. Understanding of RESTful APIs and version control systems.",
+    employmentType: "contractual",
+    salaryRange: "25,000 - 35,000 BDT"
+  },
+  {
+    id: "8",
+    title: "Frontend Developer",
+    company: "CDE Company",
+    designation: "Junior Frontend Engineer",
+    salary: 20000,
+    status: "shortlisted",
+    role: "frontend",
+    deadline: new Date("2024-12-29"),
+    postedOn: new Date("2024-10-15"),
+    description: "Develop responsive and user-friendly interfaces using modern JavaScript frameworks. Work closely with backend developers to integrate APIs and ensure smooth user experiences. A great opportunity to refine frontend skills and creativity.",
+    jobRequirements: "Experience in React.js, JavaScript, HTML5, CSS3, and API integration. Familiarity with frontend frameworks like Tailwind CSS is a plus.",
+    employmentType: "full-time",
+    salaryRange: "18,000 - 25,000 BDT"
+  },
+  {
+    id: "9",
+    title: "QA Engineer",
+    company: "FintechHub",
+    designation: "Senior QA Engineer",
+    salary: 70000,
+    status: "shortlisted",
+    role: "QA",
+    deadline: new Date("2024-12-10"),
+    postedOn: new Date("2024-10-15"),
+    description: "Lead the quality assurance process for software products, identifying and fixing bugs through rigorous testing. Collaborate with developers to improve code quality, ensuring releases meet high standards of reliability and performance.",
+    jobRequirements: "Experience with software testing, bug tracking tools, and automation frameworks. Strong analytical skills for troubleshooting and quality improvement.",
+    employmentType: "full-time",
+    salaryRange: "65,000 - 75,000 BDT"
+  },
+  {
+    id: "10",
+    title: "Backend Engineer",
+    company: "XYZ Company",
+    designation: "Junior Backend Engineer",
+    salary: 30000,
+    status: "shortlisted",
+    role: "Backend",
+    deadline: new Date("2024-12-05"),
+    postedOn: new Date("2024-10-15"),
+    description: "Assist in the development and maintenance of backend systems, ensuring robust API functionality and data processing. Collaborate with the frontend team to support seamless communication between the client and server in scalable applications.",
+    jobRequirements: "Proficiency in backend frameworks like Node.js and Express, along with database technologies like MongoDB. Ability to write efficient server-side logic.",
+    employmentType: "part-time",
+    salaryRange: "28,000 - 35,000 BDT"
+  },
+];
+
+const ITEMS_PER_PAGE = 5;
+
+const UpcomingInterview = () => {
+  const pathname = usePathname();
+  const pageTitle = FormatTitle(pathname);
   
-    {
-      accessorKey: "company",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Company
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
+  const [sorting, setSorting] = useState([]);
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [columnVisibility, setColumnVisibility] = useState({});
+  const [rowSelection, setRowSelection] = useState({});
+
+  const data = useMemo(() => {
+    return shortlisted.filter((d) => d.status === "shortlisted");
+  }, []);
+
   
-      cell: ({ row }) => (
-        <div className="text-center capitalize">{row.getValue("company")}</div>
-      ),
-    },
-    {
-      accessorKey: "title",
-      header: () => <div className="text-center">Job Title</div>,
-      cell: ({ row }) => (
-        <div className="text-center capitalize">{row.getValue("title")}</div>
-      ),
-    },
-    {
-      accessorKey: "designation",
-      header: () => <div className="text-center">Designation</div>,
-      cell: ({ row }) => (
-        <div className="text-center capitalize">{row.getValue("designation")}</div>
-      ),
-    },
-    {
-      accessorKey: "role",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Role
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => (
-        <div className="text-center">
-          {row.getValue("role")}
-        </div>
-      ),
-    },
-    {
-      accessorKey: "salary",
-      header: () => <div className="text-center">Salary</div>,
-      cell: ({ row }) => {
-        const salary = row.getValue("salary");
-        return <div className="text-center font-medium">{salary}</div>;
+
+  const table = useReactTable({
+    data,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    enableRowSelection: true,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+      pagination: {
+        pageSize: ITEMS_PER_PAGE,
+        pageIndex: 0,
       },
     },
-    
-    {
-      accessorKey: "deadline",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <div className="text-center font-medium">deadline</div>
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => {
-        const date = row.getValue("deadline");
-        return (
-          <div className="text-center">{date.toLocaleDateString("en-US")}</div>
-        );
-      },
-    },
-    {
-      accessorKey: "status",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Status
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => (
-        <div className="text-center capitalize font-medium">
-          {row.getValue("status")}
-        </div>
-      ),
-    },
-    {
-      id: "actions",
-      enableHiding: false,
-      cell: ({ row }) => {
-        const job = row.original;
-  
-        const [open, setOpen] = useState(false);
-        const [jobDetails, setJobDetails] = useState(null);
-        const handleViewDetails = (id) => {
-          const jobDetailsData = data.find(d => d.id === id);
-          setJobDetails(jobDetailsData);
-          setOpen(true);  
-        }
-        const closeDialog = () => setOpen(false);
-  
-        return (
-          <>
+  });
+
+  return (
+    <div>
+      {" "}
+      <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
+      {/* upcoming interview content */}
+      <section className="">
+        <div className="w-full bg-white py-2 px-6 rounded-lg shadow-md h-full items-center">
+          <div className="flex items-center justify-center py-4 ">
+            <Input
+              placeholder="Filter jobs..."
+              value={table.getColumn("title")?.getFilterValue() || ""}
+              onChange={(event) =>
+                table.getColumn("title")?.setFilterValue(event.target.value)
+              }
+              className="max-w-sm"
+            />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
-                  </Button>
+                <Button variant="outline" className="ml-auto">
+                  Columns <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                  <DropdownMenuItem
-                  onClick={() => navigator.clipboard.writeText(job.id)}
-                  >
-                  Copy job ID
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => handleViewDetails(job.id)}>View Details</DropdownMenuItem>
-                  <DropdownMenuItem>Edit Job</DropdownMenuItem>
-                  <DropdownMenuItem>Delete Job</DropdownMenuItem>
+                {table
+                  .getAllColumns()
+                  .filter((column) => column.getCanHide())
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                    );
+                  })}
               </DropdownMenuContent>
             </DropdownMenu>
-            <Dialog open={open} onOpenChange={setOpen}>
-              <DialogTrigger asChild>
-              <></>
-              </DialogTrigger>
-              <DialogContent>
-              <DialogHeader>
-                  <DialogTitle>Job Details</DialogTitle>
-                  <DialogDescription>
-                      <section className="mt-3">
-                          {
-                              jobDetails && (
-                                  <>
-                                      <div className="flex items-center gap-2">
-                                          <Image
-                                              src={companyLogo}
-                                              width={40}
-                                          />
-                                          <div>
-                                              <h1 className="text-black font-semibold">{jobDetails.title}</h1>
-                                              <h2 className="text-xs">{jobDetails.company}</h2>
-                                              <div className="flex items-center gap-3">
-                                                  <div className="flex items-center gap-1 mt-2">
-                                                      <span > <Briefcase className="text-[6px]" /> </span>
-                                                      <h3 className="capitalize text-black">{jobDetails.employmentType}</h3>
-                                                  </div>
-                                                  <div className="flex items-center gap-1 mt-2">
-                                                      <span className="text-[6px]"><Loader /></span>
-                                                      <h3 className="capitalize text-black">{jobDetails.status}</h3>
-                                                  </div>
-                                                  <div className="flex items-center gap-1 mt-2">
-                                                      <span > <Tag className="text-[6px]" /> </span>
-                                                      <h3 className="capitalize text-black">{jobDetails.salaryRange} Monthly</h3>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                      <div className="mt-3">
-                                          <h1 className="text-black font-medium">Job Description</h1>
-                                          <p className="text-xs mt-1">{jobDetails.description}</p>
-                                      </div>
-                                      <div className="mt-3">
-                                          <h1 className="text-black font-medium">Requirements</h1>
-                                          <p className="text-xs mt-1">{jobDetails.jobRequirements}</p>
-                                      </div>
-                                      <div className="mt-3 flex items-center justify-between">
-                                          <div className="flex items-center gap-1">
-                                              <h1>Designation:</h1> <span className="text-black">{jobDetails.designation}</span>
-                                          </div>
-                                          <div className="flex items-center gap-1">
-                                          <h1>Role:</h1> <span className="text-black capitalize">{jobDetails.role}</span>
-                                          </div>
-                                      </div>
-                                      <div className="mt-3">
-                                          <h1 className="text-black font-medium">Deadline</h1>
-                                          <p className="text-xs mt-1">{jobDetails.deadline?.toLocaleDateString()}</p>
-                                      </div>
-                                      
-                                  </>
-                              )
-                          }
-                      </section>
-                  </DialogDescription>
-              </DialogHeader>
-              <DialogFooter>
-                  <Button onClick={closeDialog}>Close</Button>
-              </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </>
-        );
-      },
-    },
-  ];
-
-const UpcomingInterviews = () => {
-    
-    const [sorting, setSorting] = useState([]);
-    const [columnFilters, setColumnFilters] = useState([]);
-    const [columnVisibility, setColumnVisibility] = useState({});
-    const [rowSelection, setRowSelection] = useState({});
-    
-
-    const data = importedData.filter(d => d.status === 'applied');
-
-
-    const table = useReactTable({
-        data,
-        columns,
-        onSortingChange: setSorting,
-        onColumnFiltersChange: setColumnFilters,
-        getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-        onColumnVisibilityChange: setColumnVisibility,
-        onRowSelectionChange: setRowSelection,
-        state: {
-          sorting,
-          columnFilters,
-          columnVisibility,
-          rowSelection,
-        },
-      });
-    return (
-        <>
-            <PageTitle title={'Upcoming interviews'} />
-            <section className="mt-4">
-            <div className="rounded-md border">
-                <Table>
-                <TableHeader>
-                    {table.getHeaderGroups().map((headerGroup) => (
-                    <TableRow key={headerGroup.id}>
-                        {headerGroup.headers.map((header) => (
-                        <TableHead key={header.id} className="text-center">
-                            {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                                )}
-                        </TableHead>
-                        ))}
-                    </TableRow>
-                    ))}
-                </TableHeader>
-
-                <TableBody>
-                    {table.getRowModel().rows?.length ? (
-                    table.getRowModel().rows.map((row) => (
-                        <TableRow
-                        key={row.id}
-                        data-state={row.getIsSelected() && "selected"}
-                        >
-                        {row.getVisibleCells().map((cell) => (
-                            <TableCell key={cell.id} className="text-center text-xs">
-                            {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext()
-                            )}
-                            </TableCell>
-                        ))}
-                        </TableRow>
-                    ))
-                    ) : (
-                    <TableRow>
-                        <TableCell
-                        colSpan={columns.length}
-                        className="h-24 text-center"
-                        >
-                        No results.
-                        </TableCell>
-                    </TableRow>
-                    )}
-                </TableBody>
-                </Table>
           </div>
-            </section>
-        </>
-    );
+
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id} className="text-center">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id} className="text-center text-xs">
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="flex-1 text-sm text-muted-foreground">
+              {table.getFilteredSelectedRowModel().rows.length} of{" "}
+              {table.getFilteredRowModel().rows.length} row(s) selected.
+            </div>
+            <div className="space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 };
 
-export default UpcomingInterviews;
+export default UpcomingInterview;
