@@ -1,3 +1,4 @@
+"use client"
 import FormatTitle from "@/components/TitleFormatter";
 import { usePathname } from "next/navigation";
 

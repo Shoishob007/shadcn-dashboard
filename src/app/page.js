@@ -256,14 +256,6 @@ export default function Home() {
                     Top contributors from last three months
                   </p>
                 </section>
-                {employeeData.map((d, i) => (
-                  <ApplicantsCard
-                    key={i}
-                    email={d.email}
-                    name={d.name}
-                    position={d.position}
-                  />
-                ))}
               </CardContent>
             </section>
           </div>

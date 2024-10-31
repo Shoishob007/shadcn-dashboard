@@ -122,7 +122,7 @@ const JobListings = () => {
                                <CardDescription className="text-sm text-gray-600">{job.location} - <span className={`${typeBgColor} p-1 rounded`}>{job.type}</span></CardDescription>
                            </CardHeader>
                            <CardContent className="flex justify-between items-center flex-grow">
-                               <p className="text-lg font-semibold text-green-600">Salary: {job.salary}</p>
+                               <p className="">Salary: {job.salary}</p>
                            </CardContent>
                            <CardFooter className="flex justify-end">
                                <Button onClick={() => handleViewDetails(job.id)}>View Details</Button>
