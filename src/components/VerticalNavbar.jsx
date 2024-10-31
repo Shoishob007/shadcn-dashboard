@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import useLayoutStore from "@/stores/useLayoutStore";
 
 const VerticalNavbar = () => {
@@ -96,7 +96,12 @@ const VerticalNavbar = () => {
         <section>
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <Bell className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
+              <div className="relative w-full">
+                <Bell className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
+                <div className=" absolute bg-black rounded-full w-5 text-white -top-3 -right-2">
+                  <span className="">1</span>
+                </div>
+              </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="mr-4">
               <DropdownMenuLabel>Notification</DropdownMenuLabel>
@@ -123,6 +128,18 @@ const VerticalNavbar = () => {
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link href="#">Try Enterprize</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button
+                  className="w-32 h-8 shadow-none border-none"
+                  variant="outline"
+                  onClick={() => {
+                    signOut();
+                  }}
+                  disabled={status === "unauthenticated"}
+                >
+                  Logout
+                </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

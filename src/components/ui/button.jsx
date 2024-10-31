@@ -19,7 +19,7 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         slider: "hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        link: "underline-offset-4 hover:underline",
         editsuccess: "bg-green-100 text-green-600 shadow hover:bg-green-200/90",
         deletesuccess: "bg-red-100 text-red-600 shadow hover:bg-red-200/90",
       },

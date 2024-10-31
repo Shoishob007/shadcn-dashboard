@@ -30,6 +30,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 import { columns } from "../../components/applicantsColumns";
 import { applicantsData } from "../../components/applicantsData";
+import OurPagination from "@/components/Pagination";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -170,22 +171,7 @@ export default function HiredApplicants() {
             {table.getFilteredRowModel().rows.length} row(s) selected.
           </div>
           <div className="space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Next
-            </Button>
+            <OurPagination table={table} />
           </div>
         </div>
       </div>
