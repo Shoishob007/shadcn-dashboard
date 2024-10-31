@@ -1,1 +1,1 @@
-export let role = 'organization';
+export let role = 'applicant';
