@@ -16,10 +16,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useSession } from "next-auth/react";
+import useLayoutStore from "@/stores/useLayoutStore";
 import { Button } from "./ui/button";
 
-const VerticalNavbar = ({ isCollapsed, toggleSidebar }) => {
+const VerticalNavbar = () => {
   const { status, data: session } = useSession();
+  const { isCollapsed, toggleSidebar } = useLayoutStore();
 
   const handleSearch = (query) => {
     console.log("Searching for:", query);

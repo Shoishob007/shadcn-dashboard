@@ -14,7 +14,6 @@ const ProfileSetting = () => {
   const [formData, setFormData] = useState({
     name: session?.user?.name,
     email: session?.user?.email,
-    password: "",
     image: session?.user?.image,
   });
 

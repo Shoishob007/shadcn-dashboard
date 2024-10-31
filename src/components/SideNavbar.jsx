@@ -1,5 +1,4 @@
 "use client";
-import { useWindowWidth } from "@react-hook/window-size";
 import {
   Bell,
   BriefcaseBusiness,
@@ -20,13 +19,13 @@ import { useToast } from "../hooks/use-toast";
 import { cn } from "../lib/utils";
 import { role } from "./RoleManagement";
 import { Nav } from "./ui/nav";
+import useLayoutStore from "@/stores/useLayoutStore";
 
-export default function SideNavbar({ isCollapsed }) {
+export default function SideNavbar() {
   const { toast } = useToast();
   const { status, data: session } = useSession();
   const pathname = usePathname();
-  const onlyWidth = useWindowWidth();
-  const mobileWidth = onlyWidth < 768;
+  const { isCollapsed } = useLayoutStore();
 
   const handleSignOut = async () => {
     try {
