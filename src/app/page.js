@@ -85,7 +85,7 @@ const applicantCardData = [
     amount: "18",
     discription: "+1 since last month",
     icon: CalendarDays,
-    href: "/recent-job-postings",
+    href: "/recent-job",
   },
 ]
 
