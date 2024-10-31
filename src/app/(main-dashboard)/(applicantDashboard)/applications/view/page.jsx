@@ -22,7 +22,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import companyLogo from '../../../../../../public/assests/dummy-logo.png';
 
+import FormatTitle from "@/components/TitleFormatter";
 import {
   Dialog,
   DialogContent,
@@ -48,8 +50,9 @@ import {
   MoreHorizontal,
   Tag,
 } from "lucide-react";
-import { useState } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 export const data = [
   {
@@ -282,11 +285,27 @@ export const columns = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => (
-      <div className="text-center capitalize font-medium">
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+      const backgroundColor =
+        status === "applied"
+          ? "bg-blue-100"
+          : status === "shortlisted"
+            ? "bg-fuchsia-100"
+            : status === 'rejected' ? "bg-red-100"
+            : "bg-yellow-100";
+      const textColor =
+        status === "applied"
+          ? "text-blue-700"
+          : status === "shortlisted"
+            ? "text-fuchsia-700" 
+            : status === 'rejected' ? "text-red-600"
+            : "text-yellow-600";
+      return (
+      <div className={`${backgroundColor} ${textColor} p-1 rounded-lg text-center capitalize font-medium`}>
         {row.getValue("status")}
       </div>
-    ),
+    )},
   },
   {
     id: "actions",
@@ -436,6 +455,8 @@ const viewApplications = () => {
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
+  const pathname = usePathname();
+  const pageTitle = FormatTitle(pathname);
 
   const table = useReactTable({
     data,
@@ -458,7 +479,7 @@ const viewApplications = () => {
 
   return (
     <div>
-      <PageTitle title={"My Applications"} />
+       <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
 
       {/* My applications table */}
       <section className="mt-4">

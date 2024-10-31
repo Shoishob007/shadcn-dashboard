@@ -2,6 +2,7 @@
 "use client";
 
 import PageTitle from "@/components/PageTitle";
+import FormatTitle from "@/components/TitleFormatter";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,6 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Clock, Loader, Tag } from "lucide-react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import companyLogo from '../../../../../public/assests/dummy-logo.png';
 
@@ -185,6 +187,9 @@ export const interviewList = [
 
 
 const UpcomingInterviews = () => {
+  const pathname = usePathname();
+  const pageTitle = FormatTitle(pathname);
+  
   const shortlisted = interviewList.filter(d => d.status === 'shortlisted');
   console.log(shortlisted)
   
@@ -200,7 +205,7 @@ const UpcomingInterviews = () => {
   
   return (
     <div>
-      <PageTitle title='Upcoming Interviews' />
+       <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
       {/* Ucoming interview cards */}
       <section className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {
