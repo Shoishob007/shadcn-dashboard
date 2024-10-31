@@ -9,8 +9,9 @@ import { SessionProvider } from "next-auth/react";
 import { cn } from "../lib/utils";
 import { usePathname } from "next/navigation";
 import "./globals.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useWindowWidth } from "@react-hook/window-size";
+import useLayoutStore from "@/stores/useLayoutStore";
 
 export default function RootLayout({ children, session }) {
   const pathName = usePathname();
@@ -21,26 +22,17 @@ export default function RootLayout({ children, session }) {
   const onlyWidth = useWindowWidth();
   const mobileWidth = onlyWidth < 768;
 
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isManuallyExpanded, setIsManuallyExpanded] = useState(false);
+  const { isCollapsed, isManuallyExpanded, setCollapsed, resetState } = useLayoutStore()
 
   useEffect(() => {
-    if (mobileWidth && !isManuallyExpanded) {
-      setIsCollapsed(true);
-    } else if (!mobileWidth) {
-      setIsCollapsed(false);
-      setIsManuallyExpanded(false);
-    }
-  }, [mobileWidth, isManuallyExpanded]);
-
-  const toggleSidebar = () => {
-    if (isCollapsed) {
-      setIsManuallyExpanded(true);
+    if (mobileWidth) {
+      if (!isManuallyExpanded) {
+        setCollapsed(true);
+      }
     } else {
-      setIsManuallyExpanded(false);
+      resetState();
     }
-    setIsCollapsed(!isCollapsed);
-  };
+  }, [mobileWidth, isManuallyExpanded, setCollapsed, resetState]);
 
   return (
     <html lang="en">
@@ -58,11 +50,11 @@ export default function RootLayout({ children, session }) {
             <div className="flex h-screen overflow-hidden">
 
               <div className="flex-shrink-0">
-                <SideNavbar isCollapsed={isCollapsed} />
+                <SideNavbar />
               </div>
               <div className="flex flex-col flex-1 overflow-hidden">
                 <div className="sticky top-0">
-                  <VerticalNavbar isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
+                  <VerticalNavbar />
                 </div>
                 <div className="flex-1 overflow-y-auto p-4">
                   {children}

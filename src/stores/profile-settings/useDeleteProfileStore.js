@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { toast } from "@/hooks/use-toast";
 
-const useDeleteProfileStore = create((set, get) => ({
+const useDeleteProfileStore = create((set) => ({
     formData: {
         password: "",
     },
