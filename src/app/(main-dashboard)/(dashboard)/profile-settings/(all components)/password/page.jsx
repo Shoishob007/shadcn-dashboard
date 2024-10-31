@@ -13,7 +13,7 @@ export default function PasswordSettings() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.newPassword !== formData.confirmPassword) {
-      toast({ title: "Passwords do not match", variant: "destructive" });
+      toast({ title: "Passwords do not match", variant: "ourDestructive" });
       return;
     }
     savePassword(formData);

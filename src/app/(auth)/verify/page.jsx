@@ -15,7 +15,7 @@ export default function VerifyPage() {
       toast({
         title: "Error",
         description: "No token found for verification.",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
       return;
     }
@@ -40,7 +40,7 @@ export default function VerifyPage() {
       toast({
         title: "Success",
         description: "Verification success!",
-        variant: "success",
+        variant: "ourSuccess",
       });
 
       router.push("/login");
@@ -48,7 +48,7 @@ export default function VerifyPage() {
       toast({
         title: "Error",
         description: error.message,
-        variant: "destructive",
+        variant: "ourDestructive",
       });
     }
   };

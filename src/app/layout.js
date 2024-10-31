@@ -47,12 +47,12 @@ export default function RootLayout({ children, session }) {
               </div>
             </div>
           ) : (
-            <div className="flex h-screen overflow-hidden">
+            <div className="flex h-screen">
 
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 overflow-hidden">
                 <SideNavbar />
               </div>
-              <div className="flex flex-col flex-1 overflow-hidden">
+              <div className="flex flex-col flex-1">
                 <div className="sticky top-0">
                   <VerticalNavbar />
                 </div>

@@ -15,7 +15,7 @@ import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 
 export const SidebarLinks = () => {
-    const { toast } = useToast();
+  const { toast } = useToast();
   const { status } = useSession();
   const pathname = usePathname();
 
@@ -26,14 +26,14 @@ export const SidebarLinks = () => {
       toast({
         title: "Signed Out!",
         description: "You have signed out successfully.",
-        variant: "success",
+        variant: "ourSuccess",
       });
     } catch (error) {
       console.error("Sign out error:", error);
       toast({
         title: "Error",
         description: "Failed to sign out. Please try again.",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
     }
   };

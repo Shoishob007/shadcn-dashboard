@@ -55,10 +55,10 @@ const useRegisterStore = create((set) => ({
             }
 
             set({ submitted: true });
-            toast({ title: "Registration Successful" });
+            toast({ title: "Registration Successful", variant: "ourSuccess",});
         } catch (error) {
             console.error("Registration Failed:", error);
-            toast({ title: "Registration Failed", description: error.message });
+            toast({ title: "Registration Failed", description: error.message, variant: "ourDestructive", });
         }
     },
 }));

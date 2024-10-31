@@ -24,10 +24,10 @@ const useProfileStore = create((set, get) => ({
         try {
             console.log("Saving profile data:", { ...sessionUser, ...get().formData });
             // here goes the profile saving logic
-            toast({ title: "Profile updated successfully!", variant: "success" });
+            toast({ title: "Profile updated successfully!", variant: "ourSuccess" });
         } catch (error) {
             console.error("Error saving profile:", error);
-            toast({ title: "Error updating profile.", variant: "destructive" });
+            toast({ title: "Error updating profile.", variant: "ourDestructive" });
         } finally {
             set({ loading: false });
         }

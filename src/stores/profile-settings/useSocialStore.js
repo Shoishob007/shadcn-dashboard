@@ -20,11 +20,11 @@ const useSocialStore = create((set, get) => ({
         try {
             console.log("Saving Social links:", { ...formData, ...get().formData });
             // here goes the social links saving logic
-            toast({ title: "Social links updated successfully!", variant: "success" });
+            toast({ title: "Social links updated successfully!", variant: "ourSuccess" });
             console.log(formData)
         } catch (error) {
             console.error("Error saving social links:", error);
-            toast({ title: "Error updating social links", variant: "destructive" });
+            toast({ title: "Error updating social links", variant: "ourDestructive" });
         }
     },
 }));
