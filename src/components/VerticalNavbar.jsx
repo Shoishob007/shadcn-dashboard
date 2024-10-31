@@ -15,9 +15,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "./ui/button";
-import { signOut, useSession } from "next-auth/react";
 import useLayoutStore from "@/stores/useLayoutStore";
+import { signOut, useSession } from "next-auth/react";
+import { Button } from "./ui/button";
 
 const VerticalNavbar = () => {
   const { status, data: session } = useSession();
@@ -96,8 +96,6 @@ const VerticalNavbar = () => {
         <section>
           <DropdownMenu>
             <DropdownMenuTrigger>
-                <div className="relative w-full">
-                  <Bell className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
               <div className="relative w-full">
                 <Bell className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
                 <div className=" absolute bg-black rounded-full w-5 text-white -top-3 -right-2">
