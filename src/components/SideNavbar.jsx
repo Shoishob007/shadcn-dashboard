@@ -106,7 +106,7 @@ export default function SideNavbar({ isCollapsed }) {
         },
         {
           title: "Recent job postings",
-          href: "recent-job",
+          href: "/recent-job",
           icon: Circle,
         },
       ],
