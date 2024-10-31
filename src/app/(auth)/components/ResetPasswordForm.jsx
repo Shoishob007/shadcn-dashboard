@@ -29,7 +29,7 @@ const ResetPasswordForm = () => {
       toast({
         title: "Error",
         description: "Passwords did not match",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
       return;
     }
@@ -54,7 +54,7 @@ const ResetPasswordForm = () => {
       toast({
         title: "Success",
         description: "Password has been reset successfully",
-        variant: "success",
+        variant: "ourSuccess",
       });
 
       router.push("/login");
@@ -62,7 +62,7 @@ const ResetPasswordForm = () => {
       toast({
         title: "Error",
         description: error.message,
-        variant: "destructive",
+        variant: "ourDestructive",
       });
     }
   };

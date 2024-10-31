@@ -158,7 +158,7 @@ export const columns = [
         toast({
           title: "Success",
           description: "Applicant shortlisted!",
-          variant: "success",
+          variant: "ourSuccess",
         });
       };
 

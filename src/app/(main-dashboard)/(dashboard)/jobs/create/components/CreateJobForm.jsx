@@ -33,8 +33,10 @@ import {
   SlidersVertical,
   CalendarFold,
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const CreateJobForm = ({ onClose }) => {
+  const { toast } = useToast();
   const {
     register,
     handleSubmit,
@@ -50,13 +52,18 @@ const CreateJobForm = ({ onClose }) => {
 
   const onSubmit = (data) => {
     console.log("Job data:", data);
+    toast({
+      title: "Success",
+      description: "Created the job successfully!",
+      variant: "ourSuccess",
+    });
     onClose();
   };
 
   return (
     <div className="flex justify-center w-full">
       <div className="rounded-lg w-full">
-        <Card>
+        <Card className="shadow-none border-none">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-semibold">Create Job</CardTitle>
             <CardDescription>
@@ -82,7 +89,6 @@ const CreateJobForm = ({ onClose }) => {
                     className="!rounded-l-none"
                   />
                 </div>
-
                 {errors.title && (
                   <span className="text-xs text-red-500">
                     {errors.title.message}
@@ -125,7 +131,6 @@ const CreateJobForm = ({ onClose }) => {
                     className="!rounded-l-none"
                   />
                 </div>
-
                 {errors.description && (
                   <span className="text-xs text-red-500">
                     {errors.description.message}
@@ -147,7 +152,6 @@ const CreateJobForm = ({ onClose }) => {
                     className="!rounded-l-none"
                   />
                 </div>
-
                 {errors.requirements && (
                   <span className="text-xs text-red-500">
                     {errors.requirements.message}
@@ -177,7 +181,6 @@ const CreateJobForm = ({ onClose }) => {
                     </SelectContent>
                   </Select>
                 </div>
-
                 {errors.jobCategory && (
                   <span className="text-xs text-red-500">
                     {errors.jobCategory.message}
@@ -207,7 +210,6 @@ const CreateJobForm = ({ onClose }) => {
                     </SelectContent>
                   </Select>
                 </div>
-
                 {errors.jobType && (
                   <span className="text-xs text-red-500">
                     {errors.jobType.message}
@@ -230,7 +232,6 @@ const CreateJobForm = ({ onClose }) => {
                     className="!rounded-l-none"
                   />
                 </div>
-
                 {errors.salaryRange && (
                   <span className="text-xs text-red-500">
                     {errors.salaryRange.message}

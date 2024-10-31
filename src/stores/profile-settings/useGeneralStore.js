@@ -16,10 +16,10 @@ const useGeneralStore = create((set, get) => ({
         try {
             console.log("Saving profile info:", { ...sessionUser, ...get().formData });
             // here goes the profile info saving logic
-            toast({ title: "Profile updated successfully!", variant: "success" });
+            toast({ title: "Profile updated successfully!", variant: "ourSuccess" });
         } catch (error) {
             console.error("Error saving profile details:", error);
-            toast({ title: "Error updating profile details", variant: "destructive" });
+            toast({ title: "Error updating profile details", variant: "ourDestructive" });
         }
     },
 }));

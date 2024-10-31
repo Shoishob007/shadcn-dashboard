@@ -94,7 +94,7 @@ const JobListings = () => {
             toast({
                 title: "Success",
                 description: "Applied!",
-                variant: "success",
+                variant: "ourSuccess",
             });
             setOpen(false);
         }

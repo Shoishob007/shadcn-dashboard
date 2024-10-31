@@ -20,10 +20,10 @@ const useDeleteProfileStore = create((set) => ({
         try {
             console.log("Submitted details:", password);
             // here goes the password saving logic
-            toast({ title: "Account deleted successfully!", variant: "success" });
+            toast({ title: "Account deleted successfully!", variant: "ourSuccess" });
         } catch (error) {
             console.error("Error in deleting account:", error);
-            toast({ title: "Error in deleting account", variant: "destructive" });
+            toast({ title: "Error in deleting account", variant: "ourDestructive" });
         }
     },
 }));

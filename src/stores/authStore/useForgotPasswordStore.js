@@ -32,7 +32,7 @@ const useForgotPasswordStore = create((set) => ({
             toast({
                 title: "Success",
                 description: "A verification link was sent to your email",
-                variant: "success",
+                variant: "ourSuccess",
             });
 
             set({ emailSent: true, error: null });
@@ -42,7 +42,7 @@ const useForgotPasswordStore = create((set) => ({
             toast({
                 title: "Error",
                 description: error.message,
-                variant: "destructive",
+                variant: "ourDestructive",
             });
         }
     },

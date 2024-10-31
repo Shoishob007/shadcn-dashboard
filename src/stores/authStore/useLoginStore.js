@@ -33,14 +33,14 @@ const useLoginStore = create((set) => ({
             toast({
                 title: "Can't Sign in!",
                 description: "Invalid credentials",
-                variant: "destructive",
+                variant: "ourDestructive",
             });
         } else if (result?.url) {
             router.push(result.url);
             toast({
                 title: "Signed In!",
                 description: "You have signed in successfully.",
-                variant: "success",
+                variant: "ourSuccess",
             });
         }
     },

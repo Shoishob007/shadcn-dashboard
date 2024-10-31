@@ -13,6 +13,15 @@ import { Button } from "@/components/ui/button";
 import PageTitle from "@/components/PageTitle";
 import { usePathname } from "next/navigation";
 import FormatTitle from "@/components/TitleFormatter";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const CreateJobPage = () => {
   const [showForm, setShowForm] = useState(false);
@@ -24,32 +33,33 @@ const CreateJobPage = () => {
 
   return (
     <>
-      {" "}
       <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
-      <div className="flex flex-col items-center justify-center h-full space-y-4">
-        {!showForm ? (
-          <Card className="sm:w-full max-w-lg p-4 shadow-lg">
-            <CardHeader>
-              <CardTitle className="text-xl md:text-2xl font-semibold">
-                Create your job
-              </CardTitle>
-              <CardDescription className="space-y-3">
-                Post a new job and find the perfect candidates.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col items-center justify-center space-y-4">
-              <CardDescription className="text-center text-sm">
-                Fill out the form to create a new job posting and start finding
-                applicants today.
-              </CardDescription>
-              <Button onClick={handleOpenForm} size="lg" className="w-full">
-                Create Job
-              </Button>
-            </CardContent>
-          </Card>
-        ) : (
-          <CreateJobForm onClose={handleCloseForm} />
-        )}
+      <div className="flex flex-col items-center justify-center h-full overflow-y-hidden">
+        <Card className="sm:w-full p-4 max-w-lg shadow-lg overflow-y-auto">
+          <CardHeader className="text-center">
+            <CardTitle className="text-xl md:text-2xl font-semibold">
+              Create Your Job
+            </CardTitle>
+            <CardDescription className="space-y-3">
+              Post a new job and find the perfect candidates.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col items-center justify-center space-y-4">
+            <CardDescription className="text-center text-sm">
+              Fill out the form to create a new job posting and start finding
+              applicants today.
+            </CardDescription>
+            <Button onClick={handleOpenForm} size="lg" className="w-full">
+              Create Job
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Dialog open={showForm} onOpenChange={setShowForm}>
+          <DialogContent className="max-w-2xl max-h-[calc(100vh-60px)] overflow-auto">
+            <CreateJobForm onClose={handleCloseForm} />
+          </DialogContent>
+        </Dialog>
       </div>
     </>
   );

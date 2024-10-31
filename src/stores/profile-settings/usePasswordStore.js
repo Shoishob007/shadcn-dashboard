@@ -24,10 +24,10 @@ const usePasswordStore = create((set, get) => ({
         try {
             console.log("Saving password:", { ...formData, ...get().formData });
             // here goes the password saving logic
-            toast({ title: "Password updated successfully!", variant: "success" });
+            toast({ title: "Password updated successfully!", variant: "ourSuccess" });
         } catch (error) {
             console.error("Error saving new password:", error);
-            toast({ title: "Error updating password", variant: "destructive" });
+            toast({ title: "Error updating password", variant: "ourDestructive" });
         }
     },
 }));
