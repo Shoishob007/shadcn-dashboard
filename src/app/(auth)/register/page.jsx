@@ -46,7 +46,7 @@ export default function RegisterForm() {
     <>
       {submitted ? (
         <main className="flex justify-center items-center h-full">
-          <div className="max-w-md w-full p-4 border-2 rounded-lg shadow-md bg-white">
+          <div className="max-w-md w-full p-4 border-2 rounded-lg shadow-md bg-white dark:bg-gray-700">
             <div className="flex justify-center text-center gap-2">
               <VerificationSent onBackToLogin={handleBackToLogin} />
             </div>
@@ -113,7 +113,7 @@ export default function RegisterForm() {
                       id="role"
                       defaultValue="org"
                       {...register("role", { required: true })}
-                      className="border rounded-md p-2 w-full bg-white"
+                      className="border rounded-md p-2 w-full bg-white dark:bg-gray-700"
                     >
                       <option value="org">Organization</option>
                       <option value="applicant">Applicant</option>

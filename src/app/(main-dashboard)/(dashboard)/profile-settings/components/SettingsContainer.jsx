@@ -31,7 +31,7 @@ const SettingsContainer = ({ currentPath }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200">
+    <div className="bg-white dark:bg-gray-700 rounded-lg border border-gray-200">
       {renderContent()}
     </div>
   );

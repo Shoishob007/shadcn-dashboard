@@ -24,7 +24,7 @@ const JobsPage = () => {
     <div className="flex flex-col space-y-4 w-full">
       <PageTitle title={pageTitle} className={"ml-2"} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-2/3 md:w-full text-center">
+      <div className="grid grid-cols-1 gap-6 w-2/3 md:w-full text-center">
         {/* For jobs data */}
         <Card
           className="cursor-pointer hover:border-gray-950 transition-shadow duration-300 ease-in-out"
@@ -32,7 +32,7 @@ const JobsPage = () => {
         >
           <CardHeader>
             <CardTitle>View All Jobs</CardTitle>
-            <CardDescription>
+            <CardDescription className="text-xs md:text-sm">
               Browse and manage all the job postings available on the platform.
             </CardDescription>
           </CardHeader>
@@ -48,7 +48,7 @@ const JobsPage = () => {
         >
           <CardHeader>
             <CardTitle>Create a New Job</CardTitle>
-            <CardDescription>
+            <CardDescription className="text-xs md:text-sm">
               Post a new job and manage your job listings effectively.
             </CardDescription>
           </CardHeader>
@@ -63,7 +63,7 @@ const JobsPage = () => {
         >
           <CardHeader>
             <CardTitle>View Open Jobs</CardTitle>
-            <CardDescription>
+            <CardDescription className="text-xs md:text-sm">
               Browse and manage all the open jobs on the platform.
             </CardDescription>
           </CardHeader>

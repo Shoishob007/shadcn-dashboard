@@ -57,7 +57,7 @@ const ToastAction = React.forwardRef(({ className, ...props }, ref) => (
   <ToastPrimitives.Action
     ref={ref}
     className={cn(
-      "inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-neutral-200 bg-transparent px-3 text-sm font-medium ring-offset-white transition-colors hover:bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-neutral-100/40 group-[.destructive]:hover:border-red-500/30 group-[.destructive]:hover:bg-red-500 group-[.destructive]:hover:text-neutral-50 group-[.destructive]:focus:ring-red-500 group-[.success]:border-neutral-100/40 group-[.success]:hover:border-green-500/30 group-[.success]:hover:bg-white group-[.success]:hover:text-green-500 group-[.success]:focus:ring-green-500",
+      "inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-neutral-200 dark:border-neutral-500 bg-transparent px-3 text-sm font-medium ring-offset-white dark:ring-offset-gray-500 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-neutral-100/40 group-[.destructive]:hover:border-red-500/30 group-[.destructive]:hover:bg-red-500 group-[.destructive]:hover:text-neutral-50 group-[.destructive]:focus:ring-red-500 group-[.success]:border-neutral-100/40 group-[.success]:hover:border-green-500/30 group-[.success]:hover:bg-white group-[.success]:hover:text-green-500 group-[.success]:focus:ring-green-500",
       className
     )}
     {...props}

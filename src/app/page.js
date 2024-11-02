@@ -234,11 +234,11 @@ export default function Home() {
                 ))}
               </section>
               <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
-                <CardContent className="bg-white hover:border-gray-950">
+                <CardContent className="bg-white dark:bg-gray-700 hover:border-gray-950">
                   <p className="p-4 font-semibold">Total Applied Jobs</p>
                   <BarChart />
                 </CardContent>
-                <CardContent className="flex justify-between gap-4 bg-white hover:border-gray-950">
+                <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-700 hover:border-gray-950">
                   <section>
                     <p> Recent Job Postings </p>
                     <p className="text-sm text-gray-400">
@@ -274,14 +274,14 @@ export default function Home() {
               ))}
             </section>
             <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
-              <CardContent className="bg-white hover:border-gray-950 ">
+              <CardContent className="bg-white dark:bg-gray-700 hover:border-gray-950 ">
                 <p className="text-xl font-semibold text-center">Interviews</p>
                 <InterviewSchedule className="shadow-none" />
               </CardContent>
-              <CardContent className="flex justify-between gap-4 bg-white hover:border-gray-950">
+              <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-700 hover:border-gray-950">
                 <section>
                   <p>Top Employees</p>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-gray-400 dark:text-gray-200">
                     Top contributors from last three months
                   </p>
                 </section>

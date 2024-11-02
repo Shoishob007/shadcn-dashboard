@@ -25,8 +25,8 @@ const ApplicantsPage = () => {
     <>
       {" "}
       <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
-      <div className="flex flex-col space-y-4 mr-2 items-center  text-center justify-center">
-        <div className="w-2/3 md:w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="flex flex-col space-y-4 items-center  text-center justify-center">
+        <div className="w-full grid grid-cols-1 gap-6">
           {/* For applicants data */}
           <Card
             className="cursor-pointer hover:border-gray-950 transition-shadow duration-300 ease-in-out"
@@ -34,7 +34,7 @@ const ApplicantsPage = () => {
           >
             <CardHeader>
               <CardTitle>View All Applicants</CardTitle>
-              <CardDescription>
+              <CardDescription className="text-xs md:text-sm">
                 Browse and manage all the applicants available for the jobs.
               </CardDescription>
             </CardHeader>
@@ -50,7 +50,7 @@ const ApplicantsPage = () => {
           >
             <CardHeader>
               <CardTitle>View Shortlisted Applicants</CardTitle>
-              <CardDescription>
+              <CardDescription className="text-xs md:text-sm">
                 Browse and manage the shortlisted applicants
               </CardDescription>
             </CardHeader>
@@ -59,15 +59,13 @@ const ApplicantsPage = () => {
               respective jobs.
             </CardContent>
           </Card>
-        </div>
-        <div className="">
           <Card
             className="cursor-pointer hover:border-gray-950 transition-shadow duration-300 ease-in-out"
             onClick={() => handleNavigation("/applicants/view/hired")}
           >
             <CardHeader>
               <CardTitle>View Hired Applicants</CardTitle>
-              <CardDescription>
+              <CardDescription className="text-xs md:text-sm">
                 Browse and manage the hired applicants
               </CardDescription>
             </CardHeader>
@@ -77,6 +75,7 @@ const ApplicantsPage = () => {
             </CardContent>
           </Card>
         </div>
+        <div className=""></div>
       </div>
     </>
   );

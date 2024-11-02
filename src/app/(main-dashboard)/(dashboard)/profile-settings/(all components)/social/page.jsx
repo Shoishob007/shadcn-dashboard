@@ -63,7 +63,7 @@ export default function SocialSettings() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 mr-2">
+    <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-4 mr-2">
       <form onSubmit={handleSubmit} className="p-6 space-y-6">
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold tracking-tight">

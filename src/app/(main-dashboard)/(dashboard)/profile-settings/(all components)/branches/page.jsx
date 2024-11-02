@@ -35,7 +35,7 @@ export default function BranchSettings() {
   ];
 
   return (
-    <div className="p-6 space-y-6 bg-white rounded-lg shadow-md mr-2">
+    <div className="p-6 space-y-6 bg-white dark:bg-gray-700 rounded-lg shadow-md mr-2">
       <div className="space-y-2">
         <h2 className="text-2xl font-semibold tracking-tight">
           Branch Information

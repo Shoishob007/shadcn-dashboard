@@ -2,10 +2,10 @@
 "use client";
 
 import { useWindowWidth } from "@react-hook/window-size";
-import { ArrowRight, Bell, User } from "lucide-react";
+import { ArrowRight, Bell, User, Sun, Moon } from "lucide-react";
 import Link from "next/link";
 import { cn } from "../lib/utils";
-import SearchComponent from "./SearchComponent";
+// import SearchComponent from "./SearchComponent";
 
 import {
   DropdownMenu,
@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useLayoutStore from "@/stores/useLayoutStore";
+import { ThemeToggle } from "@/components/theme-toggle.jsx";
 import { signOut, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 
@@ -23,9 +24,9 @@ const VerticalNavbar = () => {
   const { status, data: session } = useSession();
   const { isCollapsed, toggleSidebar } = useLayoutStore();
 
-  const handleSearch = (query) => {
-    console.log("Searching for:", query);
-  };
+  // const handleSearch = (query) => {
+  //   console.log("Searching for:", query);
+  // };
 
   const onlyWidth = useWindowWidth();
   const mobileWidth = onlyWidth < 768;
@@ -40,7 +41,7 @@ const VerticalNavbar = () => {
 
   return (
     <nav
-      className={`bg-white ml-4 my-2 mr-4 py-2 px-2 sm:px-6 rounded-lg text-gray-500 shadow-md border-t-2 text-sm flex items-center
+      className={`bg-white dark:bg-gray-700 ml-4 my-2 mr-4 py-4 px-2 sm:px-6 rounded-lg text-gray-500 dark:text-gray-200 shadow-md border-t-2 text-sm flex items-center
         ${mobileWidth ? "justify-center" : "justify-between"}`}
     >
       <div
@@ -90,7 +91,11 @@ const VerticalNavbar = () => {
       <div
         className={`flex items-center ml-2 gap-2 sm:gap-5 transition-all duration-300 ease-in-out`}
       >
-        <SearchComponent onSearch={handleSearch} />
+        {/* <SearchComponent onSearch={handleSearch} /> */}
+
+        <div className="w-full">
+          <ThemeToggle className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
+        </div>
 
         {/* Notification dropdown */}
         <section>

@@ -21,23 +21,22 @@ export default function SideNavbar() {
     );
   }
 
-
   return (
     <>
       <div
         className={cn(
-          "h-[calc(100vh-1rem)] sticky border-r pb-10 pt-6 bg-white my-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out overflow-y-auto",
-          isCollapsed ? "w-16" : "w-56"
+          "h-[calc(100vh-1rem)] sticky border-r pb-10 pt-6 bg-white dark:bg-gray-700 my-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out overflow-y-auto",
+          isCollapsed ? "w-16" : "w-[220px]"
         )}
       >
         <div className="items-center text-center sm:mx-auto">
-          <Link href={"/"} className="rounded-full">
+          <Link href={"/"}>
             <Image
               src="/assests/hh-logo.png"
               alt="Logo"
               width={120}
               height={120}
-              className="rounded-full items-center text-center inline"
+              className="rounded-lg items-center text-center inline"
             />
           </Link>
         </div>

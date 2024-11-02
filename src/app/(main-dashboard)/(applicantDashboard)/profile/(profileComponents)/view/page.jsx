@@ -10,7 +10,7 @@ const ViewProfile = () => {
   const pathname = usePathname();
   return (
     <div className="flex flex-col gap-10 justify-center h-full">
-      <div className="bg-white p-6 rounded-lg shadow-md mx-2">
+      <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md mx-2">
         <div className="flex gap-3 md:gap-0 flex-col-reverse md:flex-row md:justify-between items-center p-6">
           <div className="flex gap-4 items-center">
             <Image

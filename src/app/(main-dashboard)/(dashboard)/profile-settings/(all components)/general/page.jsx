@@ -27,7 +27,7 @@ export default function GeneralSettings() {
   };
 
   return (
-    <div className="bg-white">
+    <div className="bg-white dark:bg-gray-700">
       <form onSubmit={handleSubmit} className="p-6 space-y-6">
         <div className="space-y-2">
           <h2 className="text-xl font-semibold tracking-tight">

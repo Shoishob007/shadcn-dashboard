@@ -79,7 +79,7 @@ export default function ApplicantsData() {
   return (
     <>
       <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
-      <div className="bg-white p-4 rounded-lg shadow-md h-full items-center">
+      <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-md h-full items-center">
         <div className="flex items-center justify-center py-4 ">
           <Input
             placeholder="Filter applicant..."
