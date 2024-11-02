@@ -30,7 +30,7 @@ const ProfileSetting = () => {
     <>
       <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
 
-      <div className="flex flex-col gap-4 justify-center h-full bg-white rounded-lg">
+      <div className="flex flex-col gap-4 justify-center h-full bg-white dark:bg-gray-700 rounded-lg">
         <div className="relative w-full max-w-screen-lg m-0 p-4">
           <Image
             src={coverPhoto}
@@ -61,10 +61,12 @@ const ProfileSetting = () => {
                 </p>
               </div>
             </div>
-            <div className="group text-gray-600 hover:text-white px-10 py-2 flex flex-col items-center bg-white bg-gradient-to-tr from-white to-white rounded-md border-[1px] border-red-700 hover:from-rose-500 hover:to-orange-500 cursor-pointer">
+            <div className="group text-gray-600 dark:text-gray-100 hover:text-white dark:hover:text-gray-800 px-10 py-2 flex flex-col items-center bg-white dark:bg-gray-700 bg-gradient-to-tr from-white to-white dark:from-gray-700 dark:to-gray-700 rounded-md border-[1px] border-red-700 hover:from-rose-500 hover:to-orange-500 cursor-pointer">
               <h2 className="text-sm font-semibold">
                 Go{" "}
-                <span className="text-red-500 group-hover:text-white">Pro</span>
+                <span className="text-red-500 dark:text-red-700 group-hover:text-white dark:group-hover:text-gray-300">
+                  Pro
+                </span>
               </h2>
               <p className="text-xs">Get 3x more facilities</p>
             </div>

@@ -55,7 +55,7 @@ export default function VerifyPage() {
 
   return (
     <main className="flex justify-center items-center h-screen">
-      <div className="max-w-md w-full p-6 border-2 rounded-lg text-center bg-white">
+      <div className="max-w-md w-full p-6 border-2 rounded-lg text-center bg-white dark:bg-gray-700">
         <h1 className="text-2xl font-bold text-center mb-2">Verify Account</h1>
         <p className="text-sm font-semi-bold text-center mb-4">
           Click the button to verify your account

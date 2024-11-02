@@ -82,7 +82,7 @@ export default function HiredApplicants() {
     <>
       {" "}
       <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
-      <div className="bg-white p-4 rounded-lg shadow-md h-full">
+      <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-md h-full">
         <div className="flex items-center justify-between py-4">
           <Input
             placeholder="Filter applicant..."

@@ -5,14 +5,16 @@ import { cn } from "@/lib/utils";
 
 export default function Card({ label, icon: Icon, amount, discription }) {
   return (
-    <CardContent className="bg-white hover:border-gray-950">
+    <CardContent className="bg-white dark:bg-gray-700 hover:border-gray-950">
       <section className="flex justify-between gap-2">
-        <p className="text-sm">{label}</p>
+        <p className="text-sm dark:text-gray-200">{label}</p>
         <Icon className="h-4 w-4 text-gray-400" />
       </section>
       <section className="flex flex-col gap-1">
-        <h2 className="text-2xl font-semibold">{amount}</h2>
-        <p className="text-xs text-gray-500">{discription}</p>
+        <h2 className="text-2xl font-semibold dark:text-gray-200">{amount}</h2>
+        <p className="text-xs text-gray-500 dark:text-gray-200">
+          {discription}
+        </p>
       </section>
     </CardContent>
   );

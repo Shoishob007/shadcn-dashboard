@@ -22,7 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import companyLogo from '../../../../../../public/assests/dummy-logo.png';
+import companyLogo from "../../../../../../public/assests/dummy-logo.png";
 
 import FormatTitle from "@/components/TitleFormatter";
 import {
@@ -291,21 +291,26 @@ export const columns = [
         status === "applied"
           ? "bg-fuchsia-100"
           : status === "shortlisted"
-            ? "bg-green-100"
-            : status === 'rejected' ? "bg-red-100"
-            : "bg-yellow-100";
+          ? "bg-green-100"
+          : status === "rejected"
+          ? "bg-red-100"
+          : "bg-yellow-100";
       const textColor =
         status === "applied"
           ? "text-fuchsia-600"
           : status === "shortlisted"
-            ? "text-green-700" 
-            : status === 'rejected' ? "text-red-600"
-            : "text-yellow-600";
+          ? "text-green-700"
+          : status === "rejected"
+          ? "text-red-600"
+          : "text-yellow-600";
       return (
-      <div className={`${backgroundColor} ${textColor} p-1 rounded-lg text-center capitalize font-medium`}>
-        {row.getValue("status")}
-      </div>
-    )},
+        <div
+          className={`${backgroundColor} ${textColor} p-1 rounded-lg text-center capitalize font-medium`}
+        >
+          {row.getValue("status")}
+        </div>
+      );
+    },
   },
   {
     id: "actions",
@@ -477,11 +482,11 @@ const viewApplications = () => {
 
   return (
     <div>
-       <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
+      <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
 
       {/* My applications table */}
       <section className="">
-        <div className="w-full bg-white py-2 px-6 rounded-lg shadow-md h-full items-center">
+        <div className="w-full bg-white dark:bg-gray-700 py-2 px-6 rounded-lg shadow-md h-full items-center">
           <div className="flex items-center justify-center py-4 ">
             <Input
               placeholder="Filter jobs..."
