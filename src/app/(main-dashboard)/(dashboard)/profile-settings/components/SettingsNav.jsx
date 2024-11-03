@@ -61,9 +61,11 @@ const SettingsNav = ({ currentPath }) => {
             key={item.href}
             href={item.href}
             className={cn(
-              "flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors hover:bg-gray-100",
-              isActive ? " text-primary font-bold" : "text-gray-600",
-              item.danger && "text-red-600 hover:bg-red-50"
+              "flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-900",
+              isActive
+                ? " text-primary font-bold"
+                : "text-gray-600 dark:text-gray-300",
+              item.danger && "text-red-600 dark:text-red-600 hover:bg-red-50"
             )}
           >
             <Icon className="w-4 h-4" />

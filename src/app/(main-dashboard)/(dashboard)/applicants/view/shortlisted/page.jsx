@@ -96,7 +96,10 @@ export default function ShortListedApplicants() {
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
+              <Button
+                variant="outline"
+                className="ml-auto dark:bg-gray-700 dark:text-gray-300"
+              >
                 Columns <ChevronDown className="ml-1 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -128,7 +131,10 @@ export default function ShortListedApplicants() {
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id} className="p-0">
                   {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id} className="text-center p-0">
+                    <TableHead
+                      key={header.id}
+                      className="text-center p-0"
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -172,7 +178,7 @@ export default function ShortListedApplicants() {
           </Table>
         </div>
         <div className="flex items-center justify-between space-x-2 py-4">
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-muted-foreground dark:text-gray-200">
             {table.getFilteredSelectedRowModel().rows.length} of{" "}
             {table.getFilteredRowModel().rows.length} row(s) selected.
           </div>

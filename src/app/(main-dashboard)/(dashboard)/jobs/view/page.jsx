@@ -92,7 +92,10 @@ export default function JobsData() {
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
+              <Button
+                variant="outline"
+                className="ml-auto dark:bg-gray-700 dark:text-gray-300"
+              >
                 Columns <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -124,7 +127,10 @@ export default function JobsData() {
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id} className="text-center">
+                    <TableHead
+                      key={header.id}
+                      className="text-center"
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -168,7 +174,7 @@ export default function JobsData() {
           </Table>
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="flex-1 text-sm text-muted-foreground">
+          <div className="flex-1 text-sm text-muted-foreground dark:text-gray-200">
             {table.getFilteredSelectedRowModel().rows.length} of{" "}
             {table.getFilteredRowModel().rows.length} row(s) selected.
           </div>

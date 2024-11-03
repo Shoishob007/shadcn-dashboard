@@ -20,7 +20,7 @@ const OurPagination = ({ table }) => {
             href="#"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="!text-sm text-gray-500"
+            className="!text-sm text-gray-500 dark:text-gray-300"
           />
         </PaginationItem>
 
@@ -30,7 +30,7 @@ const OurPagination = ({ table }) => {
               href="#"
               onClick={() => table.setPageIndex(index)}
               isActive={index === currentPage}
-              className="!text-sm text-gray-500"
+              className="!text-sm text-gray-500 dark:text-gray-300"
             >
               {index + 1}
             </PaginationLink>
@@ -48,7 +48,7 @@ const OurPagination = ({ table }) => {
             href="#"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="!text-sm text-gray-500"
+            className="!text-sm text-gray-500 dark:text-gray-300"
           />
         </PaginationItem>
       </PaginationContent>

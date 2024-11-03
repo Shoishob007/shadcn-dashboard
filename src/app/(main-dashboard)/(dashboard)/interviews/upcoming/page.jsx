@@ -58,7 +58,7 @@ const InterviewUpcoming = () => {
   }, [date, status]);
 
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return <div className="dark:text-gray-200">Loading...</div>;
   }
 
   if (status === "unauthenticated") {
@@ -88,7 +88,9 @@ const InterviewUpcoming = () => {
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Schedule New Interview</DialogTitle>
+                  <DialogTitle className="text-center">
+                    Schedule New Interview
+                  </DialogTitle>
                 </DialogHeader>
                 <EventForm
                   title={newEventTitle}
@@ -111,7 +113,7 @@ const InterviewUpcoming = () => {
             mode="single"
             selected={date}
             onSelect={(newDate) => newDate && setDate(newDate)}
-            className="rounded-md border items-center justify-center flex"
+            className="rounded-md border items-center justify-center flex dark:border-white"
           />
         </Card>
 
@@ -132,7 +134,7 @@ const InterviewUpcoming = () => {
               {events.map((event) => (
                 <Card
                   key={event.id}
-                  className="sm:p-4 p-3 border shadow-none flex justify-between"
+                  className="sm:p-4 p-3 border shadow-none flex justify-between dark:border-white"
                 >
                   <div>
                     <h3 className="sm:font-semibold text-sm sm:text-base">
