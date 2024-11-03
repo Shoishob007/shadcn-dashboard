@@ -38,6 +38,7 @@ export const SidebarLinks = () => {
     }
   };
 
+  {/*
   const getAuthLinks = () => {
     if (status === "authenticated") {
       return {
@@ -49,26 +50,26 @@ export const SidebarLinks = () => {
       };
     }
     return {
-      title: "Get Started",
-      href: "#",
-      icon: KeyRound,
-      variant: "ghost",
-      submenu: [
-        {
-          title: "Login",
-          href: "/login",
-          icon: Circle,
-          isActive: pathname === "/login",
-        },
-        {
-          title: "Register",
-          href: "/register",
-          icon: Circle,
-          isActive: pathname === "/register",
-        },
-      ],
-    };
-  };
+    //   title: "Get Started",
+    //   href: "#",
+    //   icon: KeyRound,
+    //   variant: "ghost",
+    //   submenu: [
+    //     {
+    //       title: "Login",
+    //       href: "/login",
+    //       icon: Circle,
+    //       isActive: pathname === "/login",
+    //     },
+    //     {
+    //       title: "Register",
+    //       href: "/register",
+    //       icon: Circle,
+    //       isActive: pathname === "/register",
+    //     },
+    //   ],
+    // };
+  };*/}
 
   const applicantLinks = [
     {
@@ -164,7 +165,7 @@ export const SidebarLinks = () => {
         },
       ],
     },
-    getAuthLinks(),
+    // getAuthLinks(),
   ];
 
   const organizationLinks = [
@@ -256,7 +257,7 @@ export const SidebarLinks = () => {
         },
       ],
     },
-    getAuthLinks(),
+    // getAuthLinks(),
   ];
 
   return { applicantLinks, organizationLinks };
