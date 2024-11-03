@@ -93,17 +93,17 @@ const VerticalNavbar = () => {
       >
         {/* <SearchComponent onSearch={handleSearch} /> */}
 
-        <div className="w-full">
+        <div className="w-full flex items-center">
           <ThemeToggle className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
         </div>
 
         {/* Notification dropdown */}
         <section>
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className="relative w-full">
-                <Bell className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
-                <div className=" absolute bg-black rounded-full w-5 text-white -top-3 -right-2">
+            <DropdownMenuTrigger asChild>
+              <div className="relative w-5 h-5 flex items-center justify-center">
+                <Bell className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0 " />
+                <div className="absolute bg-black rounded-full w-5 text-white -top-3 -right-2 flex items-center justify-center">
                   <span className="">1</span>
                 </div>
               </div>
@@ -119,8 +119,10 @@ const VerticalNavbar = () => {
 
         <section>
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <User className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
+            <DropdownMenuTrigger asChild>
+              <div className=" w-5 h-5 flex items-center justify-center">
+                <User className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
+              </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="mr-6">
               <DropdownMenuLabel>User Profile</DropdownMenuLabel>
