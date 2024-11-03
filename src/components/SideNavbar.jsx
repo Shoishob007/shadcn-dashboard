@@ -144,6 +144,7 @@ import { Nav } from "./ui/nav";
 import useLayoutStore from "@/stores/useLayoutStore";
 import { SidebarLinks } from "./SidebarLinks";
 import { LogIn, LogOut } from "lucide-react";
+import { Button } from "./ui/button";
 
 export default function SideNavbar() {
   const { status, data: session } = useSession();
@@ -161,7 +162,7 @@ export default function SideNavbar() {
   return (
     <div
       className={cn(
-        "h-[calc(100vh-1rem)] sticky border-r bg-white dark:bg-gray-700 my-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out flex flex-col",
+        "h-[calc(100vh-1rem)] sticky border-r bg-white dark:bg-gray-700 my-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out flex flex-col py-6",
         isCollapsed ? "w-16" : "w-[220px]"
       )}
     >
@@ -187,11 +188,11 @@ export default function SideNavbar() {
         />
       </div>
 
-      <div className="flex justify-center pb-4 mt-auto">
+      <div className="flex justify-center mt-auto px-4">
         {isCollapsed ? (
-          <button
+          <Button
             onClick={session ? signOut : signIn}
-            className="bg-primary hover:bg-primary-dark text-white font-medium text-sm py-2 px-2 rounded flex items-center"
+            className='w-full'
           >
             <span className="sr-only">{session ? "Logout" : "Login"}</span>
             {/* You can use an icon here for login/logout */}
@@ -200,14 +201,14 @@ export default function SideNavbar() {
             ) : (
               <LogIn  width={20} height={20} />
             )}
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             onClick={session ? signOut : signIn}
-            className="bg-primary hover:bg-primary-dark text-white font-medium text-sm py-2 px-4 rounded"
+            className='w-full'
           >
             {session ? "Logout" : "Login"}
-          </button>
+          </Button>
         )}
       </div>
     </div>

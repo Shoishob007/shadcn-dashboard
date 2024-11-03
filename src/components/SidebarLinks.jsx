@@ -90,7 +90,7 @@ export const SidebarLinks = () => {
         },
         {
           title: "Recent job postings",
-          href: "/job-postings",
+          href: "/recent-job",
           icon: Circle,
         },
       ],

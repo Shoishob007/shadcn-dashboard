@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
-import { Briefcase, Loader, Tag } from "lucide-react";
+import { Briefcase, DollarSign, Loader, Tag } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import companyLogo from "../../../../../../public/assests/dummy-logo.png";
@@ -194,7 +194,7 @@ const JobListings = () => {
           className="bg-white dark:bg-gray-700"
         />
       </div>
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      <section className="grid grid-cols-1 gap-4 mt-4">
         {filteredJobs.map((job) => {
           const typeBgColor =
             job.type === "Full-Time"
@@ -216,12 +216,28 @@ const JobListings = () => {
                 <CardDescription className="text-sm text-gray-600 dark:text-gray-300">
                   {job.location} -{" "}
                   <span className={`${typeBgColor} p-1 rounded`}>
-                    {job.type}
+                    {job.type} 
                   </span>
                 </CardDescription>
               </CardHeader>
-              <CardContent className="flex justify-between items-center flex-grow">
-                <p className="text-sm">Salary: {job.salary}</p>
+              <CardContent className="flex flex-grow">
+                <div className="space-y-3">
+                  <div>
+                    <p>Description</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-0.5">{job.description}</p>
+                  </div>
+                  <div>
+                    <p>Requirements</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-0.5">{job.jobRequirements}</p>
+                  </div>
+                  <div>
+                    <p>Salary</p>
+                    <div className="flex mt-0.5">
+                      <span className="text-gray-600 dark:text-gray-300">< DollarSign className="w-4" /></span>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">{job.salaryRange}</p>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
               <CardFooter className="flex justify-end">
                 <Button onClick={() => handleViewDetails(job.id)}>
