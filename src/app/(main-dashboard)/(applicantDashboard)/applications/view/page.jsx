@@ -53,6 +53,7 @@ import {
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import OurPagination from "@/components/Pagination";
 
 export const data = [
   {
@@ -582,22 +583,7 @@ const viewApplications = () => {
               {table.getFilteredRowModel().rows.length} row(s) selected.
             </div>
             <div className="space-x-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
-                Previous
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                Next
-              </Button>
+              <OurPagination table={table} />
             </div>
           </div>
         </div>
