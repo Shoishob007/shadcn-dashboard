@@ -213,6 +213,57 @@ const jobs = [
 //   },
 // ];
 
+const topApplications = [
+  {
+    id: "m5gr84i9",
+    jobTitle: "Full-Stack Engineer",
+    company: "Fintechhub",
+    applicantEmail: "shoishob@hotmail.com",
+    status: "shortlisted",
+    CVScore: 50,
+    deadline: new Date("2024-11-01"),
+  },
+  {
+    id: "3u1reuv4",
+    jobTitle: "Software Engineer",
+    company: "Brain Station 23",
+    applicantEmail: "ataullah@gmail.com",
+    status: "hired",
+    CVScore: 65,
+    deadline: new Date("2024-11-05"),
+    interviewSchedule: new Date("2024-11-14"),
+  },
+  {
+    id: "derv1ws0",
+    jobTitle: "Human Resources Manager",
+    company: "Olloyo",
+    applicantEmail: "arfin@outlook.com",
+    status: "shortlisted",
+    CVScore: 50,
+    deadline: new Date("2024-11-01"),
+    interviewSchedule: new Date("2024-11-10"),
+  },
+  {
+    id: "5kma53ae",
+    jobTitle: "Marketing Manager",
+    company: "Bijit Limited",
+    applicantEmail: "shoishob@hotmain.com",
+    status: "applied",
+    CVScore: 50,
+    deadline: new Date("2024-11-01"),
+  },
+  {
+    id: "bhqecj4p",
+    jobTitle: "QA Engineer",
+    company: "Mediusware",
+    applicantEmail: "ashfaq@gmail.com",
+    status: "hired",
+    CVScore: 60,
+    deadline: new Date("2024-10-01"),
+    interviewSchedule: new Date("2024-10-10"),
+  },
+];
+
 
 export default function Home() {
   return (
@@ -236,10 +287,22 @@ export default function Home() {
                 ))}
               </section>
               <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
-                <CardContent className="bg-white dark:bg-gray-700 hover:border-gray-950">
-                  <p className="p-4 font-semibold">Total Applied Jobs</p>
-                  <BarChart />
-                </CardContent>
+              <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-700 hover:border-gray-950">
+                <section>
+                  <p className="text-lg font-semibold">Recent Applications</p>
+                  <p className="text-sm text-gray-400">
+                    Top applications according to CV score
+                  </p>
+                </section>
+                {topApplications.map((d, i) => (
+                  <ApplicantsCard
+                    key={i}
+                    email={d.company}
+                    name={d.jobTitle}
+                    position={d.status}
+                  />
+                ))}
+              </CardContent>
                 <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-700 hover:border-gray-950">
                   <section>
                     <p> Recent Job Postings </p>
