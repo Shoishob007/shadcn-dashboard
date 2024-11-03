@@ -89,10 +89,7 @@ export default function ApplicantsData() {
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="ml-auto dark:bg-gray-700 dark:text-gray-300"
-              >
+              <Button variant="outline" className="ml-auto">
                 Columns <ChevronDown className=" h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>

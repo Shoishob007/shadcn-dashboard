@@ -92,10 +92,7 @@ export default function HiredApplicants() {
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className=" dark:bg-gray-700 dark:text-gray-300"
-              >
+              <Button variant="outline">
                 Columns <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -125,10 +122,7 @@ export default function HiredApplicants() {
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      className="text-center p-0"
-                    >
+                    <TableHead key={header.id} className="text-center p-0">
                       {header.isPlaceholder
                         ? null
                         : flexRender(

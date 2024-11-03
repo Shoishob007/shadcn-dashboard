@@ -2,7 +2,7 @@
 "use client";
 
 import { useWindowWidth } from "@react-hook/window-size";
-import { ArrowRight, Bell, User, Sun, Moon } from "lucide-react";
+import { ArrowRight, Bell, User, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { cn } from "../lib/utils";
 // import SearchComponent from "./SearchComponent";
@@ -44,25 +44,29 @@ const VerticalNavbar = () => {
       className={`bg-white dark:bg-gray-700 ml-4 my-2 mr-4 py-4 px-2 sm:px-6 rounded-lg text-gray-500 dark:text-gray-200 shadow-md border-t-2 text-sm flex items-center
         ${mobileWidth ? "justify-center" : "justify-between"}`}
     >
-      <div
-        className={`flex flex-col space-y-2 transition-all duration-300 ease-in-out`}
-      >
-        <ul className="flex space-x-4 items-center">
-          <li className="items-center text-center">
-            <Button
+      <div>
+        <Button
               onClick={toggleSidebar}
               variant="ghost"
               size="icon"
               className="p-0 h-auto hover:bg-transparent"
             >
-              <ArrowRight
-                className={cn(
-                  "h-4 w-4 transition-transform duration-200",
-                  isCollapsed ? "" : "rotate-180"
-                )}
-              />
+              {isCollapsed ? (
+                <Menu
+                  className={cn("h-4 w-4 transition-transform duration-200")}
+                />
+              ) : (
+                <X
+                  className={cn("h-4 w-4 transition-transform duration-200")}
+                />
+              )}
             </Button>
-          </li>
+      </div>
+      <div
+        className={`flex flex-col space-y-2 transition-all duration-300 ease-in-out`}
+      >
+        <ul className="flex space-x-4 items-center">
+          <li className="items-center text-center"></li>
           {!mobileWidth && (
             <>
               <li>

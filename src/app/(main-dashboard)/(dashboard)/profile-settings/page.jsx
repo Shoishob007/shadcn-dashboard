@@ -39,7 +39,7 @@ const ProfileSetting = () => {
             height={360}
             className="w-full h-48 md:h-64 lg:h-72 rounded-lg object-cover"
           />
-          <div className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 md:left-16 md:translate-x-0">
+          <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 md:left-16 md:translate-x-0">
             <Image
               src={logo}
               alt="Profile logo"
