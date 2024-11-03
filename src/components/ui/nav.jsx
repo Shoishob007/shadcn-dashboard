@@ -38,7 +38,7 @@ export function Nav({ links, isCollapsed }) {
     <TooltipProvider>
       <div
         data-collapsed={isCollapsed}
-        className="group flex flex-col gap-4 pt-10 data-[collapsed=true]:py-6 data-[collapsed=true]:pt-12 px-4"
+        className="group dark:text-gray-200 flex flex-col gap-4 pt-10 data-[collapsed=true]:py-6 data-[collapsed=true]:pt-12 px-4"
       >
         <nav className="grid gap-1 pl-0 pr-4 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-1">
           {links.map((link, index) => (
@@ -55,7 +55,7 @@ export function Nav({ links, isCollapsed }) {
                         }),
                         "h-10 w-10 cursor-pointer",
                         link.variant === "default" &&
-                          "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
+                          "dark:hover:bg-muted dark:hover:text-white"
                       )}
                     >
                       <link.icon className="h-4 w-4" />
@@ -85,7 +85,7 @@ export function Nav({ links, isCollapsed }) {
                           size: "sm",
                         }),
                         link.variant === "default" &&
-                          "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
+                          "dark:hover:bg-muted dark:hover:text-white",
                         "justify-start flex items-center w-full mb-1"
                       )}
                     >
@@ -108,7 +108,7 @@ export function Nav({ links, isCollapsed }) {
                           size: "sm",
                         }),
                         link.variant === "default" &&
-                          "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
+                          "dark:hover:bg-muted dark:hover:text-white",
                         "justify-start flex items-center w-full mb-1 cursor-pointer"
                       )}
                     >

@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const VerificationSent = ({ onBackToLogin }) => {
   return (
-    <div className="text-center ">
+    <div className="text-center dark:text-gray-200">
       <Image
         src="/assests/checkmark.png"
         alt="Checkmark"

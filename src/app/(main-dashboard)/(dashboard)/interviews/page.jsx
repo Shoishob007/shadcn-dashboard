@@ -15,7 +15,7 @@ const Interviews = () => {
 
   if (status === "unauthenticated") {
     return (
-      <div className="flex justify-center items-center h-full">
+      <div className="flex justify-center items-center h-full dark:text-gray-200">
         Please sign in to access your calendar to see interviews
       </div>
     );
@@ -23,7 +23,7 @@ const Interviews = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-start h-full gap-6">
+      <div className="flex flex-col justify-start h-full gap-6 dark:text-gray-200">
         <InterviewUpcoming />
         <InterviewSchedule />
       </div>

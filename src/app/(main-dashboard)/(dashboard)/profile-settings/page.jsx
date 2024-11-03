@@ -52,30 +52,28 @@ const ProfileSetting = () => {
         <div className="p-4 rounded-lg shadow-md">
           <div className="flex gap-3 md:gap-0 flex-col-reverse md:flex-row md:justify-between items-center p-6">
             <div className="flex gap-4 items-center">
-              <div className="flex flex-col">
-                <h1 className="font-semibold text-base md:text-lg text-gray-600">
+              <div className="flex flex-col text-gray-600 dark:dark:text-gray-200">
+                <h1 className="font-semibold text-base md:text-lg">
                   {formData.name} / Settings
                 </h1>
-                <p className="text-sm text-gray-600">
-                  Update your profile information
-                </p>
+                <p className="text-sm">Update your profile information</p>
               </div>
             </div>
-            <div className="group text-gray-600 dark:text-gray-100 hover:text-white dark:hover:text-gray-800 px-10 py-2 flex flex-col items-center bg-white dark:bg-gray-700 bg-gradient-to-tr from-white to-white dark:from-gray-700 dark:to-gray-700 rounded-md border-[1px] border-red-700 hover:from-rose-500 hover:to-orange-500 cursor-pointer">
+            <div className="group text-gray-600 dark:text-gray-200 hover:text-white px-10 py-2 flex flex-col items-center bg-white bg-gradient-to-tr from-white to-white dark:from-gray-700 dark:to-gray-700 rounded-md border-[1px] border-red-700 hover:from-rose-500 hover:to-orange-500 dark:hover:from-rose-600 dark:hover:to-orange-600 cursor-pointer">
               <h2 className="text-sm font-semibold">
                 Go{" "}
-                <span className="text-red-500 dark:text-red-700 group-hover:text-white dark:group-hover:text-gray-300">
+                <span className="text-red-500 group-hover:text-white dark:group-hover:text-gray-300">
                   Pro
                 </span>
               </h2>
               <p className="text-xs">Get 3x more facilities</p>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 text-gray-600 p-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 text-gray-600 dark:text-gray-200 p-4">
             <div className="col-span-1">
               <SettingsNav currentPath={pathname} />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-2 p-2">
               <SettingsContainer currentPath={pathname} />
             </div>
           </div>

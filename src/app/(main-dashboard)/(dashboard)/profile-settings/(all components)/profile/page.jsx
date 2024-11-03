@@ -12,8 +12,7 @@ import { useEffect } from "react";
 
 export default function ProfileSettings() {
   const { data: session } = useSession();
-  const { formData, setFormData, saveProfile, loading } =
-    useProfileStore();
+  const { formData, setFormData, saveProfile, loading } = useProfileStore();
 
   useEffect(() => {
     if (session?.user) {
@@ -32,7 +31,7 @@ export default function ProfileSettings() {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-4 mr-2">
+    <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-4 mr-2 dark:text-gray-200">
       <form onSubmit={handleSubmit} className="p-6 space-y-6">
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold tracking-tight">

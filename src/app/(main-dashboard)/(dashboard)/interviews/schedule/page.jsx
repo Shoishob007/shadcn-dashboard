@@ -78,7 +78,7 @@ const InterviewSchedule = () => {
 
   if (status === "loading") {
     return (
-      <div className="flex justify-center items-center h-full">
+      <div className="flex justify-center items-center h-full dark:text-gray-200">
         <div className="animate-spin rounded-full h-8 w-8"></div>
       </div>
     );
@@ -86,7 +86,7 @@ const InterviewSchedule = () => {
 
   if (status === "unauthenticated") {
     return (
-      <div className="flex justify-center items-center h-full">
+      <div className="flex justify-center items-center h-full dark:text-gray-200">
         Please sign in to access your calendar to see scheduled interviews
       </div>
     );
@@ -96,7 +96,7 @@ const InterviewSchedule = () => {
     <>
       {" "}
       <PageTitle title={pageTitle} className={"ml-2"} />
-      <div className="h-full">
+      <div className="h-full dark:text-gray-200">
         <Card className="p-4 sm:py-8 sm:px-6 border-none shadow-md">
           <div className="flex items-center justify-center mb-4 ">
             <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
@@ -130,10 +130,10 @@ const InterviewSchedule = () => {
                         <Card
                           key={event.id}
                           className={cn(
-                            "p-3  shadow-none",
+                            "p-3 shadow-none dark:border-white",
                             isPast(eventDate) &&
                               !isToday(eventDate) &&
-                              "opacity-75"
+                              "opacity-75 "
                           )}
                         >
                           <div className="flex justify-between items-start">

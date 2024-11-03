@@ -36,7 +36,9 @@ export default function SideNavbar() {
               alt="Logo"
               width={120}
               height={120}
-              className="rounded-lg items-center text-center inline"
+              className={`rounded-lg items-center text-center inline ${
+                isCollapsed ? "p-2" : "p-0"
+              }`}
             />
           </Link>
         </div>

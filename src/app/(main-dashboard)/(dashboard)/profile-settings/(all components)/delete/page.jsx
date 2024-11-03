@@ -26,11 +26,11 @@ export default function DeleteAccount() {
 
   return (
     <div className="p-4">
-      <Card className="border-destructive/50">
+      <Card className="border-destructive/50 dark:border-red-500/50">
         <CardHeader>
-          <div className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-destructive" />
-            <CardTitle className="text-destructive">Delete Account</CardTitle>
+          <div className="flex items-center gap-2 text-destructive dark:text-red-600">
+            <AlertTriangle className="h-5 w-5" />
+            <CardTitle>Delete Account</CardTitle>
           </div>
           <CardDescription>
             This action cannot be undone. This will permanently delete your
