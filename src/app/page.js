@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import InterviewSchedule from "./(main-dashboard)/(dashboard)/interviews/schedule/page";
+import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/applicants/components/applicantsData";
 
 const cardData = [
   {
@@ -59,6 +60,7 @@ const cardData = [
   },
   {
     label: "Applicants Status",
+    amount: "N/A",
     discription: "Click to view status",
     icon: Loader,
     href: "/applicants/view",
@@ -183,33 +185,33 @@ const jobs = [
   },
 ]
 
-const employeeData = [
-  {
-    name: "Olivia Martin",
-    email: "olivia.martin@email.com",
-    position: "Full-Stack Engineer",
-  },
-  {
-    name: "Jackson Lee",
-    email: "isabella.nguyen@email.com",
-    position: "DevOps Engineer",
-  },
-  {
-    name: "Isabella Nguyen",
-    email: "isabella.nguyen@email.com",
-    position: "Sales Manager",
-  },
-  {
-    name: "William Kim",
-    email: "will@email.com",
-    position: "Marketing Lead",
-  },
-  {
-    name: "Sofia Davis",
-    email: "sofia.davis@email.com",
-    position: "Junior Executive",
-  },
-];
+// const employeeData = [
+//   {
+//     name: "Olivia Martin",
+//     email: "olivia.martin@email.com",
+//     position: "Full-Stack Engineer",
+//   },
+//   {
+//     name: "Jackson Lee",
+//     email: "isabella.nguyen@email.com",
+//     position: "DevOps Engineer",
+//   },
+//   {
+//     name: "Isabella Nguyen",
+//     email: "isabella.nguyen@email.com",
+//     position: "Sales Manager",
+//   },
+//   {
+//     name: "William Kim",
+//     email: "will@email.com",
+//     position: "Marketing Lead",
+//   },
+//   {
+//     name: "Sofia Davis",
+//     email: "sofia.davis@email.com",
+//     position: "Junior Executive",
+//   },
+// ];
 
 
 export default function Home() {
@@ -280,11 +282,19 @@ export default function Home() {
               </CardContent>
               <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-700 hover:border-gray-950">
                 <section>
-                  <p>Top Employees</p>
+                  <p className="text-lg font-semibold">Recent Applications</p>
                   <p className="text-sm text-gray-400">
-                    Top contributors from last three months
+                    Top applicants according to CV score
                   </p>
                 </section>
+                {applicantsData.map((d, i) => (
+                  <ApplicantsCard
+                    key={i}
+                    email={d.applicantEmail}
+                    name={d.applicantName}
+                    position={d.status}
+                  />
+                ))}
               </CardContent>
             </section>
           </div>
