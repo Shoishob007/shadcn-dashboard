@@ -55,7 +55,7 @@ export function Nav({ links, isCollapsed }) {
                         }),
                         "h-10 w-10 cursor-pointer",
                         link.variant === "default" &&
-                          "dark:hover:bg-muted dark:hover:text-white"
+                          "dark:hover:bg-gray-900 dark:hover:text-white"
                       )}
                     >
                       <link.icon className="h-4 w-4" />
@@ -85,7 +85,7 @@ export function Nav({ links, isCollapsed }) {
                           size: "sm",
                         }),
                         link.variant === "default" &&
-                          "dark:hover:bg-muted dark:hover:text-white",
+                          "dark:hover:bg-gray-900 dark:hover:text-white",
                         "justify-start flex items-center w-full mb-1"
                       )}
                     >
@@ -108,7 +108,7 @@ export function Nav({ links, isCollapsed }) {
                           size: "sm",
                         }),
                         link.variant === "default" &&
-                          "dark:hover:bg-muted dark:hover:text-white",
+                          "dark:hover:bg-gray-900 dark:hover:text-white",
                         "justify-start flex items-center w-full mb-1 cursor-pointer"
                       )}
                     >

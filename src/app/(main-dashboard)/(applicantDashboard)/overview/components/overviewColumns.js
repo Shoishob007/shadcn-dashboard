@@ -212,43 +212,43 @@ export const columns = [
                               width={40}
                               alt="company-logo"
                             />
-                            <div>
-                              <h1 className="text-black font-semibold">{jobDetails.title}</h1>
+                            <div className="dark:text-gray-200">
+                              <h1 className="text-black font-semibold dark:text-gray-200">{jobDetails.title}</h1>
                               <h2 className="text-xs">{jobDetails.company}</h2>
                               <div className="flex items-center gap-3">
-                                <div className="flex items-center gap-1 mt-2">
+                                <div className="flex items-center gap-1 mt-2 dark:text-gray-200">
                                   <span > <Briefcase className="w-4" /> </span>
-                                  <h3 className="capitalize text-black">{jobDetails.employmentType}</h3>
+                                  <h3 className="capitalize text-black dark:text-gray-200">{jobDetails.employmentType}</h3>
                                 </div>
-                                <div className="flex items-center gap-1 mt-2">
+                                <div className="flex items-center gap-1 mt-2 dark:text-gray-200">
                                   <span><Loader className="w-4" /></span>
-                                  <h3 className="capitalize text-black">{jobDetails.status}</h3>
+                                  <h3 className="capitalize text-black dark:text-gray-200">{jobDetails.status}</h3>
                                 </div>
                                 <div className="flex items-center gap-1 mt-2">
                                   <span > <Tag className="w-4" /> </span>
-                                  <h3 className="capitalize text-black">{jobDetails.salaryRange} Monthly</h3>
+                                  <h3 className="capitalize text-black dark:text-gray-200">{jobDetails.salaryRange} Monthly</h3>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <div className="mt-3">
-                            <h1 className="text-black font-medium">Job Description</h1>
+                          <div className="mt-3 dark:text-gray-200">
+                            <h1 className="text-black font-medium dark:text-gray-200">Job Description</h1>
                             <p className="text-xs mt-1">{jobDetails.description}</p>
                           </div>
-                          <div className="mt-3">
-                            <h1 className="text-black font-medium">Requirements</h1>
+                          <div className="mt-3 dark:text-gray-200">
+                            <h1 className="text-black font-medium dark:text-gray-200">Requirements</h1>
                             <p className="text-xs mt-1">{jobDetails.jobRequirements}</p>
                           </div>
-                          <div className="mt-3 flex items-center justify-between">
+                          <div className="mt-3 dark:text-gray-200 flex items-center justify-between">
                             <div className="flex items-center gap-1">
-                              <h1>Designation:</h1> <span className="text-black">{jobDetails.designation}</span>
+                              <h1>Designation:</h1> <span className="text-black dark:text-gray-200">{jobDetails.designation}</span>
                             </div>
-                            <div className="flex items-center gap-1">
-                              <h1>Role:</h1> <span className="text-black capitalize">{jobDetails.role}</span>
+                            <div className="flex dark:text-gray-200 items-center gap-1">
+                              <h1>Role:</h1> <span className="text-black dark:text-gray-200 capitalize">{jobDetails.role}</span>
                             </div>
                           </div>
-                          <div className="mt-3">
-                            <h1 className="text-black font-medium">Deadline</h1>
+                          <div className="mt-3 dark:text-gray-200">
+                            <h1 className="text-black font-medium dark:text-gray-200">Deadline</h1>
                             <p className="text-xs mt-1">{jobDetails.deadline?.toLocaleDateString()}</p>
                           </div>
 

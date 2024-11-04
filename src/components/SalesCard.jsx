@@ -16,13 +16,13 @@ export default function ApplicantsCard(props) {
           />
         </div>
         <div className="text-sm">
-          <p>{props.name}</p>
-          <div className="text-ellipsis overflow-hidden whitespace-nowrap w-[120px]  sm:w-auto  text-gray-400">
+          <p className="dark:text-gray-200">{props.name}</p>
+          <div className="text-ellipsis overflow-hidden whitespace-nowrap w-[120px]  sm:w-auto  text-gray-400 dark:text-gray-200">
             {props.email}
           </div>
         </div>
       </section>
-      <p>{props.position}</p>
+      <p className="dark:text-gray-200">{props.position}</p>
     </div>
   );
 }

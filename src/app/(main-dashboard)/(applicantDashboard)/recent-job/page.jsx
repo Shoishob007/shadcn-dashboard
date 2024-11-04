@@ -268,13 +268,13 @@ const RecentJobPostings = () => {
                                                     <span>{job.jobTitle}</span>, <span>{job.company}</span>
                                                 </div>
                                                 <div className="flex items-center gap-4 mt-2">
-                                                    <div className="flex items-center gap-1">
+                                                    <div className="flex items-center gap-1 dark:text-gray-200">
                                                         <span> <MapPin strokeWidth={0.5} /> </span>
-                                                        <span className="text-gray-600">{job.location}</span>
+                                                        <span className="text-gray-600 dark:text-gray-200">{job.location}</span>
                                                     </div>
-                                                    <div className="flex items-center gap-1.5">
-                                                        <span> <BriefcaseBusiness strokeWidth={0.5} /> </span>
-                                                        <span className="text-gray-600">{job.jobType}</span>
+                                                    <div className="flex items-center gap-1.5 dark:text-gray-200">
+                                                        <span > <BriefcaseBusiness strokeWidth={0.5} className="dark:text-gray-200" /> </span>
+                                                        <span className="text-gray-600 dark:text-gray-200">{job.jobType}</span>
                                                     </div>
                                                     <div className="">
                                                         <button className={`${statusBgColor} py-0.5 px-2 rounded`}>{job.status}</button>
@@ -283,22 +283,22 @@ const RecentJobPostings = () => {
                                             </div>
                                         </div>
                                         <div className="mt-3">
-                                            <p className="text-gray-400  text-sm ">{job.details}</p>
+                                            <p className="text-gray-400 dark:text-gray-200 text-sm ">{job.details}</p>
                                         </div>
                                         <div className="mt-2">
                                             <div className="flex items-center gap-4">
                                                 <div>
-                                                    <span className="text-gray-400 mr-2">Position:</span> 
+                                                    <span className="text-gray-400 mr-2 dark:text-gray-200">Position:</span> 
                                                     <span>{job.position}</span>
                                                 </div>
                                                 <div>
-                                                    <span className="text-gray-400 mr-2">Role:</span> 
+                                                    <span className="text-gray-400 dark:text-gray-200 mr-2">Role:</span> 
                                                     <span>{job.role}</span>
                                                 </div>
                                             </div>
                                             <div className="flex items-center mt-3">
                                                 <span><DollarSign strokeWidth={0.5} /></span>
-                                                <span>{job.salary}</span>
+                                                <span className="dark:text-gray-200">{job.salary}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -330,16 +330,16 @@ const RecentJobPostings = () => {
                                                 width={40}
                                             />
                                             <div>
-                                                <h1 className="text-black font-semibold">{jobDetails.title}</h1>
+                                                <h1 className="text-black dark:text-gray-200 font-semibold">{jobDetails.title}</h1>
                                                 <h2 className="text-xs">{jobDetails.company}</h2>
                                                 <div className="flex items-center gap-3">
-                                                    <div className="flex items-center gap-1 mt-2">
+                                                    <div className="flex items-center gap-1 mt-2 dark:text-gray-200">
                                                         <span > <Clock className="w-4" /> </span>
-                                                        <h3 className="capitalize text-black">{jobDetails.time}</h3>
+                                                        <h3 className="capitalize text-black dark:text-gray-200">{jobDetails.time}</h3>
                                                     </div>
-                                                    <div className="flex items-center gap-1 mt-2">
+                                                    <div className="flex items-center gap-1 mt-2 dark:text-gray-200">
                                                         <span><Loader className="w-4" /></span>
-                                                        <h3 className="capitalize text-black">{jobDetails.status}</h3>
+                                                        <h3 className="capitalize text-black dark:text-gray-200">{jobDetails.status}</h3>
                                                     </div>
                                                     <div className="flex items-center gap-1 mt-2">
                                                         <span > <Tag className="w-4" /> </span>

@@ -51,8 +51,6 @@ const VerticalNavbar = () => {
     );
   }
 
-
-
   return (
     <nav
       className={`bg-white dark:bg-gray-700 ml-4 my-2 mr-4 py-4 px-2 sm:px-6 rounded-lg text-gray-500 dark:text-gray-200 shadow-md border-t-2 text-sm flex items-center
@@ -60,21 +58,17 @@ const VerticalNavbar = () => {
     >
       <div>
         <Button
-              onClick={toggleSidebar}
-              variant="ghost"
-              size="icon"
-              className="p-0 h-auto hover:bg-transparent"
-            >
-              {isCollapsed ? (
-                <Menu
-                  className={cn("h-4 w-4 transition-transform duration-200")}
-                />
-              ) : (
-                <X
-                  className={cn("h-4 w-4 transition-transform duration-200")}
-                />
-              )}
-            </Button>
+          onClick={toggleSidebar}
+          variant="ghost"
+          size="icon"
+          className="p-0 h-auto !hover:bg-transparent"
+        >
+          {isCollapsed ? (
+            <Menu className={cn("h-4 w-4 transition-transform duration-200")} />
+          ) : (
+            <X className={cn("h-4 w-4 transition-transform duration-200")} />
+          )}
+        </Button>
       </div>
       <div
         className={`flex flex-col space-y-2 transition-all duration-300 ease-in-out`}
@@ -111,24 +105,18 @@ const VerticalNavbar = () => {
       >
         {/* <SearchComponent onSearch={handleSearch} /> */}
         <div className="w-full flex items-center space-x-2">
-          {/* <Switch onClick={toggleRole} id="role-toggle" />
-          <Label htmlFor="role-toggle">
-            {currentRole === "applicant" ? "Organization" : "Applicant"}
-          </Label> */}
-
           <Select onValueChange={(value) => setRole(value)} value={currentRole}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select role" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Role</SelectLabel>
-              <SelectItem value="applicant">Applicant</SelectItem>
-              <SelectItem value="organization">Organization</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-          
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select role" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Role</SelectLabel>
+                <SelectItem value="applicant">Applicant</SelectItem>
+                <SelectItem value="organization">Organization</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="w-full flex items-center">
@@ -141,7 +129,7 @@ const VerticalNavbar = () => {
             <DropdownMenuTrigger asChild>
               <div className="relative w-5 h-5 flex items-center justify-center">
                 <Bell className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0 " />
-                <div className="absolute bg-black rounded-full w-5 text-white -top-3 -right-2 flex items-center justify-center">
+                <div className="absolute bg-black dark:bg-gray-200 rounded-full w-5 text-white dark:text-black -top-3 -right-2 flex items-center justify-center">
                   <span className="">1</span>
                 </div>
               </div>

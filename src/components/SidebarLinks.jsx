@@ -1,43 +1,16 @@
-import { useToast } from "@/hooks/use-toast";
 import {
   Bell,
   BriefcaseBusiness,
   Calendar,
   CalendarDays,
   Circle,
-  KeyRound,
   LayoutDashboard,
   Search,
   Settings,
   UsersRound,
 } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
-import { usePathname } from "next/navigation";
 
 export const SidebarLinks = () => {
-  const { toast } = useToast();
-  const { status } = useSession();
-  const pathname = usePathname();
-
-  const handleSignOut = async () => {
-    try {
-      await signOut({ redirect: false });
-      console.log("Sign out clicked");
-      toast({
-        title: "Signed Out!",
-        description: "You have signed out successfully.",
-        variant: "ourSuccess",
-      });
-    } catch (error) {
-      console.error("Sign out error:", error);
-      toast({
-        title: "Error",
-        description: "Failed to sign out. Please try again.",
-        variant: "ourDestructive",
-      });
-    }
-  };
-
   {
     /*
   const getAuthLinks = () => {
