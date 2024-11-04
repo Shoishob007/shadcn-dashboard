@@ -64,39 +64,39 @@ export default function SideNavbar() {
       </div>
 
       {/* Logout button */}
-      <TooltipProvider>
-        <div className="flex justify-center mt-auto px-4 hover:scale-105 duration-200 dark:text-white">
-          {isCollapsed ? (
-            <Tooltip delayDuration={0}>
-              <TooltipTrigger asChild>
-                <span
-                  onClick={signOut}
-                  className="w-full cursor-pointer flex items-center justify-center dark:hover:bg-muted p-2 rounded-md"
-                >
-                  <span className="sr-only dark:text-gray-200">Logout</span>
+      <div className="flex justify-center mt-auto mx-4 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-900 rounded-md duration-200">
+        {isCollapsed ? (
+          <span
+            onClick={signOut}
+            className="w-full cursor-pointer flex items-center justify-center rounded-md"
+          >
+            <TooltipProvider>
+              <Tooltip delayDuration={0}>
+                <TooltipTrigger>
+                  <span className="sr-only">Logout</span>
                   <LogOut width={16} height={16} />
-                </span>
-              </TooltipTrigger>
-              <TooltipContent
-                side="right"
-                className="tooltip-content flex items-center gap-4"
-              >
-                <span className="ml-auto text-muted-foreground">Logout</span>
-              </TooltipContent>
-            </Tooltip>
-          ) : (
-            <button
-              onClick={signOut}
-              className="w-full flex gap-4 cursor-pointer items-center text-xs font-medium ml-4 "
-            >
-              <span className="font-medium">
-                <LogOut width={12} height={12} />
-              </span>
-              <span>Logout</span>
-            </button>
-          )}
-        </div>
-      </TooltipProvider>
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  <p>Logout</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            {/* <span className="sr-only">Logout</span>
+            <LogOut width={16} height={16} /> */}
+          </span>
+        ) : (
+          <button
+            onClick={signOut}
+            className="w-full flex justify-center gap-4 cursor-pointer items-center text-xs font-medium dark:text-gray-200 p-2"
+          >
+            <span className="font-medium">
+              <LogOut width={16} height={16} />
+            </span>
+            <span>Logout</span>
+          </button>
+        )}
+      </div>
     </div>
   );
 }
