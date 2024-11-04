@@ -119,7 +119,7 @@ export default function ApplicantsData() {
           <Table className="max-w-full">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="p-0">
+                <TableRow key={headerGroup.id} className="p-0 ">
                   {headerGroup.headers.map((header) => (
                     <TableHead key={header.id} className="text-center p-0">
                       {header.isPlaceholder

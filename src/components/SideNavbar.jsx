@@ -1,4 +1,3 @@
-
 "use client";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
@@ -10,13 +9,19 @@ import useRoleStore from "@/stores/roleStore/useRoleStore";
 import { SidebarLinks } from "./SidebarLinks";
 import { LogOut } from "lucide-react";
 import { Button } from "./ui/button";
- 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 export default function SideNavbar() {
   const { status, data: session } = useSession();
   const { isCollapsed } = useLayoutStore();
   const { currentRole } = useRoleStore(); // Access the current role from Zustand store
   const { applicantLinks, organizationLinks } = SidebarLinks();
- 
+
   if (status === "loading") {
     return (
       <div className="flex flex-col-reverse items-center justify-center h-40">
@@ -24,13 +29,13 @@ export default function SideNavbar() {
       </div>
     );
   }
- 
+
   // Determine which links to display based on the current role
   const filteredLinks =
     currentRole === "applicant"
       ? applicantLinks.filter((link) => link.label !== "Get Started")
       : organizationLinks.filter((link) => link.label !== "Get Started");
- 
+
   return (
     <div
       className={cn(
@@ -52,28 +57,42 @@ export default function SideNavbar() {
           />
         </Link>
       </div>
- 
+
       {/* Sidebar links */}
       <div className="flex-grow overflow-y-auto mb-4">
         <Nav isCollapsed={isCollapsed} links={filteredLinks} />
       </div>
- 
+
       {/* Logout button */}
-      <div className="flex justify-center mt-auto px-4">
+      <div className="flex justify-center mt-auto mx-4 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-900 rounded-md duration-200">
         {isCollapsed ? (
           <span
             onClick={signOut}
-            className="w-full cursor-pointer flex items-center justify-center"
+            className="w-full cursor-pointer flex items-center justify-center rounded-md"
           >
-            <span className="sr-only">Logout</span>
-            <LogOut width={16} height={16} />
+            <TooltipProvider>
+              <Tooltip delayDuration={0}>
+                <TooltipTrigger>
+                  <span className="sr-only">Logout</span>
+                  <LogOut width={16} height={16} />
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  <p>Logout</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            {/* <span className="sr-only">Logout</span>
+            <LogOut width={16} height={16} /> */}
           </span>
         ) : (
           <button
             onClick={signOut}
-            className="w-full flex gap-4 cursor-pointer items-center text-xs font-medium ml-4"
+            className="w-full flex justify-center gap-4 cursor-pointer items-center text-xs font-medium dark:text-gray-200 p-2"
           >
-            <span className="font-medium"><LogOut width={12} height={12} /></span>
+            <span className="font-medium">
+              <LogOut width={16} height={16} />
+            </span>
             <span>Logout</span>
           </button>
         )}

@@ -63,7 +63,7 @@ const InterviewUpcoming = () => {
 
   if (status === "unauthenticated") {
     return (
-      <div className="flex justify-center items-center h-full">
+      <div className="flex justify-center items-center h-full dark:text-gray-200">
         Please sign in to access your calendar to see upcoming interviews
       </div>
     );
