@@ -22,9 +22,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ArrowUpDown, Briefcase, Loader, MoreHorizontal, Tag } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import React, { useState } from "react";
 import companyLogo from '../../../../../../public/assests/dummy-logo.png';
 import { data } from "../page";
+
 
 export const columns = [
   {
