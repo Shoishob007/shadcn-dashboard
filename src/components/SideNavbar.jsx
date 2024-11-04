@@ -62,11 +62,11 @@ export default function SideNavbar() {
       </div>
 
       
-        <div className="flex justify-center mt-auto px-4 ml-4">
+        <div className="flex justify-center mt-auto px-4">
           {isCollapsed ? (
             <span
               onClick={signOut}
-              className="w-full cursor-pointer"
+              className="w-full cursor-pointer flex items-center justify-center"
             >
               <span className="sr-only">Logout</span>
               <LogOut width={16} height={16} />
@@ -74,7 +74,7 @@ export default function SideNavbar() {
           ) : (
             <button
               onClick={signOut}
-              className="w-full flex gap-4 cursor-pointer items-center text-xs font-medium"
+              className="w-full flex gap-4 cursor-pointer items-center text-xs font-medium ml-4"
             >
               <span className="font-medium"><LogOut width={12} height={12} /></span>
               <span>Logout</span>
