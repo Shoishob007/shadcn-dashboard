@@ -2,11 +2,21 @@
 "use client";
 
 import { useWindowWidth } from "@react-hook/window-size";
-import { ArrowRight, Bell, User, Menu, X } from "lucide-react";
+import { Bell, Menu, User, X } from "lucide-react";
 import Link from "next/link";
 import { cn } from "../lib/utils";
 // import SearchComponent from "./SearchComponent";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
+import { ThemeToggle } from "@/components/theme-toggle.jsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,8 +25,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import useRoleStore from "@/stores/roleStore/useRoleStore";
 import useLayoutStore from "@/stores/useLayoutStore";
-import { ThemeToggle } from "@/components/theme-toggle.jsx";
 import { signOut, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 
@@ -31,6 +41,8 @@ const VerticalNavbar = () => {
   const onlyWidth = useWindowWidth();
   const mobileWidth = onlyWidth < 768;
 
+  const { currentRole, setRole } = useRoleStore();
+
   if (status === "loading") {
     return (
       <div className="flex flex-col-reverse items-center justify-center h-40">
@@ -38,6 +50,8 @@ const VerticalNavbar = () => {
       </div>
     );
   }
+
+
 
   return (
     <nav
@@ -96,6 +110,26 @@ const VerticalNavbar = () => {
         className={`flex items-center ml-2 gap-2 sm:gap-5 transition-all duration-300 ease-in-out`}
       >
         {/* <SearchComponent onSearch={handleSearch} /> */}
+        <div className="w-full flex items-center space-x-2">
+          {/* <Switch onClick={toggleRole} id="role-toggle" />
+          <Label htmlFor="role-toggle">
+            {currentRole === "applicant" ? "Organization" : "Applicant"}
+          </Label> */}
+
+          <Select onValueChange={(value) => setRole(value)} value={currentRole}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select role" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Role</SelectLabel>
+              <SelectItem value="applicant">Applicant</SelectItem>
+              <SelectItem value="organization">Organization</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+          
+        </div>
 
         <div className="w-full flex items-center">
           <ThemeToggle className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
