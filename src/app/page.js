@@ -292,8 +292,8 @@ export default function Home() {
               <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
               <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-700 hover:border-gray-950">
                 <section>
-                  <p className="text-lg font-semibold">Recent Applications</p>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-lg font-semibold dark:text-gray-200">Recent Applications</p>
+                  <p className="text-sm text-gray-400 dark:text-gray-200">
                     Top applications according to CV score
                   </p>
                 </section>
@@ -308,8 +308,8 @@ export default function Home() {
               </CardContent>
                 <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-700 hover:border-gray-950">
                   <section>
-                    <p> Recent Job Postings </p>
-                    <p className="text-sm text-gray-400">
+                    <p className="dark:text-gray-200"> Recent Job Postings </p>
+                    <p className="text-sm text-gray-400 dark:text-gray-200">
                       Recent jobs from last months
                     </p>
                   </section>
