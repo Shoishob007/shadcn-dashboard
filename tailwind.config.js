@@ -56,7 +56,7 @@ module.exports = {
 					'3': 'hsl(var(--chart-3))',
 					'4': 'hsl(var(--chart-4))',
 					'5': 'hsl(var(--chart-5))'
-				}
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -68,7 +68,7 @@ module.exports = {
 					'0%': { transform: 'rotate(0deg)' },
 					'100%': { transform: 'rotate(360deg)' },
 				},
-				
+
 				'accordion-down': {
 					from: {
 						height: '0'
