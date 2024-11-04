@@ -19,6 +19,7 @@ import {
 import Link from "next/link";
 import InterviewSchedule from "./(main-dashboard)/(dashboard)/interviews/schedule/page";
 import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/applicants/components/applicantsData";
+import useRoleStore from "@/stores/roleStore/useRoleStore";
 
 const cardData = [
   {
@@ -266,12 +267,14 @@ const topApplications = [
 
 
 export default function Home() {
+  const { currentRole, setRole } = useRoleStore();
+  
   return (
     <div className="flex flex-col gap-5 w-full">
       <PageTitle title="Dashboard" className={"ml-2"} />
 
       {
-        role === 'applicant' ? (
+        currentRole === 'applicant' ? (
           <div>
             <div>
               <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 lg:grid-cols-3 mb-4 hover:border-gray-950">
