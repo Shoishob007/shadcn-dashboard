@@ -61,7 +61,7 @@ export default function SideNavbar() {
         />
       </div>
 
-      {session && (
+      
         <div className="flex justify-center mt-auto px-4 ml-4">
           {isCollapsed ? (
             <span
@@ -81,7 +81,6 @@ export default function SideNavbar() {
             </button>
           )}
         </div>
-      )}
     </div>
   );
 }
