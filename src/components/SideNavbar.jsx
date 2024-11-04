@@ -134,6 +134,8 @@
 // }
 
 
+
+
 "use client";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
@@ -143,8 +145,7 @@ import { role } from "./RoleManagement";
 import { Nav } from "./ui/nav";
 import useLayoutStore from "@/stores/useLayoutStore";
 import { SidebarLinks } from "./SidebarLinks";
-import { LogIn, LogOut } from "lucide-react";
-import { Button } from "./ui/button";
+import { LogOut } from "lucide-react";
 
 export default function SideNavbar() {
   const { status, data: session } = useSession();
@@ -184,33 +185,35 @@ export default function SideNavbar() {
       <div className="flex-grow overflow-y-auto mb-4">
         <Nav
           isCollapsed={isCollapsed}
-          links={role === "applicant" ? applicantLinks.filter(link => link.label !== "Get Started") : organizationLinks.filter(link => link.label !== "Get Started")}
+          links={
+            role === "applicant"
+              ? applicantLinks.filter(link => link.label !== "Get Started")
+              : organizationLinks.filter(link => link.label !== "Get Started")
+          }
         />
       </div>
 
-      <div className="flex justify-center mt-auto px-4">
-        {isCollapsed ? (
-          <Button
-            onClick={session ? signOut : signIn}
-            className='w-full'
-          >
-            <span className="sr-only">{session ? "Logout" : "Login"}</span>
-            {/* You can use an icon here for login/logout */}
-            {session ? (
-              <LogOut  width={20} height={20} />
-            ) : (
-              <LogIn  width={20} height={20} />
-            )}
-          </Button>
-        ) : (
-          <Button
-            onClick={session ? signOut : signIn}
-            className='w-full'
-          >
-            {session ? "Logout" : "Login"}
-          </Button>
-        )}
-      </div>
+      {session && (
+        <div className="flex justify-center mt-auto px-4 ml-4">
+          {isCollapsed ? (
+            <span
+              onClick={signOut}
+              className="w-full cursor-pointer"
+            >
+              <span className="sr-only">Logout</span>
+              <LogOut width={16} height={16} />
+            </span>
+          ) : (
+            <button
+              onClick={signOut}
+              className="w-full flex gap-4 cursor-pointer items-center text-xs font-medium"
+            >
+              <span className="font-medium"><LogOut width={12} height={12} /></span>
+              <span>Logout</span>
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
