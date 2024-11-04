@@ -38,7 +38,8 @@ export const SidebarLinks = () => {
     }
   };
 
-  {/*
+  {
+    /*
   const getAuthLinks = () => {
     if (status === "authenticated") {
       return {
@@ -69,7 +70,8 @@ export const SidebarLinks = () => {
     //     },
     //   ],
     // };
-  };*/}
+  };*/
+  }
 
   const applicantLinks = [
     {
@@ -181,11 +183,11 @@ export const SidebarLinks = () => {
       icon: UsersRound,
       variant: "ghost",
       submenu: [
-        {
-          title: "Applicants Dashboard",
-          href: "/applicants",
-          icon: Circle,
-        },
+        // {
+        //   title: "Applicants Dashboard",
+        //   href: "/applicants",
+        //   icon: Circle,
+        // },
         {
           title: "View All Applicants",
           href: "/applicants/view",
@@ -196,6 +198,11 @@ export const SidebarLinks = () => {
           href: "/applicants/view/shortlisted",
           icon: Circle,
         },
+        {
+          title: "Hired Applicants",
+          href: "/applicants/view/hired",
+          icon: Circle,
+        },
       ],
     },
     {
@@ -204,14 +211,24 @@ export const SidebarLinks = () => {
       icon: BriefcaseBusiness,
       variant: "ghost",
       submenu: [
-        {
-          title: "Jobs Dashboard",
-          href: "/jobs",
-          icon: Circle,
-        },
+        // {
+        //   title: "Jobs Dashboard",
+        //   href: "/jobs",
+        //   icon: Circle,
+        // },
         {
           title: "View All Jobs",
           href: "/jobs/view",
+          icon: Circle,
+        },
+        {
+          title: "View Open Jobs",
+          href: "/jobs/view/open",
+          icon: Circle,
+        },
+        {
+          title: "View Closed Jobs",
+          href: "/jobs/view/closed",
           icon: Circle,
         },
         {
