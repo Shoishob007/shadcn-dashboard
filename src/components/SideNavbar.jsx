@@ -6,17 +6,17 @@ import Link from "next/link";
 import { cn } from "../lib/utils";
 import { Nav } from "./ui/nav";
 import useLayoutStore from "@/stores/useLayoutStore";
-import useRoleStore from "@/stores/roleStore/useRoleStore"; 
+import useRoleStore from "@/stores/roleStore/useRoleStore";
 import { SidebarLinks } from "./SidebarLinks";
 import { LogOut } from "lucide-react";
 import { Button } from "./ui/button";
-
+ 
 export default function SideNavbar() {
   const { status, data: session } = useSession();
   const { isCollapsed } = useLayoutStore();
   const { currentRole } = useRoleStore(); // Access the current role from Zustand store
   const { applicantLinks, organizationLinks } = SidebarLinks();
-
+ 
   if (status === "loading") {
     return (
       <div className="flex flex-col-reverse items-center justify-center h-40">
@@ -24,13 +24,13 @@ export default function SideNavbar() {
       </div>
     );
   }
-
+ 
   // Determine which links to display based on the current role
   const filteredLinks =
     currentRole === "applicant"
       ? applicantLinks.filter((link) => link.label !== "Get Started")
       : organizationLinks.filter((link) => link.label !== "Get Started");
-
+ 
   return (
     <div
       className={cn(
@@ -52,12 +52,12 @@ export default function SideNavbar() {
           />
         </Link>
       </div>
-
+ 
       {/* Sidebar links */}
       <div className="flex-grow overflow-y-auto mb-4">
         <Nav isCollapsed={isCollapsed} links={filteredLinks} />
       </div>
-
+ 
       {/* Logout button */}
       <div className="flex justify-center mt-auto px-4">
         {isCollapsed ? (
