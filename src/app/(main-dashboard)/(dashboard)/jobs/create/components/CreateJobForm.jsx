@@ -73,7 +73,7 @@ const CreateJobForm = ({ onClose }) => {
           <CardContent>
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="grid grid-cols-1 gap-4"
+              className="grid grid-cols-1 gap-4 w-full"
             >
               <div className="flex flex-col">
                 <Label htmlFor="title" className="mb-2">
@@ -217,46 +217,48 @@ const CreateJobForm = ({ onClose }) => {
                 )}
               </div>
 
-              <div className="flex flex-col">
-                <Label htmlFor="salaryRange" className="mb-2">
-                  Salary Range
-                </Label>
-                <div className="flex items-center border rounded-md">
-                  <DollarSign className="mx-3 text-gray-400 w-4" />
-                  <Input
-                    id="salaryRange"
-                    name="salaryRange"
-                    {...register("salaryRange", {
-                      required: "Salary range is required",
-                    })}
-                    className="!rounded-l-none"
-                  />
+              <div className="grid grid-cols-2 gap-4 w-full">
+                <div className="flex flex-col">
+                  <Label htmlFor="salaryRange" className="mb-2">
+                    Salary Range
+                  </Label>
+                  <div className="flex items-center border rounded-md w-full">
+                    <DollarSign className="mx-3 text-gray-400 w-4" />
+                    <Input
+                      id="salaryRange"
+                      name="salaryRange"
+                      {...register("salaryRange", {
+                        required: "Salary range is required",
+                      })}
+                      className="!rounded-l-none w-full"
+                    />
+                  </div>
+                  {errors.salaryRange && (
+                    <span className="text-xs text-red-500">
+                      {errors.salaryRange.message}
+                    </span>
+                  )}
                 </div>
-                {errors.salaryRange && (
-                  <span className="text-xs text-red-500">
-                    {errors.salaryRange.message}
-                  </span>
-                )}
-              </div>
 
-              <div className="flex flex-col">
-                <Label htmlFor="deadline" className="mb-2">
-                  Application Deadline
-                </Label>
-                <div className="flex items-center border rounded-md">
-                  <CalendarFold className="mx-3 text-gray-400 w-4" />
-                  <Input
-                    id="deadline"
-                    name="deadline"
-                    type="date"
-                    {...register("deadline")}
-                    className="!rounded-l-none"
-                  />
+                <div className="flex flex-col">
+                  <Label htmlFor="deadline" className="mb-2">
+                    Application Deadline
+                  </Label>
+                  <div className="flex items-center border rounded-md">
+                    <CalendarFold className="mx-3 text-gray-400 w-4" />
+                    <Input
+                      id="deadline"
+                      name="deadline"
+                      type="date"
+                      {...register("deadline")}
+                      className="!rounded-l-none"
+                    />
+                  </div>
                 </div>
               </div>
             </form>
           </CardContent>
-          <CardFooter className="flex justify-center md:justify-end gap-10">
+          <CardFooter className="flex justify-center gap-10">
             <Button variant="outline" onClick={onClose}>
               Cancel
             </Button>

@@ -123,21 +123,14 @@
     }
 
     *::-webkit-scrollbar-button {
-      background-color: hsl(0, 0%, 0%);
+      background-color: transparent;
       height: 12px;
       width: 12px;
     }
 
-    *::-webkit-scrollbar-button:vertical:decrement {
-      background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"><polygon points="12,4 20,12 4,12" /></svg>')
-        no-repeat center;
-      background-size: 8px 8px;
-    }
-
+    *::-webkit-scrollbar-button:vertical:decrement,
     *::-webkit-scrollbar-button:vertical:increment {
-      background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"><polygon points="4,12 20,12 12,20" /></svg>')
-        no-repeat center;
-      background-size: 8px 8px;
+      background-color: transparent;
     }
   }
   body {
