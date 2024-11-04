@@ -11,6 +11,7 @@ import { Nav } from "./ui/nav";
 import useLayoutStore from "@/stores/useLayoutStore";
 import { SidebarLinks } from "./SidebarLinks";
 import { LogOut } from "lucide-react";
+import { Button } from "./ui/button";
 
 export default function SideNavbar() {
   const { status, data: session } = useSession();
@@ -81,23 +82,6 @@ export default function SideNavbar() {
           )}
         </div>
       )}
-      <div className="flex justify-center mt-auto px-4">
-        {isCollapsed ? (
-          <Button onClick={session ? signOut : signIn} className="w-full">
-            <span className="sr-only">{session ? "Logout" : "Login"}</span>
-            {/* You can use an icon here for login/logout */}
-            {session ? (
-              <LogOut width={20} height={20} />
-            ) : (
-              <LogIn width={20} height={20} />
-            )}
-          </Button>
-        ) : (
-          <Button onClick={session ? signOut : signIn} className="w-full">
-            {session ? "Logout" : "Login"}
-          </Button>
-        )}
-      </div>
     </div>
   );
 }
