@@ -23,7 +23,7 @@ import { ArrowUpDown, Briefcase, Loader, MoreHorizontal, Tag } from "lucide-reac
 import Image from "next/image";
 import { useState } from "react";
 import companyLogo from '../../../../../../public/assests/dummy-logo.png';
-import { data } from "../page";
+import { shortlisted as data } from "../page";
 
 export const columns = [
   {
@@ -210,6 +210,7 @@ export const columns = [
                             <Image
                               src={companyLogo}
                               width={40}
+                              alt="company-logo"
                             />
                             <div>
                               <h1 className="text-black font-semibold">{jobDetails.title}</h1>
