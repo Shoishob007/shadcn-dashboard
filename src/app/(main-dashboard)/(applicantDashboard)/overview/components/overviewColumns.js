@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+
 "use client";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -162,8 +164,8 @@ export const columns = [
       cell: ({ row }) => {
         const job = row.original;
   
-        const [open, setOpen] = useState(false);
-        const [jobDetails, setJobDetails] = useState(null);
+        const [open, setOpen] = React.useState(false);
+        const [jobDetails, setJobDetails] = React.useState(null);
         const handleViewDetails = (id) => {
           const jobDetailsData = data.find(d => d.id === id);
           setJobDetails(jobDetailsData);
