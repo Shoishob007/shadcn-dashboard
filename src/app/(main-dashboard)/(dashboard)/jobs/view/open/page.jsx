@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useCallback } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import {
   flexRender,
@@ -29,12 +29,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import PageTitle from "@/components/PageTitle.jsx";
+import OurPagination from "@/components/Pagination.jsx";
+import FormatTitle from "@/components/TitleFormatter.js";
+import { usePathname } from "next/navigation.js";
 import { jobColumns as columns } from "../../components/columns.jsx";
 import { jobData } from "../../components/jobData.js";
-import PageTitle from "@/components/PageTitle.jsx";
-import { usePathname } from "next/navigation.js";
-import FormatTitle from "@/components/TitleFormatter.js";
-import OurPagination from "@/components/Pagination.jsx";
 
 const ITEMS_PER_PAGE = 10;
 
