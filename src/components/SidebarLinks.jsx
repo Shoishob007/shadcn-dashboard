@@ -71,17 +71,10 @@ export const SidebarLinks = () => {
       ],
     },
     {
-      title: "Profile management",
-      href: "#",
+      title: "Profile",
+      href: "/my-profile",
       icon: UsersRound,
       variant: "ghost",
-      submenu: [
-        {
-          title: "Profile",
-          href: "/profile/view",
-          icon: Circle,
-        },
-      ],
     },
     {
       title: "Job Search",
