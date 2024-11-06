@@ -2,6 +2,10 @@ import { Button } from '@/components/ui/button';
 import { MapPin } from 'lucide-react';
 import Image from 'next/image';
 import profileImg from '.././../../../../public/assests/profile-pic.jpg';
+import { Separator } from "@/components/ui/separator";
+import ProfileTabs from './components/ProfileTabs';
+
+
 
 const ProfilePage = () => {
     return (
@@ -49,6 +53,16 @@ const ProfilePage = () => {
                         </div>
                     </div>
                 </div>
+            </section>
+
+            {/* Divider section */}
+            <section className='my-8'>
+                <Separator />
+            </section>
+
+            {/* Tab Section */}
+            <section>
+                <ProfileTabs/>
             </section>
         </div>
     );

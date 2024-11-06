@@ -2,16 +2,15 @@
 
 import * as React from "react";
 
-// Sample skill list
-const availableSkills = ["JavaScript", "React", "Node.js", "Next.js", "TypeScript", "CSS", "HTML"];
-
 export default function SkillSelector() {
   const [selectedSkills, setSelectedSkills] = React.useState([]);
+  const [inputSkill, setInputSkill] = React.useState("");
 
   // Function to add a skill
-  const handleAddSkill = (skill) => {
-    if (!selectedSkills.includes(skill)) {
-      setSelectedSkills([...selectedSkills, skill]);
+  const handleAddSkill = () => {
+    if (inputSkill && !selectedSkills.includes(inputSkill)) {
+      setSelectedSkills([...selectedSkills, inputSkill]);
+      setInputSkill(""); // Clear the input after adding
     }
   };
 
@@ -20,21 +19,33 @@ export default function SkillSelector() {
     setSelectedSkills(selectedSkills.filter((skill) => skill !== skillToRemove));
   };
 
+  // Handle Enter key for adding skill
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleAddSkill();
+    }
+  };
+
   return (
     <div className="p-4 max-w-md mx-auto">
-      <h2 className="text-lg font-bold mb-4">Select Your Skills</h2>
+      <h2 className="text-lg font-bold mb-4">Add Your Skills</h2>
       
-      {/* Selectable skills */}
-      <div className="flex flex-wrap gap-2 mb-4">
-        {availableSkills.map((skill) => (
-          <button
-            key={skill}
-            onClick={() => handleAddSkill(skill)}
-            className="bg-blue-200 text-blue-800 px-3 py-1 rounded-lg"
-          >
-            {skill}
-          </button>
-        ))}
+      {/* Input field for adding skills */}
+      <div className="flex items-center gap-2 mb-4">
+        <input
+          type="text"
+          value={inputSkill}
+          onChange={(e) => setInputSkill(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder="Type a skill and press Enter"
+          className="border px-3 py-2 rounded-lg w-full"
+        />
+        <button
+          onClick={handleAddSkill}
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+        >
+          Add
+        </button>
       </div>
 
       {/* Display selected skills */}
