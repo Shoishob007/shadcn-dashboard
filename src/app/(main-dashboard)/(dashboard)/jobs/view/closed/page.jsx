@@ -31,7 +31,7 @@ import {
 
 import PageTitle from "@/components/PageTitle.jsx";
 import FormatTitle from "@/components/TitleFormatter.js";
-import { usePathname } from "next/navigation.js";
+import { usePathname, useRouter } from "next/navigation";
 import { jobColumns as columns } from "../../components/columns.jsx";
 import { jobData } from "../../components/jobData.js";
 import OurPagination from "@/components/Pagination.jsx";
@@ -44,7 +44,9 @@ export default function JobsData() {
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
   const pathname = usePathname();
+  const router = useRouter();
   const pageTitle = FormatTitle(pathname);
+  const tableColumns = columns(router);
 
   const data = useMemo(() => {
     return jobData.filter((d) => d.status === "closed");
@@ -52,7 +54,7 @@ export default function JobsData() {
 
   const table = useReactTable({
     data,
-    columns,
+    columns: tableColumns,
     pageCount: Math.ceil(data.length / ITEMS_PER_PAGE),
     state: {
       sorting,

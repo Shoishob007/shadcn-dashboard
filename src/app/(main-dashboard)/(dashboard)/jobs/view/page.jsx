@@ -32,7 +32,7 @@ import {
 import { jobColumns as columns } from "../components/columns.jsx";
 import { jobData as data } from "../components/jobData";
 import PageTitle from "@/components/PageTitle.jsx";
-import { usePathname } from "next/navigation.js";
+import { usePathname, useRouter } from "next/navigation.js";
 import FormatTitle from "@/components/TitleFormatter.js";
 import OurPagination from "@/components/Pagination.jsx";
 
@@ -45,10 +45,12 @@ export default function JobsData() {
   const [rowSelection, setRowSelection] = useState({});
   const pathname = usePathname();
   const pageTitle = FormatTitle(pathname);
+  const router = useRouter();
+  const tableColumns = columns(router);
 
   const table = useReactTable({
     data,
-    columns,
+    columns: tableColumns,
     pageCount: Math.ceil(data.length / ITEMS_PER_PAGE),
     state: {
       sorting,
@@ -125,9 +127,7 @@ export default function JobsData() {
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow
-                  key={headerGroup.id}
-                >
+                <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
                     <TableHead key={header.id} className="text-center">
                       {header.isPlaceholder
