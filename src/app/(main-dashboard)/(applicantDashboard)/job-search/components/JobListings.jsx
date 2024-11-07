@@ -191,7 +191,7 @@ const JobListings = () => {
           placeholder="Search for Job..."
           onChange={handleSearch}
           value={searchTerm}
-          className="bg-white dark:bg-gray-800"
+          className="bg-white dark:bg-gray-800 dark:border-gray-200"
         />
       </div>
       <section className="grid grid-cols-1 gap-4 mt-4">
@@ -216,7 +216,7 @@ const JobListings = () => {
                 <CardDescription className="text-sm text-gray-600 dark:text-gray-300">
                   {job.location} -{" "}
                   <span className={`${typeBgColor} p-1 rounded`}>
-                    {job.type} 
+                    {job.type}
                   </span>
                 </CardDescription>
               </CardHeader>
@@ -224,17 +224,25 @@ const JobListings = () => {
                 <div className="space-y-3">
                   <div>
                     <p>Description</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-0.5">{job.description}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-0.5">
+                      {job.description}
+                    </p>
                   </div>
                   <div>
                     <p>Requirements</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-0.5">{job.jobRequirements}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-0.5">
+                      {job.jobRequirements}
+                    </p>
                   </div>
                   <div>
                     <p>Salary</p>
                     <div className="flex mt-0.5">
-                      <span className="text-gray-600 dark:text-gray-300">< DollarSign className="w-4" /></span>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">{job.salaryRange}</p>
+                      <span className="text-gray-600 dark:text-gray-300">
+                        <DollarSign className="w-4" />
+                      </span>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
+                        {job.salaryRange}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -261,7 +269,11 @@ const JobListings = () => {
                   {jobDetails && (
                     <>
                       <div className="flex items-center gap-2">
-                        <Image src={companyLogo} width={40} />
+                        <Image
+                          src={companyLogo}
+                          width={40}
+                          alt="company-logo"
+                        />
                         <div>
                           <h1 className="text-black font-semibold">
                             {jobDetails.title}

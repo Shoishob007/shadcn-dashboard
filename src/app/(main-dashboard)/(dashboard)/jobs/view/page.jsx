@@ -127,7 +127,6 @@ export default function JobsData() {
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow
                   key={headerGroup.id}
-                  className="dark:hover:bg-gray-900"
                 >
                   {headerGroup.headers.map((header) => (
                     <TableHead key={header.id} className="text-center">
@@ -149,7 +148,6 @@ export default function JobsData() {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    className="dark:hover:bg-gray-900"
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="text-center text-xs">

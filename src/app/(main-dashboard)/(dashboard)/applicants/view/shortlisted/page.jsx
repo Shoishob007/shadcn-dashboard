@@ -79,7 +79,7 @@ export default function ShortListedApplicants() {
 
   const handleFilter = useCallback(
     (event) => {
-      table.getColumn("applicantName")?.setFilterValue(event.target.value);
+      table.getColumn("jobTitle")?.setFilterValue(event.target.value);
     },
     [table]
   );
@@ -92,7 +92,7 @@ export default function ShortListedApplicants() {
         <div className="flex items-center justify-center py-4 ">
           <Input
             placeholder="Filter applicant..."
-            value={table.getColumn("applicantName")?.getFilterValue() || ""}
+            value={table.getColumn("jobTitle")?.getFilterValue() || ""}
             onChange={handleFilter}
             className="max-w-sm dark:border-gray-200"
           />
@@ -131,10 +131,7 @@ export default function ShortListedApplicants() {
           <Table className="max-w-full">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow
-                  key={headerGroup.id}
-                  className="p-0 dark:hover:bg-gray-900"
-                >
+                <TableRow key={headerGroup.id} className="p-0">
                   {headerGroup.headers.map((header) => (
                     <TableHead key={header.id} className="text-center p-0">
                       {header.isPlaceholder
@@ -155,7 +152,6 @@ export default function ShortListedApplicants() {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    className=" dark:hover:bg-gray-900"
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="text-center text-xs">
