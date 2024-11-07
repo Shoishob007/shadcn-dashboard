@@ -33,6 +33,7 @@ import PageTitle from "@/components/PageTitle";
 import { usePathname } from "next/navigation";
 import FormatTitle from "@/components/TitleFormatter";
 import OurPagination from "@/components/Pagination";
+import { useRouter } from "next/navigation";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -43,10 +44,12 @@ export default function ApplicantsData() {
   const [rowSelection, setRowSelection] = useState({});
   const pathname = usePathname();
   const pageTitle = FormatTitle(pathname);
+  const router = useRouter();
+  const tableColumns = columns(router);
 
   const table = useReactTable({
     data,
-    columns,
+    columns: tableColumns,
     pageCount: Math.ceil(data.length / ITEMS_PER_PAGE),
     state: {
       sorting,
@@ -79,17 +82,20 @@ export default function ApplicantsData() {
   return (
     <>
       <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
-      <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-md h-full items-center">
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md h-full items-center">
         <div className="flex items-center justify-center py-4 ">
           <Input
             placeholder="Filter applicant..."
             value={table.getColumn("applicantName")?.getFilterValue() || ""}
             onChange={handleFilter}
-            className="max-w-sm"
+            className="max-w-sm dark:border-gray-200"
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
+              <Button
+                variant="outline"
+                className="ml-auto dark:border-gray-200"
+              >
                 Columns <ChevronDown className=" h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -119,7 +125,10 @@ export default function ApplicantsData() {
           <Table className="max-w-full">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="p-0 ">
+                <TableRow
+                  key={headerGroup.id}
+                  className="p-0 dark:hover:bg-gray-900"
+                >
                   {headerGroup.headers.map((header) => (
                     <TableHead key={header.id} className="text-center p-0">
                       {header.isPlaceholder
@@ -140,6 +149,7 @@ export default function ApplicantsData() {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    className="dark:hover:bg-gray-900"
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="text-center text-xs">

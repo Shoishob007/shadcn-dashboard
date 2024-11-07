@@ -246,7 +246,7 @@ const RecentJobPostings = () => {
                         placeholder="Search for Job..."
                         onChange={handleSearch}
                         value={searchTerm}
-                        className='bg-white dark:bg-gray-700'
+                        className='bg-white dark:bg-gray-800'
 
                     />
                 </div>

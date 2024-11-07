@@ -39,7 +39,7 @@ export default function SideNavbar() {
   return (
     <div
       className={cn(
-        "h-[calc(100vh-1rem)] sticky border-r bg-white dark:bg-gray-700 my-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out flex flex-col py-6",
+        "h-[calc(100vh-1rem)] sticky border-r bg-white dark:bg-gray-800 my-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out flex flex-col py-6",
         isCollapsed ? "w-16" : "w-[220px]"
       )}
     >
@@ -68,29 +68,26 @@ export default function SideNavbar() {
         {isCollapsed ? (
           <span
             onClick={signOut}
-            className="w-full cursor-pointer flex items-center justify-center rounded-md"
+            className="w-full cursor-pointer flex items-center justify-center rounded-md p-2"
           >
             <TooltipProvider>
               <Tooltip delayDuration={0}>
                 <TooltipTrigger>
                   <span className="sr-only">Logout</span>
-                  <LogOut width={16} height={16} />
+                  <LogOut width={16} height={16} className="rotate-180" />
                 </TooltipTrigger>
                 <TooltipContent side="right">
                   <p>Logout</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-
-            {/* <span className="sr-only">Logout</span>
-            <LogOut width={16} height={16} /> */}
           </span>
         ) : (
           <button
             onClick={signOut}
-            className="w-full flex justify-center gap-4 cursor-pointer items-center text-xs font-medium dark:text-gray-200 p-2"
+            className="w-full flex gap-4 cursor-pointer items-center text-xs font-medium dark:text-gray-200 p-2"
           >
-            <span className="font-medium">
+            <span className="font-medium rotate-180">
               <LogOut width={16} height={16} />
             </span>
             <span>Logout</span>

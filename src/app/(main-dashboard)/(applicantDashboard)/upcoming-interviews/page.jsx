@@ -252,7 +252,7 @@ const UpcomingInterview = () => {
       <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
       {/* upcoming interview content */}
       <section className="">
-        <div className="w-full bg-white dark:bg-gray-700 py-2 px-6 rounded-lg shadow-md h-full items-center">
+        <div className="w-full bg-white dark:bg-gray-800 py-2 px-6 rounded-lg shadow-md h-full items-center">
           <div className="flex items-center justify-center py-4 ">
             <Input
               placeholder="Filter jobs..."

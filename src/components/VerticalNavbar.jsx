@@ -11,7 +11,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -53,7 +52,7 @@ const VerticalNavbar = () => {
 
   return (
     <nav
-      className={`bg-white dark:bg-gray-700 ml-4 my-2 mr-4 py-4 px-2 sm:px-6 rounded-lg text-gray-500 dark:text-gray-200 shadow-md border-t-2 text-sm flex items-center
+      className={`bg-white dark:bg-gray-800 ml-4 my-2 mr-4 py-4 px-2 sm:px-6 rounded-lg text-gray-500 dark:text-gray-200 shadow-md border-t-2 text-sm flex items-center
         ${mobileWidth ? "justify-center" : "justify-between"}`}
     >
       <div>
@@ -61,7 +60,7 @@ const VerticalNavbar = () => {
           onClick={toggleSidebar}
           variant="ghost"
           size="icon"
-          className="p-0 h-auto !hover:bg-transparent"
+          className="p-2 h-auto"
         >
           {isCollapsed ? (
             <Menu className={cn("h-4 w-4 transition-transform duration-200")} />
@@ -106,12 +105,11 @@ const VerticalNavbar = () => {
         {/* <SearchComponent onSearch={handleSearch} /> */}
         <div className="w-full flex items-center space-x-2">
           <Select onValueChange={(value) => setRole(value)} value={currentRole}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px] dark:border-white">
               <SelectValue placeholder="Select role" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Role</SelectLabel>
                 <SelectItem value="applicant">Applicant</SelectItem>
                 <SelectItem value="organization">Organization</SelectItem>
               </SelectGroup>
