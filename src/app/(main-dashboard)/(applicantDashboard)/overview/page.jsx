@@ -162,11 +162,14 @@ export default function ApplicantsOverview() {
               onChange={(event) =>
                 table.getColumn("title")?.setFilterValue(event.target.value)
               }
-              className="max-w-sm"
+              className="max-w-sm dark:border-gray-200"
             />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-auto">
+                <Button
+                  variant="outline"
+                  className="ml-auto dark:border-gray-200"
+                >
                   Columns <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>

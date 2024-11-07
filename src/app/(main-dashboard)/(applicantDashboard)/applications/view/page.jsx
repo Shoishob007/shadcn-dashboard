@@ -339,12 +339,12 @@ export const columns = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(job.id)}
               >
                 Copy job ID
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => handleViewDetails(job.id)}>
                 View Details
               </DropdownMenuItem>
@@ -495,11 +495,14 @@ const viewApplications = () => {
               onChange={(event) =>
                 table.getColumn("title")?.setFilterValue(event.target.value)
               }
-              className="max-w-sm"
+              className="max-w-sm dark:border-gray-200"
             />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-auto">
+                <Button
+                  variant="outline"
+                  className="ml-auto dark:border-gray-200"
+                >
                   Columns <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
