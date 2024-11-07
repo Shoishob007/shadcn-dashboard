@@ -50,7 +50,7 @@ export function Nav({ links, isCollapsed }) {
                       onClick={(e) => handleItemClick(link, e)}
                       className={cn(
                         buttonVariants({
-                          variant: link.href === pathName ? "default" : "ghost",
+                          variant: "ghost",
                           size: "icon",
                         }),
                         "h-10 w-10 cursor-pointer",
@@ -108,7 +108,7 @@ export function Nav({ links, isCollapsed }) {
                           size: "sm",
                         }),
                         link.variant === "default" &&
-                          "dark:hover:bg-gray-900 dark:hover:text-white",
+                          "dark:hover:bg-gray-200 dark:hover:text-gray-900",
                         "justify-start flex items-center w-full mb-1 cursor-pointer"
                       )}
                     >
