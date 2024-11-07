@@ -30,7 +30,7 @@ const ProfileSetting = () => {
     <>
       <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
 
-      <div className="flex flex-col gap-4 justify-center h-full bg-white dark:bg-gray-700 rounded-lg">
+      <div className="flex flex-col gap-4 justify-center h-full bg-white dark:bg-gray-800 rounded-lg">
         <div className="relative w-full max-w-screen-2xl m-0 p-4">
           <Image
             src={coverPhoto}

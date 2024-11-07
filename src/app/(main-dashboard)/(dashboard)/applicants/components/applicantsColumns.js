@@ -11,8 +11,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ApplicantDetailsPopover } from "./ApplicantDetailsPopover";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
-export const columns = [
+
+export const columns = (router) => [
   {
     id: "select",
     header: ({ table }) => (
@@ -58,9 +69,30 @@ export const columns = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => (
-      <div className="text-center capitalize">{row.getValue("applicantName")}</div>
-    ),
+    cell: ({ row }) => {
+      const applicantData = row.original;
+
+      return (
+        <div className="text-center capitalize">
+          <Dialog>
+            <DialogTrigger asChild>
+              <span className="hover:underline hover:cursor-pointer hover:text-blue-500">
+                {applicantData.applicantName}
+              </span>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle className="text-center text-base">Profile Details</DialogTitle><hr className="dark:bg-gray-200" />
+              </DialogHeader>
+              <ApplicantDetailsPopover applicant={applicantData} />
+              <DialogFooter>
+                <Button type="submit" size="sm">Save changes</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "applicantEmail",
@@ -71,7 +103,31 @@ export const columns = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: () => {
+      return (
+        <Select
+          onValueChange={(value) => {
+            if (value === "hired") {
+              router.push("/applicants/view/hired");
+            } else if (value === "shortlisted") {
+              router.push("/applicants/view/shortlisted");
+            } else if (value === "all") {
+              router.push("/applicants/view");
+
+            }
+          }}
+        >
+          <SelectTrigger className="text-center border-none flex justify-center">
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="hired">Hired</SelectItem>
+            <SelectItem value="shortlisted">Shortlisted</SelectItem>
+          </SelectContent>
+        </Select>
+      )
+    },
     cell: ({ row }) => {
       const status = row.getValue("status");
       const backgroundColor =

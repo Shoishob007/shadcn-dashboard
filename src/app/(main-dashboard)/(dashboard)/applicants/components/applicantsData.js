@@ -7,6 +7,73 @@ export const applicantsData = [
     status: "shortlisted",
     CVScore: 50,
     deadline: new Date("2024-11-01"),
+    skills: [
+      "JavaScript",
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "CSS",
+      "HTML",
+      "TypeScript"
+    ],
+
+    certifications: [
+      {
+        name: "Certified Full-Stack Developer",
+        issuingOrganization: "Tech Institute",
+        dateObtained: new Date("2023-06-15"),
+        expirationDate: new Date("2025-06-15"),
+      },
+      {
+        name: "AWS Certified Solutions Architect - Associate",
+        issuingOrganization: "Amazon Web Services",
+        dateObtained: new Date("2023-03-10"),
+        expirationDate: new Date("2026-03-10"),
+      }
+    ],
+
+    experiences: [
+      {
+        companyName: "Tech Solutions Inc.",
+        position: "Full-Stack Developer",
+        startDate: new Date("2022-01-01"),
+        endDate: new Date("2023-08-31"),
+        responsibilities: [
+          "Developed and maintained web applications using React and Node.js.",
+          "Collaborated with UI/UX designers to improve user experience.",
+          "Implemented RESTful APIs to connect front-end and back-end services."
+        ]
+      },
+      {
+        companyName: "Web Innovations LLC",
+        position: "Junior Developer",
+        startDate: new Date("2021-06-01"),
+        endDate: new Date("2021-12-31"),
+        responsibilities: [
+          "Assisted in the development of e-commerce platforms.",
+          "Performed debugging and testing of web applications.",
+          "Engaged in team meetings to discuss project progress and challenges."
+        ]
+      }
+    ],
+
+    department: "Engineering",
+
+    education: [
+      {
+        degree: "Bachelor of Science in Computer Science",
+        institution: "University of Technology",
+        graduationYear: 2021
+      },
+      {
+        degree: "Associate Degree in Web Development",
+        institution: "Community College of Tech",
+        graduationYear: 2019
+      }
+    ],
+
+    designation: "Software Engineer"
   },
   {
     id: "3u1reuv4",
@@ -17,6 +84,73 @@ export const applicantsData = [
     CVScore: 65,
     deadline: new Date("2024-11-05"),
     interviewSchedule: new Date("2024-11-14"),
+    skills: [
+      "JavaScript",
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "CSS",
+      "HTML",
+      "TypeScript"
+    ],
+
+    certifications: [
+      {
+        name: "Certified Full-Stack Developer",
+        issuingOrganization: "Tech Institute",
+        dateObtained: new Date("2023-06-15"),
+        expirationDate: new Date("2025-06-15"),
+      },
+      {
+        name: "AWS Certified Solutions Architect - Associate",
+        issuingOrganization: "Amazon Web Services",
+        dateObtained: new Date("2023-03-10"),
+        expirationDate: new Date("2026-03-10"),
+      }
+    ],
+
+    experiences: [
+      {
+        companyName: "Tech Solutions Inc.",
+        position: "Full-Stack Developer",
+        startDate: new Date("2022-01-01"),
+        endDate: new Date("2023-08-31"),
+        responsibilities: [
+          "Developed and maintained web applications using React and Node.js.",
+          "Collaborated with UI/UX designers to improve user experience.",
+          "Implemented RESTful APIs to connect front-end and back-end services."
+        ]
+      },
+      {
+        companyName: "Web Innovations LLC",
+        position: "Junior Developer",
+        startDate: new Date("2021-06-01"),
+        endDate: new Date("2021-12-31"),
+        responsibilities: [
+          "Assisted in the development of e-commerce platforms.",
+          "Performed debugging and testing of web applications.",
+          "Engaged in team meetings to discuss project progress and challenges."
+        ]
+      }
+    ],
+
+    department: "Engineering",
+
+    education: [
+      {
+        degree: "Bachelor of Science in Computer Science",
+        institution: "University of Technology",
+        graduationYear: 2021
+      },
+      {
+        degree: "Associate Degree in Web Development",
+        institution: "Community College of Tech",
+        graduationYear: 2019
+      }
+    ],
+
+    designation: "Software Engineer"
   },
   {
     id: "derv1ws0",
@@ -27,6 +161,73 @@ export const applicantsData = [
     CVScore: 50,
     deadline: new Date("2024-11-01"),
     interviewSchedule: new Date("2024-11-10"),
+    skills: [
+      "JavaScript",
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "CSS",
+      "HTML",
+      "TypeScript"
+    ],
+
+    certifications: [
+      {
+        name: "Certified Full-Stack Developer",
+        issuingOrganization: "Tech Institute",
+        dateObtained: new Date("2023-06-15"),
+        expirationDate: new Date("2025-06-15"),
+      },
+      {
+        name: "AWS Certified Solutions Architect – Associate",
+        issuingOrganization: "Amazon Web Services",
+        dateObtained: new Date("2023-03-10"),
+        expirationDate: new Date("2026-03-10"),
+      }
+    ],
+
+    experiences: [
+      {
+        companyName: "Tech Solutions Inc.",
+        position: "Full-Stack Developer",
+        startDate: new Date("2022-01-01"),
+        endDate: new Date("2023-08-31"),
+        responsibilities: [
+          "Developed and maintained web applications using React and Node.js.",
+          "Collaborated with UI/UX designers to improve user experience.",
+          "Implemented RESTful APIs to connect front-end and back-end services."
+        ]
+      },
+      {
+        companyName: "Web Innovations LLC",
+        position: "Junior Developer",
+        startDate: new Date("2021-06-01"),
+        endDate: new Date("2021-12-31"),
+        responsibilities: [
+          "Assisted in the development of e-commerce platforms.",
+          "Performed debugging and testing of web applications.",
+          "Engaged in team meetings to discuss project progress and challenges."
+        ]
+      }
+    ],
+
+    department: "Engineering",
+
+    education: [
+      {
+        degree: "Bachelor of Science in Computer Science",
+        institution: "University of Technology",
+        graduationYear: 2021
+      },
+      {
+        degree: "Associate Degree in Web Development",
+        institution: "Community College of Tech",
+        graduationYear: 2019
+      }
+    ],
+
+    designation: "Software Engineer"
   },
   {
     id: "5kma53ae",
@@ -35,7 +236,73 @@ export const applicantsData = [
     applicantEmail: "shoishob@hotmain.com",
     status: "applied",
     CVScore: 50,
-    deadline: new Date("2024-11-01"),
+    deadline: new Date("2024-11-01"), skills: [
+      "JavaScript",
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "CSS",
+      "HTML",
+      "TypeScript"
+    ],
+
+    certifications: [
+      {
+        name: "Certified Full-Stack Developer",
+        issuingOrganization: "Tech Institute",
+        dateObtained: new Date("2023-06-15"),
+        expirationDate: new Date("2025-06-15"),
+      },
+      {
+        name: "AWS Certified Solutions Architect - Associate",
+        issuingOrganization: "Amazon Web Services",
+        dateObtained: new Date("2023-03-10"),
+        expirationDate: new Date("2026-03-10"),
+      }
+    ],
+
+    experiences: [
+      {
+        companyName: "Tech Solutions Inc.",
+        position: "Full-Stack Developer",
+        startDate: new Date("2022-01-01"),
+        endDate: new Date("2023-08-31"),
+        responsibilities: [
+          "Developed and maintained web applications using React and Node.js.",
+          "Collaborated with UI/UX designers to improve user experience.",
+          "Implemented RESTful APIs to connect front-end and back-end services."
+        ]
+      },
+      {
+        companyName: "Web Innovations LLC",
+        position: "Junior Developer",
+        startDate: new Date("2021-06-01"),
+        endDate: new Date("2021-12-31"),
+        responsibilities: [
+          "Assisted in the development of e-commerce platforms.",
+          "Performed debugging and testing of web applications.",
+          "Engaged in team meetings to discuss project progress and challenges."
+        ]
+      }
+    ],
+
+    department: "Engineering",
+
+    education: [
+      {
+        degree: "Bachelor of Science in Computer Science",
+        institution: "University of Technology",
+        graduationYear: 2021
+      },
+      {
+        degree: "Associate Degree in Web Development",
+        institution: "Community College of Tech",
+        graduationYear: 2019
+      }
+    ],
+
+    designation: "Software Engineer"
   },
   {
     id: "bhqecj4p",
@@ -46,5 +313,69 @@ export const applicantsData = [
     CVScore: 60,
     deadline: new Date("2024-10-01"),
     interviewSchedule: new Date("2024-10-10"),
+    skills: [
+      "JavaScript",
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+    ],
+
+    certifications: [
+      {
+        name: "Certified Full-Stack Developer",
+        issuingOrganization: "Tech Institute",
+        dateObtained: new Date("2023-06-15"),
+        expirationDate: new Date("2025-06-15"),
+      },
+      {
+        name: "AWS Certified Solutions Architect - Associate",
+        issuingOrganization: "Amazon Web Services",
+        dateObtained: new Date("2023-03-10"),
+        expirationDate: new Date("2026-03-10"),
+      }
+    ],
+
+    experiences: [
+      {
+        companyName: "Tech Solutions Inc.",
+        position: "Full-Stack Developer",
+        startDate: new Date("2022-01-01"),
+        endDate: new Date("2023-08-31"),
+        responsibilities: [
+          "Developed and maintained web applications using React and Node.js.",
+          "Collaborated with UI/UX designers to improve user experience.",
+          "Implemented RESTful APIs to connect front-end and back-end services."
+        ]
+      },
+      {
+        companyName: "Web Innovations LLC",
+        position: "Junior Developer",
+        startDate: new Date("2021-06-01"),
+        endDate: new Date("2021-12-31"),
+        responsibilities: [
+          "Assisted in the development of e-commerce platforms.",
+          "Performed debugging and testing of web applications.",
+          "Engaged in team meetings to discuss project progress and challenges."
+        ]
+      }
+    ],
+
+    department: "Engineering",
+
+    education: [
+      {
+        degree: "Bachelor of Science in Computer Science",
+        institution: "University of Technology",
+        graduationYear: 2021
+      },
+      {
+        degree: "Associate Degree in Web Development",
+        institution: "Community College of Tech",
+        graduationYear: 2019
+      }
+    ],
+
+    designation: "Software Engineer"
   },
 ];

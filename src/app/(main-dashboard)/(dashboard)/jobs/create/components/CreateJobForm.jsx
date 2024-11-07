@@ -79,7 +79,7 @@ const CreateJobForm = ({ onClose }) => {
                 <Label htmlFor="title" className="mb-2">
                   Job Title
                 </Label>
-                <div className="flex items-center border rounded-md">
+                <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <ALargeSmall className="mx-3 text-gray-400 w-4" />
                   <Input
                     id="title"
@@ -100,7 +100,7 @@ const CreateJobForm = ({ onClose }) => {
                 <Label htmlFor="designation" className="mb-2">
                   Job Designation
                 </Label>
-                <div className="flex items-center border rounded-md">
+                <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <FileChartColumnIncreasing className="mx-3 text-gray-400 w-4" />
                   <Input
                     id="designation"
@@ -121,14 +121,14 @@ const CreateJobForm = ({ onClose }) => {
                 <Label htmlFor="description" className="mb-2">
                   Job Description
                 </Label>
-                <div className="flex items-center border rounded-md">
+                <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <File className="mx-3 text-gray-400 w-4" />
                   <Textarea
                     id="description"
                     name="description"
                     {...register("description")}
                     required
-                    className="!rounded-l-none"
+                    className="!rounded-l-none !border-l-0"
                   />
                 </div>
                 {errors.description && (
@@ -142,7 +142,7 @@ const CreateJobForm = ({ onClose }) => {
                 <Label htmlFor="requirements" className="mb-2">
                   Job Requirements
                 </Label>
-                <div className="flex items-center border rounded-md">
+                <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <ClipboardPenLine className="mx-3 text-gray-400 w-4" />
                   <Textarea
                     id="requirements"
@@ -163,7 +163,7 @@ const CreateJobForm = ({ onClose }) => {
                 <Label htmlFor="jobCategory" className="mb-2">
                   Job Category
                 </Label>
-                <div className="flex items-center border rounded-md">
+                <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <SlidersHorizontal className="mx-3 text-gray-400 w-4" />
                   <Select
                     id="jobCategory"
@@ -192,7 +192,7 @@ const CreateJobForm = ({ onClose }) => {
                 <Label htmlFor="jobType" className="mb-2">
                   Job Nature
                 </Label>
-                <div className="flex items-center border rounded-md">
+                <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <SlidersVertical className="mx-3 text-gray-400 w-4" />
                   <Select
                     id="jobType"
@@ -222,7 +222,7 @@ const CreateJobForm = ({ onClose }) => {
                   <Label htmlFor="salaryRange" className="mb-2">
                     Salary Range
                   </Label>
-                  <div className="flex items-center border rounded-md w-full">
+                  <div className="flex items-center border dark:border-gray-200 rounded-md w-full">
                     <DollarSign className="mx-3 text-gray-400 w-4" />
                     <Input
                       id="salaryRange"
@@ -244,7 +244,7 @@ const CreateJobForm = ({ onClose }) => {
                   <Label htmlFor="deadline" className="mb-2">
                     Application Deadline
                   </Label>
-                  <div className="flex items-center border rounded-md">
+                  <div className="flex items-center border dark:border-gray-200 rounded-md">
                     <CalendarFold className="mx-3 text-gray-400 w-4" />
                     <Input
                       id="deadline"
@@ -259,7 +259,11 @@ const CreateJobForm = ({ onClose }) => {
             </form>
           </CardContent>
           <CardFooter className="flex justify-center gap-10">
-            <Button variant="outline" onClick={onClose}>
+            <Button
+              variant="outline"
+              className="border dark:border-gray-200 dark:hover:bg-gray-900"
+              onClick={onClose}
+            >
               Cancel
             </Button>
 

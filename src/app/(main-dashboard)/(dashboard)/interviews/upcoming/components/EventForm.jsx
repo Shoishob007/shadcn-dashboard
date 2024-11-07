@@ -25,7 +25,7 @@ const EventForm = ({
   }, [isEditing, setTitle, setDescription, setStartTime, setEndTime]);
 
   return (
-    <div className="space-y-2 sm:space-y-4 py-2 sm:py-4 dark:bg-gray-700">
+    <div className="space-y-2 sm:space-y-4 py-2 sm:py-4 dark:bg-gray-800">
       <div className="space-y-2">
         <Label>Title</Label>
         <Input

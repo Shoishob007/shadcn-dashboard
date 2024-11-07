@@ -86,19 +86,19 @@ export default function JobsData() {
     <>
       <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
 
-      <div className="w-full bg-white dark:bg-gray-700 py-2 px-6 rounded-lg shadow-md h-full items-center">
+      <div className="w-full bg-white dark:bg-gray-800 py-2 px-6 rounded-lg shadow-md h-full items-center">
         <div className="flex items-center justify-center py-4 ">
           <Input
             placeholder="Filter jobs..."
             value={table.getColumn("title")?.getFilterValue() || ""}
             onChange={handleFilter}
-            className="max-w-sm"
+            className="max-w-sm dark:border-gray-200"
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="ml-auto"
+                className="ml-auto dark:border-gray-200"
               >
                 Columns <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
@@ -129,7 +129,10 @@ export default function JobsData() {
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
+                <TableRow
+                  key={headerGroup.id}
+                  className="dark:hover:bg-gray-900"
+                >
                   {headerGroup.headers.map((header) => (
                     <TableHead key={header.id} className="text-center">
                       {header.isPlaceholder
@@ -150,6 +153,7 @@ export default function JobsData() {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    className="dark:hover:bg-gray-900"
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="text-center text-xs">

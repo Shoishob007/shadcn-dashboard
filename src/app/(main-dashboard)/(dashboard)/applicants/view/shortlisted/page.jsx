@@ -31,7 +31,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronDown } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { columns } from "../../components/applicantsColumns";
 import { applicantsData } from "../../components/applicantsData";
 import OurPagination from "@/components/Pagination";
@@ -45,6 +45,8 @@ export default function ShortListedApplicants() {
   const [rowSelection, setRowSelection] = useState({});
   const pathname = usePathname();
   const pageTitle = FormatTitle(pathname);
+  const router = useRouter();
+  const tableColumns = columns(router);
 
   const data = useMemo(() => {
     return applicantsData.filter((d) => d.status === "shortlisted");
@@ -52,7 +54,7 @@ export default function ShortListedApplicants() {
 
   const table = useReactTable({
     data,
-    columns,
+    columns: tableColumns,
     pageCount: Math.ceil(data.length / ITEMS_PER_PAGE),
     state: {
       sorting,
@@ -86,19 +88,19 @@ export default function ShortListedApplicants() {
     <>
       {" "}
       <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
-      <div className="w-full bg-white dark:bg-gray-700 p-4 rounded-lg shadow-md h-full items-center">
+      <div className="w-full bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md h-full items-center">
         <div className="flex items-center justify-center py-4 ">
           <Input
             placeholder="Filter applicant..."
             value={table.getColumn("applicantName")?.getFilterValue() || ""}
             onChange={handleFilter}
-            className="max-w-sm"
+            className="max-w-sm dark:border-gray-200"
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="ml-auto"
+                className="ml-auto dark:border-gray-200"
               >
                 Columns <ChevronDown className="ml-1 h-4 w-4" />
               </Button>
@@ -129,12 +131,12 @@ export default function ShortListedApplicants() {
           <Table className="max-w-full">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="p-0">
+                <TableRow
+                  key={headerGroup.id}
+                  className="p-0 dark:hover:bg-gray-900"
+                >
                   {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      className="text-center p-0"
-                    >
+                    <TableHead key={header.id} className="text-center p-0">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -153,6 +155,7 @@ export default function ShortListedApplicants() {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    className=" dark:hover:bg-gray-900"
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="text-center text-xs">

@@ -2,10 +2,8 @@
 /** @format */
 
 "use client";
-import BarChart from "@/components/BarChart";
 import Card, { CardContent } from "@/components/Card";
 import PageTitle from "@/components/PageTitle";
-import { role } from "@/components/RoleManagement";
 import ApplicantsCard from "@/components/SalesCard";
 import {
   Activity,
@@ -290,7 +288,7 @@ export default function Home() {
                 ))}
               </section>
               <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
-              <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-700 hover:border-gray-950">
+              <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-800 hover:border-gray-950">
                 <section>
                   <p className="text-lg font-semibold">Recent Applications</p>
                   <p className="text-sm text-gray-400">
@@ -306,7 +304,7 @@ export default function Home() {
                   />
                 ))}
               </CardContent>
-                <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-700 hover:border-gray-950">
+                <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-800 hover:border-gray-950">
                   <section>
                     <p className="text-lg font-semibold"> Recent Job Postings </p>
                     <p className="text-sm text-gray-400">
@@ -342,11 +340,11 @@ export default function Home() {
               ))}
             </section>
             <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2 dark:text-gray-200">
-              <CardContent className="bg-white dark:bg-gray-700 hover:border-gray-950 ">
+              <CardContent className="bg-white dark:bg-gray-800 hover:border-gray-950 ">
                 <p className="text-xl font-semibold text-center">Interviews</p>
                 <InterviewSchedule className="shadow-none" />
               </CardContent>
-              <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-700 hover:border-gray-950">
+              <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-800 hover:border-gray-950">
                 <section>
                   <p className="text-lg font-semibold">Recent Applications</p>
                   <p className="text-sm text-gray-400">

@@ -26,7 +26,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 import { columns } from "../../components/applicantsColumns";
 import { applicantsData } from "../../components/applicantsData";
@@ -41,6 +41,8 @@ export default function HiredApplicants() {
   const [rowSelection, setRowSelection] = useState({});
   const pathname = usePathname();
   const pageTitle = FormatTitle(pathname);
+  const router = useRouter();
+  const tableColumns = columns(router);
 
   const data = useMemo(() => {
     return applicantsData.filter((d) => d.status === "hired");
@@ -48,7 +50,7 @@ export default function HiredApplicants() {
 
   const table = useReactTable({
     data,
-    columns,
+    columns: tableColumns,
     pageCount: Math.ceil(data.length / ITEMS_PER_PAGE),
     state: {
       sorting,
@@ -82,17 +84,17 @@ export default function HiredApplicants() {
     <>
       {" "}
       <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
-      <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-md h-full">
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md h-full">
         <div className="flex items-center justify-between py-4">
           <Input
             placeholder="Filter applicant..."
             value={table.getColumn("applicantName")?.getFilterValue() ?? ""}
             onChange={handleFilter}
-            className="max-w-sm"
+            className="max-w-sm dark:border-gray-200"
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">
+              <Button variant="outline" className="dark:border-gray-200">
                 Columns <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -120,7 +122,10 @@ export default function HiredApplicants() {
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
+                <TableRow
+                  key={headerGroup.id}
+                  className="dark:hover:bg-gray-900"
+                >
                   {headerGroup.headers.map((header) => (
                     <TableHead key={header.id} className="text-center p-0">
                       {header.isPlaceholder
@@ -140,6 +145,7 @@ export default function HiredApplicants() {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    className="dark:hover:bg-gray-900"
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="text-center text-xs">
