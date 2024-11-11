@@ -32,10 +32,18 @@ import {
   SlidersHorizontal,
   SlidersVertical,
   CalendarFold,
+  MapPin,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useSession } from "next-auth/react";
 
 const CreateJobForm = ({ onClose }) => {
+  const { data: session } = useSession();
+
+  const organizationId = session?.organizationId;
+  const accessToken = session?.accessToken;
+  console.log("organizationId from job form : ", accessToken);
+
   const { toast } = useToast();
   const {
     register,
@@ -45,19 +53,52 @@ const CreateJobForm = ({ onClose }) => {
   } = useForm({
     resolver: zodResolver(jobSchema),
     defaultValues: {
-      jobCategory: "full-time",
+      employeeType: "full-time",
       jobType: "onsite",
     },
   });
 
-  const onSubmit = (data) => {
-    console.log("Job data:", data);
-    toast({
-      title: "Success",
-      description: "Created the job successfully!",
-      variant: "ourSuccess",
-    });
-    onClose();
+  const onSubmit = async (data) => {
+    try {
+      const requestData = {
+        organization: organizationId,
+        ...data,
+      };
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/jobs`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(requestData),
+        }
+      );
+
+      console.log(response);
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const responseData = await response.json();
+      console.log("API Response:", responseData);
+
+      toast({
+        title: "Success",
+        description: "Created the job successfully!",
+        variant: "ourSuccess",
+      });
+      onClose();
+    } catch (error) {
+      console.error("Error creating job:", error);
+      toast({
+        title: "Error",
+        description: "Failed to create the job. Please try again.",
+        variant: "ourDestructive",
+      });
+    }
   };
 
   return (
@@ -76,99 +117,120 @@ const CreateJobForm = ({ onClose }) => {
               className="grid grid-cols-1 gap-4 w-full"
             >
               <div className="flex flex-col">
-                <Label htmlFor="title" className="mb-2">
+                <Label htmlFor="jobTitle" className="mb-2">
                   Job Title
                 </Label>
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <ALargeSmall className="mx-3 text-gray-400 w-4" />
                   <Input
-                    id="title"
-                    name="title"
-                    {...register("title")}
+                    id="jobTitle"
+                    name="jobTitle"
+                    {...register("jobTitle")}
                     required
                     className="!rounded-l-none"
                   />
                 </div>
-                {errors.title && (
+                {errors.jobTitle && (
                   <span className="text-xs text-red-500">
-                    {errors.title.message}
+                    {errors.jobTitle.message}
                   </span>
                 )}
               </div>
 
               <div className="flex flex-col">
-                <Label htmlFor="designation" className="mb-2">
+                <Label htmlFor="jobDesignation" className="mb-2">
                   Job Designation
                 </Label>
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <FileChartColumnIncreasing className="mx-3 text-gray-400 w-4" />
                   <Input
-                    id="designation"
-                    name="designation"
-                    {...register("designation")}
+                    id="jobDesignation"
+                    name="jobDesignation"
+                    {...register("jobDesignation")}
                     required
                     className="!rounded-l-none"
                   />
                 </div>
-                {errors.designation && (
+                {errors.jobDesignation && (
                   <span className="text-xs text-red-500">
-                    {errors.designation.message}
+                    {errors.jobDesignation.message}
                   </span>
                 )}
               </div>
 
               <div className="flex flex-col">
-                <Label htmlFor="description" className="mb-2">
+                <Label htmlFor="jobDescription" className="mb-2">
                   Job Description
                 </Label>
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <File className="mx-3 text-gray-400 w-4" />
                   <Textarea
-                    id="description"
-                    name="description"
-                    {...register("description")}
+                    id="jobDescription"
+                    name="jobDescription"
+                    {...register("jobDescription")}
                     required
                     className="!rounded-l-none !border-l-0"
                   />
                 </div>
-                {errors.description && (
+                {errors.jobDescription && (
                   <span className="text-xs text-red-500">
-                    {errors.description.message}
+                    {errors.jobDescription.message}
                   </span>
                 )}
               </div>
 
               <div className="flex flex-col">
-                <Label htmlFor="requirements" className="mb-2">
+                <Label htmlFor="jobRequirements" className="mb-2">
                   Job Requirements
                 </Label>
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <ClipboardPenLine className="mx-3 text-gray-400 w-4" />
                   <Textarea
-                    id="requirements"
-                    name="requirements"
-                    {...register("requirements")}
+                    id="jobRequirements"
+                    name="jobRequirements"
+                    {...register("jobRequirements")}
                     required
                     className="!rounded-l-none"
                   />
                 </div>
-                {errors.requirements && (
+                {errors.jobRequirements && (
                   <span className="text-xs text-red-500">
-                    {errors.requirements.message}
+                    {errors.jobRequirements.message}
                   </span>
                 )}
               </div>
 
               <div className="flex flex-col">
-                <Label htmlFor="jobCategory" className="mb-2">
-                  Job Category
+                <Label htmlFor="jobSkills" className="mb-2">
+                  Mandatory Skills
+                </Label>
+                <div className="flex items-center border dark:border-gray-200 rounded-md">
+                  <ClipboardPenLine className="mx-3 text-gray-400 w-4" />
+                  <Textarea
+                    id="jobSkills"
+                    name="jobSkills"
+                    {...register("jobSkills")}
+                    required
+                    className="!rounded-l-none"
+                  />
+                </div>
+                {errors.jobSkills && (
+                  <span className="text-xs text-red-500">
+                    {errors.jobSkills.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex flex-col">
+                <Label htmlFor="employeeType" className="mb-2">
+                  Employee Type
                 </Label>
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <SlidersHorizontal className="mx-3 text-gray-400 w-4" />
                   <Select
-                    id="jobCategory"
-                    name="jobCategory"
-                    onValueChange={(value) => setValue("jobCategory", value)}
+                    id="employeeType"
+                    name="employeeType"
+                    onValueChange={(value) => setValue("employeeType", value)}
                     className="!rounded-l-none"
                   >
                     <SelectTrigger>
@@ -181,16 +243,16 @@ const CreateJobForm = ({ onClose }) => {
                     </SelectContent>
                   </Select>
                 </div>
-                {errors.jobCategory && (
+                {errors.employeeType && (
                   <span className="text-xs text-red-500">
-                    {errors.jobCategory.message}
+                    {errors.employeeType.message}
                   </span>
                 )}
               </div>
 
               <div className="flex flex-col">
                 <Label htmlFor="jobType" className="mb-2">
-                  Job Nature
+                  Job Type
                 </Label>
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <SlidersVertical className="mx-3 text-gray-400 w-4" />
@@ -219,42 +281,66 @@ const CreateJobForm = ({ onClose }) => {
 
               <div className="grid grid-cols-2 gap-4 w-full">
                 <div className="flex flex-col">
-                  <Label htmlFor="salaryRange" className="mb-2">
-                    Salary Range
+                  <Label htmlFor="jobSalary" className="mb-2">
+                    Job Salary
                   </Label>
                   <div className="flex items-center border dark:border-gray-200 rounded-md w-full">
                     <DollarSign className="mx-3 text-gray-400 w-4" />
                     <Input
-                      id="salaryRange"
-                      name="salaryRange"
-                      {...register("salaryRange", {
-                        required: "Salary range is required",
+                      id="jobSalary"
+                      name="jobSalary"
+                      {...register("jobSalary", {
+                        required: "Salary is required",
                       })}
                       className="!rounded-l-none w-full"
                     />
                   </div>
-                  {errors.salaryRange && (
+                  {errors.jobSalary && (
                     <span className="text-xs text-red-500">
-                      {errors.salaryRange.message}
+                      {errors.jobSalary.message}
                     </span>
                   )}
                 </div>
 
                 <div className="flex flex-col">
-                  <Label htmlFor="deadline" className="mb-2">
+                  <Label htmlFor="jobDeadline" className="mb-2">
                     Application Deadline
                   </Label>
                   <div className="flex items-center border dark:border-gray-200 rounded-md">
                     <CalendarFold className="mx-3 text-gray-400 w-4" />
                     <Input
-                      id="deadline"
-                      name="deadline"
+                      id="jobDeadline"
+                      name="jobDeadline"
                       type="date"
-                      {...register("deadline")}
+                      {...register("jobDeadline")}
                       className="!rounded-l-none"
                     />
                   </div>
+                  {errors.jobDeadline && (
+                    <span className="text-xs text-red-500">
+                      {errors.jobDeadline.message}
+                    </span>
+                  )}
                 </div>
+              </div>
+              <div className="flex flex-col">
+                <Label htmlFor="jobLocation" className="mb-2">
+                  Job Location
+                </Label>
+                <div className="flex items-center border dark:border-gray-200 rounded-md">
+                  <MapPin className="mx-3 text-gray-400 w-4" />
+                  <Input
+                    id="jobLocation"
+                    name="jobLocation"
+                    {...register("jobLocation")}
+                    className="!rounded-l-none"
+                  />
+                </div>
+                {errors.jobLocation && (
+                  <span className="text-xs text-red-500">
+                    {errors.jobLocation.message}
+                  </span>
+                )}
               </div>
             </form>
           </CardContent>
