@@ -36,7 +36,7 @@ export default function RootLayout({ children, session }) {
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("min-h-screen w-full bg-gray-100 dark:bg-gray-900 text-black")}>
+      <body className={cn("min-h-screen w-full bg-gray-100 dark:bg-gray-900 text-black dark:text-gray-200")}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

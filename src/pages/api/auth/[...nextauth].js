@@ -5,6 +5,7 @@ import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import LinkedInProvider from "next-auth/providers/linkedin";
 // Asdfgh@11
+// qononifi@cyclelove.cc
 
 export const authOptions = {
     providers: [
@@ -76,17 +77,37 @@ export const authOptions = {
                         }),
                     });
 
-                    const user = await res.json();
-                    // console.log("User Authorized :", user)
 
-                    if (res.ok && user && user.user.id) {
-                        return {
-                            id: user.user.id,
-                            name: user.user.userName || null,
-                            email: user.user.email,
-                            picture: user.user.pictureURL || null,
-                            accessToken: user.token || null,
-                        };
+                    const user = await res.json();
+                    console.log("User Authorized :", user)
+
+                    if (res.ok && user) {
+
+                        const orgResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/organizations`, {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': `Bearer ${user.token}`,
+                                'Content-Type': 'application/json',
+                            },
+                        });
+
+                        if (orgResponse.ok) {
+                            const orgData = await orgResponse.json();
+                            const organizationId = orgData.docs[0]?.id;
+                            console.log("Organization ID:", organizationId);
+
+                            return {
+                                id: user.user.id,
+                                name: user.user.userName || null,
+                                email: user.user.email,
+                                picture: user.user.pictureURL || null,
+                                accessToken: user.token || null,
+                                organizationId,
+                            };
+                        } else {
+                            console.error("Failed to fetch organization data:", orgResponse.statusText);
+                        }
+                        return null;
                     } else {
                         throw new Error('User not found');
                     }
@@ -117,6 +138,7 @@ export const authOptions = {
                 token.email = user.email;
                 token.picture = user.picture;
                 token.accessToken = user.accessToken;
+                token.organizationId = user.organizationId;
             }
 
             // console.log('JWT Callback - Token after:', token);
@@ -132,15 +154,15 @@ export const authOptions = {
         },
 
         async session({ token, session }) {
-            // console.log("Session Callback - Token:", token);
 
             if (token) {
-                // console.log("session:", session);
+                console.log("session:", session);
                 session.user.id = token.id || null;
                 session.user.name = token.name || null;
                 session.user.email = token.email || null;
                 session.user.picture = token.picture || null;
                 session.accessToken = token.accessToken || null;
+                session.organizationId = token.organizationId || null;
             } else {
                 console.error("Token is undefined in session callback");
             }

@@ -78,7 +78,7 @@ export const columns = (router) => {
           <div className="text-center capitalize">
             <Dialog>
               <DialogTrigger asChild>
-                <span className="hover:underline hover:cursor-pointer hover:text-blue-500">
+                <span className="hover:cursor-pointer underline text-blue-700 dark:text-sky-500 hover:font-semibold hover:underline-offset-2 transition-all transform duration-200 ease-in-out">
                   {applicantData.applicantName}
                 </span>
               </DialogTrigger>

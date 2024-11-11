@@ -19,6 +19,7 @@ import InterviewSchedule from "./(main-dashboard)/(dashboard)/interviews/schedul
 import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/applicants/components/applicantsData";
 import useRoleStore from "@/stores/roleStore/useRoleStore";
 
+
 const cardData = [
   {
     label: "Total Openings",

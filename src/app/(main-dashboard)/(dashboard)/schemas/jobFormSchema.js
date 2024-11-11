@@ -1,12 +1,17 @@
 import { z } from 'zod';
 
 export const jobSchema = z.object({
-    title: z.string().min(2, "Put a valid job title"),
-    designation: z.string().min(2, "Put a valid job designation"),
-    description: z.string().min(10, "Put a valid job description"),
-    requirements: z.string().min(8, "Put valid requirements"),
-    jobCategory: z.string(),
+    jobTitle: z.string().min(2, "Put a valid job title"),
+    jobDesignation: z.string().min(2, "Put a valid job designation"),
+    jobDescription: z.string().min(10, "Put a valid job description"),
+    jobRequirements: z.string().min(8, "Put valid requirements"),
+    jobSkills: z.string().min(8, "Put valid requirements"),
+    employeeType: z.string(),
     jobType: z.string(),
-    salaryRange: z.string().min(3, "Salary range is required"),
-    deadline: z.string().optional(),
+    jobSalary: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
+        message: "Expected number, received a string"
+    }),
+    jobDeadline: z.string(),
+    jobLocation: z.string(),
+
 });
