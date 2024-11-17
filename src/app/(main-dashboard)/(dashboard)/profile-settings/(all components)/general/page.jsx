@@ -1,30 +1,43 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+
+import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useGeneralStore from "@/stores/profile-settings/useGeneralStore";
-import { useEffect } from "react";
 
 export default function GeneralSettings() {
   const { data: session } = useSession();
-  const { formData, setFormData, saveInfo } = useGeneralStore();
+  const {
+    orgDetails,
+    formData,
+    setFormData,
+    fetchOrgDetails,
+    saveInfo,
+    loading,
+  } = useGeneralStore();
 
+  const accessToken = session?.access_token;
+  const organizationId = session?.organizationId;
+
+  // Fetch organization details on component load
   useEffect(() => {
-    if (session?.user) {
-      setFormData({
-        name: session.user.name || "",
-        email: session.user.email || "",
-      });
+    if (accessToken && organizationId) {
+      fetchOrgDetails(accessToken, organizationId);
     }
-  }, [session]);
+  }, [accessToken, organizationId, fetchOrgDetails]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    saveInfo(session.user);
+    if (accessToken && organizationId) {
+      await saveInfo(accessToken, organizationId);
+    }
   };
+
+  if (!orgDetails) {
+    return <div>Loading organization details...</div>;
+  }
 
   return (
     <div className="bg-white dark:bg-gray-800">
@@ -34,39 +47,37 @@ export default function GeneralSettings() {
             General Settings
           </h2>
           <p className="text-sm text-muted-foreground">
-            Update your basic account information.
+            Update your basic organization information.
           </p>
         </div>
 
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="orgName">Organization Name</Label>
             <Input
-              id="name"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ name: e.target.value })
-              }
-              placeholder="Your name"
+              id="orgName"
+              value={formData.orgName}
+              onChange={(e) => setFormData({ orgName: e.target.value })}
+              placeholder="Organization name"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="orgEmail">Organization Email</Label>
             <Input
-              id="email"
+              id="orgEmail"
               type="email"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ email: e.target.value })
-              }
-              placeholder="your.email@example.com"
+              value={formData.orgEmail}
+              onChange={(e) => setFormData({ orgEmail: e.target.value })}
+              placeholder="organization@example.com"
             />
           </div>
         </div>
 
         <div className="flex justify-end">
-          <Button type="submit">Save Changes</Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? "Saving..." : "Save Changes"}
+          </Button>
         </div>
       </form>
     </div>

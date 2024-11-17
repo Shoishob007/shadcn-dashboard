@@ -15,25 +15,36 @@ import PageTitle from "@/components/PageTitle";
 
 export default function ProfileSettings() {
   const { data: session } = useSession();
-  const { formData, setFormData, saveProfile, loading } = useProfileStore();
+  const {
+    profileDetails,
+    formData,
+    setFormData,
+    fetchProfile,
+    saveProfile,
+    loading,
+  } = useProfileStore();
   const pathname = usePathname();
   const pageTitle = FormatTitle(pathname);
 
+  const accessToken = session?.access_token;
+  const organizationId = session?.organizationId;
+
   useEffect(() => {
-    if (session?.user) {
-      setFormData({
-        name: session.user.name || "",
-        email: session.user.email || "",
-      });
+    if (accessToken && organizationId) {
+      fetchProfile(accessToken, organizationId);
     }
-  }, [session]);
+  }, [accessToken, organizationId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Profile updated:", formData);
-    saveProfile(session.user);
-    toast;
+    if (accessToken && organizationId) {
+      saveProfile(accessToken, organizationId);
+    }
   };
+
+  if (loading && !profileDetails) {
+    return <div>Loading profile details...</div>;
+  }
 
   return (
     <>
@@ -43,10 +54,10 @@ export default function ProfileSettings() {
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div className="space-y-2">
             <h2 className="text-2xl font-semibold tracking-tight">
-              Edit Profile
+              Edit Organization Profile
             </h2>
             <p className="text-sm text-muted-foreground">
-              Customize your public profile information.
+              Customize your organization&apos;s public profile information.
             </p>
           </div>
 
@@ -58,89 +69,102 @@ export default function ProfileSettings() {
               height={80}
               className="rounded-full"
             />
-            <Button variant="outline">Change Avatar</Button>
+            <Button variant="outline">Change Logo</Button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="orgName">Organization Name</Label>
               <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) => setFormData({ name: e.target.value })}
-                placeholder={session?.user.name}
+                id="orgName"
+                value={formData.orgName}
+                onChange={(e) => setFormData({ orgName: e.target.value })}
+                placeholder="Organization name"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="orgEmail">Organization Email</Label>
               <Input
-                id="email"
+                id="orgEmail"
                 type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ email: e.target.value })}
-                placeholder={session?.user.email}
+                value={formData.orgEmail}
+                onChange={(e) => setFormData({ orgEmail: e.target.value })}
+                placeholder="organization@example.com"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="location">Location</Label>
+              <Label htmlFor="orgAddress">Address</Label>
               <Input
-                id="location"
-                value={formData.location}
-                onChange={(e) => setFormData({ location: e.target.value })}
-                placeholder="City, Country"
+                id="orgAddress"
+                value={formData.orgAddress}
+                onChange={(e) => setFormData({ orgAddress: e.target.value })}
+                placeholder="Organization Address"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="website">Personal Website</Label>
+              <Label htmlFor="orgWebsiteUrl">Website</Label>
               <Input
-                id="website"
-                value={formData.website}
-                onChange={(e) => setFormData({ website: e.target.value })}
+                id="orgWebsiteUrl"
+                value={formData.orgWebsiteUrl}
+                onChange={(e) => setFormData({ orgWebsiteUrl: e.target.value })}
                 placeholder="https://example.com"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="company">Company</Label>
+              <Label htmlFor="orgPhone">Phone</Label>
               <Input
-                id="company"
-                value={formData.company}
-                onChange={(e) => setFormData({ company: e.target.value })}
-                placeholder="XYZ"
+                id="orgPhone"
+                value={formData.orgPhone}
+                onChange={(e) => setFormData({ orgPhone: e.target.value })}
+                placeholder="Organization Phone"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="position">Position</Label>
+              <Label htmlFor="orgEstablishedYear">Established Year</Label>
               <Input
-                id="position"
-                value={formData.position}
-                onChange={(e) => setFormData({ position: e.target.value })}
-                placeholder="Example Developer"
+                id="orgEstablishedYear"
+                type="number"
+                value={formData.orgEstablishedYear}
+                onChange={(e) =>
+                  setFormData({ orgEstablishedYear: parseInt(e.target.value) })
+                }
+                placeholder="Year established"
               />
             </div>
 
             <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="bio">Bio</Label>
+              <Label htmlFor="orgTagline">Tagline</Label>
+              <Input
+                id="orgTagline"
+                value={formData.orgTagline}
+                onChange={(e) => setFormData({ orgTagline: e.target.value })}
+                placeholder="Organization tagline"
+              />
+            </div>
+
+            <div className="space-y-2 md:col-span-2">
+              <Label htmlFor="orgMission">Mission</Label>
               <Textarea
-                id="bio"
-                value={formData.bio}
-                onChange={(e) => setFormData({ bio: e.target.value })}
-                placeholder="Tell us about your organization"
+                id="orgMission"
+                value={formData.orgMission}
+                onChange={(e) => setFormData({ orgMission: e.target.value })}
+                placeholder="Organization mission"
                 rows={4}
               />
             </div>
 
             <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="achievements">Achievements</Label>
+              <Label htmlFor="orgVision">Vision</Label>
               <Textarea
-                id="achievements"
-                value={formData.achievements}
-                onChange={(e) => setFormData({ achievements: e.target.value })}
-                placeholder="List your major achievements"
+                id="orgVision"
+                value={formData.orgVision}
+                onChange={(e) => setFormData({ orgVision: e.target.value })}
+                placeholder="Organization vision"
                 rows={4}
               />
             </div>
