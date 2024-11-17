@@ -22,7 +22,11 @@ export default function SocialSettings() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    saveSocial(formData);
+    const socialLinks = Object.entries(formData).map(([title, url]) => ({
+      socialMedia: { title },
+      socialMediaUrl: url,
+    }));
+    saveSocial({ socialLinks });
   };
 
   const socialLinks = [
@@ -78,7 +82,7 @@ export default function SocialSettings() {
               Social Profiles
             </h2>
             <p className="text-sm text-muted-foreground">
-              Connect your social media accounts.
+              Connect your organization&apos;s social media accounts.
             </p>
           </div>
 

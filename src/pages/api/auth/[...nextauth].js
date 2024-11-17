@@ -98,10 +98,14 @@ export const authOptions = {
 
                             return {
                                 id: user.user.id,
-                                name: user.user.userName || null,
-                                email: user.user.email,
+                                name: orgData.docs[0]?.orgName || null,
+                                tagline: orgData.docs[0]?.orgTagline || null,
+                                mission: orgData.docs[0]?.orgMission || null,
+                                vision: orgData.docs[0]?.orgVision || null,
+                                address: orgData.docs[0]?.orgAddress || null,
+                                email: orgData.docs[0]?.orgEmail,
                                 picture: user.user.pictureURL || null,
-                                accessToken: user.token || null,
+                                accessToken: user.token,
                                 organizationId,
                             };
                         } else {
@@ -121,7 +125,6 @@ export const authOptions = {
         }),
     ],
     secret: process.env.NEXTAUTH_SECRET,
-    // debug: process.env.NODE_ENV === 'development',
     pages: {
         signIn: '/login',
         error: '/auth/error',
@@ -132,13 +135,15 @@ export const authOptions = {
 
 
             if (user) {
-                // console.log("User :::", user)
+                // console.log("Call back user :::", user)
                 token.id = user.id;
                 token.name = user.name;
                 token.email = user.email;
                 token.picture = user.picture;
-                token.accessToken = user.accessToken;
+                token.access_token = user.accessToken;
                 token.organizationId = user.organizationId;
+                // console.log("AccessToken added to user:", token.access_token);
+                // console.log("JWT Callback - Token after modification:", token);
             }
 
             // console.log('JWT Callback - Token after:', token);
@@ -154,6 +159,7 @@ export const authOptions = {
         },
 
         async session({ token, session }) {
+            // console.log("Token passed to session callback:", token);
 
             if (token) {
                 console.log("session:", session);
@@ -161,8 +167,10 @@ export const authOptions = {
                 session.user.name = token.name || null;
                 session.user.email = token.email || null;
                 session.user.picture = token.picture || null;
-                session.accessToken = token.accessToken || null;
+                session.access_token = token.access_token || null;
                 session.organizationId = token.organizationId || null;
+                // console.log("Session Access Token after modification:", session.access_token);
+
             } else {
                 console.error("Token is undefined in session callback");
             }
