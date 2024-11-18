@@ -39,6 +39,7 @@
     "next-themes": "^0.3.0",
     "nextjs-cors": "^2.2.0",
     "openssl": "^2.0.0",
+    "qs": "^6.13.1",
     "react": "^18",
     "react-day-picker": "^8.10.0",
     "react-dom": "^18",

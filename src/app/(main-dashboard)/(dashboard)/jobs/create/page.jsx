@@ -16,11 +16,6 @@ import FormatTitle from "@/components/TitleFormatter";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 const CreateJobPage = () => {

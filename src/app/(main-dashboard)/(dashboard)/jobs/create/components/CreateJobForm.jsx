@@ -41,8 +41,9 @@ const CreateJobForm = ({ onClose }) => {
   const { data: session } = useSession();
 
   const organizationId = session?.organizationId;
-  const accessToken = session?.accessToken;
+  const accessToken = session?.access_token;
   console.log("organizationId from job form : ", organizationId);
+  console.log("accessToken from create job : ", accessToken);
 
   const { toast } = useToast();
   const {
