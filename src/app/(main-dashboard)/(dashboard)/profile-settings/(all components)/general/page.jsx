@@ -21,7 +21,7 @@ export default function GeneralSettings() {
   const accessToken = session?.access_token;
   const organizationId = session?.organizationId;
 
-  // Fetch organization details on component load
+  // Fetching organization details on component load
   useEffect(() => {
     if (accessToken && organizationId) {
       fetchOrgDetails(accessToken, organizationId);
