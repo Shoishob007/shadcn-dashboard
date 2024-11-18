@@ -11,7 +11,7 @@ const useGeneralStore = create((set, get) => ({
     loading: false,
 
     // Fetching organization details
-    fetchOrgDetails: async (token, orgID) => {
+    fetchOrgDetails: async (token) => {
         set({ loading: true });
         try {
             const response = await fetch(

@@ -13,20 +13,33 @@ import {
   Instagram,
   Youtube,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 export default function SocialSettings() {
-  const { formData, setFormData, saveSocial } = useSocialStore();
+  const { formData, setFormData, saveSocial, fetchSocialDetails, loading } =
+    useSocialStore();
   const pathname = usePathname();
   const pageTitle = FormatTitle(pathname);
+  const { data: session } = useSession();
+  const accessToken = session?.access_token;
+  const organizationId = session?.organizationId;
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (accessToken && organizationId) {
+      fetchSocialDetails(accessToken, organizationId);
+    }
+  }, [accessToken, organizationId, fetchSocialDetails]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const socialLinks = Object.entries(formData).map(([title, url]) => ({
-      socialMedia: { title },
-      socialMediaUrl: url,
-    }));
-    saveSocial({ socialLinks });
+    if (accessToken && organizationId) {
+      const filteredFormData = Object.fromEntries(
+        Object.entries(formData).filter(([_, value]) => value.trim() !== "")
+      );
+      await saveSocial(accessToken, organizationId, filteredFormData);
+    }
   };
 
   const socialLinks = [
