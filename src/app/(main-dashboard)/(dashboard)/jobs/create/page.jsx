@@ -19,6 +19,7 @@ import { useSession } from "next-auth/react";
 const CreateJobPage = () => {
   const [showForm, setShowForm] = useState(false);
   const [jobId, setJobId] = useState(null);
+  const [jobDocId, setJobDocId] = useState(null);
   const pathname = usePathname();
   const pageTitle = FormatTitle(pathname);
   const { data: session } = useSession();
@@ -66,7 +67,8 @@ const CreateJobPage = () => {
 
       const getData = await getResponse.json();
       console.log("Job details fetching :", getData);
-      const calculatedJobId = getData.docs[0].id;
+      const jobDocumentId = getData.docs[0].id;
+      const jobId = getData.docs[0].job.id
 
       // if (Array.isArray(getData.docs)) {
       //   const jobDoc = getData.docs.find(
@@ -85,7 +87,8 @@ const CreateJobPage = () => {
       //   throw new Error("Job details are not in the expected array format.");
       // }
 
-      setJobId(calculatedJobId);
+      setJobDocId(jobDocumentId);
+      setJobId(jobId)
       setShowForm(true);
     } catch (error) {
       console.error("Failed to create or fetch job:", error);
@@ -119,7 +122,7 @@ const CreateJobPage = () => {
 
         <Dialog open={showForm} onOpenChange={setShowForm}>
           <DialogContent className="max-w-2xl max-h-[calc(100vh-60px)] overflow-auto">
-            {jobId && <CreateJobForm jobId={jobId} onClose={handleCloseForm} />}
+            {jobDocId && <CreateJobForm jobDocId={jobDocId} jobId={jobId} onClose={handleCloseForm} />}
           </DialogContent>
         </Dialog>
       </div>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -29,20 +30,31 @@ import {
   FileChartColumnIncreasing,
   File,
   ClipboardPenLine,
+  AlignLeft,
   SlidersHorizontal,
   SlidersVertical,
   CalendarFold,
   MapPin,
+  Book,
+  CalendarCheck,
+  ReceiptText,
+  GraduationCap,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-const CreateJobForm = ({ jobId, onClose }) => {
+const CreateJobForm = ({ jobDocId, jobId, onClose }) => {
   const { data: session } = useSession();
   const [jobData, setJobData] = useState(null);
+  const [skillsOptions, setSkillsOptions] = useState([]);
+  const [jobRolesOptions, setJobRolesOptions] = useState([]);
+  const [fieldOfStudyOptions, setFieldOfStudyOptions] = useState([]);
+  const [degreeLevelOptions, setDegreeLevelOptions] = useState([]);
+  const [designationOptions, setDesignationOptions] = useState([]);
+  const [employeeTypeOptions, setEmployeeTypeOptions] = useState([]);
+  const [jobTypeOptions, setJobTypeOptions] = useState([]);
 
-  const organizationId = session?.organizationId;
   const accessToken = session?.access_token;
   const { toast } = useToast();
 
@@ -55,77 +67,123 @@ const CreateJobForm = ({ jobId, onClose }) => {
   } = useForm({
     resolver: zodResolver(jobSchema),
     defaultValues: {
-      employeeType: "full-time",
-      jobType: "onsite",
+      defaultValues: {
+        skills: [],
+        jobRole: [],
+        fieldOfStudy: [],
+        degreeLevel: [],
+        employeeType: "",
+        jobType: "",
+        designation: "",
+      },
     },
   });
-  useEffect(() => {
-    if (jobId) {
-      const fetchJobDetails = async () => {
-        try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/job-details/${jobId}`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
-              },
-            }
-          );
 
-          if (!response.ok) {
-            throw new Error("Failed to fetch job details.");
-          }
+  // Fetching options for dropdowns
+  const fetchOptions = async () => {
+    try {
+      const [
+        skillsResponse,
+        rolesResponse,
+        fieldsResponse,
+        degreesResponse,
+        designationsResponse,
+        employeeTypeResponse,
+        jobTypeResponse,
+      ] = await Promise.all([
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skills`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/job-roles`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/field-of-studies`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/degree-levels`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/designations`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/employee-types`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/job-types`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+      ]);
 
-          const data = await response.json();
-          setJobData(data);
-          reset(data);
-        } catch (error) {
-          console.error("Error fetching job details:", error);
-        }
-      };
+      if (
+        !skillsResponse.ok ||
+        !rolesResponse.ok ||
+        !fieldsResponse.ok ||
+        !degreesResponse.ok ||
+        !designationsResponse.ok ||
+        !employeeTypeResponse.ok ||
+        !jobTypeResponse.ok
+      ) {
+        throw new Error("Failed to fetch options");
+      }
 
-      fetchJobDetails();
+      const skillsData = await skillsResponse.json();
+      const rolesData = await rolesResponse.json();
+      const fieldsData = await fieldsResponse.json();
+      const degreesData = await degreesResponse.json();
+      const designationsData = await designationsResponse.json();
+      const employeeTypeData = await employeeTypeResponse.json();
+      const jobTypeData = await jobTypeResponse.json();
+
+      setSkillsOptions(skillsData.docs);
+      setJobRolesOptions(rolesData.docs);
+      setFieldOfStudyOptions(fieldsData.docs);
+      setDegreeLevelOptions(degreesData.docs);
+      setDesignationOptions(designationsData.docs);
+      setEmployeeTypeOptions(employeeTypeData.docs);
+      setJobTypeOptions(jobTypeData.docs);
+    } catch (error) {
+      console.error("Error fetching options:", error);
     }
-  }, [jobId, accessToken, reset]);
+  };
+
+  useEffect(() => {
+    fetchOptions();
+  }, []);
 
   const onSubmit = async (data) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/job-details/${jobId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/job-details/${jobDocId}`,
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-          // body: JSON.stringify({ ...data, organization: organizationId }),
           body: JSON.stringify({
-            organization: organizationId,
-            deadline: "2024-11-27",
-            description: "12 Pm Description",
-            designation: "bc498653-b598-4246-b4f5-46ba6eb8ab80",
-            employeeType: "part-time",
-            jobType: "physical",
-            location: "Mirpur - 10, Dhaka, Bangladesh",
-            // organization: "0b2adfa3-7c92-43dc-921b-fbd5471475a1",
-            requirements: "12 PM Requirements",
-            salary: "40000",
-            skills: [
-              "a1e18457-0a76-448e-8d31-36955bb96d21",
-              "c59e858d-483f-4c7d-bb61-af90961e8fb1",
-            ],
-            degreeLevel: ["be5b4d94-1dd4-4807-a60d-30a980544cad"],
-            jobRole: [
-              "1107be94-9795-4482-bab3-23083ab2efca",
-              "4ce8efc6-7be4-4244-aa2a-80e073468ace",
-            ],
-            title: "12 PM Job Title",
-            fieldOfStudy: [
-              "530d77dc-d325-47b9-b363-c7ad66283881",
-              "c435d686-c581-4003-ad74-8fd53fe5f9ad",
-            ],
+            ...data,
+            job: jobId,
           }),
         }
       );
@@ -139,7 +197,7 @@ const CreateJobForm = ({ jobId, onClose }) => {
         description: "Job details updated successfully!",
         variant: "ourSuccess",
       });
-      // onClose();
+      onClose();
     } catch (error) {
       console.error("Error updating job:", error);
       toast({
@@ -193,14 +251,20 @@ const CreateJobForm = ({ jobId, onClose }) => {
                 </Label>
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <FileChartColumnIncreasing className="mx-3 text-gray-400 w-4" />
-                  <Input
-                    id="designation"
-                    name="designation"
-                    {...register("designation")}
-                    required
-                    className="!rounded-l-none"
-                    defaultValue={jobData?.designation}
-                  />
+                  <Select
+                    onValueChange={(value) => setValue("designation", value)}
+                  >
+                    <SelectTrigger className="!rounded-l-none">
+                      <SelectValue placeholder="Select Designation" />
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      {designationOptions.map((designation) => (
+                        <SelectItem key={designation.id} value={designation.id}>
+                          {designation.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 {errors.designation && (
                   <span className="text-xs text-red-500">
@@ -254,19 +318,48 @@ const CreateJobForm = ({ jobId, onClose }) => {
               </div>
 
               <div className="flex flex-col">
+                <Label htmlFor="employeeBenefits" className="mb-2">
+                  Employee Benefits
+                </Label>
+                <div className="flex items-center border dark:border-gray-200 rounded-md">
+                  <AlignLeft className="mx-3 text-gray-400 w-4" />
+                  <Textarea
+                    id="employeeBenefits"
+                    name="employeeBenefits"
+                    {...register("employeeBenefits")}
+                    required
+                    className="!rounded-l-none"
+                    defaultValue={jobData?.employeeBenefits}
+                  />
+                </div>
+                {errors.employeeBenefits && (
+                  <span className="text-xs text-red-500">
+                    {errors.employeeBenefits.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex flex-col">
                 <Label htmlFor="skills" className="mb-2">
                   Mandatory Skills
                 </Label>
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <ClipboardPenLine className="mx-3 text-gray-400 w-4" />
-                  <Textarea
-                    id="skills"
-                    name="skills"
-                    {...register("skills")}
-                    required
-                    className="!rounded-l-none"
-                    defaultValue={jobData?.skills}
-                  />
+                  <Select
+                    multiple
+                    onValueChange={(value) => setValue("skills", value)}
+                  >
+                    <SelectTrigger className="!rounded-l-none">
+                      <SelectValue placeholder="Select Skills" />
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      {skillsOptions.map((skill) => (
+                        <SelectItem key={skill.id} value={skill.id}>
+                          {skill.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 {errors.skills && (
                   <span className="text-xs text-red-500">
@@ -282,19 +375,17 @@ const CreateJobForm = ({ jobId, onClose }) => {
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <SlidersHorizontal className="mx-3 text-gray-400 w-4" />
                   <Select
-                    id="employeeType"
-                    name="employeeType"
                     onValueChange={(value) => setValue("employeeType", value)}
-                    className="!rounded-l-none"
-                    defaultValue={jobData?.employeeType}
                   >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Category" />
+                    <SelectTrigger className="!rounded-l-none">
+                      <SelectValue placeholder="Select Employee Type" />
                     </SelectTrigger>
                     <SelectContent position="popper">
-                      <SelectItem value="full-time">Full-Time</SelectItem>
-                      <SelectItem value="part-time">Part-Time</SelectItem>
-                      <SelectItem value="contractual">Contractual</SelectItem>
+                      {employeeTypeOptions.map((type) => (
+                        <SelectItem key={type.id} value={type.id}>
+                          {type.title}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -306,25 +397,111 @@ const CreateJobForm = ({ jobId, onClose }) => {
               </div>
 
               <div className="flex flex-col">
-                <Label htmlFor="jobType" className="mb-2">
-                  Job Type
+                <Label htmlFor="jobRole" className="mb-2">
+                  Job Role
                 </Label>
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <SlidersVertical className="mx-3 text-gray-400 w-4" />
                   <Select
-                    id="jobType"
-                    name="jobType"
-                    onValueChange={(value) => setValue("jobType", value)}
-                    className="!rounded-l-none"
-                    defaultValue={jobData?.jobType}
+                    multiple
+                    onValueChange={(value) => setValue("jobRole", value)}
                   >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Nature" />
+                    <SelectTrigger className="!rounded-l-none">
+                      <SelectValue placeholder="Select Job Roles" />
                     </SelectTrigger>
                     <SelectContent position="popper">
-                      <SelectItem value="onsite">Onsite</SelectItem>
-                      <SelectItem value="remote">Remote</SelectItem>
-                      <SelectItem value="hybrid">Hybrid</SelectItem>
+                      {jobRolesOptions.map((role) => (
+                        <SelectItem key={role.id} value={role.id}>
+                          {role.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                {errors.jobRole && (
+                  <span className="text-xs text-red-500">
+                    {errors.jobRole.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex flex-col">
+                <Label htmlFor="jobRole" className="mb-2">
+                  Field of Study
+                </Label>
+                <div className="flex items-center border dark:border-gray-200 rounded-md">
+                  <Book className="mx-3 text-gray-400 w-4" />
+                  <Select
+                    multiple
+                    onValueChange={(value) => setValue("fieldOfStudy", value)}
+                  >
+                    <SelectTrigger className="!rounded-l-none">
+                      <SelectValue placeholder="Select Fields of Study" />
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      {fieldOfStudyOptions.map((field) => (
+                        <SelectItem key={field.id} value={field.id}>
+                          {field.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                {errors.fieldOfStudy && (
+                  <span className="text-xs text-red-500">
+                    {errors.fieldOfStudy.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex flex-col">
+                <Label htmlFor="jobRole" className="mb-2">
+                  Degree-Level
+                </Label>
+                <div className="flex items-center border dark:border-gray-200 rounded-md">
+                  <GraduationCap className="mx-3 text-gray-400 w-4" />
+                  <Select
+                    multiple
+                    onValueChange={(value) => setValue("degreeLevel", value)}
+                  >
+                    <SelectTrigger className="!rounded-l-none">
+                      <SelectValue placeholder="Select Degree Levels" />
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      {degreeLevelOptions.map((degree) => (
+                        <SelectItem key={degree.id} value={degree.id}>
+                          {degree.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                {errors.degreeLevel && (
+                  <span className="text-xs text-red-500">
+                    {errors.degreeLevel.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex flex-col">
+                <Label htmlFor="jobType" className="mb-2">
+                  Job Type
+                </Label>
+                <div className="flex items-center border dark:border-gray-200 rounded-md">
+                  <ReceiptText className="mx-3 text-gray-400 w-4" />
+                  <Select
+                    multiple
+                    onValueChange={(value) => setValue("jobType", value)}
+                  >
+                    <SelectTrigger className="!rounded-l-none">
+                      <SelectValue placeholder="Select Job Type" />
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      {jobTypeOptions.map((jobType) => (
+                        <SelectItem key={jobType.id} value={jobType.id}>
+                          {jobType.title}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -345,8 +522,10 @@ const CreateJobForm = ({ jobId, onClose }) => {
                     <Input
                       id="salary"
                       name="salary"
+                      type="number"
                       {...register("salary", {
                         required: "Salary is required",
+                        valueAsNumber: true,
                       })}
                       className="!rounded-l-none w-full"
                       defaultValue={jobData?.salary}
@@ -381,25 +560,52 @@ const CreateJobForm = ({ jobId, onClose }) => {
                   )}
                 </div>
               </div>
-              <div className="flex flex-col">
-                <Label htmlFor="location" className="mb-2">
-                  Job Location
-                </Label>
-                <div className="flex items-center border dark:border-gray-200 rounded-md">
-                  <MapPin className="mx-3 text-gray-400 w-4" />
-                  <Input
-                    id="location"
-                    name="location"
-                    {...register("location")}
-                    className="!rounded-l-none"
-                    defaultValue={jobData?.location}
-                  />
+              <div className="grid grid-cols-2 gap-4 w-full">
+                <div className="flex flex-col">
+                  <Label htmlFor="yearOfExperience" className="mb-2">
+                    Years Of Experience
+                  </Label>
+                  <div className="flex items-center border dark:border-gray-200 rounded-md w-full">
+                    <CalendarCheck className="mx-3 text-gray-400 w-4" />
+                    <Input
+                      id="yearOfExperience"
+                      name="yearOfExperience"
+                      type="number"
+                      {...register("yearOfExperience", {
+                        required: "Years Of Experience is required",
+                        valueAsNumber: true,
+                      })}
+                      className="!rounded-l-none w-full"
+                      defaultValue={jobData?.yearOfExperience}
+                    />
+                  </div>
+                  {errors.yearOfExperience && (
+                    <span className="text-xs text-red-500">
+                      {errors.yearOfExperience.message}
+                    </span>
+                  )}
                 </div>
-                {errors.location && (
-                  <span className="text-xs text-red-500">
-                    {errors.location.message}
-                  </span>
-                )}
+
+                <div className="flex flex-col">
+                  <Label htmlFor="location" className="mb-2">
+                    Job Location
+                  </Label>
+                  <div className="flex items-center border dark:border-gray-200 rounded-md">
+                    <MapPin className="mx-3 text-gray-400 w-4" />
+                    <Input
+                      id="location"
+                      name="location"
+                      {...register("location")}
+                      className="!rounded-l-none"
+                      defaultValue={jobData?.location}
+                    />
+                  </div>
+                  {errors.location && (
+                    <span className="text-xs text-red-500">
+                      {errors.location.message}
+                    </span>
+                  )}
+                </div>
               </div>
             </form>
           </CardContent>
