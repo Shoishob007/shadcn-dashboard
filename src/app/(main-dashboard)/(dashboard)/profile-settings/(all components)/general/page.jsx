@@ -20,6 +20,7 @@ export default function GeneralSettings() {
 
   const accessToken = session?.access_token;
   const organizationId = session?.organizationId;
+  // console.log(session);
 
   // Fetching organization details on component load
   useEffect(() => {

@@ -79,7 +79,7 @@ export const authOptions = {
 
 
                     const user = await res.json();
-                    console.log("User Authorized :", user)
+                    // console.log("User Authorized :", user)
 
                     if (res.ok && user) {
 
@@ -95,16 +95,18 @@ export const authOptions = {
                             const orgData = await orgResponse.json();
                             const organizationId = orgData.docs[0]?.id;
                             console.log("Organization ID:", organizationId);
+                            // console.log("Organization :", orgData.docs[0]);
+
 
                             return {
                                 id: user.user.id,
+                                email: user.user.email || null,
                                 name: orgData.docs[0]?.orgName || null,
                                 tagline: orgData.docs[0]?.orgTagline || null,
                                 mission: orgData.docs[0]?.orgMission || null,
                                 vision: orgData.docs[0]?.orgVision || null,
                                 address: orgData.docs[0]?.orgAddress || null,
-                                email: orgData.docs[0]?.orgEmail,
-                                picture: user.user.pictureURL || null,
+                                image: user.user.pictureUrl || null,
                                 accessToken: user.token,
                                 organizationId,
                             };
@@ -131,48 +133,41 @@ export const authOptions = {
         verifyRequest: '/verify-request',
     },
     callbacks: {
-        async jwt({ token, user, account }) {
-
-
-            if (user) {
-                // console.log("Call back user :::", user)
-                token.id = user.id;
-                token.name = user.name;
-                token.email = user.email;
-                token.picture = user.picture;
-                token.access_token = user.accessToken;
-                token.organizationId = user.organizationId;
-                // console.log("AccessToken added to user:", token.access_token);
-                // console.log("JWT Callback - Token after modification:", token);
+        async jwt({ token, user, account, trigger, session }) {
+            if (trigger === "update" && session?.user?.image) {
+                token.image = session.user.image;
             }
 
-            // console.log('JWT Callback - Token after:', token);
+            if (user) {
+                token.id = user.id;
+                token.email = user.email;
+                token.image = user.image;
+                token.access_token = user.accessToken;
+                token.organizationId = user.organizationId;
+            }
 
             if (account) {
-                // console.log("Account : ", account)
                 token.accessToken = account.access_token;
-                token.idToken = account.id_token;
-                token.provider = account.provider
+                token.provider = account.provider;
             }
 
             return token;
         },
 
-        async session({ token, session }) {
-            // console.log("Token passed to session callback:", token);
+        async session({ session, token, trigger }) {
+
+            if (trigger === "update" && token?.image) {
+                session.user.image = token.image;
+            }
 
             if (token) {
-                console.log("session:", session);
-                session.user.id = token.id || null;
-                session.user.name = token.name || null;
-                session.user.email = token.email || null;
-                session.user.picture = token.picture || null;
-                session.access_token = token.access_token || null;
-                session.organizationId = token.organizationId || null;
-                // console.log("Session Access Token after modification:", session.access_token);
+                session.user.id = token.id;
+                session.user.email = token.email;
+                session.user.image = token.image;
+                session.access_token = token.access_token;
+                session.organizationId = token.organizationId;
 
-            } else {
-                console.error("Token is undefined in session callback");
+                console.log("Current Server Session :", session)
             }
             return session;
         },
@@ -180,11 +175,13 @@ export const authOptions = {
         async redirect({ baseUrl }) {
             return baseUrl;
         }
-    }
+    },
+    pages: {
+        signIn: '/login',
+        error: '/auth/error',
+        verifyRequest: '/verify-request',
+    },
+    secret: process.env.NEXTAUTH_SECRET,
 };
 
-
-export default (req, res) => {
-    return NextAuth(req, res, authOptions);
-};
-
+export default (req, res) => NextAuth(req, res, authOptions);

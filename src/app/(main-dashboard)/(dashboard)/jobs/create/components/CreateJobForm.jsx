@@ -36,21 +36,22 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
-const CreateJobForm = ({ onClose }) => {
+const CreateJobForm = ({ jobId, onClose }) => {
   const { data: session } = useSession();
+  const [jobData, setJobData] = useState(null);
 
   const organizationId = session?.organizationId;
   const accessToken = session?.access_token;
-  console.log("organizationId from job form : ", organizationId);
-  console.log("accessToken from create job : ", accessToken);
-
   const { toast } = useToast();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
+    reset,
   } = useForm({
     resolver: zodResolver(jobSchema),
     defaultValues: {
@@ -58,45 +59,92 @@ const CreateJobForm = ({ onClose }) => {
       jobType: "onsite",
     },
   });
+  useEffect(() => {
+    if (jobId) {
+      const fetchJobDetails = async () => {
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/job-details/${jobId}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch job details.");
+          }
+
+          const data = await response.json();
+          setJobData(data);
+          reset(data);
+        } catch (error) {
+          console.error("Error fetching job details:", error);
+        }
+      };
+
+      fetchJobDetails();
+    }
+  }, [jobId, accessToken, reset]);
 
   const onSubmit = async (data) => {
     try {
-      const requestData = {
-        organization: organizationId,
-        ...data,
-      };
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/jobs`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/job-details/${jobId}`,
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-          body: JSON.stringify(requestData),
+          // body: JSON.stringify({ ...data, organization: organizationId }),
+          body: JSON.stringify({
+            organization: organizationId,
+            deadline: "2024-11-27",
+            description: "12 Pm Description",
+            designation: "bc498653-b598-4246-b4f5-46ba6eb8ab80",
+            employeeType: "part-time",
+            jobType: "physical",
+            location: "Mirpur - 10, Dhaka, Bangladesh",
+            // organization: "0b2adfa3-7c92-43dc-921b-fbd5471475a1",
+            requirements: "12 PM Requirements",
+            salary: "40000",
+            skills: [
+              "a1e18457-0a76-448e-8d31-36955bb96d21",
+              "c59e858d-483f-4c7d-bb61-af90961e8fb1",
+            ],
+            degreeLevel: ["be5b4d94-1dd4-4807-a60d-30a980544cad"],
+            jobRole: [
+              "1107be94-9795-4482-bab3-23083ab2efca",
+              "4ce8efc6-7be4-4244-aa2a-80e073468ace",
+            ],
+            title: "12 PM Job Title",
+            fieldOfStudy: [
+              "530d77dc-d325-47b9-b363-c7ad66283881",
+              "c435d686-c581-4003-ad74-8fd53fe5f9ad",
+            ],
+          }),
         }
       );
 
-      console.log(response);
-
       if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
+        throw new Error("Error updating job details.");
       }
-
-      const responseData = await response.json();
-      console.log("API Response:", responseData);
 
       toast({
         title: "Success",
-        description: "Created the job successfully!",
+        description: "Job details updated successfully!",
         variant: "ourSuccess",
       });
-      onClose();
+      // onClose();
     } catch (error) {
-      console.error("Error creating job:", error);
+      console.error("Error updating job:", error);
       toast({
         title: "Error",
-        description: "Failed to create the job. Please try again.",
+        description: "Failed to update the job. Please try again.",
         variant: "ourDestructive",
       });
     }
@@ -118,106 +166,111 @@ const CreateJobForm = ({ onClose }) => {
               className="grid grid-cols-1 gap-4 w-full"
             >
               <div className="flex flex-col">
-                <Label htmlFor="jobTitle" className="mb-2">
+                <Label htmlFor="title" className="mb-2">
                   Job Title
                 </Label>
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <ALargeSmall className="mx-3 text-gray-400 w-4" />
                   <Input
-                    id="jobTitle"
-                    name="jobTitle"
-                    {...register("jobTitle")}
+                    id="title"
+                    name="title"
+                    {...register("title")}
                     required
                     className="!rounded-l-none"
+                    defaultValue={jobData?.title}
                   />
                 </div>
-                {errors.jobTitle && (
+                {errors.title && (
                   <span className="text-xs text-red-500">
-                    {errors.jobTitle.message}
+                    {errors.title.message}
                   </span>
                 )}
               </div>
 
               <div className="flex flex-col">
-                <Label htmlFor="jobDesignation" className="mb-2">
+                <Label htmlFor="designation" className="mb-2">
                   Job Designation
                 </Label>
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <FileChartColumnIncreasing className="mx-3 text-gray-400 w-4" />
                   <Input
-                    id="jobDesignation"
-                    name="jobDesignation"
-                    {...register("jobDesignation")}
+                    id="designation"
+                    name="designation"
+                    {...register("designation")}
                     required
                     className="!rounded-l-none"
+                    defaultValue={jobData?.designation}
                   />
                 </div>
-                {errors.jobDesignation && (
+                {errors.designation && (
                   <span className="text-xs text-red-500">
-                    {errors.jobDesignation.message}
+                    {errors.designation.message}
                   </span>
                 )}
               </div>
 
               <div className="flex flex-col">
-                <Label htmlFor="jobDescription" className="mb-2">
+                <Label htmlFor="description" className="mb-2">
                   Job Description
                 </Label>
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <File className="mx-3 text-gray-400 w-4" />
                   <Textarea
-                    id="jobDescription"
-                    name="jobDescription"
-                    {...register("jobDescription")}
+                    id="description"
+                    name="description"
+                    {...register("description")}
                     required
                     className="!rounded-l-none !border-l-0"
+                    defaultValue={jobData?.description}
                   />
                 </div>
-                {errors.jobDescription && (
+                {errors.description && (
                   <span className="text-xs text-red-500">
-                    {errors.jobDescription.message}
+                    {errors.description.message}
                   </span>
                 )}
               </div>
 
               <div className="flex flex-col">
-                <Label htmlFor="jobRequirements" className="mb-2">
+                <Label htmlFor="requirements" className="mb-2">
                   Job Requirements
                 </Label>
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <ClipboardPenLine className="mx-3 text-gray-400 w-4" />
                   <Textarea
-                    id="jobRequirements"
-                    name="jobRequirements"
-                    {...register("jobRequirements")}
+                    id="requirements"
+                    name="requirements"
+                    {...register("requirements")}
                     required
                     className="!rounded-l-none"
+                    defaultValue={jobData?.requirements}
                   />
                 </div>
-                {errors.jobRequirements && (
+                {errors.requirements && (
                   <span className="text-xs text-red-500">
-                    {errors.jobRequirements.message}
+                    {errors.requirements.message}
                   </span>
                 )}
               </div>
 
               <div className="flex flex-col">
-                <Label htmlFor="jobSkills" className="mb-2">
+                <Label htmlFor="skills" className="mb-2">
                   Mandatory Skills
                 </Label>
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <ClipboardPenLine className="mx-3 text-gray-400 w-4" />
                   <Textarea
-                    id="jobSkills"
-                    name="jobSkills"
-                    {...register("jobSkills")}
+                    id="skills"
+                    name="skills"
+                    {...register("skills")}
                     required
                     className="!rounded-l-none"
+                    defaultValue={jobData?.skills}
                   />
                 </div>
-                {errors.jobSkills && (
+                {errors.skills && (
                   <span className="text-xs text-red-500">
-                    {errors.jobSkills.message}
+                    {errors.skills.message}
                   </span>
                 )}
               </div>
@@ -233,6 +286,7 @@ const CreateJobForm = ({ onClose }) => {
                     name="employeeType"
                     onValueChange={(value) => setValue("employeeType", value)}
                     className="!rounded-l-none"
+                    defaultValue={jobData?.employeeType}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select Category" />
@@ -262,6 +316,7 @@ const CreateJobForm = ({ onClose }) => {
                     name="jobType"
                     onValueChange={(value) => setValue("jobType", value)}
                     className="!rounded-l-none"
+                    defaultValue={jobData?.jobType}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select Nature" />
@@ -282,64 +337,67 @@ const CreateJobForm = ({ onClose }) => {
 
               <div className="grid grid-cols-2 gap-4 w-full">
                 <div className="flex flex-col">
-                  <Label htmlFor="jobSalary" className="mb-2">
+                  <Label htmlFor="salary" className="mb-2">
                     Job Salary
                   </Label>
                   <div className="flex items-center border dark:border-gray-200 rounded-md w-full">
                     <DollarSign className="mx-3 text-gray-400 w-4" />
                     <Input
-                      id="jobSalary"
-                      name="jobSalary"
-                      {...register("jobSalary", {
+                      id="salary"
+                      name="salary"
+                      {...register("salary", {
                         required: "Salary is required",
                       })}
                       className="!rounded-l-none w-full"
+                      defaultValue={jobData?.salary}
                     />
                   </div>
-                  {errors.jobSalary && (
+                  {errors.salary && (
                     <span className="text-xs text-red-500">
-                      {errors.jobSalary.message}
+                      {errors.salary.message}
                     </span>
                   )}
                 </div>
 
                 <div className="flex flex-col">
-                  <Label htmlFor="jobDeadline" className="mb-2">
+                  <Label htmlFor="deadline" className="mb-2">
                     Application Deadline
                   </Label>
                   <div className="flex items-center border dark:border-gray-200 rounded-md">
                     <CalendarFold className="mx-3 text-gray-400 w-4" />
                     <Input
-                      id="jobDeadline"
-                      name="jobDeadline"
+                      id="deadline"
+                      name="deadline"
                       type="date"
-                      {...register("jobDeadline")}
+                      {...register("deadline")}
                       className="!rounded-l-none"
+                      defaultValue={jobData?.deadline}
                     />
                   </div>
-                  {errors.jobDeadline && (
+                  {errors.deadline && (
                     <span className="text-xs text-red-500">
-                      {errors.jobDeadline.message}
+                      {errors.deadline.message}
                     </span>
                   )}
                 </div>
               </div>
               <div className="flex flex-col">
-                <Label htmlFor="jobLocation" className="mb-2">
+                <Label htmlFor="location" className="mb-2">
                   Job Location
                 </Label>
                 <div className="flex items-center border dark:border-gray-200 rounded-md">
                   <MapPin className="mx-3 text-gray-400 w-4" />
                   <Input
-                    id="jobLocation"
-                    name="jobLocation"
-                    {...register("jobLocation")}
+                    id="location"
+                    name="location"
+                    {...register("location")}
                     className="!rounded-l-none"
+                    defaultValue={jobData?.location}
                   />
                 </div>
-                {errors.jobLocation && (
+                {errors.location && (
                   <span className="text-xs text-red-500">
-                    {errors.jobLocation.message}
+                    {errors.location.message}
                   </span>
                 )}
               </div>

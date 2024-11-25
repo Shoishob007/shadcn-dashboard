@@ -13,17 +13,84 @@ import { Button } from "@/components/ui/button";
 import PageTitle from "@/components/PageTitle";
 import { usePathname } from "next/navigation";
 import FormatTitle from "@/components/TitleFormatter";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useSession } from "next-auth/react";
 
 const CreateJobPage = () => {
   const [showForm, setShowForm] = useState(false);
+  const [jobId, setJobId] = useState(null);
   const pathname = usePathname();
   const pageTitle = FormatTitle(pathname);
+  const { data: session } = useSession();
 
-  const handleOpenForm = () => setShowForm(true);
+  const organizationId = session?.organizationId;
+  const accessToken = session?.access_token;
+  // console.log("organizationId from job form : ", organizationId);
+  // console.log("accessToken from create job : ", accessToken);
+
+  const handleOpenForm = async () => {
+    try {
+      const createResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/jobs`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ organization: organizationId }),
+        }
+      );
+
+      if (!createResponse.ok) {
+        throw new Error("Error creating job.");
+      }
+
+      const createData = await createResponse.json();
+      console.log("Created Data : ", createData);
+
+      const getResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/job-details`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (!getResponse.ok) {
+        throw new Error("Error fetching job details.");
+      }
+
+      const getData = await getResponse.json();
+      console.log("Job details fetching :", getData);
+      const calculatedJobId = getData.docs[0].id;
+
+      // if (Array.isArray(getData.docs)) {
+      //   const jobDoc = getData.docs.find(
+      //     (doc) => doc.job && doc.job.id === createData.doc.id
+      //   );
+      //   console.log("doc.job.id", doc.job.id);
+      //   console.log("createData.doc.id", createData.doc.id);
+
+      //   if (jobDoc) {
+      //     setJobId(jobDoc.id);
+      //     console.log("Found Job ID:", jobDoc.id);
+      //   } else {
+      //     throw new Error("Job not found with the matching job id.");
+      //   }
+      // } else {
+      //   throw new Error("Job details are not in the expected array format.");
+      // }
+
+      setJobId(calculatedJobId);
+      setShowForm(true);
+    } catch (error) {
+      console.error("Failed to create or fetch job:", error);
+    }
+  };
   const handleCloseForm = () => setShowForm(false);
 
   return (
@@ -52,7 +119,7 @@ const CreateJobPage = () => {
 
         <Dialog open={showForm} onOpenChange={setShowForm}>
           <DialogContent className="max-w-2xl max-h-[calc(100vh-60px)] overflow-auto">
-            <CreateJobForm onClose={handleCloseForm} />
+            {jobId && <CreateJobForm jobId={jobId} onClose={handleCloseForm} />}
           </DialogContent>
         </Dialog>
       </div>
