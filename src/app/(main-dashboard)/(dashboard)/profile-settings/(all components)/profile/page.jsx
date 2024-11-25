@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
-import { toast } from "@/hooks/use-toast";
 import useProfileStore from "@/stores/profile-settings/useProfileStore";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
@@ -15,6 +14,7 @@ import PageTitle from "@/components/PageTitle";
 
 export default function ProfileSettings() {
   const { data: session } = useSession();
+
   const {
     profileDetails,
     formData,
@@ -42,6 +42,16 @@ export default function ProfileSettings() {
     }
   };
 
+  // const handleLogoChange = async (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const success = await uploadLogoImage(file);
+  //     if (success) {
+  //       console.log("Profile picture updated successfully");
+  //     }
+  //   }
+  // };
+
   if (loading && !profileDetails) {
     return <div>Loading profile details...</div>;
   }
@@ -63,13 +73,22 @@ export default function ProfileSettings() {
 
           <div className="flex items-center space-x-4">
             <Image
-              src={session?.user?.picture || "https://github.com/shadcn.png"}
+              src={session?.user?.image}
               alt="Profile"
               width={80}
               height={80}
               className="rounded-full"
             />
-            <Button variant="outline">Change Logo</Button>
+            <label htmlFor="logo-upload" className="cursor-pointer">
+              <Button variant="outline">Change Logo</Button>
+            </label>
+            <input
+              id="logo-upload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              // onChange={handleLogoChange}
+            />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

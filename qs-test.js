@@ -1,13 +1,9 @@
-import qs from 'qs'
+import qs from 'qs'   // qs-esm
 const query = {
 
-    job: {
-        id: {
-            equals: '123',
-        }
-
-    },
-
+    "job.organization.organization": {
+        equals: '9ec6ab44-5618-4a35-8501-cffb108b433d',
+    }
 }
 
 const stringifiedQuery = qs.stringify(
@@ -18,8 +14,8 @@ const stringifiedQuery = qs.stringify(
 
     },
 
-    // { addQueryPrefix: true },
-    { encoded: false },
+    { addQueryPrefix: true },
+    // { encoded: false },
 
 )
 

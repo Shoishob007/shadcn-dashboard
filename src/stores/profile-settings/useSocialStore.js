@@ -1,14 +1,13 @@
 import { create } from "zustand";
 import { toast } from "@/hooks/use-toast";
-import { v4 as uuidv4 } from "uuid"
 
 const socialMediaIds = {
-    facebook: "f42982dd-4eba-4e8e-9294-6a9458fe0826",
+    facebook: "e3541401-a2ec-47fa-8768-b802edb3715b",
     linkedin: "b8418d31-0265-4cee-bdec-9c16fa160c1d",
-    twitter: "c8418d31-0265-4cee-bdec-9c16fa160c1e",
-    github: "d8418d31-0265-4cee-bdec-9c16fa160c1f",
-    instagram: "e8418d31-0265-4cee-bdec-9c16fa160c1g",
-    youtube: "f8418d31-0265-4cee-bdec-9c16fa160c1h"
+    twitter: "7f13a915-d487-49a4-a0c3-757d614457d4",
+    github: "560de6f7-56fb-4216-8c92-17395384a027",
+    instagram: "d99e22a1-c01d-44bb-9075-643c7518c7a0",
+    youtube: "6c129b19-7082-41d3-b98b-985fda3ee14e"
 };
 
 const useSocialStore = create((set, get) => ({
@@ -41,20 +40,22 @@ const useSocialStore = create((set, get) => ({
             const data = await response.json();
             const socialLinks = data.docs[0].socialLinks || [];
 
-            // Converting array to object format for form data
+            console.log("Fetched social links:", socialLinks);
+
+            // Mapping the socialLinks array to formData
             const socialData = socialLinks.reduce((acc, link) => {
                 const platform = Object.entries(socialMediaIds).find(
-                    ([_, id]) => id === link.socialMedia
+                    ([_, id]) => id === link.socialMedia.id
                 )?.[0];
                 if (platform) {
-                    acc[platform] = link.socialMediaUrl;
+                    acc[platform] = link.socialMediaUrl || "";
                 }
                 return acc;
             }, {});
 
             set({
                 socialDetails: socialLinks,
-                formData: socialData
+                formData: { ...get().formData, ...socialData },
             });
         } catch (error) {
             console.error(error);
@@ -73,13 +74,20 @@ const useSocialStore = create((set, get) => ({
         try {
             const formDataToUse = customFormData || get().formData;
 
-            // Converting form data to required format
+            // Preparing the updated social links with only the relevant changes
             const socialLinks = Object.entries(formDataToUse)
                 .filter(([_, url]) => url.trim() !== "")
                 .map(([platform, url]) => ({
                     socialMedia: socialMediaIds[platform],
-                    socialMediaUrl: url
+                    socialMediaUrl: url,
                 }));
+
+            console.log("Social Links:", socialLinks);
+
+            const payload = {
+                socialLinks: socialLinks,
+            };
+            console.log("Payload sent: ", payload)
 
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${orgID}`,
@@ -89,11 +97,18 @@ const useSocialStore = create((set, get) => ({
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`,
                     },
-                    body: JSON.stringify({ socialLinks }),
+                    body: JSON.stringify(payload),
                 }
             );
 
-            if (!response.ok) throw new Error("Failed to save social links.");
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error details:", errorData);
+                throw new Error("Failed to save social links.");
+            }
+
+            console.log("Response from Api :", response)
 
             const updatedData = await response.json();
             set({ socialDetails: updatedData.doc.socialLinks });
@@ -113,6 +128,7 @@ const useSocialStore = create((set, get) => ({
             set({ loading: false });
         }
     },
+
 }));
 
 export default useSocialStore;

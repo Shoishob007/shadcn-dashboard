@@ -22,7 +22,7 @@ const useProfileStore = create((set, get) => ({
             formData: { ...state.formData, ...newData },
         })),
 
-    fetchProfile: async (accessToken, organizationId) => {
+    fetchProfile: async (accessToken) => {
         set({ loading: true, error: null });
         try {
             const response = await fetch(
@@ -41,7 +41,7 @@ const useProfileStore = create((set, get) => ({
 
             const data = await response.json();
             const profile = data.docs[0];
-            console.log(profile)
+            console.log(data)
             set({
                 profileDetails: profile,
                 formData: { ...get().formData, ...profile },
@@ -61,7 +61,16 @@ const useProfileStore = create((set, get) => ({
 
     saveProfile: async (token, orgID) => {
         set({ loading: true, error: null });
+
         try {
+            const transformedFormData = {
+                ...get().formData,
+                socialLinks: get().formData.socialLinks?.map((link) => ({
+                    socialMediaUrl: link.socialMediaUrl,
+                    socialMedia: link.socialMedia?.id,
+                })),
+            };
+
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${orgID}`,
                 {
@@ -70,9 +79,11 @@ const useProfileStore = create((set, get) => ({
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`,
                     },
-                    body: JSON.stringify(get().formData),
+                    body: JSON.stringify(transformedFormData),
                 }
             );
+
+
 
             if (!response.ok) {
                 throw new Error("Failed to update organization profile");
