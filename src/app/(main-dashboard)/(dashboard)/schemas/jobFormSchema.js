@@ -5,11 +5,18 @@ export const jobSchema = z.object({
     designation: z.string().min(2, "Put a valid job designation"),
     description: z.string().min(10, "Put a valid job description"),
     requirements: z.string().min(8, "Put valid requirements"),
+    employeeBenefits: z.string().min(8, "Put valid employee benefits"),
     skills: z.string().min(8, "Put valid requirements"),
     employeeType: z.string(),
+    jobRole: z.string(),
+    fieldOfStudy: z.string(),
+    degreeLevel: z.string(),
     jobType: z.string(),
-    salary: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
-        message: "Expected number, received a string"
+    salary: z.number().refine((val) => !Number.isNaN(parseInt(val)), {
+        message: "Expected number, received invalid input"
+    }),
+    yearOfExperience: z.number().refine((val) => !Number.isNaN(parseInt(val)), {
+        message: "Expected number, received invalid input"
     }),
     deadline: z.string(),
     location: z.string(),
