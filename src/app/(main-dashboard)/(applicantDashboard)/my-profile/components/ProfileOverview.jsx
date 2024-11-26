@@ -1,5 +1,7 @@
 import React from 'react';
 import { TopSkills } from './TopSkills';
+import Socials from './Socials';
+import AboutInfoSection from './AboutInfoSection';
 
 const ProfileOverview = () => {
     return (
@@ -12,12 +14,12 @@ const ProfileOverview = () => {
                 </div>
             </div>
             {/* About container */}
-            <div className='border border-black'>
-            <h1 className='text-lg font-medium pt-[21px] px-[26.5px] pb-[17px] text-[#312a2a]'>About Me</h1>
+            <div>
+                <AboutInfoSection/>
             </div>
             {/* Socials container */}
-            <div className='border border-black'>
-            <h1 className='text-lg font-medium pt-[21px] px-[26.5px] pb-[17px] text-[#312a2a]'>Socials</h1>
+            <div className=''>
+                <Socials/>
             </div>
         </section>
     );

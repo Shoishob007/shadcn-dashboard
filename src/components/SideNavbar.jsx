@@ -15,6 +15,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useRouter } from "next/navigation";
 
 export default function SideNavbar() {
   const { status, data: session } = useSession();
@@ -28,6 +29,12 @@ export default function SideNavbar() {
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
+  }
+
+  const router = useRouter();
+  const handleLogOut = async() => {
+    await signOut();
+    router.push('/login');
   }
 
   // Determine which links to display based on the current role
