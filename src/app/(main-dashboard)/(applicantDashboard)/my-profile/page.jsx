@@ -4,6 +4,8 @@ import Image from "next/image";
 import profileImg from ".././../../../../public/assests/profile-pic.jpg";
 import { Separator } from "@/components/ui/separator";
 import ProfileTabs from "./components/ProfileTabs";
+import UpdateProfile from "./components/UpdateProfile";
+
 
 const ProfilePage = () => {
   return (
@@ -21,9 +23,7 @@ const ProfilePage = () => {
               <span>456</span>
               <span className="ml-1">Followers</span>
             </div>
-            <div className="px-[18px] py-2.5 bg-gray-800 text-primary-foreground shadow hover:bg-gray-900 cursor-pointer rounded-lg text-sm font-medium">
-              <span>Update Profile</span>
-            </div>
+            <UpdateProfile/>
           </div>
         </div>
 
