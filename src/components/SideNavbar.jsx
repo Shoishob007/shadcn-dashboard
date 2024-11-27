@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
@@ -20,7 +21,7 @@ import { useRouter } from "next/navigation";
 export default function SideNavbar() {
   const { status, data: session } = useSession();
   const { isCollapsed } = useLayoutStore();
-  const { currentRole } = useRoleStore(); // Access the current role from Zustand store
+  const { currentRole } = useRoleStore();
   const { applicantLinks, organizationLinks } = SidebarLinks();
 
   if (status === "loading") {
@@ -32,10 +33,10 @@ export default function SideNavbar() {
   }
 
   const router = useRouter();
-  const handleLogOut = async() => {
+  const handleLogOut = async () => {
     await signOut();
-    router.push('/login');
-  }
+    router.push("/login");
+  };
 
   // Determine which links to display based on the current role
   const filteredLinks =
@@ -54,7 +55,7 @@ export default function SideNavbar() {
       <div className="items-center text-center sm:mx-auto mb-4">
         <Link href={"/"}>
           <Image
-            src="/assests/hh-logo-png.png"
+            src="/assests/Hirehub_Logo.png"
             alt="Logo"
             width={120}
             height={120}

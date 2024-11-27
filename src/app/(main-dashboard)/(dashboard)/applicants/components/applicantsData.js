@@ -4,9 +4,8 @@ export const applicantsData = [
     jobTitle: "Full-Stack Engineer",
     applicantName: "Shoishob Al-Baki",
     applicantEmail: "shoishob@hotmail.com",
-    status: "shortlisted",
+    status: "applied",
     CVScore: 50,
-    deadline: new Date("2024-11-01"),
     skills: [
       "JavaScript",
       "React",
@@ -39,22 +38,51 @@ export const applicantsData = [
         position: "Full-Stack Developer",
         startDate: new Date("2022-01-01"),
         endDate: new Date("2023-08-31"),
-        responsibilities: [
-          "Developed and maintained web applications using React and Node.js.",
-          "Collaborated with UI/UX designers to improve user experience.",
-          "Implemented RESTful APIs to connect front-end and back-end services."
-        ]
+        jobRole: [
+          {
+            title: "Backend Engineer",
+          },
+        ],
+        designation: {
+          title: "SA",
+        }
       },
       {
         companyName: "Web Innovations LLC",
         position: "Junior Developer",
         startDate: new Date("2021-06-01"),
         endDate: new Date("2021-12-31"),
-        responsibilities: [
-          "Assisted in the development of e-commerce platforms.",
-          "Performed debugging and testing of web applications.",
-          "Engaged in team meetings to discuss project progress and challenges."
-        ]
+        jobRole: [
+          {
+            title: "Backend Engineer",
+          },
+        ],
+        designation: {
+          title: "SA",
+        }
+      }
+    ],
+
+    socialLinks: [
+      {
+        id: "672078b2a6ec3f270c70f69a",
+        socialMediaUrl: "https://dsadas.com",
+        socialMedia: {
+          id: "f42982dd-4eba-4e8e-9294-6a9458fe0826",
+          title: "google",
+          updatedAt: "2024-10-29",
+          createdAt: "2024-10-29"
+        }
+      },
+      {
+        id: "672078b2a6ec3f270c70f69b",
+        socialMediaUrl: "https://dsadas.com",
+        socialMedia: {
+          id: "e3541401-a2ec-47fa-8768-b802edb3715b",
+          title: "facebook",
+          updatedAt: "2024-10-29T05:23:04.131Z",
+          createdAt: "2024-10-29T05:23:04.131Z"
+        }
       }
     ],
 
@@ -73,6 +101,7 @@ export const applicantsData = [
       }
     ],
 
+    bloodGroup: "O+",
     designation: "Software Engineer"
   },
   {
@@ -116,22 +145,36 @@ export const applicantsData = [
         position: "Full-Stack Developer",
         startDate: new Date("2022-01-01"),
         endDate: new Date("2023-08-31"),
-        responsibilities: [
-          "Developed and maintained web applications using React and Node.js.",
-          "Collaborated with UI/UX designers to improve user experience.",
-          "Implemented RESTful APIs to connect front-end and back-end services."
-        ]
+        jobRole: [
+          {
+            title: "Backend Engineer",
+          },
+        ],
+        designation: {
+          title: "SA",
+        }
+      },
+    ],
+    socialLinks: [
+      {
+        id: "672078b2a6ec3f270c70f69a",
+        socialMediaUrl: "https://dsadas.com",
+        socialMedia: {
+          id: "f42982dd-4eba-4e8e-9294-6a9458fe0826",
+          title: "google",
+          updatedAt: "2024-10-29",
+          createdAt: "2024-10-29"
+        }
       },
       {
-        companyName: "Web Innovations LLC",
-        position: "Junior Developer",
-        startDate: new Date("2021-06-01"),
-        endDate: new Date("2021-12-31"),
-        responsibilities: [
-          "Assisted in the development of e-commerce platforms.",
-          "Performed debugging and testing of web applications.",
-          "Engaged in team meetings to discuss project progress and challenges."
-        ]
+        id: "672078b2a6ec3f270c70f69b",
+        socialMediaUrl: "https://dsadas.com",
+        socialMedia: {
+          id: "e3541401-a2ec-47fa-8768-b802edb3715b",
+          title: "facebook",
+          updatedAt: "2024-10-29T05:23:04.131Z",
+          createdAt: "2024-10-29T05:23:04.131Z"
+        }
       }
     ],
 
@@ -150,6 +193,7 @@ export const applicantsData = [
       }
     ],
 
+    bloodGroup: "O+",
     designation: "Software Engineer"
   },
   {
@@ -159,7 +203,6 @@ export const applicantsData = [
     applicantEmail: "arfin@outlook.com",
     status: "shortlisted",
     CVScore: 50,
-    deadline: new Date("2024-11-01"),
     interviewSchedule: new Date("2024-11-10"),
     skills: [
       "JavaScript",
@@ -193,22 +236,28 @@ export const applicantsData = [
         position: "Full-Stack Developer",
         startDate: new Date("2022-01-01"),
         endDate: new Date("2023-08-31"),
-        responsibilities: [
-          "Developed and maintained web applications using React and Node.js.",
-          "Collaborated with UI/UX designers to improve user experience.",
-          "Implemented RESTful APIs to connect front-end and back-end services."
-        ]
+        jobRole: [
+          {
+            title: "Backend Engineer",
+          },
+        ],
+        designation: {
+          title: "SA",
+        }
       },
       {
         companyName: "Web Innovations LLC",
         position: "Junior Developer",
         startDate: new Date("2021-06-01"),
         endDate: new Date("2021-12-31"),
-        responsibilities: [
-          "Assisted in the development of e-commerce platforms.",
-          "Performed debugging and testing of web applications.",
-          "Engaged in team meetings to discuss project progress and challenges."
-        ]
+        jobRole: [
+          {
+            title: "Backend Engineer",
+          },
+        ],
+        designation: {
+          title: "SA",
+        }
       }
     ],
 
@@ -227,16 +276,17 @@ export const applicantsData = [
       }
     ],
 
+    bloodGroup: "O+",
     designation: "Software Engineer"
   },
   {
     id: "5kma53ae",
     jobTitle: "Marketing Manager",
     applicantName: "Shoishob Al-Baki",
-    applicantEmail: "shoishob@hotmain.com",
+    applicantEmail: "shoishob@hotmail.com",
     status: "applied",
     CVScore: 50,
-    deadline: new Date("2024-11-01"), skills: [
+    skills: [
       "JavaScript",
       "React",
       "Node.js",
@@ -268,22 +318,51 @@ export const applicantsData = [
         position: "Full-Stack Developer",
         startDate: new Date("2022-01-01"),
         endDate: new Date("2023-08-31"),
-        responsibilities: [
-          "Developed and maintained web applications using React and Node.js.",
-          "Collaborated with UI/UX designers to improve user experience.",
-          "Implemented RESTful APIs to connect front-end and back-end services."
-        ]
+        jobRole: [
+          {
+            title: "Software Engineer",
+          },
+        ],
+        designation: {
+          title: "SA",
+        }
       },
       {
         companyName: "Web Innovations LLC",
         position: "Junior Developer",
         startDate: new Date("2021-06-01"),
         endDate: new Date("2021-12-31"),
-        responsibilities: [
-          "Assisted in the development of e-commerce platforms.",
-          "Performed debugging and testing of web applications.",
-          "Engaged in team meetings to discuss project progress and challenges."
-        ]
+        jobRole: [
+          {
+            title: "Backend Engineer",
+          },
+        ],
+        designation: {
+          title: "SA",
+        }
+      }
+    ],
+
+    socialLinks: [
+      {
+        id: "672078b2a6ec3f270c70f69a",
+        socialMediaUrl: "https://dsadas.com",
+        socialMedia: {
+          id: "f42982dd-4eba-4e8e-9294-6a9458fe0826",
+          title: "google",
+          updatedAt: "2024-10-29",
+          createdAt: "2024-10-29"
+        }
+      },
+      {
+        id: "672078b2a6ec3f270c70f69b",
+        socialMediaUrl: "https://dsadas.com",
+        socialMedia: {
+          id: "e3541401-a2ec-47fa-8768-b802edb3715b",
+          title: "facebook",
+          updatedAt: "2024-10-29T05:23:04.131Z",
+          createdAt: "2024-10-29T05:23:04.131Z"
+        }
       }
     ],
 
@@ -302,6 +381,7 @@ export const applicantsData = [
       }
     ],
 
+    bloodGroup: "O+",
     designation: "Software Engineer"
   },
   {
@@ -309,7 +389,7 @@ export const applicantsData = [
     jobTitle: "QA Engineer",
     applicantName: "Ashfaq Tanzim",
     applicantEmail: "ashfaq@gmail.com",
-    status: "hired",
+    status: "applied",
     CVScore: 60,
     deadline: new Date("2024-10-01"),
     interviewSchedule: new Date("2024-10-10"),
@@ -342,22 +422,33 @@ export const applicantsData = [
         position: "Full-Stack Developer",
         startDate: new Date("2022-01-01"),
         endDate: new Date("2023-08-31"),
-        responsibilities: [
-          "Developed and maintained web applications using React and Node.js.",
-          "Collaborated with UI/UX designers to improve user experience.",
-          "Implemented RESTful APIs to connect front-end and back-end services."
-        ]
+
+        jobRole: [
+          {
+            title: "Backend Engineer",
+
+          },
+        ],
+        designation: {
+
+          title: "SA",
+        }
       },
       {
         companyName: "Web Innovations LLC",
         position: "Junior Developer",
         startDate: new Date("2021-06-01"),
         endDate: new Date("2021-12-31"),
-        responsibilities: [
-          "Assisted in the development of e-commerce platforms.",
-          "Performed debugging and testing of web applications.",
-          "Engaged in team meetings to discuss project progress and challenges."
-        ]
+        jobRole: [
+          {
+            title: "Backend Engineer",
+
+          },
+        ],
+        designation: {
+
+          title: "SA",
+        }
       }
     ],
 
@@ -376,6 +467,29 @@ export const applicantsData = [
       }
     ],
 
+    socialLinks: [
+      {
+        id: "672078b2a6ec3f270c70f69a",
+        socialMediaUrl: "https://dsadas.com",
+        socialMedia: {
+          id: "f42982dd-4eba-4e8e-9294-6a9458fe0826",
+          title: "google",
+          updatedAt: "2024-10-29",
+          createdAt: "2024-10-29"
+        }
+      },
+      {
+        id: "672078b2a6ec3f270c70f69b",
+        socialMediaUrl: "https://dsadas.com",
+        socialMedia: {
+          id: "e3541401-a2ec-47fa-8768-b802edb3715b",
+          title: "facebook",
+          updatedAt: "2024-10-29T05:23:04.131Z",
+          createdAt: "2024-10-29T05:23:04.131Z"
+        }
+      }
+    ],
+    bloodGroup: "O+",
     designation: "Software Engineer"
   },
 ];
