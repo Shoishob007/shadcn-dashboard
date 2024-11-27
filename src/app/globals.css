@@ -152,3 +152,15 @@
   object-fit: cover;
   border-radius: 1.25rem;
 }
+
+
+
+.camera-icon-div{
+  opacity: 0;
+  cursor: pointer;
+}
+
+
+.profile-img-div:hover .camera-icon-div{
+  opacity: 1;
+}

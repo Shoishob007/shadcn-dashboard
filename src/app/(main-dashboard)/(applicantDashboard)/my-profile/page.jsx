@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { MapPin } from "lucide-react";
+import { Camera, MapPin } from "lucide-react";
 import Image from "next/image";
 import profileImg from ".././../../../../public/assests/profile-pic.jpg";
 import { Separator } from "@/components/ui/separator";
@@ -31,14 +31,17 @@ const ProfilePage = () => {
 
         <div className="flex items-center gap-4 -mt-[180px] md:-mt-[126px] pl-4 md:pl-[42px]">
           {/* image */}
-          <div>
+          <div className="relative profile-img-div">
             <Image
               src={profileImg}
               alt="photo"
               width={163}
               height={163}
-              className="rounded-2xl border-4 border-white object-cover"
+              className="rounded-2xl border-4 border-white object-cover profile-img"
             />
+            <div className="absolute top-3/4 right-4 camera-icon-div">
+              <span><Camera/></span>
+            </div>
           </div>
           {/* text */}
           <div>
