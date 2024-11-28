@@ -5,9 +5,11 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { applicantsData } from "../applicants/components/applicantsData";
-import { FaFacebook, FaGoogle } from "react-icons/fa";
+import { FaFacebook, FaGoogle, FaLinkedin } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 const socialMediaIcons = {
+  linkedin: FaLinkedin,
   google: FaGoogle,
   facebook: FaFacebook,
 };
@@ -27,6 +29,11 @@ const calculateTotalExperience = (experiences) => {
 };
 
 const ApplicantsList = () => {
+  const router = useRouter();
+
+  const handleViewDetails = (id) => {
+    router.push(`/demoAppList/demoAppDetails?id=${id}`);
+  };
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {applicantsData.map((applicant) => {
@@ -58,7 +65,7 @@ const ApplicantsList = () => {
                     {applicant.jobTitle}
                   </p>
                   <div
-                    className={`px-2 py-1 rounded-full text-[10px] font-semibold mx-auto ${
+                    className={`px-2 py-1 rounded-full text-[8px] font-semibold mx-auto ${
                       applicant.status === "shortlisted"
                         ? "bg-yellow-100 text-yellow-600"
                         : `${
@@ -97,7 +104,7 @@ const ApplicantsList = () => {
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-1 mb-3 justify-center">
+            {/* <div className="flex flex-wrap gap-1 mb-3 justify-center">
               {applicant.skills.slice(0, 6).map((skill) => (
                 <Badge
                   key={skill}
@@ -108,7 +115,7 @@ const ApplicantsList = () => {
                   {skill}
                 </Badge>
               ))}
-            </div>
+            </div> */}
 
             <div className="flex justify-between items-center gap-4">
               <div className="flex gap-2">
@@ -140,6 +147,7 @@ const ApplicantsList = () => {
                 variant="ghost"
                 size="sm"
                 className="w-full border dark:border-gray-200 transition-colors"
+                onClick={() => handleViewDetails(applicant.id)}
               >
                 View Details
               </Button>

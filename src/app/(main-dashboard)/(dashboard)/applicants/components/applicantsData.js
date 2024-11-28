@@ -6,6 +6,7 @@ export const applicantsData = [
     applicantEmail: "shoishob@hotmail.com",
     status: "applied",
     CVScore: 50,
+    applicantWebsiteUrl: "https://test.com",
     skills: [
       "JavaScript",
       "React",
@@ -87,7 +88,7 @@ export const applicantsData = [
     ],
 
     department: "Engineering",
-
+    address: "Dhaka, Bangladesh",
     education: [
       {
         degree: "Bachelor of Science in Computer Science",
@@ -101,8 +102,28 @@ export const applicantsData = [
       }
     ],
 
+    academicActivity: [
+      {
+        title: "test activity",
+        description: "test activity description",
+        duration: 3,
+        beginning: "2010-10-06",
+        ending: "2011-10-27",
+        academicActivityType: {
+          title: "project",
+        }
+      }
+    ],
+    extracurricularActivity: [
+      {
+        title: "test extracurricular ",
+        description: "test extracurricular description"
+      }
+    ],
+
     bloodGroup: "O+",
-    designation: "Software Engineer"
+    designation: "Software Engineer",
+    phone: "01111666999",
   },
   {
     id: "3u1reuv4",
@@ -179,7 +200,7 @@ export const applicantsData = [
     ],
 
     department: "Engineering",
-
+    address: "Dhaka, Bangladesh",
     education: [
       {
         degree: "Bachelor of Science in Computer Science",
@@ -192,9 +213,28 @@ export const applicantsData = [
         graduationYear: 2019
       }
     ],
+    academicActivity: [
+      {
+        title: "test activity",
+        description: "test activity description",
+        duration: 3,
+        beginning: "2010-10-06",
+        ending: "2011-10-27",
+        academicActivityType: {
+          title: "project",
+        }
+      }
+    ],
+    extracurricularActivity: [
+      {
+        title: "test extracurricular ",
+        description: "test extracurricular description"
+      }
+    ],
 
-    bloodGroup: "O+",
-    designation: "Software Engineer"
+    bloodGroup: "A+",
+    designation: "Software Engineer",
+    phone: "01111666777",
   },
   {
     id: "derv1ws0",
@@ -262,7 +302,7 @@ export const applicantsData = [
     ],
 
     department: "Engineering",
-
+    address: "Dhaka, Bangladesh",
     education: [
       {
         degree: "Bachelor of Science in Computer Science",
@@ -275,9 +315,28 @@ export const applicantsData = [
         graduationYear: 2019
       }
     ],
+    academicActivity: [
+      {
+        title: "test activity",
+        description: "test activity description",
+        duration: 3,
+        beginning: "2010-10-06",
+        ending: "2011-10-27",
+        academicActivityType: {
+          title: "project",
+        }
+      }
+    ],
+    extracurricularActivity: [
+      {
+        title: "test extracurricular ",
+        description: "test extracurricular description"
+      }
+    ],
 
-    bloodGroup: "O+",
-    designation: "Software Engineer"
+    bloodGroup: "AB+",
+    designation: "Network Engineer",
+    phone: "04444666111",
   },
   {
     id: "5kma53ae",
@@ -367,7 +426,7 @@ export const applicantsData = [
     ],
 
     department: "Engineering",
-
+    address: "Dhaka, Bangladesh",
     education: [
       {
         degree: "Bachelor of Science in Computer Science",
@@ -380,9 +439,28 @@ export const applicantsData = [
         graduationYear: 2019
       }
     ],
+    academicActivity: [
+      {
+        title: "test activity",
+        description: "test activity description",
+        duration: 3,
+        beginning: "2010-10-06",
+        ending: "2011-10-27",
+        academicActivityType: {
+          title: "project",
+        }
+      }
+    ],
+    extracurricularActivity: [
+      {
+        title: "test extracurricular ",
+        description: "test extracurricular description"
+      }
+    ],
 
-    bloodGroup: "O+",
-    designation: "Software Engineer"
+    bloodGroup: "O-",
+    designation: "Technical Support Engineer",
+    phone: "0143624536451",
   },
   {
     id: "bhqecj4p",
@@ -453,7 +531,7 @@ export const applicantsData = [
     ],
 
     department: "Engineering",
-
+    address: "Dhaka, Bangladesh",
     education: [
       {
         degree: "Bachelor of Science in Computer Science",
@@ -464,6 +542,25 @@ export const applicantsData = [
         degree: "Associate Degree in Web Development",
         institution: "Community College of Tech",
         graduationYear: 2019
+      }
+    ],
+
+    academicActivity: [
+      {
+        title: "test activity",
+        description: "test activity description",
+        duration: 3,
+        beginning: "2010-10-06",
+        ending: "2011-10-27",
+        academicActivityType: {
+          title: "project",
+        }
+      }
+    ],
+    extracurricularActivity: [
+      {
+        title: "test extracurricular ",
+        description: "test extracurricular description"
       }
     ],
 
@@ -489,7 +586,8 @@ export const applicantsData = [
         }
       }
     ],
-    bloodGroup: "O+",
-    designation: "Software Engineer"
+    bloodGroup: "B+",
+    designation: "Backend Engineer",
+    phone: "0143624536451",
   },
 ];
