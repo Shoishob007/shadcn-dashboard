@@ -25,7 +25,7 @@ const buttonVariants = cva(
         deletesuccess: "bg-red-100 text-red-600 shadow hover:bg-red-200/90",
       },
       size: {
-        xs: "h-7 px-3 py-1 text-[10px] ",
+        xs: "h-7 px-1 py-1 text-[10px] ",
         sm: "h-8 rounded-md px-3 text-xs",
         md: "h-9 rounded-md px-3 text-sm",
         lg: "h-10 rounded-md px-8",
