@@ -1,11 +1,9 @@
-import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { Camera, MapPin } from "lucide-react";
 import Image from "next/image";
 import profileImg from ".././../../../../public/assests/profile-pic.jpg";
-import { Separator } from "@/components/ui/separator";
 import ProfileTabs from "./components/ProfileTabs";
 import UpdateProfile from "./components/UpdateProfile";
-
 
 const ProfilePage = () => {
   return (
@@ -23,7 +21,7 @@ const ProfilePage = () => {
               <span>456</span>
               <span className="ml-1">Followers</span>
             </div>
-            <UpdateProfile/>
+            <UpdateProfile />
           </div>
         </div>
 
@@ -40,7 +38,9 @@ const ProfilePage = () => {
               className="rounded-2xl border-4 border-white object-cover profile-img"
             />
             <div className="absolute top-3/4 right-4 camera-icon-div">
-              <span><Camera/></span>
+              <span>
+                <Camera />
+              </span>
             </div>
           </div>
           {/* text */}

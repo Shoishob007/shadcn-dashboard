@@ -1,12 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -35,7 +35,9 @@ export default function ProfileUpdatePopup() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
               {/* Name Field */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Full Name
+                </label>
                 <Input
                   type="text"
                   placeholder="Enter your name"
@@ -45,7 +47,9 @@ export default function ProfileUpdatePopup() {
 
               {/* Email Field */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
                 <Input
                   type="email"
                   placeholder="Enter your email"
@@ -54,7 +58,9 @@ export default function ProfileUpdatePopup() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Phone
+                </label>
                 <Input
                   type="text"
                   placeholder="Enter your phone number"
@@ -63,7 +69,9 @@ export default function ProfileUpdatePopup() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Address
+                </label>
                 <Textarea
                   placeholder="Enter your address"
                   {...register("address")}
@@ -71,7 +79,9 @@ export default function ProfileUpdatePopup() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Resume</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Resume
+                </label>
                 <Input
                   type="file"
                   accept=".pdf,.doc,.docx"
@@ -80,7 +90,9 @@ export default function ProfileUpdatePopup() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Cover Letter (optional)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Cover Letter (optional)
+                </label>
                 <Textarea
                   placeholder="Write your cover letter"
                   rows={5}
