@@ -72,7 +72,7 @@ export const SidebarLinks = () => {
     },
     {
       title: "Profile",
-      href: "/my-profile",
+      href: "/profile",
       icon: UsersRound,
       variant: "ghost",
     },
