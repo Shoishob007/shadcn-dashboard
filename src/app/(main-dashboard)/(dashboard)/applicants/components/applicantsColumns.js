@@ -143,24 +143,6 @@ export const columns = (router) => {
       ),
     },
     {
-      accessorKey: "deadline",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Deadline
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => {
-        const date = row.getValue("deadline");
-        return (
-          <div className="text-center">{date.toLocaleDateString("en-US")}</div>
-        );
-      },
-    },
-    {
       accessorKey: "interviewSchedule",
       header: ({ column }) => (
         <Button

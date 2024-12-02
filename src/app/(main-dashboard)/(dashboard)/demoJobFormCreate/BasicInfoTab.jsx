@@ -39,7 +39,7 @@ export function BasicInfoTab({ form }) {
               <Textarea
                 {...field}
                 placeholder="Detailed job description..."
-                className="min-h-[120px] dark:border-gray-300"
+                className="min-h-[70px] sm:min-h-[60px] dark:border-gray-300"
               />
             </FormControl>
             <FormMessage />
@@ -57,7 +57,25 @@ export function BasicInfoTab({ form }) {
               <Textarea
                 {...field}
                 placeholder="List of benefits..."
-                className="min-h-[100px] dark:border-gray-200"
+                className="min-h-[70px] sm:min-h-[60px] dark:border-gray-200"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name="jobResponsibilities"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Job Responsibilities</FormLabel>
+            <FormControl>
+              <Textarea
+                {...field}
+                placeholder="List of benefits..."
+                className="min-h-[70px] sm:min-h-[60px] dark:border-gray-200"
               />
             </FormControl>
             <FormMessage />

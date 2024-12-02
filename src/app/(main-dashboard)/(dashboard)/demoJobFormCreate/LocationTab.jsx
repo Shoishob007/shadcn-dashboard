@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 export function LocationTab({ form }) {
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         {/* <FormField
           control={form.control}
           name="location"
@@ -41,7 +41,7 @@ export function LocationTab({ form }) {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <FormField
           control={form.control}
           name="email"
@@ -85,7 +85,7 @@ export function LocationTab({ form }) {
               <Textarea
                 {...field}
                 placeholder="Any additional contact details..."
-                className="min-h-[100px]"
+                className="min-h-[80px]"
               />
             </FormControl>
             <FormMessage />

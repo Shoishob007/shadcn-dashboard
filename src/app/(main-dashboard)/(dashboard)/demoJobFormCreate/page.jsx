@@ -15,7 +15,6 @@ import { BasicInfoTab } from "./BasicInfoTab";
 import { EmploymentTab } from "./EmploymentTab";
 import { RequirementsTab } from "./RequirementsTab";
 import { LocationTab } from "./LocationTab";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { jobSchema } from "../schemas/jobFormSchema";
@@ -31,12 +30,13 @@ const CreateJobForm = ({ onClose }) => {
   const { toast } = useToast();
 
   const form = useForm({
-    resolver: zodResolver(jobSchema),
     defaultValues: {
       jobStatus: true,
       publishDate: new Date().toISOString().split("T")[0],
     },
   });
+
+  const { reset } = form;
 
   const [currentTab, setCurrentTab] = useState(0);
 
@@ -44,12 +44,19 @@ const CreateJobForm = ({ onClose }) => {
     setCurrentTab((prev) => (prev < tabs.length - 1 ? prev + 1 : prev));
   const prevTab = () => setCurrentTab((prev) => (prev > 0 ? prev - 1 : prev));
 
-  const onSubmit = async (data) => {
+  const handleNext = async (e) => {
+    e.preventDefault();
+
     if (currentTab < tabs.length - 1) {
       nextTab();
-    } else if (currentTab > 0) {
-      prevTab();
-    } else {
+    }
+  };
+
+  const onSubmit = async (data) => {
+    if (currentTab === tabs.length - 1) {
+      console.log(data);
+      reset();
+
       //   try {
       //     const requestData = {
       //       organization: session?.organizationId,
@@ -86,16 +93,18 @@ const CreateJobForm = ({ onClose }) => {
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto p-6">
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-semibold">Create New Job</CardTitle>
-        <CardDescription>
+    <Card className="w-full max-w-5xl mx-auto p-6">
+      <CardHeader className="text-center p-4">
+        <CardTitle className="text-lg sm:text-2xl font-semibold">
+          Create New Job
+        </CardTitle>
+        <CardDescription className="text-xs sm:text-sm">
           Fill in the job details across all sections below
         </CardDescription>
       </CardHeader>
 
       <Form {...form}>
-        <form>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent>
             <Tabs
               //   defaultValue="basic"
@@ -147,21 +156,22 @@ const CreateJobForm = ({ onClose }) => {
             </Button>
 
             <div className="flex items-center gap-2">
-              {currentTab > 0 ? (
+              {currentTab > 0 && (
                 <Button type="button" className="px-2 py-1" onClick={prevTab}>
                   Prev
                 </Button>
-              ) : (
-                <></>
               )}
-
               {currentTab < tabs.length - 1 ? (
-                <Button className="px-2 py-1" type="button" onClick={nextTab}>
+                <Button
+                  type="button"
+                  className="px-2 py-1"
+                  onClick={handleNext}
+                >
                   Next
                 </Button>
               ) : (
                 <Button type="submit" className="px-2 py-1">
-                  Create Job
+                  Create
                 </Button>
               )}
             </div>

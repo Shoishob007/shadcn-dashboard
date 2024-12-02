@@ -18,7 +18,7 @@ import { SlidersHorizontal, SlidersVertical } from "lucide-react";
 export function EmploymentTab({ form }) {
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <FormField
           control={form.control}
           name="employeeType"
@@ -27,7 +27,7 @@ export function EmploymentTab({ form }) {
               <FormLabel>Employment Type</FormLabel>
               <FormControl>
                 <div className="flex items-center border dark:border-gray-300 rounded-md">
-                  <SlidersHorizontal className="mx-3 text-gray-400 w-4" />
+                  {/* <SlidersHorizontal className="mx-3 text-gray-400 w-4" /> */}
                   <Select
                     onValueChange={field.onChange}
                     value={field.value || ""}
@@ -56,7 +56,7 @@ export function EmploymentTab({ form }) {
               <FormLabel>Job Type</FormLabel>
               <FormControl>
                 <div className="flex items-center border dark:border-gray-300  rounded-md">
-                  <SlidersVertical className="mx-3 text-gray-400 w-4" />
+                  {/* <SlidersVertical className="mx-3 text-gray-400 w-4" /> */}
                   <Select
                     onValueChange={field.onChange}
                     value={field.value || ""}
@@ -78,7 +78,7 @@ export function EmploymentTab({ form }) {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <FormField
           control={form.control}
           name="salary"
@@ -114,7 +114,7 @@ export function EmploymentTab({ form }) {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <FormField
           control={form.control}
           name="publishDate"

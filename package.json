@@ -32,6 +32,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
+    "emblor": "^1.4.7",
     "googleapis": "^144.0.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.453.0",
