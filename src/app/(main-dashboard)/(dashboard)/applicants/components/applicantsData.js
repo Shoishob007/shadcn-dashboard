@@ -71,8 +71,6 @@ export const applicantsData = [
         socialMedia: {
           id: "f42982dd-4eba-4e8e-9294-6a9458fe0826",
           title: "google",
-          updatedAt: "2024-10-29",
-          createdAt: "2024-10-29"
         }
       },
       {
@@ -81,8 +79,6 @@ export const applicantsData = [
         socialMedia: {
           id: "e3541401-a2ec-47fa-8768-b802edb3715b",
           title: "facebook",
-          updatedAt: "2024-10-29T05:23:04.131Z",
-          createdAt: "2024-10-29T05:23:04.131Z"
         }
       }
     ],

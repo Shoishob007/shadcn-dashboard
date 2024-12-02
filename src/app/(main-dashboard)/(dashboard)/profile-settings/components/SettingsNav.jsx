@@ -34,11 +34,6 @@ const SettingsNav = ({ currentPath }) => {
       icon: Share2,
     },
     {
-      href: "/applicants/view",
-      label: "Applications",
-      icon: Users,
-    },
-    {
       href: "/profile-settings/branches",
       label: "Branch Info",
       icon: Building2,
