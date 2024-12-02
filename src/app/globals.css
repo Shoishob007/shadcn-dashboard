@@ -164,3 +164,15 @@
 .profile-img-div:hover .camera-icon-div {
   opacity: 1;
 }
+
+/* Applicant -> Job details banner */
+.job-details-banner {
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.46) 0%,
+      rgba(0, 0, 0, 0.59) 100%
+    ),
+    url(../../public/assests/details.png);
+  height: 200px;
+  border-radius: 8px;
+}
