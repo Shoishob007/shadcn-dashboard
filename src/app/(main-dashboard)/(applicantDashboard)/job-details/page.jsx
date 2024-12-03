@@ -1,12 +1,11 @@
-// import JobDetailsBanner from "./components/JobDetailsBanner";
-// import JobDetailsInfo from "./components/JobDetailsInfo";
+import JobDetailsContent from "./components/JobDetailsContent";
+import JobDetailsHeader from "./components/JobDetailsHeader";
 
 const JobDetailsPage = () => {
   return (
     <div>
-      {/* <JobDetailsBanner /> */}
-      {/* <JobDetailsInfo /> */}
-      <h1>Job Details page</h1>
+      <JobDetailsHeader />
+      <JobDetailsContent />
     </div>
   );
 };
