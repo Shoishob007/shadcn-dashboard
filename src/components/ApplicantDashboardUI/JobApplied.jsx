@@ -14,7 +14,7 @@ export const jobsData = [
     jobType: "Full-Time",
     salary: "$50,000",
     employeeType: "Contractual",
-    applicantStatus: "Hired",
+    applicantStatus: "Applied",
     jobStatus: "Open",
   },
   {
@@ -38,9 +38,9 @@ export const jobsData = [
     locationType: "Hybrid",
     location: "New York, NY",
     jobType: "Contract",
-    salary: "$40000",
+    salary: "$40,000",
     employeeType: "Freelance",
-    applicantStatus: "Shortlisted",
+    applicantStatus: "Applied",
     jobStatus: "Open",
   },
   {
@@ -51,9 +51,9 @@ export const jobsData = [
     locationType: "Remote",
     location: "USA",
     jobType: "Part-Time",
-    salary: "$35000",
+    salary: "$35,000",
     employeeType: "Permanent",
-    applicantStatus: "Shortlisted",
+    applicantStatus: "Applied",
     jobStatus: "Open",
   },
   {
@@ -66,7 +66,7 @@ export const jobsData = [
     jobType: "Full-Time",
     salary: "$70,000",
     employeeType: "Freelance",
-    applicantStatus: "Rejected",
+    applicantStatus: "Applied",
     jobStatus: "Closed",
   },
 ];
@@ -75,10 +75,11 @@ const JobApplied = () => {
   return (
     <div className="mt-[30px]">
       <h1 className="font-medium text-xl mb-5">Recent Job Applied</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {jobsData.map((job, index) => (
-          <div
-            key={index}
+          <Link href={'/job-details'} key={index}>
+            <div
+            
             className="p-6 shadow rounded-lg border border-gray-200 bg-white relative group"
           >
             {/* Job Info */}
@@ -107,22 +108,24 @@ const JobApplied = () => {
                 </div>
               </div>
             </div>
+
+            {/* Job Status & Type */}
             <div className="flex justify-between items-center mt-4">
-              <div className="flex gap-2 flex-wrap">
-                <span className="bg-orange-100 text-orange-600 text-xs font-medium py-1 px-3 rounded-full">
+              <div className="flex gap-4">
+                <span className="text-xs font-medium py-1 px-3 rounded-full border border-blue-500 text-blue-500">
                   {job.jobType}
                 </span>
-                <span className="bg-pink-100 text-pink-600 text-xs font-medium py-1 px-3 rounded-full">
+                <span className="text-xs font-medium py-1 px-3 rounded-full border border-teal-500 text-teal-500">
                   {job.locationType}
                 </span>
-                <span className="bg-cyan-100 text-cyan-600 text-xs font-medium py-1 px-3 rounded-full">
+                <span className="text-xs font-medium py-1 px-3 rounded-full border border-purple-500 text-purple-500">
                   {job.employeeType}
                 </span>
               </div>
-              {/* <div className="font-semibold text-gray-800 ">{job.salary}</div> */}
+              <div className="font-semibold text-gray-800">{job.salary}</div>
             </div>
 
-            {/* Add jobStatus and applicantStatus here */}
+            {/* Add jobStatus and applicantStatus */}
             <div className="flex gap-2 mt-3">
               <div>
                 <span className="text-sm">Job Status:</span>{" "}
@@ -134,21 +137,14 @@ const JobApplied = () => {
                 <span className="text-sm">Applicant Status:</span>{" "}
                 <span
                   className={`${
-                    job.applicantStatus === "Shortlisted"
-                      ? "bg-yellow-100 text-yellow-600"
-                      : job.applicantStatus === "Hired"
-                      ? "bg-green-100 text-green-600"
-                      : job.applicantStatus === "Rejected"
-                      ? "bg-red-100 text-red-600"
-                      : "bg-purple-100 text-purple-600"
+                    job.applicantStatus === "Applied"
+                      ? "bg-purple-100 text-purple-600"
+                      : "bg-gray-100 text-gray-600"
                   } text-xs font-medium py-1 px-3 rounded-full`}
                 >
                   {job.applicantStatus}
                 </span>
               </div>
-            </div>
-            <div className="font-semibold text-gray-800 flex items-center justify-end">
-              {job.salary}
             </div>
 
             {/* Hover Icons */}
@@ -156,7 +152,7 @@ const JobApplied = () => {
               <span className="cursor-pointer text-gray-500 hover:text-gray-800">
                 <Bookmark size={20} />
               </span>
-              <Link href={"/job-details"}>
+              <Link href="/job-details">
                 <span className="cursor-pointer text-gray-500 hover:text-gray-800">
                   <Eye size={20} />
                 </span>
@@ -166,6 +162,7 @@ const JobApplied = () => {
               </span>
             </div>
           </div>
+          </Link>
         ))}
       </div>
     </div>
