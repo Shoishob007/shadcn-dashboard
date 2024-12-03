@@ -144,34 +144,6 @@ export const SidebarLinks = () => {
       variant: "default",
     },
     {
-      title: "Applicants",
-      href: "#",
-      icon: UsersRound,
-      variant: "ghost",
-      submenu: [
-        // {
-        //   title: "Applicants Dashboard",
-        //   href: "/applicants",
-        //   icon: Circle,
-        // },
-        {
-          title: "View All Applicants",
-          href: "/applicants/view",
-          icon: Circle,
-        },
-        {
-          title: "Shortlisted Applicants",
-          href: "/applicants/view/shortlisted",
-          icon: Circle,
-        },
-        {
-          title: "Hired Applicants",
-          href: "/applicants/view/hired",
-          icon: Circle,
-        },
-      ],
-    },
-    {
       title: "Jobs",
       href: "#",
       icon: BriefcaseBusiness,
@@ -183,62 +155,91 @@ export const SidebarLinks = () => {
         //   icon: Circle,
         // },
         {
-          title: "View All Jobs",
-          href: "/jobs/view",
-          icon: Circle,
-        },
-        {
-          title: "View Open Jobs",
-          href: "/jobs/view/open",
-          icon: Circle,
-        },
-        {
-          title: "View Closed Jobs",
-          href: "/jobs/view/closed",
-          icon: Circle,
-        },
-        {
           title: "Create Job",
-          href: "/jobs/create",
+          href: "/demoJobFormCreate",
           icon: Circle,
         },
+        {
+          title: "View All Jobs",
+          href: "/demoJobList",
+          icon: Circle,
+        },
+        // {
+        //   title: "View Open Jobs",
+        //   href: "/jobs/view/open",
+        //   icon: Circle,
+        // },
+        // {
+        //   title: "View Closed Jobs",
+        //   href: "/jobs/view/closed",
+        //   icon: Circle,
+        // },
       ],
     },
     {
-      title: "Interviews",
-      href: "#",
+      title: "Applicants",
+      href: "/demoAppList",
+      icon: UsersRound,
+      variant: "ghost",
+      // submenu: [
+      //   {
+      //     title: "Applicants Dashboard",
+      //     href: "/applicants",
+      //     icon: Circle,
+      //   },
+      //   {
+      //     title: "View All Applicants",
+      //     href: "/demoAppList",
+      //     icon: Circle,
+      //   },
+      //   {
+      //     title: "Shortlisted Applicants",
+      //     href: "/applicants/view/shortlisted",
+      //     icon: Circle,
+      //   },
+      //   {
+      //     title: "Hired Applicants",
+      //     href: "/applicants/view/hired",
+      //     icon: Circle,
+      //   },
+      // ],
+    },
+
+    {
+      title: "Scheduled Interviews",
+      href: "/interviews/schedule",
       icon: CalendarDays,
       variant: "ghost",
-      submenu: [
-        {
-          title: "Interview Dates",
-          href: "/interviews",
-          icon: Circle,
-        },
-        {
-          title: "Upcoming Interviews",
-          href: "/interviews/upcoming",
-          icon: Circle,
-        },
-        {
-          title: "Schedule Interview",
-          href: "/interviews/schedule",
-          icon: Circle,
-        },
-      ],
+      // submenu: [
+      //   {
+      //     title: "Interview Dates",
+      //     href: "/interviews",
+      //     icon: Circle,
+      //   },
+      //   {
+      //     title: "Upcoming Interviews",
+      //     href: "/interviews/upcoming",
+      //     icon: Circle,
+      //   },
+      //   {
+      //     title: "Scheduled Interview",
+      //     href: "/interviews/schedule",
+      //     icon: Circle,
+      //   },
+      // ],
     },
     {
       title: "Profile",
-      href: "#",
+      href: "/profile-settings",
       icon: Settings,
       variant: "ghost",
-      submenu: [
-        {
-          title: "Profile Settings",
-          href: "/profile-settings",
-          icon: Circle,
-        },
-      ],
+      // submenu: [
+      //   {
+      //     title: "Profile Settings",
+      //     href: "/profile-settings",
+      //     icon: Circle,
+      //   },
+      // ],
     },
     // getAuthLinks(),
   ];

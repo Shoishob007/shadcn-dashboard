@@ -105,7 +105,7 @@ export function BasicInfoTab({ form }) {
         )}
       />
 
-      <FormField
+      {/* <FormField
         control={form.control}
         name="fieldOfStudy"
         render={({ field }) => (
@@ -138,7 +138,7 @@ export function BasicInfoTab({ form }) {
             <FormMessage />
           </FormItem>
         )}
-      />
+      /> */}
     </div>
   );
 }
