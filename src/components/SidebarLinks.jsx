@@ -77,30 +77,16 @@ export const SidebarLinks = () => {
       variant: "ghost",
     },
     {
-      title: "Job Search",
-      href: "#",
+      title: "Search for Jobs",
+      href: "/job-search",
       icon: Search,
       variant: "ghost",
-      submenu: [
-        {
-          title: "Search for Jobs",
-          href: "/job-search",
-          icon: Circle,
-        },
-      ],
     },
     {
       title: "My Applications",
-      href: "/applications",
+      href: "/my-applications",
       icon: CalendarDays,
       variant: "ghost",
-      submenu: [
-        {
-          title: "View Applications",
-          href: "/applications/view",
-          icon: Circle,
-        },
-      ],
     },
     {
       title: "Interview Schedule",

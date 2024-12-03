@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import InterviewSchedule from "./(main-dashboard)/(dashboard)/interviews/schedule/page";
+import DashboardCardSection from "@/components/ApplicantDashboardUI/DashboardCardSection";
 
 const cardData = [
   {
@@ -284,18 +285,7 @@ export default function Home() {
             </div>
           </div>
           <div>
-            {/* <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 lg:grid-cols-3 mb-4 hover:border-gray-950">
-              {applicantCardData.map((d, i) => (
-                <Link href={d.href || "#"} key={i}>
-                  <Card
-                    amount={d.amount}
-                    discription={d.discription}
-                    icon={d.icon}
-                    label={d.label}
-                  />
-                </Link>
-              ))}
-            </section> */}
+              <DashboardCardSection/>
 
             {/* Recently Job applied section */}
             <section>
