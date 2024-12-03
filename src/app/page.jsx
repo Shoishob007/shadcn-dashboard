@@ -3,6 +3,7 @@
 
 "use client";
 import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/applicants/components/applicantsData";
+import JobApplied from "@/components/ApplicantDashboardUI/JobApplied";
 import Card, { CardContent } from "@/components/Card";
 import ApplicantsCard from "@/components/SalesCard";
 import { Badge } from "@/components/ui/badge";
@@ -283,7 +284,7 @@ export default function Home() {
             </div>
           </div>
           <div>
-            <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 lg:grid-cols-3 mb-4 hover:border-gray-950">
+            {/* <section className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 lg:grid-cols-3 mb-4 hover:border-gray-950">
               {applicantCardData.map((d, i) => (
                 <Link href={d.href || "#"} key={i}>
                   <Card
@@ -294,8 +295,14 @@ export default function Home() {
                   />
                 </Link>
               ))}
+            </section> */}
+
+            {/* Recently Job applied section */}
+            <section>
+              <JobApplied />
             </section>
-            <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
+
+            {/* <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
               <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-800 hover:border-gray-950">
                 <section>
                   <p className="text-lg font-semibold">Recent Applications</p>
@@ -330,7 +337,7 @@ export default function Home() {
                   </Link>
                 ))}
               </CardContent>
-            </section>
+            </section> */}
           </div>
         </div>
       ) : (
