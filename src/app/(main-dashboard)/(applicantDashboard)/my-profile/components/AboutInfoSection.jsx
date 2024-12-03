@@ -7,7 +7,7 @@ export default function AboutInfoSection() {
       <section className="mb-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">About Me</h2>
         <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
-          Hi! I'm a passionate **Full Stack Developer** with 2 years of
+          Hi! I&apos;m a passionate **Full Stack Developer** with 2 years of
           experience building dynamic, user-friendly web applications. I
           specialize in the **MERN stack** (MongoDB, Express.js, React.js,
           Node.js) and enjoy solving complex problems through coding.

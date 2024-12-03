@@ -98,7 +98,7 @@ const jobs = [
     jobTitle: "Frontend Developer",
     position: "Junior Developer",
     role: "Frontend Development",
-    salary: "50,000 BDT", // Monthly salary
+    salary: "50,000 BDT",
     deadline: "2024-10-28",
     status: "open",
     location: "Dhaka",
@@ -114,7 +114,7 @@ const jobs = [
     jobTitle: "React.js Developer",
     position: "Mid-Level Developer",
     role: "Frontend Development",
-    salary: "58,333 BDT", // Monthly salary
+    salary: "58,333 BDT",
     deadline: "2024-11-02",
     status: "open",
     location: "Khulna",
@@ -130,7 +130,7 @@ const jobs = [
     jobTitle: "Full Stack Developer",
     position: "Senior Developer",
     role: "Full Stack Development",
-    salary: "75,000 BDT", // Monthly salary
+    salary: "75,000 BDT",
     deadline: "2024-11-07",
     status: "open",
     location: "Dhaka",
@@ -146,7 +146,7 @@ const jobs = [
     jobTitle: "Software Engineer",
     position: "Entry-Level Developer",
     role: "Software Development",
-    salary: "45,833 BDT", // Monthly salary
+    salary: "45,833 BDT",
     deadline: "2024-11-10",
     status: "closed",
     jobType: "full-time",
@@ -162,7 +162,7 @@ const jobs = [
     jobTitle: "UI/UX Designer",
     position: "Mid-Level Designer",
     role: "Design",
-    salary: "54,167 BDT", // Monthly salary
+    salary: "54,167 BDT",
     deadline: "2024-11-13",
     status: "open",
     location: "Dhaka",
@@ -178,7 +178,7 @@ const jobs = [
     jobTitle: "DevOps Engineer",
     position: "Senior Engineer",
     role: "DevOps",
-    salary: "70,833 BDT", // Monthly salary
+    salary: "70,833 BDT",
     deadline: "2024-11-18",
     status: "open",
     location: "Dhaka",
@@ -344,8 +344,8 @@ export default function Home() {
         <div>
           <div className="mb-6">
             <div className="flex items-center gap-2">
-              <span className="text-2xl">Welcome!</span>{" "}
-              <h1 className="font-medium text-2xl">Shoisob Ahmed</h1>{" "}
+              <span className="text-lg md:text-2xl">Welcome!</span>{" "}
+              <h1 className="font-medium text-lg md:text-2xl">Shoisob Ahmed</h1>{" "}
               <Badge>{currentRole}</Badge>
             </div>
           </div>

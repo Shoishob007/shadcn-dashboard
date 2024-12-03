@@ -131,8 +131,8 @@ export default function RegisterForm() {
                     <Image
                       src="/assests/google-logo.jpg"
                       alt="Google Logo"
-                      width={25}
-                      height={25}
+                      width={20}
+                      height={20}
                       className="mr-2 rounded-full"
                     />
                   </Button>
@@ -144,8 +144,8 @@ export default function RegisterForm() {
                     <Image
                       src="/assests/github-logo.png"
                       alt="GitHub Logo"
-                      width={25}
-                      height={25}
+                      width={20}
+                      height={20}
                       className="mr-2 rounded-full"
                     />
                   </Button>

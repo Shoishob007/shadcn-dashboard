@@ -147,7 +147,8 @@ export const authOptions = {
             }
 
             if (account) {
-                token.accessToken = account.access_token;
+                // console.log("Account info: ", account)
+                // token.access_token = account.access_token;
                 token.provider = account.provider;
             }
 
@@ -167,7 +168,7 @@ export const authOptions = {
                 session.access_token = token.access_token;
                 session.organizationId = token.organizationId;
 
-                console.log("Current Server Session :", session)
+                // console.log("Current Server Session :", session)
             }
             return session;
         },
