@@ -147,7 +147,8 @@ export const authOptions = {
             }
 
             if (account) {
-                token.accessToken = account.access_token;
+                // console.log("Account info: ", account)
+                token.access_token = account.access_token;
                 token.provider = account.provider;
             }
 

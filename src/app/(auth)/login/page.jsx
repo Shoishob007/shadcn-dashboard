@@ -102,9 +102,9 @@ export default function LoginForm() {
                 <Image
                   src="/assests/google-logo.jpg"
                   alt="Google Logo"
-                  width={25}
-                  height={25}
-                  className="mr-2 rounded-full"
+                  width={20}
+                  height={20}
+                  className="rounded-full"
                 />
               </Button>
               <Button
@@ -115,9 +115,9 @@ export default function LoginForm() {
                 <Image
                   src="/assests/github-logo.png"
                   alt="GitHub Logo"
-                  width={25}
-                  height={25}
-                  className="mr-2 rounded-full"
+                  width={20}
+                  height={20}
+                  className="rounded-full"
                 />
               </Button>
               <Button
@@ -128,9 +128,9 @@ export default function LoginForm() {
                 <Image
                   src="/assests/linkedIn-logo.png"
                   alt="LinkedIn Logo"
-                  width={25}
-                  height={25}
-                  className="mr-2 rounded-full"
+                  width={20}
+                  height={20}
+                  className="rounded-full"
                 />
               </Button>
             </div>
