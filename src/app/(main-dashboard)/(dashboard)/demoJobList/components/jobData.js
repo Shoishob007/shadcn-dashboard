@@ -43,6 +43,7 @@ export const documents = {
                 contactInfo: null,
                 employeeType: "Full-Time",
                 jobType: "Physical",
+                steps:["Screening Test", "Aptitude Test", "Technical Test", "Interview"],
 
                 organization: {
                     orgName: "Org1",

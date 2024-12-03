@@ -4,7 +4,8 @@ export const applicantsData = [
     jobTitle: "Full-Stack Engineer",
     applicantName: "Shoishob Al-Baki",
     applicantEmail: "shoishob@hotmail.com",
-    status: "applied",
+    status: "shortlisted",
+    steps: "Aptitude Test",
     CVScore: 50,
     applicantWebsiteUrl: "https://test.com",
     skills: [
@@ -238,6 +239,7 @@ export const applicantsData = [
     applicantName: "Shoikot Arfin",
     applicantEmail: "arfin@outlook.com",
     status: "shortlisted",
+    steps: "Technical Test",
     CVScore: 50,
     interviewSchedule: new Date("2024-11-10"),
     skills: [
@@ -463,7 +465,8 @@ export const applicantsData = [
     jobTitle: "QA Engineer",
     applicantName: "Ashfaq Tanzim",
     applicantEmail: "ashfaq@gmail.com",
-    status: "applied",
+    status: "shortlisted",
+    steps: "Interview",
     CVScore: 60,
     deadline: new Date("2024-10-01"),
     interviewSchedule: new Date("2024-10-10"),
