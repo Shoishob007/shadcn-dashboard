@@ -157,20 +157,20 @@ const CreateJobForm = ({ onClose }) => {
 
             <div className="flex items-center gap-2">
               {currentTab > 0 && (
-                <Button type="button" className="px-2 py-1" onClick={prevTab}>
+                <Button type="button" className="px-3 py-1" onClick={prevTab}>
                   Prev
                 </Button>
               )}
               {currentTab < tabs.length - 1 ? (
                 <Button
                   type="button"
-                  className="px-2 py-1"
+                  className="px-3 py-1"
                   onClick={handleNext}
                 >
                   Next
                 </Button>
               ) : (
-                <Button type="submit" className="px-2 py-1">
+                <Button type="submit" className="px-3 py-1">
                   Create
                 </Button>
               )}
