@@ -53,7 +53,7 @@ const ApplyForm = () => {
               </>
             ) : (
               <>
-                <button className="flex items-center gap-2 px-5 py-3 rounded bg-[#00ca99] hover:bg-[#212121] duration-300 text-white font-medium outline-none border-none">
+                <button className="flex items-center gap-2 px-5 py-3 rounded bg-[#78AEB3] hover:bg-[#212121] duration-300 text-white font-medium outline-none border-none">
                   Apply Now{" "}
                   <span>
                     <SendHorizontal size={18} />
@@ -113,7 +113,7 @@ const ApplyForm = () => {
             <DialogFooter>
               <button
                 type="submit"
-                className="mt-2 flex items-center gap-1 px-4 py-2.5 rounded bg-[#00ca99] hover:bg-[#212121] duration-300 text-white font-medium outline-none border-none"
+                className="mt-2 flex items-center gap-1 px-4 py-2.5 rounded bg-[#78AEB3] hover:bg-[#212121] duration-300 text-white font-medium outline-none border-none"
               >
                 Apply Now{" "}
                 <span>

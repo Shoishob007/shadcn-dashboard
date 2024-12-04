@@ -2,6 +2,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Adjust path as needed
 import { Bookmark, Calendar, CheckCircle, MapPin, XCircle } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import companyLogo from "../../../../../public/assests/company.png";
 
@@ -133,8 +134,9 @@ const ApplicationCards = ({ applications }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {applications.map((app, index) => (
-        <div
-          key={index}
+        <Link href={'/job-details'} key={index}>
+          <div
+         
           className="bg-white border border-gray-200 shadow rounded-lg p-6 relative"
         >
           {/* Company Logo and Job Info */}
@@ -205,6 +207,7 @@ const ApplicationCards = ({ applications }) => {
             )}
           </div>
         </div>
+        </Link>
       ))}
     </div>
   );
