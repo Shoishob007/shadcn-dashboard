@@ -1,5 +1,6 @@
 import { Bookmark, Share2 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import companyLogo from '../../../../../../public/assests/company.png';
 
 const JobSearchCard = ({ job }) => {
@@ -49,9 +50,11 @@ const JobSearchCard = ({ job }) => {
 
       {/* Call to Action */}
       <div className="mt-4 flex justify-between items-center">
-        <button className="flex items-center gap-2 px-4 py-2 rounded bg-[#00ca99] hover:bg-[#212121] duration-300 text-white font-medium outline-none border-none">
-          Apply Now
-        </button>
+        <Link href={'/job-details'}>
+          <button className="flex items-center gap-2 px-4 py-2 rounded bg-[#78AEB3] hover:bg-[#212121] duration-300 text-white font-medium outline-none border-none">
+            Apply Now
+          </button>
+        </Link>
         <div className="flex items-center gap-3">
           <button className="text-gray-400 hover:text-blue-600">
             <Bookmark size={20} />

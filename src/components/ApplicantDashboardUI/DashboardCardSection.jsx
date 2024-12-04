@@ -8,17 +8,17 @@ export default function DashboardCardSection() {
         <div className="flex gap-6">
           <DashboardCard
             title="Applied Jobs"
-            count="22"
+            count="5"
             icon={<Briefcase className="h-8 w-8" />}
           />
           <DashboardCard
             title="Saved Jobs"
-            count="15"
+            count="0"
             icon={<Bookmark className="h-8 w-8" />}
           />
           <DashboardCard
             title="Shortlisted Jobs"
-            count="8"
+            count="2"
             icon={<Heart className="h-8 w-8" />}
           />
         </div>

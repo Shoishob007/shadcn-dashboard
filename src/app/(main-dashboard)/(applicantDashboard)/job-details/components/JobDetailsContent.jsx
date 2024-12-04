@@ -141,7 +141,7 @@ const JobDetailsContent = () => {
 
         {/* Job description, key responsibilities, skills and experience */}
         <div className="flex-[4] px-3">
-          <div className="border border-[#00ca99] rounded-lg p-5">
+          <div className="border border-[#78AEB3] rounded-lg p-5">
             <h1 className="text-xl font-medium mb-4">Job Description</h1>
             <div className="space-y-4">
               <p className="text-[#696969] text-sm">
@@ -165,7 +165,7 @@ const JobDetailsContent = () => {
               </p>
             </div>
           </div>
-          <div className="mt-[30px] border border-[#00ca99] rounded-lg p-5">
+          <div className="mt-[30px] border border-[#78AEB3] rounded-lg p-5">
             <h1 className="text-xl font-medium mb-4">Key Responsibilities</h1>
             <ul className="px-6">
               <li className="list-disc text-sm mb-[15px] text-[#696969]">
@@ -186,7 +186,7 @@ const JobDetailsContent = () => {
               </li>
             </ul>
           </div>
-          <div className="mt-[30px] border border-[#00ca99] rounded-lg p-5">
+          <div className="mt-[30px] border border-[#78AEB3] rounded-lg p-5">
             <h1 className="text-xl font-medium mb-4">Skills & Experience</h1>
             <ul className="px-6">
               <li className="list-disc text-sm mb-[15px] text-[#696969]">
@@ -208,7 +208,7 @@ const JobDetailsContent = () => {
               </li>
             </ul>
           </div>
-          <div className="mt-[30px] border border-[#00ca99] rounded-lg p-5">
+          <div className="mt-[30px] border border-[#78AEB3] rounded-lg p-5">
             <h1 className="text-xl font-medium mb-4">Benefits</h1>
             <ul className="px-6">
               <li className="list-disc text-sm mb-[15px] text-[#696969]">
