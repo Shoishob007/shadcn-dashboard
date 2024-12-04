@@ -11,8 +11,23 @@ import { TagInput } from "emblor";
 import { useState } from "react";
 
 export function BasicInfoTab({ form }) {
-  const [steps, setSteps] = useState([]);
+  const [steps, setSteps] = useState([""]);
   const [activeTagIndex, setActiveTagIndex] = useState(null);
+
+  const handleStepChange = (index, value) => {
+    const newSteps = [...steps];
+    newSteps[index] = value;
+    setSteps(newSteps);
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Enter" && steps[index].trim() !== "") {
+      const newSteps = [...steps];
+      newSteps.push("");
+      setSteps(newSteps);
+    }
+  };
+
   return (
     <div className="space-y-4">
       <FormField
@@ -38,7 +53,7 @@ export function BasicInfoTab({ form }) {
         name="description"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Description</FormLabel>
+            <FormLabel>Job Overview</FormLabel>
             <FormControl>
               <Textarea
                 {...field}
@@ -86,59 +101,41 @@ export function BasicInfoTab({ form }) {
           </FormItem>
         )}
       />
+      <FormLabel className="!mt-4">Recruiting Steps</FormLabel>
 
-      <FormField
-        control={form.control}
-        name="steps"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Recruiting Steps</FormLabel>
-            <FormControl>
-              <Input
-                {...field}
-                placeholder="Place you step title"
-                className="dark:border-gray-300"
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      {/* <FormField
-        control={form.control}
-        name="fieldOfStudy"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Recruiting Steps</FormLabel>
-            <div className="flex flex-wrap gap-2">
-              <TagInput
-                tags={steps}
-                setTags={(steps) => {
-                  setSteps(steps);
-                  field.onChange(steps);
-                }}
-                placeholder="Add your steps"
-                styleClasses={{
-                  tagList: {
-                    container: "gap-1",
-                  },
-                  tag: {
-                    body: "relative h-7 bg-background border border-input hover:bg-background rounded-md font-medium text-xs ps-2 pe-7",
-                    closeButton:
-                      "absolute -inset-y-px -end-px p-0 rounded-s-none rounded-e-lg flex size-7 transition-colors outline-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground",
-                  },
-                }}
-                inlineTags={false}
-                inputFieldPosition="top"
-                activeTagIndex={activeTagIndex}
-                setActiveTagIndex={setActiveTagIndex}
-              />
-            </div>
-            <FormMessage />
-          </FormItem>
-        )}
-      /> */}
+      {steps.map((step, index) => (
+        <FormField
+          key={index}
+          control={form.control}
+          name={`steps[${index}]`}
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex items-center space-x-2">
+                {/* Badge with sequential number */}
+                {/* <div className="bg-black text-white rounded-full h-5 w-5 flex items-center justify-center text-sm">
+                  {index + 1}
+                </div> */}
+                <div className="text-sm flex items-center">
+                  {" "}
+                  Step <span> {index + 1}:</span>
+                </div>
+                {/* Input field for step */}
+                <FormControl>
+                  <Input
+                    {...field}
+                    value={step}
+                    onChange={(e) => handleStepChange(index, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    placeholder={`Step ${index + 1} title`}
+                    className="dark:border-gray-300"
+                  />
+                </FormControl>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      ))}
     </div>
   );
 }

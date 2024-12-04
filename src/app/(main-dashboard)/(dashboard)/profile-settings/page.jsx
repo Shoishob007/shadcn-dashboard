@@ -10,9 +10,11 @@ import SettingsContainer from "./components/SettingsContainer";
 import SettingsNav from "./components/SettingsNav";
 import { Camera } from "lucide-react";
 import { uploadCoverImage, uploadLogoImage } from "./components/imageUpload";
+import { useRouter } from "next/navigation";
 
 const ProfileSetting = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const { data: session, update } = useSession();
   const [coverPhoto, setCoverPhoto] = useState("");
   const [loadingCoverPhoto, setLoadingCoverPhoto] = useState(true);
@@ -91,6 +93,10 @@ const ProfileSetting = () => {
     };
   }, []);
 
+  const handleClick = () => {
+    router.push("/demoBillings/pricing");
+  };
+
   const pageTitle = FormatTitle(pathname);
 
   return (
@@ -166,7 +172,10 @@ const ProfileSetting = () => {
                 <p className="text-sm">Update your profile information</p>
               </div>
             </div>
-            <div className="group text-gray-600 dark:text-gray-200 hover:text-white px-10 py-2 flex flex-col items-center bg-white bg-gradient-to-tr from-white to-white dark:from-gray-800 dark:to-gray-800 rounded-md border-[1px] border-red-700 hover:from-rose-500 hover:to-orange-500 dark:hover:from-rose-600 dark:hover:to-orange-600 cursor-pointer">
+            <div
+              onClick={handleClick}
+              className="group text-gray-600 dark:text-gray-200 hover:text-white px-10 py-2 flex flex-col items-center bg-white bg-gradient-to-tr from-white to-white dark:from-gray-800 dark:to-gray-800 rounded-md border-[1px] border-red-700 hover:from-rose-500 hover:to-orange-500 dark:hover:from-rose-600 dark:hover:to-orange-600 cursor-pointer"
+            >
               <h2 className="text-sm font-semibold">
                 Go{" "}
                 <span className="text-red-500 group-hover:text-white dark:group-hover:text-gray-300">

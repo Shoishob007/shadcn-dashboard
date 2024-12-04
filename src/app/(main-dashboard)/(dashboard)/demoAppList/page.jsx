@@ -13,6 +13,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 
 const socialMediaIcons = {
   linkedin: FaLinkedin,
@@ -53,7 +54,6 @@ const ApplicantsList = () => {
       return applicant.status === "shortlisted";
     }
 
-    // If a specific step is selected, filter by both shortlisted status and the selected step
     if (selectedStatus === "shortlisted" && selectedStep !== "All") {
       return (
         applicant.status === "shortlisted" && applicant.steps === selectedStep
@@ -108,7 +108,13 @@ const ApplicantsList = () => {
             value="shortlisted"
           >
             <DropdownMenu>
-              <DropdownMenuTrigger>Shortlisted</DropdownMenuTrigger>
+              <DropdownMenuTrigger className="flex items-center gap-4">
+                Shortlisted{" "}
+                <span>
+                  {" "}
+                  <ChevronDown className="w-5 h-5" />
+                </span>
+              </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {steps.map((step) => (
                   <DropdownMenuItem
