@@ -5,6 +5,7 @@ import {
   CalendarDays,
   Circle,
   LayoutDashboard,
+  ReceiptText,
   Search,
   Settings,
   UsersRound,
@@ -227,6 +228,12 @@ export const SidebarLinks = () => {
       //     icon: Circle,
       //   },
       // ],
+    },
+    {
+      title: "My Billings",
+      href: "/demoBillings/billing-table",
+      icon: ReceiptText,
+      variant: "default",
     },
     {
       title: "Profile",

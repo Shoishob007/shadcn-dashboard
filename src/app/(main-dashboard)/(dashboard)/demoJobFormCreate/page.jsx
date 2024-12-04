@@ -54,6 +54,11 @@ const CreateJobForm = ({ onClose }) => {
 
   const onSubmit = async (data) => {
     if (currentTab === tabs.length - 1) {
+      toast({
+        title: "Success",
+        description: "Job created successfully!",
+        variant: "ourSuccess",
+      });
       console.log(data);
       reset();
 
