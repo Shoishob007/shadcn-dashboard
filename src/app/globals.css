@@ -176,3 +176,13 @@
   height: 200px;
   border-radius: 8px;
 }
+
+.apply-button{
+  opacity: 0;
+  
+}
+
+.apply-header:hover .apply-button{
+  opacity: 1;
+  
+}

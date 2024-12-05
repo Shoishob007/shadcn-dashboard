@@ -15,6 +15,7 @@ import { SendHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 import ApplicantResumeUpload from "./ApplicantResumeUpload";
 
 const ApplyForm = () => {
@@ -34,7 +35,14 @@ const ApplyForm = () => {
     reset();
     setIsOpen(false);
     setHasApplied(true);
-    router.push("/");
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Applied Successfully",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    router.push("/job-search");
   };
 
   return (
@@ -52,14 +60,14 @@ const ApplyForm = () => {
                 </button>
               </>
             ) : (
-              <>
-                <button className="flex items-center gap-2 px-5 py-3 rounded bg-[#78AEB3] hover:bg-[#212121] duration-300 text-white font-medium outline-none border-none">
+              <div className="max-w-5xl">
+                <button className=" flex items-center gap-2.5 text-sm px-3 py-3 rounded bg-[#212121] hover:bg-[#212121] duration-300 text-white font-medium outline-none border-none">
                   Apply Now{" "}
                   <span>
-                    <SendHorizontal size={18} />
+                    <SendHorizontal size={16} />
                   </span>
                 </button>
-              </>
+              </div>
             )}
           </div>
         </DialogTrigger>
@@ -113,7 +121,7 @@ const ApplyForm = () => {
             <DialogFooter>
               <button
                 type="submit"
-                className="mt-2 flex items-center gap-1 px-4 py-2.5 rounded bg-[#78AEB3] hover:bg-[#212121] duration-300 text-white font-medium outline-none border-none"
+                className="mt-2 flex items-center gap-1 px-4 py-2.5 rounded bg-[#212121] hover:bg-[#151515] duration-300 text-white font-medium outline-none border-none"
               >
                 Apply Now{" "}
                 <span>

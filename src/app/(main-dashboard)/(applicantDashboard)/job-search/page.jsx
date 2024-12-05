@@ -206,7 +206,9 @@ const JobSearch = () => {
       (filters.employmentType
         ? job.employmentType.includes(filters.employmentType)
         : true) &&
-      (filters.jobCategory ? job.jobCategory.includes(filters.jobCategory) : true)
+      (filters.jobCategory
+        ? job.jobCategory.includes(filters.jobCategory)
+        : true)
     );
   });
 
@@ -262,13 +264,11 @@ const JobSearch = () => {
       </div>
 
       {/* Job Listings */}
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-6">
         {filteredJobs.length === 0 ? (
           <p>No jobs found based on your filters.</p>
         ) : (
-          filteredJobs.map((job) => (
-            <JobSearchCard key={job.id} job={job} />
-          ))
+          filteredJobs.map((job) => <JobSearchCard key={job.id} job={job} />)
         )}
       </div>
     </div>

@@ -1,7 +1,6 @@
 import {
   Bell,
   BriefcaseBusiness,
-  Calendar,
   CalendarDays,
   Circle,
   LayoutDashboard,
@@ -52,28 +51,28 @@ export const SidebarLinks = () => {
       href: "/",
       icon: LayoutDashboard,
       variant: "default",
-      submenu: [
-        {
-          title: "Applicants overview",
-          href: "/overview",
-          icon: Circle,
-        },
-        {
-          title: "Upcoming interviews",
-          href: "/upcoming-interviews",
-          icon: Circle,
-        },
-        {
-          title: "Recent job postings",
-          href: "/recent-job",
-          icon: Circle,
-        },
-      ],
+      //   submenu: [
+      //     {
+      //       title: "Applicants overview",
+      //       href: "/overview",
+      //       icon: Circle,
+      //     },
+      //     {
+      //       title: "Upcoming interviews",
+      //       href: "/upcoming-interviews",
+      //       icon: Circle,
+      //     },
+      //     {
+      //       title: "Recent job postings",
+      //       href: "/recent-job",
+      //       icon: Circle,
+      //     },
+      //   ],
     },
     {
-      title: "Profile",
-      href: "/profile",
-      icon: UsersRound,
+      title: "My Applications",
+      href: "/my-applications",
+      icon: CalendarDays,
       variant: "ghost",
     },
     {
@@ -83,24 +82,25 @@ export const SidebarLinks = () => {
       variant: "ghost",
     },
     {
-      title: "My Applications",
-      href: "/my-applications",
-      icon: CalendarDays,
+      title: "Profile",
+      href: "/profile-demo",
+      icon: UsersRound,
       variant: "ghost",
     },
-    {
-      title: "Interview Schedule",
-      href: "#",
-      icon: Calendar,
-      variant: "ghost",
-      submenu: [
-        {
-          title: "View up interviews",
-          href: "/interview-schedule",
-          icon: Circle,
-        },
-      ],
-    },
+
+    // {
+    //   title: "Interview Schedule",
+    //   href: "#",
+    //   icon: Calendar,
+    //   variant: "ghost",
+    //   submenu: [
+    //     {
+    //       title: "View up interviews",
+    //       href: "/interview-schedule",
+    //       icon: Circle,
+    //     },
+    //   ],
+    // },
     {
       title: "Notifications",
       href: "/notification",
