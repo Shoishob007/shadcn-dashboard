@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { formatRelativeDate } from "@/app/utils/formatRelativeDate";
-import { BriefcaseBusiness, CalendarDays, Dot } from "lucide-react";
+import { BriefcaseBusiness, CalendarDays, Dot, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { JobFilters } from "@/components/filters/JobFilters";
 import { documents } from "./components/jobData";
@@ -45,8 +45,11 @@ const JobList = () => {
   const handleViewJobDetails = (id) => {
     router.push(`/demoJobList/demoJobDetails?id=${id}`);
   };
-  const handleViewApplicantList = () => {
-    router.push(`/demoAppList`);
+  const handleViewApplicantList = (job) => {
+    router.push('/demoAppList');
+  };
+  const handleCreateJob = () => {
+    router.push("/demoJobFormCreate");
   };
 
   return (
@@ -56,6 +59,7 @@ const JobList = () => {
         filters={filters}
         onFilterChange={handleFilterChange}
         onReset={handleReset}
+        handleCreateJob={handleCreateJob}
       />
       {filteredJobs.length > 0 ? (
         filteredJobs.map((document) => {
@@ -146,7 +150,7 @@ const JobList = () => {
                       <div className="flex gap-2 md:gap-3 lg:gap-5">
                         <div className="items-center gap-1 flex">
                           <BriefcaseBusiness size={12} />
-                          <p className="font-medium text-gray-600">
+                          <p className="font-medium text-gray-600 dark:text-gray-300">
                             {document.applicantCount} applications
                           </p>
                         </div>
@@ -168,7 +172,7 @@ const JobList = () => {
                     <div className="text-gray-600 text-xs flex flex-col gap-2 md:gap-4 dark:text-gray-300 md:hidden">
                       <div className="items-center gap-1 flex">
                         <BriefcaseBusiness size={12} />
-                        <p className="font-medium text-gray-600">
+                        <p className="font-medium text-gray-600 dark:text-gray-300">
                           {document.applicantCount} applications
                         </p>
                       </div>
@@ -195,47 +199,37 @@ const JobList = () => {
                     </div>
 
                     <div className="flex items-center justify-center gap-10">
-                        <div className="flex md:hidden flex-wrap justify-center gap-1 w-full max-w-[300px]">
-                          <Badge
-                            variant="secondary"
-                            className="dark:bg-gray-900"
-                          >
-                            {document.job.jobType}
-                          </Badge>
-                          <Badge
-                            variant="secondary"
-                            className="dark:bg-gray-900"
-                          >
-                            {document.job.employeeType}
-                          </Badge>
-                          <Badge
-                            variant="secondary"
-                            className="dark:bg-gray-900"
-                          >
-                            {document.job.jobRole}
-                          </Badge>
-                        </div>
-                        {/* Action Buttons */}
-                    <div className="flex space-y-2 flex-col text-xs md:text-md">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="border border-gray-400"
-                        onClick={() => handleViewApplicantList()}
-                      >
-                        View All Applicants
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="border border-gray-400"
-                        onClick={() => handleViewJobDetails(document.job.id)}
-                      >
-                        View Job Details
-                      </Button>
+                      <div className="flex md:hidden flex-wrap justify-center gap-1 w-full max-w-[300px]">
+                        <Badge variant="secondary" className="dark:bg-gray-900">
+                          {document.job.jobType}
+                        </Badge>
+                        <Badge variant="secondary" className="dark:bg-gray-900">
+                          {document.job.employeeType}
+                        </Badge>
+                        <Badge variant="secondary" className="dark:bg-gray-900">
+                          {document.job.jobRole}
+                        </Badge>
+                      </div>
+                      {/* Action Buttons */}
+                      <div className="flex space-y-2 flex-col text-xs md:text-md">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="border border-gray-400"
+                          onClick={() => handleViewApplicantList(document.job)}
+                        >
+                          View All Applicants
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="border border-gray-400"
+                          onClick={() => handleViewJobDetails(document.job.id)}
+                        >
+                          View Job Details
+                        </Button>
+                      </div>
                     </div>
-                    </div>
-                    
                   </div>
                 </div>
               </Card>

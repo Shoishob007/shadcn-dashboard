@@ -19,7 +19,7 @@ export function StepSelector({ selectedStep, onStepChange }) {
           size="xs"
           className="border border-blue-600 bg-blue-100 text-blue-600 hover:bg-blue-200 shadow-none dark:border-gray-600 dark:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-200"
         >
-          Change
+          Change Step
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48">
