@@ -5,15 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { formatRelativeDate } from "@/app/utils/formatRelativeDate";
-import {
-  BriefcaseBusiness,
-  CalendarDays,
-  Dot,
-} from "lucide-react";
+import { BriefcaseBusiness, CalendarDays, Dot } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { JobFilters } from "@/components/filters/JobFilters";
 import { documents } from "./components/jobData";
 import { filterJobs } from "../../../utils/filters";
+import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 
 const JobList = () => {
   const router = useRouter();
@@ -71,12 +68,12 @@ const JobList = () => {
             <>
               <Card
                 key={document.id}
-                className="flex flex-col mx-auto md:flex-row items-center justify-between py-6 md:p-6 px-2 rounded-lg transition-shadow gap-6 md:gap-4 max-w-5xl"
+                className="flex flex-col mx-auto md:flex-row items-center justify-between py-6 md:p-6 px-2 rounded-lg transition-shadow gap-6 md:gap-4 max-w-4xl"
               >
-                <div className="jobListCard flex items-center justify-center px-2 md:px-0 md:justify-start w-full md:w-fit">
-                  <div className="flex flex-col gap-3">
+                <div className="jobListCard flex items-center justify-center md:justify-start w-full md:w-fit">
+                  <div className="flex flex-col gap-3 md:gap-5">
                     <div className="flex space-x-0 md:space-x-3 items-start">
-                      <Avatar className="h-16 md:h-14 w-16 md:w-16 ">
+                      <Avatar className="h-16 md:h-16 w-16 md:w-16 ">
                         <AvatarImage
                           src={
                             document.job.organization.img.sizes.thumbnail.url
@@ -123,21 +120,50 @@ const JobList = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="text-gray-600 text-[10px] md:text-xs md:flex gap-2 md:gap-4 dark:text-gray-300 hidden">
-                      <div className="flex items-center gap-1">
-                        <CalendarDays size={12} />
-                        <p className="font-semibold">
-                          {" "}
-                          Deadline: {document.deadline}
-                        </p>
+                    <div className="text-gray-600 text-[10px] md:text-xs md:flex md:flex-col gap-2 md:gap-4 dark:text-gray-300 hidden">
+                      <div>
+                        <div className="flex flex-wrap md:justify-start gap-1 w-full max-w-[300px]">
+                          <Badge
+                            variant="secondary"
+                            className="dark:bg-gray-900"
+                          >
+                            {document.job.jobType}
+                          </Badge>
+                          <Badge
+                            variant="secondary"
+                            className="dark:bg-gray-900"
+                          >
+                            {document.job.employeeType}
+                          </Badge>
+                          <Badge
+                            variant="secondary"
+                            className="dark:bg-gray-900"
+                          >
+                            {document.job.jobRole}
+                          </Badge>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <CalendarDays size={12} />
-                        <p className="font-semibold"> Posted {diff}</p>
+                      <div className="flex gap-2 md:gap-3 lg:gap-5">
+                        <div className="items-center gap-1 flex">
+                          <BriefcaseBusiness size={12} />
+                          <p className="font-medium text-gray-600">
+                            {document.applicantCount} applications
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <CalendarDays size={12} />
+                          <p className="font-semibold">
+                            {" "}
+                            Deadline: {document.deadline}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <CalendarDays size={12} />
+                          <p className="font-semibold"> Posted {diff}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  {/* Action Buttons */}
                   <div className="flex space-y-2 flex-col text-xs md:text-md md:hidden">
                     <div className="text-gray-600 text-xs flex flex-col gap-2 md:gap-4 dark:text-gray-300 md:hidden">
                       <div className="items-center gap-1 flex">
@@ -158,10 +184,42 @@ const JobList = () => {
                         <p className="font-semibold"> Posted {diff}</p>
                       </div>
                     </div>
-                    <div className="md:flex flex-col gap-2 hidden">
+                  </div>
+                </div>
+                <div className="flex items-center gap-6 md:gap-8 px-2 md:px-0">
+                  <div className="flex flex-col gap-5 justify-center mt-2">
+                    <div className="flex justify-center md:justify-start sm:flex-row text-emerald-600 font-semibold">
+                      <div className="flex flex-row items-center justify-center w-full sm:mr-4">
+                        <AnimatedTooltip items={document.job.applicants} />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-center gap-10">
+                        <div className="flex md:hidden flex-wrap justify-center gap-1 w-full max-w-[300px]">
+                          <Badge
+                            variant="secondary"
+                            className="dark:bg-gray-900"
+                          >
+                            {document.job.jobType}
+                          </Badge>
+                          <Badge
+                            variant="secondary"
+                            className="dark:bg-gray-900"
+                          >
+                            {document.job.employeeType}
+                          </Badge>
+                          <Badge
+                            variant="secondary"
+                            className="dark:bg-gray-900"
+                          >
+                            {document.job.jobRole}
+                          </Badge>
+                        </div>
+                        {/* Action Buttons */}
+                    <div className="flex space-y-2 flex-col text-xs md:text-md">
                       <Button
                         variant="ghost"
-                        size="xs"
+                        size="sm"
                         className="border border-gray-400"
                         onClick={() => handleViewApplicantList()}
                       >
@@ -169,102 +227,15 @@ const JobList = () => {
                       </Button>
                       <Button
                         variant="ghost"
-                        size="xs"
+                        size="sm"
                         className="border border-gray-400"
                         onClick={() => handleViewJobDetails(document.job.id)}
                       >
                         View Job Details
                       </Button>
                     </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-6 md:gap-8 px-2 md:px-0">
-                  <div className="flex flex-col gap-5 justify-center mt-2">
-                    <div className="flex justify-center md:justify-start sm:flex-row-reverse text-emerald-600 font-semibold">
-                      <Avatar className="h-10 w-10 border border-emerald-600">
-                        <AvatarImage
-                          src={
-                            document.job.organization.img.sizes.thumbnail.url
-                          }
-                          alt={document.job.organization.orgName}
-                        />
-                        <AvatarFallback className="text-[10px] bg-emerald-100 dark:bg-emerald-200 items-center text-center">
-                          View All
-                        </AvatarFallback>
-                      </Avatar>
-                      <Avatar className="h-10 w-10 border border-emerald-600">
-                        <AvatarImage
-                          src={
-                            document.job.organization.img.sizes.thumbnail.url
-                          }
-                          alt={document.job.organization.orgName}
-                        />
-                        <AvatarFallback className="text-xs bg-emerald-100 dark:bg-emerald-200">
-                          {document.job.title[0]}
-                        </AvatarFallback>
-                      </Avatar>
-                      <Avatar className="h-10 w-10 border border-emerald-600">
-                        <AvatarImage
-                          src={
-                            document.job.organization.img.sizes.thumbnail.url
-                          }
-                          alt={document.job.organization.orgName}
-                        />
-                        <AvatarFallback className="text-xs bg-emerald-100 dark:bg-emerald-200">
-                          {document.job.title[0]}
-                        </AvatarFallback>
-                      </Avatar>
-                      <Avatar className="h-10 w-10 border border-emerald-600">
-                        <AvatarImage
-                          src={
-                            document.job.organization.img.sizes.thumbnail.url
-                          }
-                          alt={document.job.organization.orgName}
-                        />
-                        <AvatarFallback className="text-xs bg-emerald-100 dark:bg-emerald-200">
-                          {document.job.title[0]}
-                        </AvatarFallback>
-                      </Avatar>
                     </div>
-                    <div className="flex flex-wrap justify-center md:justify-start md:flex-row-reverse gap-1 w-full max-w-[300px]">
-                      <Badge
-                        variant="secondary"
-                        className="dark:bg-gray-900"
-                      >
-                        {document.job.jobType}
-                      </Badge>
-                      <Badge
-                        variant="secondary"
-                        className="dark:bg-gray-900"
-                      >
-                        {document.job.employeeType}
-                      </Badge>
-                      <Badge
-                        variant="secondary"
-                        className="dark:bg-gray-900"
-                      >
-                        {document.job.jobRole}
-                      </Badge>
-                    </div>
-                  </div>
-                  {/* Action Buttons */}
-                  <div className="flex space-y-2 flex-col text-xs md:text-md">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="border border-gray-400"
-                      onClick={() => handleViewApplicantList()}
-                    >
-                      View All Applicants
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="border border-gray-400"
-                      onClick={() => handleViewJobDetails(document.job.id)}
-                    >
-                      View Job Details
-                    </Button>
+                    
                   </div>
                 </div>
               </Card>

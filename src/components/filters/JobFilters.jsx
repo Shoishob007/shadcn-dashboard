@@ -33,7 +33,7 @@ const applicantOptions = [
 
 export const JobFilters = ({ jobs, filters, onFilterChange, onReset }) => {
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-2 dark:bg-gray-900 rounded-lg">
+    <div className="w-full max-w-4xl mx-auto space-y-2 dark:bg-gray-900 rounded-lg">
       <div className="flex flex-col gap-4">
         {/* Search bar and Range Filters */}
         <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
