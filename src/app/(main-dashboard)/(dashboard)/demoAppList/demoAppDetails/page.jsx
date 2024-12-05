@@ -65,10 +65,6 @@ const ApplicantDetails = () => {
     );
   };
 
-  const handleScheduleChange = (date, time) => {
-    setSchedule({ date, time });
-  };
-
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -213,7 +209,7 @@ const ApplicantDetails = () => {
             }`}
             disabled
           >
-            {applicant.status}
+            This applicant is {applicant.status}
           </Button>
         )}
           </div>

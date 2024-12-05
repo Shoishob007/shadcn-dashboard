@@ -90,9 +90,12 @@ const VerticalNavbar = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className={cn("hover:underline")}>
+                {currentRole == "organization" ? <Link href="/demoJobFormCreate" className={cn("hover:underline")}>
+                  Post Job
+                </Link> : <Link href="/contact" className={cn("hover:underline")}>
                   Contact Us
-                </Link>
+                </Link>}
+                
               </li>
             </>
           )}
