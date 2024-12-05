@@ -43,13 +43,6 @@ export const filterJobs = (jobs, filters) => {
             if (experience < min || (max && experience > max)) return false;
         }
 
-        // Applicant count filter
-        if (filters.applicantCount !== 'all') {
-            const count = doc.applicantCount;
-            const [min, max] = filters.applicantCount.split('-').map(Number);
-            if (count < min || (max && count > max)) return false;
-        }
-
         return true;
     });
 };

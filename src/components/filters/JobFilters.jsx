@@ -64,29 +64,29 @@ export const JobFilters = ({ jobs, filters, onFilterChange, onReset }) => {
               options={statusOptions}
               value={filters.status}
               onChange={(value) => onFilterChange("status", value)}
-              className="w-24 md:w-40"
+              className="w-24 md:w-48"
             />
             <RangeFilter
               placeholder="Job Role"
               options={jobRoleOptions}
               value={filters.jobRole}
               onChange={(value) => onFilterChange("jobRole", value)}
-              className="w-24 md:w-40"
+              className="w-24 md:w-48"
             />
             <RangeFilter
               placeholder="Experience"
               options={experienceOptions}
               value={filters.experienceRange}
               onChange={(value) => onFilterChange("experienceRange", value)}
-              className="w-24 md:w-40"
+              className="w-24 md:w-48"
             />
-            <RangeFilter
+            {/* <RangeFilter
               placeholder="Applications"
               options={applicantOptions}
               value={filters.applicantCount}
               onChange={(value) => onFilterChange("applicantCount", value)}
-              className="w-24 md:w-40"
-            />
+              className="w-24 md:w-48"
+            /> */}
           </div>
 
           <div className="hidden md:block">
@@ -94,7 +94,7 @@ export const JobFilters = ({ jobs, filters, onFilterChange, onReset }) => {
             <Button
               variant="outline"
               onClick={onReset}
-              className="flex items-center gap-2 p-2 dark:border-gray-500 dark:hover:bg-gray-900 h-7 md:h-9"
+              className="flex items-center gap-2 px-3 py-2 dark:border-gray-500 dark:hover:bg-gray-900 h-7 md:h-9"
             >
               <RotateCcw className="h-3 w-3" />
               <span className="text-xs hidden md:block">Reset</span>
