@@ -10,6 +10,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { SendHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -107,12 +115,30 @@ const ApplyForm = () => {
                     >
                       Contact Number
                     </Label>
-                    <input
-                      type="text"
-                      className="w-full bg-[#f5f5f5] border border-[##f5f5f5] px-4 py-2 rounded-lg"
-                      placeholder="Contact Number"
-                      {...register("contact", { required: true })}
-                    />
+                    <div className="flex">
+                      <Select className="flex-[1]">
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="+880" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="apple">Apple</SelectItem>
+                            <SelectItem value="banana">Banana</SelectItem>
+                            <SelectItem value="blueberry">Blueberry</SelectItem>
+                            <SelectItem value="grapes">Grapes</SelectItem>
+                            <SelectItem value="pineapple">Pineapple</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <div className="flex-[4]">
+                        <input
+                          type="text"
+                          className="w-full bg-[#f5f5f5] border border-[##f5f5f5] px-4 py-2 rounded-lg"
+                          placeholder="Contact Number"
+                          {...register("contact", { required: true })}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <ApplicantResumeUpload register={register} />
                 </div>

@@ -114,7 +114,7 @@ const ApplicationCards = ({ applications }) => {
         <Link href={"/job-details"} key={index}>
           <div className="bg-white border border-gray-200 shadow rounded-lg p-6 relative">
             {/* Company Logo and Job Info */}
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center justify-between ">
               
               <div>
                 <h2 className="text-lg font-semibold">{app.jobTitle}</h2>
