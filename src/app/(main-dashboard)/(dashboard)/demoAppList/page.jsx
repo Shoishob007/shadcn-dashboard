@@ -22,7 +22,6 @@ const socialMediaIcons = {
 };
 
 const steps = [
-  "All",
   "Screening Test",
   "Aptitude Test",
   "Technical Test",
@@ -45,22 +44,33 @@ const calculateTotalExperience = (experiences) => {
 
 const ApplicantsList = () => {
   const router = useRouter();
-  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState("applied");
   const [selectedStep, setSelectedStep] = useState("All");
 
-  // Filtered logic
+  // Filter logic
   const filteredApplicants = applicantsData.filter((applicant) => {
+    const applicantStatus = applicant.status || "applied";
+
+    if (selectedStatus === "applied") {
+      return (
+        applicantStatus === "applied" ||
+        applicantStatus === "shortlisted" ||
+        applicantStatus === "hired" ||
+        !applicant.status
+      );
+    }
+
     if (selectedStatus === "shortlisted" && selectedStep === "All") {
-      return applicant.status === "shortlisted";
+      return applicantStatus === "shortlisted";
     }
 
     if (selectedStatus === "shortlisted" && selectedStep !== "All") {
       return (
-        applicant.status === "shortlisted" && applicant.steps === selectedStep
+        applicantStatus === "shortlisted" && applicant.steps === selectedStep
       );
     }
 
-    return selectedStatus === "all" || applicant.status === selectedStatus;
+    return selectedStatus === applicantStatus;
   });
 
   const handleViewDetails = (id) => {
@@ -72,66 +82,74 @@ const ApplicantsList = () => {
       {/* Main Applicants List Section */}
       <div className="flex-1">
         <ToggleGroup
-          className="flex gap-0 -space-x-px rounded-lg rtl:space-x-reverse mb-4 !p-0"
+          className="flex gap-2 mb-4 justify-start bg-white dark:bg-gray-800 w-fit rounded-full"
           type="single"
-          variant="outline"
           value={selectedStatus}
           onValueChange={(value) => value && setSelectedStatus(value)}
         >
-          {/* Existing toggle items */}
+          {/* Applied Toggle */}
           <ToggleGroupItem
-            className={`flex-1 h-7 !bg-blue-50 dark:!bg-blue-200 rounded-none border-b-2 shadow-none hover:text-gray-900 first:rounded-s-lg last:rounded-e-lg focus-visible:z-10 ${
-              selectedStatus === "all"
-                ? "border-b-blue-400 !text-gray-900 !bg-blue-100"
-                : "border-b-blue-50 text-gray-700"
-            }`}
-            value="all"
-          >
-            All
-          </ToggleGroupItem>
-          <ToggleGroupItem
-            className={`flex-1 h-7 !bg-red-50 dark:!bg-red-200 rounded-none border-b-2 shadow-none hover:text-gray-900 first:rounded-s-lg last:rounded-e-lg focus-visible:z-10 ${
+            className={`px-6 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
               selectedStatus === "applied"
-                ? "border-b-red-400 !text-gray-900 !bg-red-100"
-                : "border-b-red-50 text-gray-700"
+                ? "!text-white dark:!text-blue-900 shadow-md !bg-gray-800 dark:!bg-blue-300"
+                : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-100 dark:hover:!bg-gray-900 dark:text-gray-300"
             }`}
             value="applied"
           >
             Applied
           </ToggleGroupItem>
+
+          {/* Shortlisted Toggle */}
           <ToggleGroupItem
-            className={`flex-1 h-7 !bg-yellow-50 dark:!bg-yellow-200 rounded-none border-b-2 shadow-none hover:text-gray-900 first:rounded-s-lg last:rounded-e-lg focus-visible:z-10 ${
+            className={`px-6 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
               selectedStatus === "shortlisted"
-                ? "border-b-yellow-400 !text-gray-900 !bg-yellow-100"
-                : "border-b-yellow-50 text-gray-700"
+                ? "!text-white dark:!text-yellow-900 shadow-md !bg-gray-800 dark:!bg-yellow-300"
+                : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-100 dark:hover:!bg-gray-900 dark:text-gray-300"
             }`}
             value="shortlisted"
           >
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-4">
-                Shortlisted{" "}
-                <span>
-                  {" "}
-                  <ChevronDown className="w-5 h-5" />
-                </span>
+            <DropdownMenu className="min-w-full">
+              <DropdownMenuTrigger className="flex items-center gap-2">
+                Shortlisted
+                <ChevronDown
+                  className={`w-4 h-4 ${
+                    selectedStatus === "shortlisted"
+                      ? "text-white"
+                      : "text-gray-700"
+                  }`}
+                />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
+                <DropdownMenuItem
+                  key="All"
+                  onSelect={() => setSelectedStep("All")}
+                >
+                  <div className="flex items-center justify-between w-full text-sm">
+                    <div>All</div>
+                    {selectedStep === "All" && "✔"}
+                  </div>
+                </DropdownMenuItem>
                 {steps.map((step) => (
                   <DropdownMenuItem
                     key={step}
                     onSelect={() => setSelectedStep(step)}
                   >
-                    {step}
+                    <div className="flex items-center justify-between w-full gap-4 text-sm">
+                      <div>{step}</div>
+                      <div>{selectedStep === step && "✔"}</div>
+                    </div>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
           </ToggleGroupItem>
+
+          {/* Hired Toggle */}
           <ToggleGroupItem
-            className={`flex-1 h-7 !bg-emerald-50 dark:!bg-emerald-200 rounded-none  border-b-2 shadow-none hover:text-gray-900 first:rounded-s-lg last:rounded-e-lg focus-visible:z-10 ${
+            className={`px-6 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
               selectedStatus === "hired"
-                ? "border-b-emerald-400 !text-gray-900 !bg-emerald-100"
-                : "border-b-emerald-50 text-gray-700"
+                ? "!text-white dark:!text-emerald-900 shadow-md !bg-gray-800 dark:!bg-emerald-300"
+                : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-100 dark:hover:!bg-gray-900 dark:text-gray-300"
             }`}
             value="hired"
           >
@@ -140,7 +158,7 @@ const ApplicantsList = () => {
         </ToggleGroup>
 
         {/* Applicants Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredApplicants.map((applicant) => {
             const totalExperience = calculateTotalExperience(
               applicant.experiences
@@ -172,25 +190,27 @@ const ApplicantsList = () => {
                         {applicant.jobTitle}
                       </p>
                       <div
-                        className={`px-2 py-1 rounded-full text-[8px] font-semibold mx-auto ${
+                        className={`px-2 py-1 rounded-full text-[10px] font-semibold mx-auto ${
                           applicant.status === "shortlisted"
                             ? "bg-yellow-100 text-yellow-600"
                             : `${
                                 applicant.status === "hired"
-                                  ? "bg-emerald-100 text-emerald-600"
+                                  ? "bg-gray-100 text-emerald-600"
                                   : "bg-red-100 text-red-600"
                               }`
                         }`}
                       >
-                        {applicant.status.charAt(0).toUpperCase() +
-                          applicant.status.slice(1)}
+                        {applicant.status
+                          ? applicant.status.charAt(0).toUpperCase() +
+                            applicant.status.slice(1)
+                          : "Applied"}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className=" text-gray-700 text-xs dark:text-gray-300 mb-3">
-                  <div className="flex flex-col text-xs items-center mb-3">
+                <div className=" text-gray-700 text-sm dark:text-gray-300 mb-3">
+                  <div className="flex flex-col text-sm items-center mb-3">
                     <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
                       {applicant.education.map((degree, index) => (
                         <li key={index} className="text-xs">
