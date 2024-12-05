@@ -25,6 +25,7 @@ import {
   File,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { StepSelector } from "./components/StepSelector";
 
 const ApplicantDetails = () => {
   const searchParams = useSearchParams();
@@ -57,7 +58,6 @@ const ApplicantDetails = () => {
 
   const handleSchedule = (date, time) => {
     setSchedule({ date, time });
-    // Here you would typically make an API call to save the schedule
     console.log(
       `Scheduled ${selectedStep} for ${
         applicant.applicantName
@@ -72,13 +72,6 @@ const ApplicantDetails = () => {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-
-  const steps = [
-    "Screening Test",
-    "Aptitude Test",
-    "Technical Test",
-    "Interview",
-  ];
 
   const {
     applicantName,
@@ -125,14 +118,14 @@ const ApplicantDetails = () => {
               </div>
             </div>
 
-            <div className="hidden items-center sm:block">
+            <div className="hidden items-center sm:flex flex-col justify-center">
               <h2 className="text-lg text-center font-semibold sm:mt-4 dark:text-white">
                 {applicantName}
               </h2>
               <p className="text-sm text-gray-600 dark:text-gray-300">
                 {designation}
               </p>
-              <p className="text-sm text-center text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 🩸 {bloodGroup}
               </p>
             </div>
@@ -187,128 +180,47 @@ const ApplicantDetails = () => {
             </div>
 
             {applicant.status === "applied" ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="default"
-                    size="xs"
-                    className="border border-blue-600 bg-blue-100 text-blue-600 hover:bg-blue-200 shadow-none dark:border-gray-600 dark:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-200"
-                  >
-                    Shortlist for...
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-48">
-                  {steps.map((step) => (
-                    <DropdownMenuItem
-                      key={step}
-                      className="!text-xs flex justify-between items-center"
-                      onClick={() => handleStepChange(step)}
-                    >
-                      <span>{step}</span>
-                      {selectedStep === step && (
-                        <span className="text-green-500 ml-2">✔</span>
-                      )}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : applicant.status === "shortlisted" ? (
-              <div className="flex gap-2 items-center">
-                <div
-                  className="text-[10px] bg-yellow-100 text-yellow-600 border border-yellow-500 font-medium dark:border-gray-600 dark:bg-gray-100 dark:text-gray-700 dark:hover:bg-gray-200 p-1.5 rounded-md cursor-pointer"
-                  onClick={toggleDropdown}
-                >
-                  {/* Displaying schedule if it's set or a message with the step */}
-                  {schedule.date
-                    ? `${selectedStep}: ${schedule.date.toLocaleDateString()} at ${
-                        schedule.time
-                      }`
-                    : `Appearing ${selectedStep || "Step not defined"}`}
-                </div>
-
-                {/* Dropdown for step selection */}
-                {isDropdownOpen && (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="default"
-                        size="xs"
-                        className="border border-blue-600 bg-blue-100 text-blue-600 hover:bg-blue-200 shadow-none dark:border-gray-600 dark:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-200"
-                      >
-                        Change
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-48">
-                      {steps.map((step) => (
-                        <DropdownMenuItem
-                          key={step}
-                          className="!text-xs flex justify-between items-center"
-                          onClick={() => handleStepChange(step)}
-                        >
-                          <span>{step}</span>
-                          {selectedStep === step && (
-                            <span className="text-green-500 ml-2">✔</span>
-                          )}
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                )}
-
-                {/* Show schedule inputs when no schedule is set */}
-                {selectedStep && !schedule.date && (
-                  <div className="schedule-input hidden">
-                    <input
-                      type="date"
-                      onChange={(e) =>
-                        handleScheduleChange(
-                          new Date(e.target.value),
-                          schedule.time
-                        )
-                      }
-                    />
-                    <input
-                      type="time"
-                      onChange={(e) =>
-                        handleScheduleChange(
-                          schedule.date || new Date(),
-                          e.target.value
-                        )
-                      }
-                    />
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Button
-                variant="default"
-                size="xs"
-                className={`border ${
-                  applicant.status === "hired"
-                    ? "bg-emerald-100 text-emerald-600 border-emerald-600 dark:border-gray-600 dark:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-200"
-                    : "bg-red-100 text-red-600"
-                }`}
-                disabled
-              >
-                {applicant.status}
-              </Button>
+          <StepSelector
+            selectedStep={selectedStep}
+            onStepChange={handleStepChange}
+          />
+        ) : applicant.status === "shortlisted" ? (
+          <div className="flex gap-2 items-center">
+            <div
+              className="text-[10px] bg-yellow-100 text-yellow-600 border border-yellow-500 font-medium dark:border-gray-600 dark:bg-gray-100 dark:text-gray-700 dark:hover:bg-gray-200 p-1.5 rounded-md cursor-pointer"
+              onClick={toggleDropdown}
+            >
+              {schedule.date
+                ? `${selectedStep}: ${schedule.date.toLocaleDateString()} at ${schedule.time}`
+                : `Appearing ${selectedStep || "Step not defined"}`}
+            </div>
+            
+            {isDropdownOpen && (
+              <StepSelector
+                selectedStep={selectedStep}
+                onStepChange={handleStepChange}
+              />
             )}
+          </div>
+        ) : (
+          <Button
+            variant="default"
+            size="xs"
+            className={`border ${
+              applicant.status === "hired"
+                ? "bg-emerald-100 text-emerald-600 border-emerald-600 dark:border-gray-600 dark:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-200"
+                : "bg-red-100 text-red-600"
+            }`}
+            disabled
+          >
+            {applicant.status}
+          </Button>
+        )}
           </div>
         </div>
 
-        {/* Right Section - Content remains the same */}
         {/* Right Section */}
         <div className="col-span-2 grid grid-cols-2 gap-2 px-1 sm:px-5">
-          {/* Top-Right Buttons */}
-          {/* <div className="col-span-2 flex justify-end space-x-2">
-          <Button variant="outline" size="sm" className="border-gray-400">
-            Shortlist
-          </Button>
-          <Button variant="outline" size="sm" className="border-gray-400">
-            Reject
-          </Button>
-        </div> */}
-
           {/* Experiences Section */}
           <div className="col-span-2 sm:col-span-1">
             <div className="flex items-center gap-2">
