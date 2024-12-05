@@ -64,28 +64,28 @@ export const JobFilters = ({ jobs, filters, onFilterChange, onReset }) => {
               options={statusOptions}
               value={filters.status}
               onChange={(value) => onFilterChange("status", value)}
-              className="w-24 md:w-48"
+              className="w-24 max-w-40"
             />
             <RangeFilter
               placeholder="Job Role"
               options={jobRoleOptions}
               value={filters.jobRole}
               onChange={(value) => onFilterChange("jobRole", value)}
-              className="w-24 md:w-48"
+              className="w-24 max-w-40"
             />
             <RangeFilter
               placeholder="Experience"
               options={experienceOptions}
               value={filters.experienceRange}
               onChange={(value) => onFilterChange("experienceRange", value)}
-              className="w-24 md:w-48"
+              className="w-24 max-w-40"
             />
             {/* <RangeFilter
               placeholder="Applications"
               options={applicantOptions}
               value={filters.applicantCount}
               onChange={(value) => onFilterChange("applicantCount", value)}
-              className="w-24 md:w-48"
+              className="w-24 md:w-40"
             /> */}
           </div>
 

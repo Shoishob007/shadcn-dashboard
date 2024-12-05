@@ -6,10 +6,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { formatRelativeDate } from "@/app/utils/formatRelativeDate";
 import {
-  Briefcase,
   BriefcaseBusiness,
   CalendarDays,
-  Clock,
   Dot,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -73,12 +71,12 @@ const JobList = () => {
             <>
               <Card
                 key={document.id}
-                className="flex flex-col mx-auto md:flex-row items-center justify-between py-6 md:py-4 px-2 md:px-6 rounded-lg transition-shadow gap-4 md:gap-0 max-w-5xl"
+                className="flex flex-col mx-auto md:flex-row items-center justify-between py-6 md:p-6 px-2 rounded-lg transition-shadow gap-6 md:gap-4 max-w-5xl"
               >
-                <div className="flex items-center justify-around gap-4 px-6 md:px-0 md:justify-start w-full md:w-fit">
-                  <div className="flex flex-col gap-3 items-center">
-                    <div className="flex items-center space-x-3 md:space-x-3">
-                      <Avatar className="h-14 md:h-10 w-14 md:w-10 ">
+                <div className="jobListCard flex items-center justify-center px-2 md:px-0 md:justify-start w-full md:w-fit">
+                  <div className="flex flex-col gap-3">
+                    <div className="flex space-x-0 md:space-x-3 items-start">
+                      <Avatar className="h-16 md:h-14 w-16 md:w-16 ">
                         <AvatarImage
                           src={
                             document.job.organization.img.sizes.thumbnail.url
@@ -90,62 +88,42 @@ const JobList = () => {
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex gap-4 md:gap-0 items-center md:flex-col dark:text-gray-200">
-                        <div className="flex flex-col md:flex-row gap-2 md:gap-3 items-start md:items-start">
+                        <div className="flex flex-col md:flex-row gap-1 md:gap-3 items-start md:items-start">
                           <div className="flex flex-col">
-                            <h3 className="text-md sm:text-sm font-semibold">
+                            <h3 className="text-sm sm:text-base font-semibold">
                               {document.job.title}
                             </h3>
-                            <p className="text-gray-500 text-xs dark:text-gray-300 hidden md:block">
+                            <p className="text-gray-500 text-xs font-medium dark:text-gray-300">
                               {document.job.organization.orgName}
                             </p>
                           </div>
-                          <div className="md:flex hidden flex-col md:flex-col lg:flex-row md:mt-1 gap-1 lg:gap-2">
-                            <div className="flex items-center gap-1">
-                              <Clock size={12} strokeWidth={2.5} />
-                              <p className="text-xs font-normal">
-                                {" "}
-                                {document.job.employeeType}
-                              </p>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Briefcase size={12} strokeWidth={2.5} />
-                              <p className="text-xs font-normal">
-                                {" "}
-                                {document.job.jobRole}
-                              </p>
-                            </div>
+                          <div>
+                            {isPastDeadline ? (
+                              <div className="text-red-500 text-xs font-semibold flex gap-1 items-center border border-red-500 pr-2 rounded-md md:mt-1">
+                                <Dot
+                                  strokeWidth={4}
+                                  size={20}
+                                  color="red"
+                                  className="p-0"
+                                />
+                                Expired
+                              </div>
+                            ) : (
+                              <div className="text-green-500 text-xs font-semibold flex gap-1 items-center border border-emerald-500 pr-2 rounded-md">
+                                <Dot
+                                  strokeWidth={4}
+                                  size={20}
+                                  color="#50C878"
+                                  className="p-0"
+                                />
+                                Open
+                              </div>
+                            )}
                           </div>
-                          {isPastDeadline ? (
-                            <div className="text-red-500 text-xs font-semibold flex gap-1 items-center border border-red-500 pr-2 rounded-md md:mt-1">
-                              <Dot
-                                strokeWidth={4}
-                                size={20}
-                                color="red"
-                                className="p-0"
-                              />
-                              Expired
-                            </div>
-                          ) : (
-                            <div className="text-green-500 text-xs font-semibold flex gap-1 items-center border border-emerald-500 pr-2 rounded-md">
-                              <Dot
-                                strokeWidth={4}
-                                size={20}
-                                color="#50C878"
-                                className="p-0"
-                              />
-                              Open
-                            </div>
-                          )}
                         </div>
                       </div>
                     </div>
                     <div className="text-gray-600 text-[10px] md:text-xs md:flex gap-2 md:gap-4 dark:text-gray-300 hidden">
-                      <div className="items-center gap-1 flex">
-                        <BriefcaseBusiness size={12} />
-                        <p className="font-semibold">
-                          {document.applicantCount} applications
-                        </p>
-                      </div>
                       <div className="flex items-center gap-1">
                         <CalendarDays size={12} />
                         <p className="font-semibold">
@@ -161,20 +139,23 @@ const JobList = () => {
                   </div>
                   {/* Action Buttons */}
                   <div className="flex space-y-2 flex-col text-xs md:text-md md:hidden">
-                    <div className="flex flex-col md:flex-row gap-1">
-                      <div className="flex items-center gap-1">
-                        <Clock size={12} strokeWidth={2.5} />
-                        <p className="text-xs font-normal">
-                          {" "}
-                          {document.job.employeeType}
+                    <div className="text-gray-600 text-xs flex flex-col gap-2 md:gap-4 dark:text-gray-300 md:hidden">
+                      <div className="items-center gap-1 flex">
+                        <BriefcaseBusiness size={12} />
+                        <p className="font-medium text-gray-600">
+                          {document.applicantCount} applications
                         </p>
                       </div>
                       <div className="flex items-center gap-1">
-                        <Briefcase size={12} strokeWidth={2.5} />
-                        <p className="text-xs font-normal">
+                        <CalendarDays size={12} />
+                        <p className="font-semibold">
                           {" "}
-                          {document.job.jobRole}
+                          Deadline: {document.deadline}
                         </p>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <CalendarDays size={12} />
+                        <p className="font-semibold"> Posted {diff}</p>
                       </div>
                     </div>
                     <div className="md:flex flex-col gap-2 hidden">
@@ -197,38 +178,9 @@ const JobList = () => {
                     </div>
                   </div>
                 </div>
-
-                <div className="text-gray-600 text-[10px] md:text-xs flex gap-2 md:gap-4 dark:text-gray-300 md:hidden">
-                  <div className="items-center gap-1 hidden md:flex">
-                    <BriefcaseBusiness size={12} />
-                    <p className="font-semibold">
-                      {document.applicantCount} applications
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="items-center gap-1 flex">
-                      <BriefcaseBusiness size={12} />
-                      <p className="font-semibold">
-                        {document.applicantCount} applications
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <CalendarDays size={12} />
-                      <p className="font-semibold">
-                        {" "}
-                        Deadline: {document.deadline}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <CalendarDays size={12} />
-                      <p className="font-semibold"> Posted {diff}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-6 md:gap-4 px-2 md:px-0">
-                  <div className="flex flex-col gap-3">
-                    <div className="flex justify-center md:justify-normal md:flex-row-reverse text-emerald-600 font-semibold">
+                <div className="flex items-center gap-6 md:gap-8 px-2 md:px-0">
+                  <div className="flex flex-col gap-5 justify-center mt-2">
+                    <div className="flex justify-center md:justify-start sm:flex-row-reverse text-emerald-600 font-semibold">
                       <Avatar className="h-10 w-10 border border-emerald-600">
                         <AvatarImage
                           src={
@@ -274,23 +226,32 @@ const JobList = () => {
                         </AvatarFallback>
                       </Avatar>
                     </div>
-                    <div className="flex flex-wrap md:flex-row-reverse gap-1 w-full max-w-[300px]">
-                      {document.job.skills.map((skill) => (
-                        <Badge
-                          key={skill}
-                          variant="secondary"
-                          className="dark:bg-gray-900 text-[10px] lg:text-xs"
-                        >
-                          {skill}
-                        </Badge>
-                      ))}
+                    <div className="flex flex-wrap justify-center md:justify-start md:flex-row-reverse gap-1 w-full max-w-[300px]">
+                      <Badge
+                        variant="secondary"
+                        className="dark:bg-gray-900"
+                      >
+                        {document.job.jobType}
+                      </Badge>
+                      <Badge
+                        variant="secondary"
+                        className="dark:bg-gray-900"
+                      >
+                        {document.job.employeeType}
+                      </Badge>
+                      <Badge
+                        variant="secondary"
+                        className="dark:bg-gray-900"
+                      >
+                        {document.job.jobRole}
+                      </Badge>
                     </div>
                   </div>
                   {/* Action Buttons */}
                   <div className="flex space-y-2 flex-col text-xs md:text-md">
                     <Button
                       variant="ghost"
-                      size="xs"
+                      size="sm"
                       className="border border-gray-400"
                       onClick={() => handleViewApplicantList()}
                     >
@@ -298,7 +259,7 @@ const JobList = () => {
                     </Button>
                     <Button
                       variant="ghost"
-                      size="xs"
+                      size="sm"
                       className="border border-gray-400"
                       onClick={() => handleViewJobDetails(document.job.id)}
                     >

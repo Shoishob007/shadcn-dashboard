@@ -9,7 +9,7 @@ export const SearchBar = ({ placeholder, value, onSearch }) => {
       <Input
         placeholder={placeholder}
         value={value}
-        className="pl-8 h-7 md:h-9 bg-white dark:border-gray-500 dark:bg-gray-900 text-xs w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
+        className="pl-8 h-7 md:h-9 bg-white dark:border-gray-500 dark:bg-gray-900 text-xs min-w-24 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
         onChange={(e) => onSearch(e.target.value)}
       />
     </div>

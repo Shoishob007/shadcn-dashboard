@@ -8,7 +8,7 @@ export const documents = {
                 description:
                     "Join our dynamic team as a Full-Stack Developer at [Org1], where you'll build and maintain scalable web applications. This role involves contributing to both front-end and back-end development, solving complex challenges, and collaborating with cross-functional teams. If you're passionate about clean code, modern technologies, and innovation, we'd love to hear from you!",
                 skills: ["JavaScript", "React", "Node.js", "Express"],
-                jobRole: "Full-Stack",
+                jobRole: "Full-Stack Engineer",
                 degreeLevel: ["MSc.", "BSc."],
                 fieldOfStudy: ["CSE", "EEE", "ETE", "MIE"],
                 yearOfExperience: 2,
@@ -68,7 +68,7 @@ export const documents = {
                 description: "Short and Brief description of the job",
 
                 skills: ["JavaScript", "React", "Node.js", "Express"],
-                jobRole: "Frontend",
+                jobRole: "Frontend Engineer",
                 degreeLevel: ["Phd", "MSc."],
                 fieldOfStudy: ["CSE", "EEE", "ETE", "MIE"],
                 yearOfExperience: 6,
@@ -107,7 +107,7 @@ export const documents = {
                 title: "Demo Job Title 3",
                 description: "Short and Brief description of the job",
                 skills: ["JavaScript", "React", "Node.js", "Express"],
-                jobRole: "Backend",
+                jobRole: "Backend Engineer",
                 degreeLevel: ["MSc.", "BSc."],
                 fieldOfStudy: ["CSE", "EEE", "ETE", "MIE"],
                 yearOfExperience: 3,
