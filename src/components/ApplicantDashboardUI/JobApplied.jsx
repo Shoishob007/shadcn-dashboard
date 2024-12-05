@@ -1,4 +1,4 @@
-import { Bookmark, Briefcase, Clock, Eye, MapPin, Trash2 } from "lucide-react";
+import { Briefcase, Clock, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import companyLogo from "../../../public/assests/company.png";
@@ -75,93 +75,75 @@ const JobApplied = () => {
   return (
     <div className="mt-[30px]">
       <h1 className="font-medium text-xl mb-5">Recent Job Applied</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6">
         {jobsData.map((job, index) => (
-          <Link href={'/job-details'} key={index}>
-            <div
-            
-            className="p-6 shadow rounded-lg border border-gray-200 bg-white relative group"
-          >
-            {/* Job Info */}
-            <div className="flex gap-4">
-              <div>
-                <Image src={companyLogo} alt="company logo" width={80} />
+          <Link href={"/job-details"} key={index}>
+            <div className="p-6 shadow rounded-lg border border-gray-200 bg-white relative group">
+              {/* Job Info */}
+              <div className="flex justify-between gap-4">
+                <div>
+                  <h1 className="text-lg font-semibold mb-1">{job.jobTitle}</h1>
+                  <span className="block text-sm text-gray-500 mb-3">
+                    {job.companyName}
+                  </span>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex gap-4 items-center text-sm text-gray-600">
+                      <Briefcase size={18} />
+                      <span>{job.category}</span>
+                    </div>
+                    <div className="flex gap-4 items-center text-sm text-gray-600">
+                      <Clock size={18} />
+                      <span>Deadline: {job.deadline}</span>
+                    </div>
+                    <div className="flex gap-4 items-center text-sm text-gray-600">
+                      <MapPin size={18} />
+                      <span>{job.location}</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <Image src={companyLogo} alt="company logo" width={80} />
+                </div>
               </div>
-              <div>
-                <h1 className="text-lg font-semibold mb-1">{job.jobTitle}</h1>
-                <span className="block text-sm text-gray-500 mb-3">
-                  {job.companyName}
-                </span>
-                <div className="flex flex-col gap-2">
-                  <div className="flex gap-4 items-center text-sm text-gray-600">
-                    <Briefcase size={18} />
-                    <span>{job.category}</span>
-                  </div>
-                  <div className="flex gap-4 items-center text-sm text-gray-600">
-                    <Clock size={18} />
-                    <span>Deadline: {job.deadline}</span>
-                  </div>
-                  <div className="flex gap-4 items-center text-sm text-gray-600">
-                    <MapPin size={18} />
-                    <span>{job.location}</span>
-                  </div>
+
+              {/* Job Status & Type */}
+              <div className="flex justify-between items-center mt-4">
+                <div className="flex gap-4">
+                  <span className="text-xs font-medium py-1 px-3 rounded-full border border-blue-500 text-blue-500">
+                    {job.jobType}
+                  </span>
+                  <span className="text-xs font-medium py-1 px-3 rounded-full border border-teal-500 text-teal-500">
+                    {job.locationType}
+                  </span>
+                  <span className="text-xs font-medium py-1 px-3 rounded-full border border-purple-500 text-purple-500">
+                    {job.employeeType}
+                  </span>
+                </div>
+                <div className="font-semibold text-gray-800">{job.salary}</div>
+              </div>
+
+              {/* Add jobStatus and applicantStatus */}
+              <div className="flex gap-2 mt-3">
+                <div>
+                  <span className="text-sm">Job Status:</span>{" "}
+                  <span className="bg-blue-100 text-blue-600 text-xs font-medium py-1 px-3 rounded-full">
+                    {job.jobStatus}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-sm">Applicant Status:</span>{" "}
+                  <span
+                    className={`${
+                      job.applicantStatus === "Applied"
+                        ? "bg-purple-100 text-purple-600"
+                        : "bg-gray-100 text-gray-600"
+                    } text-xs font-medium py-1 px-3 rounded-full`}
+                  >
+                    {job.applicantStatus}
+                  </span>
                 </div>
               </div>
             </div>
-
-            {/* Job Status & Type */}
-            <div className="flex justify-between items-center mt-4">
-              <div className="flex gap-4">
-                <span className="text-xs font-medium py-1 px-3 rounded-full border border-blue-500 text-blue-500">
-                  {job.jobType}
-                </span>
-                <span className="text-xs font-medium py-1 px-3 rounded-full border border-teal-500 text-teal-500">
-                  {job.locationType}
-                </span>
-                <span className="text-xs font-medium py-1 px-3 rounded-full border border-purple-500 text-purple-500">
-                  {job.employeeType}
-                </span>
-              </div>
-              <div className="font-semibold text-gray-800">{job.salary}</div>
-            </div>
-
-            {/* Add jobStatus and applicantStatus */}
-            <div className="flex gap-2 mt-3">
-              <div>
-                <span className="text-sm">Job Status:</span>{" "}
-                <span className="bg-blue-100 text-blue-600 text-xs font-medium py-1 px-3 rounded-full">
-                  {job.jobStatus}
-                </span>
-              </div>
-              <div>
-                <span className="text-sm">Applicant Status:</span>{" "}
-                <span
-                  className={`${
-                    job.applicantStatus === "Applied"
-                      ? "bg-purple-100 text-purple-600"
-                      : "bg-gray-100 text-gray-600"
-                  } text-xs font-medium py-1 px-3 rounded-full`}
-                >
-                  {job.applicantStatus}
-                </span>
-              </div>
-            </div>
-
-            {/* Hover Icons */}
-            <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col gap-2">
-              <span className="cursor-pointer text-gray-500 hover:text-gray-800">
-                <Bookmark size={20} />
-              </span>
-              <Link href="/job-details">
-                <span className="cursor-pointer text-gray-500 hover:text-gray-800">
-                  <Eye size={20} />
-                </span>
-              </Link>
-              <span className="cursor-pointer text-red-500 hover:text-red-700">
-                <Trash2 size={20} />
-              </span>
-            </div>
-          </div>
           </Link>
         ))}
       </div>
