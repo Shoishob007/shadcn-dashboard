@@ -108,7 +108,7 @@ const ApplicantsList = () => {
             }`}
             value="shortlisted"
           >
-            <DropdownMenu className="min-w-full">
+            <DropdownMenu className="min-w-40">
               <DropdownMenuTrigger className="flex items-center gap-2">
                 Shortlisted
                 <ChevronDown
@@ -158,7 +158,7 @@ const ApplicantsList = () => {
         </ToggleGroup>
 
         {/* Applicants Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="applicantsListGrid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredApplicants.map((applicant) => {
             const totalExperience = calculateTotalExperience(
               applicant.experiences
@@ -166,10 +166,10 @@ const ApplicantsList = () => {
             return (
               <Card
                 key={applicant.id}
-                className="flex flex-col justify-between p-5 rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg bg-white dark:bg-gray-800"
+                className="flex flex-col justify-between p-6 rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg bg-white dark:bg-gray-800"
               >
                 <div className="flex flex-col sm:flex-row gap-4 items-center mb-4 ">
-                  <Avatar className="h-12 w-12 border border-emerald-500 text-sm">
+                  <Avatar className="md:h-12 h-16 w-16 md:w-12 border border-emerald-500 text-sm">
                     <AvatarImage
                       src={applicant.applicantName}
                       alt={applicant.applicantName}
@@ -180,7 +180,7 @@ const ApplicantsList = () => {
                   </Avatar>
                   <div className="flex flex-col w-full">
                     <div className="items-center flex gap-2 justify-between">
-                      <h4 className="text-sm font-semibold dark:text-white">
+                      <h4 className="text-base font-semibold dark:text-white">
                         {applicant.applicantName}
                       </h4>
                     </div>
@@ -195,7 +195,7 @@ const ApplicantsList = () => {
                             ? "bg-yellow-100 text-yellow-600"
                             : `${
                                 applicant.status === "hired"
-                                  ? "bg-gray-100 text-emerald-600"
+                                  ? "bg-emerald-100 text-emerald-600"
                                   : "bg-red-100 text-red-600"
                               }`
                         }`}
@@ -210,10 +210,10 @@ const ApplicantsList = () => {
                 </div>
 
                 <div className=" text-gray-700 text-sm dark:text-gray-300 mb-3">
-                  <div className="flex flex-col text-sm items-center mb-3">
+                  <div className="flex flex-col text-sm mb-3">
                     <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
                       {applicant.education.map((degree, index) => (
-                        <li key={index} className="text-xs">
+                        <li key={index} className="text-sm md:text-[12px]">
                           {degree.degree}
                         </li>
                       ))}
