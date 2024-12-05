@@ -17,6 +17,7 @@ const JobSearch = () => {
       description:
         "We are looking for a passionate frontend developer to join our team and build amazing web experiences.",
       logo: "/assets/google.png",
+      jobStatus: "Open", // Added jobStatus
     },
     {
       id: 2,
@@ -31,6 +32,7 @@ const JobSearch = () => {
       description:
         "Join our design team to create stunning user interfaces and enhance user experiences.",
       logo: "/assets/netflix.png",
+      jobStatus: "Open", // Added jobStatus
     },
     {
       id: 3,
@@ -45,6 +47,7 @@ const JobSearch = () => {
       description:
         "We need a backend engineer to help us scale and improve our server infrastructure.",
       logo: "/assets/amazon.png",
+      jobStatus: "Closed", // Added jobStatus
     },
     {
       id: 4,
@@ -59,6 +62,7 @@ const JobSearch = () => {
       description:
         "We are hiring a marketing manager to lead our campaigns and boost our online presence.",
       logo: "/assets/facebook.png",
+      jobStatus: "Pending", // Added jobStatus
     },
     {
       id: 5,
@@ -73,6 +77,7 @@ const JobSearch = () => {
       description:
         "Develop innovative and user-friendly mobile applications for millions of music lovers worldwide.",
       logo: "/assets/spotify.png",
+      jobStatus: "Open", // Added jobStatus
     },
     {
       id: 6,
@@ -87,6 +92,7 @@ const JobSearch = () => {
       description:
         "Analyze complex datasets and create predictive models to drive business decisions.",
       logo: "/assets/ibm.png",
+      jobStatus: "Closed", // Added jobStatus
     },
     {
       id: 7,
@@ -101,6 +107,7 @@ const JobSearch = () => {
       description:
         "Lead cross-functional teams to design and launch groundbreaking products for global audiences.",
       logo: "/assets/apple.png",
+      jobStatus: "Open", // Added jobStatus
     },
     {
       id: 8,
@@ -115,6 +122,7 @@ const JobSearch = () => {
       description:
         "Craft engaging blog posts, articles, and website content to attract and retain readers.",
       logo: "/assets/hubspot.png",
+      jobStatus: "Pending", // Added jobStatus
     },
     {
       id: 9,
@@ -129,6 +137,7 @@ const JobSearch = () => {
       description:
         "Automate and streamline infrastructure to support high-availability systems for millions of users.",
       logo: "/assets/slack.png",
+      jobStatus: "Open", // Added jobStatus
     },
     {
       id: 10,
@@ -143,6 +152,7 @@ const JobSearch = () => {
       description:
         "Create visually stunning designs that elevate branding and marketing efforts.",
       logo: "/assets/adobe.png",
+      jobStatus: "Closed", // Added jobStatus
     },
     {
       id: 11,
@@ -157,6 +167,7 @@ const JobSearch = () => {
       description:
         "Protect critical systems and networks from threats while ensuring data integrity.",
       logo: "/assets/cisco.png",
+      jobStatus: "Open", // Added jobStatus
     },
     {
       id: 12,
@@ -171,8 +182,10 @@ const JobSearch = () => {
       description:
         "Plan and execute marketing campaigns to drive user engagement and growth.",
       logo: "/assets/twitter.png",
+      jobStatus: "Pending", // Added jobStatus
     },
   ];
+  
 
   // State for filter criteria
   const [filters, setFilters] = useState({
