@@ -186,3 +186,12 @@
   opacity: 1;
   
 }
+.jobListCard {
+  gap: 0.75rem;
+}
+
+@media (min-width: 450px) {
+  .jobListCard {
+    gap: 1.25rem;
+  }
+}
