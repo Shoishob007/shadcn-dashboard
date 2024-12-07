@@ -12,9 +12,9 @@ const statusOptions = [
 
 const jobRoleOptions = [
   { label: "All Roles", value: "all" },
-  { label: "Full-Stack", value: "Full-Stack" },
-  { label: "Frontend", value: "Frontend" },
-  { label: "Backend", value: "Backend" },
+  { label: "Full-Stack", value: "Full-Stack Engineer" },
+  { label: "Frontend", value: "Frontend Engineer" },
+  { label: "Backend", value: "Backend Engineer" },
 ];
 
 const experienceOptions = [

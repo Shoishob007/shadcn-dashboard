@@ -6,12 +6,6 @@ import { applicantsData } from "../../applicants/components/applicantsData";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
 import { ScheduleModal } from "./components/ScheduleModal";
 import {
   Linkedin,
@@ -30,14 +24,14 @@ import { StepSelector } from "./components/StepSelector";
 const ApplicantDetails = () => {
   const searchParams = useSearchParams();
   const applicantId = searchParams.get("id");
-  const applicant = applicantsData.find((app) => app.id === applicantId);
-
+  const applicant = applicantsData.find((app) => app.id === parseInt(applicantId));
+console.log(applicant)
   const [selectedStep, setSelectedStep] = useState(applicant?.steps || "");
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [schedule, setSchedule] = useState({
-    date: applicant.schedule?.date || null,
-    time: applicant.schedule?.time || "",
+    date: applicant?.schedule?.date || null,
+    time: applicant?.schedule?.time || "",
   });
 
   if (!applicant) {

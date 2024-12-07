@@ -17,7 +17,7 @@ export const filterJobs = (jobs, filters) => {
     if (!jobs) return [];
 
     return jobs.filter((doc) => {
-        const job = doc.job;
+        const job = doc;
         const isOpen = isJobOpen(doc.deadline);
 
         // Search query filter
