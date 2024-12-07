@@ -42,8 +42,8 @@ const JobList = () => {
     });
   };
 
-  const handleViewJobDetails = (id) => {
-    router.push(`/demoJobList/demoJobDetails?id=${id}`);
+  const handleViewJobDetails = (jobId) => {
+    router.push(`/demoJobList/demoJobDetails?jobId=${jobId}`);
   };
   const handleViewApplicantList = (jobId) => {
     router.push(`/demoJobList/demoJobApplicants?jobId=${jobId}`);

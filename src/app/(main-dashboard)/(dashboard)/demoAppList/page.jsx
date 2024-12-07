@@ -14,7 +14,6 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import JobInfoCard from "./components/JobInfoCard";
 
 const socialMediaIcons = {
   linkedin: FaLinkedin,
@@ -85,9 +84,7 @@ const ApplicantsList = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {currentJob && <JobInfoCard job={currentJob} />}
-      
+    <div className="space-y-6">      
       <div className="flex-1">
         <ToggleGroup
           className="flex gap-2 mb-4 justify-start bg-white dark:bg-gray-800 w-fit rounded-full"
@@ -166,7 +163,7 @@ const ApplicantsList = () => {
               >
                 <div className="flex flex-col sm:flex-row gap-4 items-center mb-4">
                   <Avatar className="md:h-12 h-16 w-16 md:w-12 border border-emerald-500 text-sm">
-                    <AvatarImage src={applicant.applicantName} alt={applicant.applicantName} />
+                    <AvatarImage src={applicant.applicant.pictureUrl} alt={applicant.applicantName} />
                     <AvatarFallback className="bg-gray-300 text-xs font-bold text-gray-700">
                       {applicant.applicantName[0]}
                     </AvatarFallback>
