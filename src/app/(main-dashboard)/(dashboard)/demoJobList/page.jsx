@@ -45,8 +45,8 @@ const JobList = () => {
   const handleViewJobDetails = (id) => {
     router.push(`/demoJobList/demoJobDetails?id=${id}`);
   };
-  const handleViewApplicantList = (job) => {
-    router.push('/demoAppList');
+  const handleViewApplicantList = (jobId) => {
+    router.push(`/demoJobList/demoJobApplicants?jobId=${jobId}`);
   };
   const handleCreateJob = () => {
     router.push("/demoJobFormCreate");
@@ -85,14 +85,14 @@ const JobList = () => {
                           alt={document.job.organization.orgName}
                         />
                         <AvatarFallback className="font-semibold text-base sm:text-xs text-yellow-600 bg-yellow-100">
-                          {document.job.title[0]}
+                          {document.title}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex gap-4 md:gap-0 items-center md:flex-col dark:text-gray-200">
                         <div className="flex flex-col md:flex-row gap-1 md:gap-3 items-start md:items-start">
                           <div className="flex flex-col">
                             <h3 className="text-sm sm:text-base font-semibold">
-                              {document.job.title}
+                              {document.title}
                             </h3>
                             <p className="text-gray-500 text-xs font-medium dark:text-gray-300">
                               {document.job.organization.orgName}
@@ -131,19 +131,19 @@ const JobList = () => {
                             variant="secondary"
                             className="dark:bg-gray-900"
                           >
-                            {document.job.jobType}
+                            {document.jobType}
                           </Badge>
                           <Badge
                             variant="secondary"
                             className="dark:bg-gray-900"
                           >
-                            {document.job.employeeType}
+                            {document.employeeType}
                           </Badge>
                           <Badge
                             variant="secondary"
                             className="dark:bg-gray-900"
                           >
-                            {document.job.jobRole}
+                            {document.jobRole}
                           </Badge>
                         </div>
                       </div>
@@ -201,13 +201,13 @@ const JobList = () => {
                     <div className="flex items-center justify-center gap-10">
                       <div className="flex md:hidden flex-wrap justify-center gap-1 w-full max-w-[300px]">
                         <Badge variant="secondary" className="dark:bg-gray-900">
-                          {document.job.jobType}
+                          {document.jobType}
                         </Badge>
                         <Badge variant="secondary" className="dark:bg-gray-900">
-                          {document.job.employeeType}
+                          {document.employeeType}
                         </Badge>
                         <Badge variant="secondary" className="dark:bg-gray-900">
-                          {document.job.jobRole}
+                          {document.jobRole}
                         </Badge>
                       </div>
                       {/* Action Buttons */}
@@ -216,8 +216,8 @@ const JobList = () => {
                           variant="ghost"
                           size="sm"
                           className="border border-gray-400"
-                          onClick={() => handleViewApplicantList(document.job)}
-                        >
+                          onClick={() => handleViewApplicantList(document.job.id)}
+                          >
                           View All Applicants
                         </Button>
                         <Button

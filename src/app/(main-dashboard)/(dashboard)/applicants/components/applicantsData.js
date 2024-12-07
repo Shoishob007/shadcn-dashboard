@@ -1,6 +1,6 @@
 export const applicantsData = [
   {
-    id: "m5gr84i9",
+    id: 1,
     jobTitle: "Full-Stack Engineer",
     applicantName: "Shoishob Al-Baki",
     applicantEmail: "shoishob@hotmail.com",
@@ -123,7 +123,7 @@ export const applicantsData = [
     phone: "01111666999",
   },
   {
-    id: "3u1reuv4",
+    id: 2,
     jobTitle: "Software Engineer",
     applicantName: "Ataullah",
     applicantEmail: "ataullah@gmail.com",
@@ -234,7 +234,7 @@ export const applicantsData = [
     phone: "01111666777",
   },
   {
-    id: "derv1ws0",
+    id: 3,
     jobTitle: "Human Resources Manager",
     applicantName: "Shoikot Arfin",
     applicantEmail: "arfin@outlook.com",
@@ -337,9 +337,9 @@ export const applicantsData = [
     phone: "04444666111",
   },
   {
-    id: "5kma53ae",
+    id: 4,
     jobTitle: "Marketing Manager",
-    applicantName: "Shoishob Al-Baki",
+    applicantName: "Raju",
     applicantEmail: "shoishob@hotmail.com",
     status: "applied",
     CVScore: 50,
@@ -461,7 +461,7 @@ export const applicantsData = [
     phone: "0143624536451",
   },
   {
-    id: "bhqecj4p",
+    id: 5,
     jobTitle: "QA Engineer",
     applicantName: "Ashfaq Tanzim",
     applicantEmail: "ashfaq@gmail.com",
@@ -503,7 +503,6 @@ export const applicantsData = [
         jobRole: [
           {
             title: "Backend Engineer",
-
           },
         ],
         designation: {
