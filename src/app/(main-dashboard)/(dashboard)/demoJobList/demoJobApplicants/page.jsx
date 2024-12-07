@@ -15,6 +15,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import JobInfoCard from "../../demoAppList/components/JobInfoCard";
 import { documents } from "../components/jobApplicants";
+import {documents as jobDocuments } from "../components/jobData"
 
 const socialMediaIcons = {
   linkedin: FaLinkedin,
@@ -48,6 +49,7 @@ const DemoApplicants = () => {
   const [selectedStatus, setSelectedStatus] = useState("applied");
   const [selectedStep, setSelectedStep] = useState("All");
   const [currentJob, setCurrentJob] = useState(null);
+  const [currentJobInfo, setCurrentJobInfo] = useState(null)
   const [applicants, setApplicants] = useState([]);
 
   useEffect(() => {
@@ -56,6 +58,13 @@ const DemoApplicants = () => {
       if (matchedData) {
         setCurrentJob(matchedData.job);
         setApplicants(matchedData.applicants || []);
+      }
+    }
+
+    if (jobId) {
+      const matchedJobInfo = jobDocuments.docs.find(doc => doc.job.id === jobId);
+      if (matchedJobInfo) {
+        setCurrentJobInfo(matchedJobInfo);
       }
     }
   }, [jobId]);
@@ -85,7 +94,6 @@ const DemoApplicants = () => {
   });
 
   const handleViewDetails = (id) => {
-    console.log(id)
     router.push(`/demoAppList/demoAppDetails?id=${id}`);
   };
 
@@ -95,7 +103,7 @@ const DemoApplicants = () => {
 
   return (
     <div className="space-y-6">
-      <JobInfoCard job={currentJob} />
+      <JobInfoCard job={currentJobInfo} />
       
       <div className="flex-1">
         <ToggleGroup

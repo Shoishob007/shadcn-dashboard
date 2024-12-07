@@ -5,6 +5,7 @@ import { CalendarDays, Users } from "lucide-react";
 
 const JobInfoCard = ({ job }) => {
   if (!job) return null;
+  console.log(job)
 
   return (
     <Card className="p-6 mb-6 w-full bg-white dark:bg-gray-800">
@@ -30,9 +31,7 @@ const JobInfoCard = ({ job }) => {
               {job.jobRole}
             </Badge>
           )}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs font-semibold">
           <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
             <CalendarDays size={16} />
             <span>Posted: {job.published}</span>
@@ -46,12 +45,7 @@ const JobInfoCard = ({ job }) => {
             <span>{job.applicantCount} applications</span>
           </div>
         </div>
-
-        {job.description && (
-          <p className="text-sm text-gray-700 dark:text-gray-300 mt-2">
-            {job.description}
-          </p>
-        )}
+        </div>
       </div>
     </Card>
   );

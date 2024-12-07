@@ -4,6 +4,18 @@ export const applicantsData = [
     jobTitle: "Full-Stack Engineer",
     applicantName: "Shoishob Al-Baki",
     applicantEmail: "shoishob@hotmail.com",
+    applicant: {
+      id: "9c1b3703-7af0-43c2-a83b-dbc9ebad8935",
+      provider: "credentials",
+      sid: null,
+      pictureUrl: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3387&q=80",
+      role: "applicant",
+      updatedAt: "2024-10-26T12:46:17.874Z",
+      createdAt: "2024-10-26T12:44:57.500Z",
+      email: "badhon.alam303@gmail.com",
+      _verified: true,
+      loginAttempts: 0
+    },
     status: "shortlisted",
     steps: "Aptitude Test",
     CVScore: 50,
@@ -127,6 +139,19 @@ export const applicantsData = [
     jobTitle: "Software Engineer",
     applicantName: "Ataullah",
     applicantEmail: "ataullah@gmail.com",
+    applicant: {
+      id: "9c1b3703-7af0-43c2-a83b-dbc9ebad8935",
+      provider: "credentials",
+      sid: null,
+      pictureUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+
+      role: "applicant",
+      updatedAt: "2024-10-26T12:46:17.874Z",
+      createdAt: "2024-10-26T12:44:57.500Z",
+      email: "badhon.alam303@gmail.com",
+      _verified: true,
+      loginAttempts: 0
+    },
     status: "hired",
     CVScore: 65,
     deadline: new Date("2024-11-05"),
@@ -238,6 +263,19 @@ export const applicantsData = [
     jobTitle: "Human Resources Manager",
     applicantName: "Shoikot Arfin",
     applicantEmail: "arfin@outlook.com",
+    applicant: {
+      id: "9c1b3703-7af0-43c2-a83b-dbc9ebad8935",
+      provider: "credentials",
+      sid: null,
+      pictureUrl: "                                https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+
+      role: "applicant",
+      updatedAt: "2024-10-26T12:46:17.874Z",
+      createdAt: "2024-10-26T12:44:57.500Z",
+      email: "badhon.alam303@gmail.com",
+      _verified: true,
+      loginAttempts: 0
+    },
     status: "shortlisted",
     steps: "Technical Test",
     CVScore: 50,
@@ -341,6 +379,20 @@ export const applicantsData = [
     jobTitle: "Marketing Manager",
     applicantName: "Raju",
     applicantEmail: "shoishob@hotmail.com",
+    applicant: {
+      id: "9c1b3703-7af0-43c2-a83b-dbc9ebad8935",
+      provider: "credentials",
+      sid: null,
+      pictureUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
+
+
+      role: "applicant",
+      updatedAt: "2024-10-26T12:46:17.874Z",
+      createdAt: "2024-10-26T12:44:57.500Z",
+      email: "badhon.alam303@gmail.com",
+      _verified: true,
+      loginAttempts: 0
+    },
     status: "applied",
     CVScore: 50,
     skills: [
@@ -465,8 +517,22 @@ export const applicantsData = [
     jobTitle: "QA Engineer",
     applicantName: "Ashfaq Tanzim",
     applicantEmail: "ashfaq@gmail.com",
+    applicant: {
+      id: "9c1b3703-7af0-43c2-a83b-dbc9ebad8935",
+      provider: "credentials",
+      sid: null,
+      pictureUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3540&q=80",
+
+
+      role: "applicant",
+      updatedAt: "2024-10-26T12:46:17.874Z",
+      createdAt: "2024-10-26T12:44:57.500Z",
+      email: "badhon.alam303@gmail.com",
+      _verified: true,
+      loginAttempts: 0
+    },
     status: "shortlisted",
-    steps: "Interview",
+    steps: "interview",
     CVScore: 60,
     deadline: new Date("2024-10-01"),
     interviewSchedule: new Date("2024-10-10"),
