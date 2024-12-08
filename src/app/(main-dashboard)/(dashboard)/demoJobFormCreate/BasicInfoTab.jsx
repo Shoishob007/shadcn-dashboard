@@ -9,10 +9,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { TagInput } from "emblor";
 import { useState } from "react";
+import { StepsList } from "./components/List";
+import { stepsData } from "./components/stepsData";
 
 export function BasicInfoTab({ form }) {
   const [steps, setSteps] = useState([""]);
   const [activeTagIndex, setActiveTagIndex] = useState(null);
+  const [inputValue, setInputValue] = useState("");
+  const [selectedSteps, setSelectedSteps] = useState([]);
 
   const handleStepChange = (index, value) => {
     const newSteps = [...steps];
@@ -26,6 +30,10 @@ export function BasicInfoTab({ form }) {
       newSteps.push("");
       setSteps(newSteps);
     }
+  };
+
+  const handleStepSelection = (step) => {
+    setInputValue(step);
   };
 
   return (
@@ -101,26 +109,25 @@ export function BasicInfoTab({ form }) {
           </FormItem>
         )}
       />
-      <FormLabel className="!mt-4">Recruiting Steps</FormLabel>
 
-      {steps.map((step, index) => (
+      {/* {steps.map((step, index) => (
         <FormField
           key={index}
           control={form.control}
           name={`steps[${index}]`}
           render={({ field }) => (
             <FormItem>
-              <div className="flex items-center space-x-2">
-                {/* Badge with sequential number */}
-                {/* <div className="bg-black text-white rounded-full h-5 w-5 flex items-center justify-center text-sm">
+              <div className="flex items-center space-x-2"> */}
+      {/* Badge with sequential number */}
+      {/* <div className="bg-black text-white rounded-full h-5 w-5 flex items-center justify-center text-sm">
                   {index + 1}
                 </div> */}
-                <div className="text-sm flex items-center">
+      {/* <div className="text-sm flex items-center">
                   {" "}
                   Step <span> {index + 1}:</span>
-                </div>
-                {/* Input field for step */}
-                <FormControl>
+                </div> */}
+      {/* Input field for step */}
+      {/* <FormControl>
                   <Input
                     {...field}
                     value={step}
@@ -133,9 +140,18 @@ export function BasicInfoTab({ form }) {
               </div>
               <FormMessage />
             </FormItem>
-          )}
+          )} */}
+      {/* />
+      ))} */}
+
+      <div className="space-y-2">
+        <FormLabel>Recruiting Steps</FormLabel>
+        <StepsList
+          availableSteps={stepsData}
+          selectedSteps={selectedSteps}
+          onStepsChange={setSelectedSteps}
         />
-      ))}
+      </div>
     </div>
   );
 }
