@@ -1,4 +1,6 @@
 "use client";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 import {
   Dialog,
@@ -10,14 +12,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 import { SendHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -32,6 +26,8 @@ const ApplyForm = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+    getValues,
     reset,
     formState: { errors },
   } = useForm();
@@ -59,17 +55,15 @@ const ApplyForm = () => {
         <DialogTrigger>
           <div className="">
             {hasApplied ? (
-              <>
-                <button
-                  disabled={hasApplied}
-                  className="flex items-center gap-2 px-5 py-3 rounded bg-[#00ca99] hover:bg-[#212121] duration-300 text-white font-medium outline-none border-none"
-                >
-                  Applied
-                </button>
-              </>
+              <button
+                disabled={hasApplied}
+                className="flex items-center gap-1 px-3 text-sm py-3 rounded bg-[#00ca99] hover:bg-[#212121] duration-300 text-white font-medium outline-none border-none"
+              >
+                Applied
+              </button>
             ) : (
               <div className="max-w-5xl">
-                <button className=" flex items-center gap-2.5 text-sm px-3 py-3 rounded bg-[#212121] hover:bg-[#212121] duration-300 text-white font-medium outline-none border-none">
+                <button className=" flex items-center gap-1 text-sm px-3 py-3 rounded bg-[#212121] hover:bg-[#212121] duration-300 text-white font-medium outline-none border-none">
                   Apply Now{" "}
                   <span>
                     <SendHorizontal size={16} />
@@ -96,18 +90,30 @@ const ApplyForm = () => {
                       placeholder="Name"
                       {...register("name", { required: true })}
                     />
+                    {errors.name && (
+                      <span className="text-sm text-red-500">
+                        Name is required
+                      </span>
+                    )}
                   </div>
+
                   <div>
                     <Label htmlFor="email" className="block mb-1.5 text-[12px]">
                       Email
                     </Label>
                     <input
                       type="email"
-                      className="w-full bg-[#f5f5f5] border border-[##f5f5f5] px-4 py-2 rounded-lg"
+                      className="w-full bg-[#f5f5f5] border border-[#f5f5f5] px-4 py-2 rounded-lg"
                       placeholder="Email"
                       {...register("email", { required: true })}
                     />
+                    {errors.email && (
+                      <span className="text-sm text-red-500">
+                        Email is required
+                      </span>
+                    )}
                   </div>
+
                   <div>
                     <Label
                       htmlFor="contact"
@@ -115,31 +121,33 @@ const ApplyForm = () => {
                     >
                       Contact Number
                     </Label>
-                    <div className="flex">
-                      <Select className="flex-[1]">
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="+880" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectItem value="apple">Apple</SelectItem>
-                            <SelectItem value="banana">Banana</SelectItem>
-                            <SelectItem value="blueberry">Blueberry</SelectItem>
-                            <SelectItem value="grapes">Grapes</SelectItem>
-                            <SelectItem value="pineapple">Pineapple</SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                      <div className="flex-[4]">
-                        <input
-                          type="text"
-                          className="w-full bg-[#f5f5f5] border border-[##f5f5f5] px-4 py-2 rounded-lg"
-                          placeholder="Contact Number"
-                          {...register("contact", { required: true })}
-                        />
-                      </div>
-                    </div>
+                    <PhoneInput
+                      country="bd" // Set default country to Bangladesh
+                      value={getValues("contact")} // Use react-hook-form value
+                      onChange={(value) => setValue("contact", value)} // Update form state
+                      inputProps={{
+                        name: "contact",
+                        required: true, // Optional: Mark as required if needed
+                      }}
+                      containerStyle={{
+                        width: "100%",
+                      }}
+                      inputStyle={{
+                        backgroundColor: "#f5f5f5",
+                        border: "1px solid #ccc",
+                        width: "100%",
+                      }}
+                      buttonStyle={{
+                        width: "45px", // Increase the width of the flag area
+                      }}
+                    />
+                    {errors.contact && (
+                      <span className="text-sm text-red-500">
+                        Contact number is required
+                      </span>
+                    )}
                   </div>
+
                   <ApplicantResumeUpload register={register} />
                 </div>
               </DialogDescription>
@@ -147,7 +155,7 @@ const ApplyForm = () => {
             <DialogFooter>
               <button
                 type="submit"
-                className="mt-2 flex items-center gap-1 px-4 py-2.5 rounded bg-[#212121] hover:bg-[#151515] duration-300 text-white font-medium outline-none border-none"
+                className="mt-2 text-sm flex items-center gap-1 px-3 py-3 rounded bg-[#212121] hover:bg-[#151515] duration-300 text-white font-medium outline-none border-none"
               >
                 Apply Now{" "}
                 <span>
@@ -163,3 +171,11 @@ const ApplyForm = () => {
 };
 
 export default ApplyForm;
+
+// inputStyle={{
+//   width: "100%",
+//   backgroundColor: "#f5f5f5",
+//   border: "1px solid #ccc",
+//   padding: "10px",
+//   borderRadius: "5px",
+// }}
