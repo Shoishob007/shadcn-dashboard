@@ -80,7 +80,7 @@ const JobApplied = () => {
           const progressSteps = ["Applied", "In Review", "Interview", "Offer"];
           const currentStepIndex = progressSteps.indexOf(job.applicantStatus);
           return (
-            <Link href={"/job-details"} key={job.id}>
+            <Link href={"/job-details"} key={index}>
               <div className="p-6 shadow rounded-lg border border-gray-200 bg-white relative group">
                 {/* Job Info */}
                 <div className="flex justify-between gap-4">

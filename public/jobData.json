@@ -1,0 +1,149 @@
+[
+    {
+      "companyName": "TechVerse Ltd.",
+      "employeeType": "Full-time",
+      "designation": "Frontend Developer",
+      "skills": ["React.js", "JavaScript", "CSS", "HTML", "Redux"],
+      "degreeLevel": "Bachelor's",
+      "fieldOfStudy": "Computer Science",
+      "jobType": "Permanent",
+      "title": "Frontend Developer",
+      "description": "Build and optimize dynamic, scalable user interfaces for web applications.",
+      "yearOfExperience": 2,
+      "location": "Dhaka, Bangladesh",
+      "requirements": [
+        "Proficient in React.js and JavaScript",
+        "Experience with REST APIs"
+      ],
+      "employeeBenefits": [
+        "Health insurance",
+        "Flexible working hours",
+        "Performance bonuses"
+      ],
+      "salary": "60,000 BDT/month",
+      "publishDate": "2 days ago",
+      "deadline": "2024-12-20",
+      "jobStatus": "open"
+    },
+    {
+      "companyName": "DesignPro Studios",
+      "employeeType": "Part-time",
+      "designation": "UI/UX Designer",
+      "skills": [
+        "Figma",
+        "Adobe XD",
+        "User Research",
+        "Wireframing",
+        "Prototyping"
+      ],
+      "degreeLevel": "Bachelor's",
+      "fieldOfStudy": "Graphic Design",
+      "jobType": "Contract",
+      "title": "UI/UX Designer",
+      "description": "Design intuitive and visually appealing user interfaces for mobile and web apps.",
+      "yearOfExperience": 1,
+      "location": "Remote",
+      "requirements": [
+        "Strong portfolio in UI/UX design",
+        "Proficiency in Figma or Adobe XD"
+      ],
+      "employeeBenefits": ["Flexible hours", "Project-based bonuses"],
+      "salary": "25,000 BDT/project",
+      "publishDate": "3 days ago",
+      "deadline": "2024-12-18",
+      "jobStatus": "expired"
+    },
+    {
+      "companyName": "CodeMasters Inc.",
+      "employeeType": "Full-time",
+      "designation": "Backend Developer",
+      "skills": ["Node.js", "Express.js", "MongoDB", "TypeScript", "REST APIs"],
+      "degreeLevel": "Bachelor's",
+      "fieldOfStudy": "Computer Science",
+      "jobType": "Permanent",
+      "title": "Backend Developer",
+      "description": "Develop and maintain robust server-side applications with efficient APIs.",
+      "yearOfExperience": 3,
+      "location": "Chattogram, Bangladesh",
+      "requirements": [
+        "Proficiency in Node.js and databases",
+        "Understanding of API design"
+      ],
+      "employeeBenefits": ["Paid leave", "Health insurance", "Training programs"],
+      "salary": "50,000 BDT/month",
+      "publishDate": "2 days ago",
+      "deadline": "2024-12-22",
+      "jobStatus": "open"
+    },
+    {
+      "companyName": "CloudSphere Solutions",
+      "employeeType": "Full-time",
+      "designation": "DevOps Engineer",
+      "skills": ["AWS", "Docker", "CI/CD", "Kubernetes", "Linux"],
+      "degreeLevel": "Bachelor's",
+      "fieldOfStudy": "Information Technology",
+      "jobType": "Permanent",
+      "title": "DevOps Engineer",
+      "description": "Streamline deployment processes and enhance infrastructure performance.",
+      "yearOfExperience": 4,
+      "location": "Remote",
+      "requirements": [
+        "Experience with CI/CD pipelines",
+        "Expertise in cloud platforms"
+      ],
+      "employeeBenefits": ["Remote work", "Stock options", "Yearly bonuses"],
+      "salary": "90,000 BDT/month",
+      "publishDate": "1 day ago",
+      "deadline": "2024-12-24",
+      "jobStatus": "open"
+    },
+    {
+      "companyName": "DigitalWave Labs",
+      "employeeType": "Full-time",
+      "designation": "Full Stack Developer",
+      "skills": ["React.js", "Node.js", "MongoDB", "Express.js", "TypeScript"],
+      "degreeLevel": "Bachelor's",
+      "fieldOfStudy": "Software Engineering",
+      "jobType": "Permanent",
+      "title": "Full Stack Developer",
+      "description": "Develop and maintain end-to-end web applications with a focus on scalability.",
+      "yearOfExperience": 3,
+      "location": "Dhaka, Bangladesh",
+      "requirements": [
+        "Proficiency in MERN stack",
+        "Strong problem-solving skills"
+      ],
+      "employeeBenefits": [
+        "Flexible hours",
+        "Health insurance",
+        "Training programs"
+      ],
+      "salary": "55,000 per month",
+      "publishDate": "3 days ago",
+      "deadline": "2024-12-30",
+      "jobStatus": "open"
+    },
+    {
+      "companyName": "NextGen IT Solutions",
+      "employeeType": "Part-time",
+      "designation": "Mobile App Developer",
+      "skills": ["Flutter", "Dart", "Firebase", "API Integration"],
+      "degreeLevel": "Bachelor's",
+      "fieldOfStudy": "Software Engineering",
+      "jobType": "Contract",
+      "title": "Mobile App Developer",
+      "description": "Build and maintain high-performance mobile applications for Android and iOS platforms.",
+      "yearOfExperience": 2,
+      "location": "Sylhet, Bangladesh",
+      "requirements": [
+        "Proficiency in Flutter and Dart",
+        "Knowledge of Firebase"
+      ],
+      "employeeBenefits": ["Flexible schedule", "Project bonuses"],
+      "salary": "30,000 BDT/project",
+      "publishDate": "1 day ago",
+      "deadline": "2024-12-15",
+      "jobStatus": "expired"
+    }
+  ]
+  

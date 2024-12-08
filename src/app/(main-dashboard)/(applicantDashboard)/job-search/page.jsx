@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import { RotateCcw } from "lucide-react";
 import { useState } from "react";
 import JobSearchCard from "./components/JobSearchCard";
 
@@ -185,7 +187,6 @@ const JobSearch = () => {
       jobStatus: "Pending", // Added jobStatus
     },
   ];
-  
 
   // State for filter criteria
   const [filters, setFilters] = useState({
@@ -235,7 +236,7 @@ const JobSearch = () => {
           name="location"
           value={filters.location}
           onChange={handleFilterChange}
-          className="border px-4 py-2 rounded"
+          className="border px-4 py-2 rounded text-sm"
         >
           <option value="">All Locations</option>
           <option value="Remote">Remote</option>
@@ -247,7 +248,7 @@ const JobSearch = () => {
           name="employmentType"
           value={filters.employmentType}
           onChange={handleFilterChange}
-          className="border px-4 py-2 rounded"
+          className="border px-4 py-2 rounded text-sm"
         >
           <option value="">All Employment Types</option>
           <option value="Full-Time">Full-Time</option>
@@ -259,7 +260,7 @@ const JobSearch = () => {
           name="jobCategory"
           value={filters.jobCategory}
           onChange={handleFilterChange}
-          className="border px-4 py-2 rounded"
+          className="border px-4 py-2 rounded text-sm"
         >
           <option value="">All Categories</option>
           <option value="Software Development">Software Development</option>
@@ -268,12 +269,16 @@ const JobSearch = () => {
         </select>
 
         {/* Reset Button */}
-        <button
+        <Button
+          variant="ghost"
           onClick={handleResetFilters}
-          className="bg-red-500 text-white px-4 py-2 rounded"
+          className="bg-white shadow text-sm px-4 py-2 rounded flex items-center gap-1"
         >
-          Reset Filters
-        </button>
+          <span>
+            <RotateCcw size={18} />
+          </span>
+          <span>Reset</span>
+        </Button>
       </div>
 
       {/* Job Listings */}
