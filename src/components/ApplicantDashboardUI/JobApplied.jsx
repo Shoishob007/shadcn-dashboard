@@ -2,6 +2,7 @@ import { Briefcase, Clock, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import companyLogo from "../../../public/assests/company.png";
+import ApplicantProgress from "./ApplicantProgress";
 
 export const jobsData = [
   {
@@ -158,59 +159,7 @@ const JobApplied = () => {
 
                 {/* Progress Bar */}
                 <div className="mt-6">
-                  <div className="flex items-center">
-                    {progressSteps.map((step, index) => {
-                      const isCompleted = index < currentStepIndex;
-                      const isActive = index === currentStepIndex;
-
-                      return (
-                        <div key={index} className="flex flex-col items-center">
-                          {/* Step Circle */}
-                          <div className="flex items-center">
-                            <div
-                              className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
-                                isCompleted
-                                  ? "bg-purple-600 text-white border-purple-600"
-                                  : isActive
-                                  ? "bg-white text-purple-600 border-purple-600"
-                                  : "bg-gray-100 text-gray-400 border-gray-300"
-                              }`}
-                            >
-                              {index + 1}
-                            </div>
-                            <div>
-                              {index < progressSteps.length - 1 && (
-                                <div
-                                  className={`w-20 h-1 ${
-                                    isCompleted
-                                      ? "bg-purple-600"
-                                      : isActive
-                                      ? "bg-purple-300"
-                                      : "bg-gray-300"
-                                  }`}
-                                ></div>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Step Label */}
-                          <div
-                            className={`text-sm mt-2 ${
-                              isCompleted
-                                ? "text-purple-600"
-                                : isActive
-                                ? "text-purple-600 font-semibold"
-                                : "text-gray-400"
-                            }`}
-                          >
-                            {step}
-                          </div>
-
-                          {/* Line Between Steps */}
-                        </div>
-                      );
-                    })}
-                  </div>
+                  <ApplicantProgress/>
                 </div>
               </div>
             </Link>
