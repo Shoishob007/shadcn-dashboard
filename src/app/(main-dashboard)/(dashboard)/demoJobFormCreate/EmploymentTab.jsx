@@ -65,7 +65,7 @@ export function EmploymentTab({ form }) {
                       <SelectValue placeholder="Select Nature" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="onsite">Onsite</SelectItem>
+                      <SelectItem value="physical">Onsite</SelectItem>
                       <SelectItem value="remote">Remote</SelectItem>
                       <SelectItem value="hybrid">Hybrid</SelectItem>
                     </SelectContent>
@@ -117,7 +117,7 @@ export function EmploymentTab({ form }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <FormField
           control={form.control}
-          name="publishDate"
+          name="published"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Publish Date</FormLabel>

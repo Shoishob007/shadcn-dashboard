@@ -7,14 +7,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { TagInput } from "emblor";
 import { useState } from "react";
 import { StepsList } from "./components/List";
 import { stepsData } from "./components/stepsData";
 
 export function BasicInfoTab({ form }) {
   const [steps, setSteps] = useState([""]);
-  const [activeTagIndex, setActiveTagIndex] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [selectedSteps, setSelectedSteps] = useState([]);
 
@@ -94,14 +92,14 @@ export function BasicInfoTab({ form }) {
 
       <FormField
         control={form.control}
-        name="jobResponsibilities"
+        name="responsibilities"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Job Responsibilities</FormLabel>
             <FormControl>
               <Textarea
                 {...field}
-                placeholder="List of benefits..."
+                placeholder="List of responsibilities..."
                 className="min-h-[70px] sm:min-h-[60px] dark:border-gray-200"
               />
             </FormControl>

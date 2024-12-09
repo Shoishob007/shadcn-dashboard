@@ -1,15 +1,19 @@
 import { create } from "zustand";
 
 export const useStudyFieldStore = create((set) => ({
-  studyFieldTags: [],
-  addStudyField: (studyField) =>
+  fieldOfStudyTags: [],
+  addFieldOfStudy: (studyField) =>
     set((state) => ({
-      studyFieldTags: state.studyFieldTags.includes(studyField)
-        ? state.studyFieldTags
-        : [...state.studyFieldTags, studyField],
+      fieldOfStudyTags: state.fieldOfStudyTags.includes(studyField)
+        ? state.fieldOfStudyTags
+        : [...state.fieldOfStudyTags, studyField],
     })),
-  removeStudyField: (studyField) =>
+    removeFieldOfStudy: (studyField) =>
     set((state) => ({
-      studyFieldTags: state.studyFieldTags.filter((s) => s !== studyField),
+      fieldOfStudyTags: state.fieldOfStudyTags.filter((s) => s !== studyField),
     })),
+    initializeFieldOfStudy: (studyFields = []) => {
+      set({ fieldOfStudyTags: Array.isArray(studyFields) ? studyFields : [] });
+    },
+    resetStudyFields: () => set({ fieldOfStudyTags: [] }),
 }));

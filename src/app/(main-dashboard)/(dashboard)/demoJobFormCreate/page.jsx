@@ -25,19 +25,26 @@ import { useState } from "react";
 
 const tabs = ["Basic Info", "Employment", "Requirements", "Location"];
 
-const CreateJobForm = ({ onClose }) => {
+const CreateJobForm = ({ onClose, jobId, initialData }) => {
   //   const { data: session } = useSession();
   const { toast } = useToast();
+  const isEditMode = Boolean(jobId);
+  // console.log(initialData.skills)
 
   const form = useForm({
     defaultValues: {
-      jobStatus: true,
-      publishDate: new Date().toISOString().split("T")[0],
+      jobStatus: initialData?.jobStatus ?? true,
+      publishDate: initialData?.publishDate ?? new Date().toISOString().split("T")[0],
+      skills: initialData?.skills ?? [],
+      fieldOfStudy: initialData?.fieldOfStudy ?? [],
+      degreeLevel: initialData?.degreeLevel ?? "",
+      ...initialData || {
+        jobStatus: true,
+      },
     },
   });
 
   const { reset } = form;
-
   const [currentTab, setCurrentTab] = useState(0);
 
   const nextTab = () =>
@@ -53,14 +60,26 @@ const CreateJobForm = ({ onClose }) => {
   };
 
   const onSubmit = async (data) => {
-    if (currentTab === tabs.length - 1) {
-      toast({
-        title: "Success",
-        description: "Job created successfully!",
-        variant: "ourSuccess",
-      });
-      console.log(data);
-      reset();
+    if (isEditMode) {
+      if (currentTab === tabs.length - 1) {
+        toast({
+          title: "Success",
+          description: "Job updated successfully!",
+          variant: "ourSuccess",
+        });
+        console.log(data);
+        reset();
+      } else {
+        if (currentTab === tabs.length - 1) {
+          toast({
+            title: "Success",
+            description: "Job created successfully!",
+            variant: "ourSuccess",
+          });
+          console.log(data);
+          reset();
+        }
+      }
 
       //   try {
       //     const requestData = {
@@ -100,8 +119,8 @@ const CreateJobForm = ({ onClose }) => {
   return (
     <Card className="w-full max-w-5xl mx-auto p-6">
       <CardHeader className="text-center p-4">
-        <CardTitle className="text-lg sm:text-2xl font-semibold">
-          Create New Job
+      <CardTitle className="text-lg sm:text-2xl font-semibold">
+          {isEditMode ? "Edit Your Job" : "Create New Job"}
         </CardTitle>
         <CardDescription className="text-xs sm:text-sm">
           Fill in the job details across all sections below
@@ -175,8 +194,9 @@ const CreateJobForm = ({ onClose }) => {
                   Next
                 </Button>
               ) : (
-                <Button type="submit" className="px-3 py-1">
-                  Create
+                <Button                   className="px-3 py-1"
+                type="submit">
+                  {isEditMode ? "Update" : "Create"}
                 </Button>
               )}
             </div>

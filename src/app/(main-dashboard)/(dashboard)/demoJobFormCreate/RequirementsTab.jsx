@@ -9,18 +9,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { useSkillsStore } from "@/stores/job-createStore/skillStore";
 import { useDegreeLevelStore } from "@/stores/job-createStore/degreeLevelStore";
 import { useStudyFieldStore } from "@/stores/job-createStore/studyFieldStore";
-import { TagInput } from "emblor";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { allSkills, degreeLevelData,fieldOfStudyData } from "../../../../stores/job-createStore/component/JobCreateData";
+import { useState, useEffect } from "react";
+import {
+  allSkills,
+  degreeLevelData,
+  fieldOfStudyData,
+} from "../../../../stores/job-createStore/component/JobCreateData";
 
 export function RequirementsTab({ form }) {
-  // const [fieldOfStudy, setFieldOfStudy] = useState([]);
-  // const [activeTagIndex, setActiveTagIndex] = useState(null);
-  const { skillTags, addSkill, removeSkill } = useSkillsStore();
-  const { degreeTags, addDegree, removeDegree } = useDegreeLevelStore();
-  const { studyFieldTags, addStudyField, removeStudyField } = useStudyFieldStore();
-  const { control, handleSubmit } = useForm();
+  const { skillTags, addSkill, removeSkill, initializeSkills } = useSkillsStore();
+  const { degreeTags, addDegree, removeDegree, initializeDegrees } = useDegreeLevelStore();
+  const { fieldOfStudyTags, addFieldOfStudy, removeFieldOfStudy, initializeFieldOfStudy } = useStudyFieldStore();
+  
   const [skillInputValue, setSkillInputValue] = useState("");
   const [skillSuggestions, setSkillSuggestions] = useState([]);
   const [degreeInputValue, setDegreeInputValue] = useState("");
@@ -28,11 +28,41 @@ export function RequirementsTab({ form }) {
   const [studyInputValue, setStudyInputValue] = useState("");
   const [studySuggestions, setStudySuggestions] = useState([]);
 
+  // Initializing store values from form default values
+  useEffect(() => {
+    const defaultValues = form.getValues();
+    console.log("Default Values:", defaultValues);
+
+    if (defaultValues?.skills?.length > 0) {
+      initializeSkills(defaultValues.skills);
+    }
+    
+    if (defaultValues?.degreeLevel) {
+      initializeDegrees([defaultValues.degreeLevel]);
+    }
+    
+    if (defaultValues?.fieldOfStudy?.length > 0) {
+      initializeFieldOfStudy(defaultValues.fieldOfStudy);
+    }
+  }, [form, initializeSkills, initializeDegrees, initializeFieldOfStudy]);
+
+  // Syncing form values with store state
+  useEffect(() => {
+    if (skillTags.length > 0) {
+      form.setValue('skills', skillTags);
+    }
+    if (degreeTags.length > 0) {
+      form.setValue('degreeLevel', degreeTags);
+    }
+    if (fieldOfStudyTags.length > 0) {
+      form.setValue('fieldOfStudy', fieldOfStudyTags);
+    }
+  }, [skillTags, degreeTags, fieldOfStudyTags, form]);
+
   const handleSkillInputChange = (e) => {
     const value = e.target.value;
     setSkillInputValue(value);
 
-    // Filter skills dynamically
     if (value) {
       const filtered = allSkills
         .filter(
@@ -41,7 +71,7 @@ export function RequirementsTab({ form }) {
             !skillTags.includes(skill)
         )
         .slice(0, 5);
-        setSkillSuggestions(filtered);
+      setSkillSuggestions(filtered);
     } else {
       setSkillSuggestions([]);
     }
@@ -51,7 +81,6 @@ export function RequirementsTab({ form }) {
     const value = e.target.value;
     setDegreeInputValue(value);
 
-    // Filter degrees dynamically
     if (value) {
       const filtered = degreeLevelData
         .filter(
@@ -70,13 +99,12 @@ export function RequirementsTab({ form }) {
     const value = e.target.value;
     setStudyInputValue(value);
 
-    // Filter degrees dynamically
     if (value) {
       const filtered = fieldOfStudyData
         .filter(
           (studyField) =>
             studyField.toLowerCase().includes(value.toLowerCase()) &&
-            !studyFieldTags.includes(studyField)
+            !fieldOfStudyTags.includes(studyField)
         )
         .slice(0, 5);
       setStudySuggestions(filtered);
@@ -85,7 +113,6 @@ export function RequirementsTab({ form }) {
     }
   };
 
-  // Handle skill selection
   const handleSkillSelect = (skill) => {
     addSkill(skill);
     setSkillInputValue("");
@@ -93,14 +120,16 @@ export function RequirementsTab({ form }) {
   };
 
   const handleDegreeSelect = (degree) => {
+    // Clear existing degrees before adding new one
+    initializeDegrees([]);
     addDegree(degree);
     setDegreeInputValue("");
     setDegreeSuggestions([]);
   };
 
   const handleStudyFieldSelect = (studyField) => {
-    addStudyField(studyField);
-    setStudyInputValue("");    
+    addFieldOfStudy(studyField);
+    setStudyInputValue("");
     setStudySuggestions([]);
   };
 
@@ -112,7 +141,7 @@ export function RequirementsTab({ form }) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>Job Requirements</FormLabel>
-            <FormControl className="dark:border-gray-300 ">
+            <FormControl className="dark:border-gray-300">
               <Textarea
                 {...field}
                 placeholder="List all job requirements..."
@@ -124,9 +153,9 @@ export function RequirementsTab({ form }) {
         )}
       />
 
-      <Controller
+      <FormField
+        control={form.control}
         name="skills"
-        control={control}
         render={({ field }) => (
           <div>
             <FormLabel className="font-medium">Required Skills</FormLabel>
@@ -174,104 +203,103 @@ export function RequirementsTab({ form }) {
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <Controller
-  name="degreeLevel"
-  control={control}
-  render={({ field }) => (
-    <div>
-      <FormLabel className="font-medium">Degree Level</FormLabel>
-      <div className="relative mt-2">
-        <input
-          type="text"
-          value={degreeInputValue}
-          onChange={handleDegreeInputChange}
-          placeholder="Type to search degrees..."
-          className="border text-sm w-full rounded-md px-3 py-2"
+        <FormField
+          control={form.control}
+          name="degreeLevel"
+          render={({ field }) => (
+            <div>
+              <FormLabel className="font-medium">Degree Level</FormLabel>
+              <div className="relative mt-2">
+                <input
+                  type="text"
+                  value={degreeInputValue}
+                  onChange={handleDegreeInputChange}
+                  placeholder="Type to search degrees..."
+                  className="border text-sm w-full rounded-md px-3 py-2"
+                />
+                {degreeSuggestions.length > 0 && (
+                  <ul className="absolute bg-white border border-gray-200 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
+                    {degreeSuggestions.map((degree, index) => (
+                      <li
+                        key={index}
+                        onClick={() => handleDegreeSelect(degree)}
+                        className="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                      >
+                        {degree}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {degreeTags.map((degree, index) => (
+                  <div
+                    key={index}
+                    className="relative h-7 bg-background border border-input hover:bg-background rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
+                  >
+                    {degree}
+                    <button
+                      type="button"
+                      className="absolute top-1/3 -right-3 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground"
+                      onClick={() => removeDegree(degree)}
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         />
-        {degreeSuggestions.length > 0 && (
-          <ul className="absolute bg-white border border-gray-200 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
-            {degreeSuggestions.map((degree, index) => (
-              <li
-                key={index}
-                onClick={() => handleDegreeSelect(degree)}
-                className="px-3 py-2 cursor-pointer hover:bg-gray-100"
-              >
-                {degree}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-      <div className="flex flex-wrap gap-2 mt-2">
-        {degreeTags.map((degree, index) => (
-          <div
-            key={index}
-            className="relative h-7 bg-background border border-input hover:bg-background rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
-          >
-            {degree}
-            <button
-              type="button"
-              className="absolute top-1/3 -right-3 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground"
-              onClick={() => removeDegree(degree)}
-            >
-              ×
-            </button>
-          </div>
-        ))}
-      </div>
-    </div>
-  )}
-/>
 
-<Controller
-  name="studyField"
-  control={control}
-  render={({ field }) => (
-    <div>
-      <FormLabel className="font-medium">Field of Study</FormLabel>
-      <div className="relative mt-2">
-        <input
-          type="text"
-          value={studyInputValue}
-          onChange={handleStudyFieldInputChange}
-          placeholder="Type to search field of study..."
-          className="border text-sm w-full rounded-md px-3 py-2"
+        <FormField
+          control={form.control}
+          name="fieldOfStudy"
+          render={({ field }) => (
+            <div>
+              <FormLabel className="font-medium">Field of Study</FormLabel>
+              <div className="relative mt-2">
+                <input
+                  type="text"
+                  value={studyInputValue}
+                  onChange={handleStudyFieldInputChange}
+                  placeholder="Type to search field of study..."
+                  className="border text-sm w-full rounded-md px-3 py-2"
+                />
+                {studySuggestions.length > 0 && (
+                  <ul className="absolute bg-white border border-gray-200 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
+                    {studySuggestions.map((studyField, index) => (
+                      <li
+                        key={index}
+                        onClick={() => handleStudyFieldSelect(studyField)}
+                        className="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                      >
+                        {studyField}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {fieldOfStudyTags.map((studyField, index) => (
+                  <div
+                    key={index}
+                    className="relative h-7 bg-background border border-input hover:bg-background rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
+                  >
+                    {studyField}
+                    <button
+                      type="button"
+                      className="absolute top-1/3 -right-3 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground"
+                      onClick={() => removeFieldOfStudy(studyField)}
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         />
-        {studySuggestions.length > 0 && (
-          <ul className="absolute bg-white border border-gray-200 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
-            {studySuggestions.map((studyField, index) => (
-              <li
-                key={index}
-                onClick={() => handleStudyFieldSelect(studyField)}
-                className="px-3 py-2 cursor-pointer hover:bg-gray-100"
-              >
-                {studyField}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-      <div className="flex flex-wrap gap-2 mt-2">
-        {studyFieldTags.map((studyField, index) => (
-          <div
-            key={index}
-            className="relative h-7 bg-background border border-input hover:bg-background rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
-          >
-            {studyField}
-            <button
-              type="button"
-              className="absolute top-1/3 -right-3 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground"
-              onClick={() => removeStudyField(studyField)}
-            >
-              ×
-            </button>
-          </div>
-        ))}
-      </div>
-    </div>
-  )}
-/>
-
       </div>
     </div>
   );
