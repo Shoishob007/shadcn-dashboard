@@ -9,7 +9,6 @@ const DemoJobs = () => {
     const fetchData = async () => {
       const response = await fetch("/jobData.json");
       const data = await response.json();
-      console.log(data);
       setJobs(data);
     };
     fetchData();
