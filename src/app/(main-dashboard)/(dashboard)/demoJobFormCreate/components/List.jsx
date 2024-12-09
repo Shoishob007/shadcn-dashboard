@@ -94,13 +94,13 @@ export function StepsList({ availableSteps, selectedSteps, onStepsChange }) {
         </DndContext>
       </div>
 
-      <div className="w-64 bg-secondary p-4 rounded-lg">
+      <div className="w-64 bg-secondary dark:bg-gray-800 dark:border dark:border-gray-500 p-4 rounded-lg">
         <h3 className="text-sm font-medium mb-3 text-center">Available Steps</h3>
         <div className="space-y-2">
           {availableSteps.map((step) => (
             <div
               key={step.id}
-              className="flex items-center justify-between bg-background rounded-md"
+              className="flex items-center justify-between bg-white dark:bg-gray-900 rounded-md"
             >
               <span className="text-sm p-1">{step.title}</span>
               <Button

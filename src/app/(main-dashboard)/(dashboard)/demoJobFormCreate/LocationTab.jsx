@@ -7,28 +7,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 export function LocationTab({ form }) {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 gap-4">
-        {/* <FormField
-          control={form.control}
-          name="location"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Location</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder="e.g. New York, NY" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-
         <FormField
           control={form.control}
-          name="address"
+          name="location"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Address</FormLabel>
@@ -41,7 +29,7 @@ export function LocationTab({ form }) {
         />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4"> {/* Use grid for two columns */}
         <FormField
           control={form.control}
           name="email"
@@ -66,8 +54,24 @@ export function LocationTab({ form }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Contact Phone</FormLabel>
-              <FormControl className="dark:border-gray-300 ">
-                <Input {...field} placeholder="+1 (555) 000-0000" />
+              <FormControl>
+                <PhoneInput
+                  country="bd"
+                  value={field.value}
+                  onChange={(value) => field.onChange(value)}
+                  containerStyle={{
+                    width: "100%",
+                  }}
+                  inputStyle={{
+                    backgroundColor: "white",
+                    border: "1px solid #ccc",
+                    width: "100%",
+                  }}
+                  buttonStyle={{
+                    width: "45px",
+                    height: "35px",
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -95,3 +99,4 @@ export function LocationTab({ form }) {
     </div>
   );
 }
+

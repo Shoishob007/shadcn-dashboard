@@ -12,4 +12,8 @@ export const useDegreeLevelStore = create((set) => ({
     set((state) => ({
         degreeTags: state.degreeTags.filter((d) => d !== degree),
     })),
+    initializeDegrees: (degrees = []) => {
+      set({ degreeTags: Array.isArray(degrees) ? degrees : [] });
+    },
+    resetDegrees: () => set({ degreeTags: [] }),
 }));

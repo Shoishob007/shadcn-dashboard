@@ -12,4 +12,8 @@ export const useSkillsStore = create((set) => ({
     set((state) => ({
       skillTags: state.skillTags.filter((s) => s !== skill),
     })),
+  initializeSkills: (skills = []) => {
+    set({ skillTags: Array.isArray(skills) ? skills : [] });
+  },
+  resetSkills: () => set({ skillTags: [] }),
 }));
