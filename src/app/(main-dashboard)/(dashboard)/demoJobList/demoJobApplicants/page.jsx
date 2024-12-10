@@ -16,6 +16,7 @@ import { ChevronDown } from "lucide-react";
 import JobInfoCard from "../../demoAppList/components/JobInfoCard";
 import { documents } from "../components/jobApplicants";
 import { documents as jobDocuments } from "../components/jobData";
+import OurPagination from "@/components/Pagination";
 
 const socialMediaIcons = {
   linkedin: FaLinkedin,
@@ -50,7 +51,9 @@ const DemoApplicants = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const jobId = searchParams.get("jobId");
-
+  const itemsPerPage = 3;
+  const [currentPaginationPage, setCurrentPaginationPage] = useState(0);
+  const [filteredApplicantsList, setFilteredApplicantsList] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("applied");
   const [selectedStep, setSelectedStep] = useState("All");
   const [currentJob, setCurrentJob] = useState(null);
@@ -106,6 +109,17 @@ const DemoApplicants = () => {
   const handleViewDetails = (id) => {
     router.push(`/demoAppList/demoAppDetails?id=${id}`);
   };
+
+  const startIndex = currentPaginationPage * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentPaginatedApplicants = filteredApplicants.slice(
+    startIndex,
+    endIndex
+  );
+
+  const totalPaginationPages = Math.ceil(
+    filteredApplicantsList.length / itemsPerPage
+  );
 
   if (!currentJob) {
     return <div className="text-center p-8">Loading...</div>;
@@ -192,7 +206,7 @@ const DemoApplicants = () => {
           </ToggleGroup>
 
           <div className="applicantsListGrid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredApplicants.map((applicant) => {
+            {currentPaginatedApplicants.map((applicant) => {
               const totalExperience = calculateTotalExperience(
                 applicant.experiences
               );
@@ -300,6 +314,12 @@ const DemoApplicants = () => {
           </div>
         </div>
       )}
+
+      <OurPagination
+        totalPages={totalPaginationPages}
+        currentPage={currentPaginationPage}
+        onPageChange={(page) => setCurrentPaginationPage(page)}
+      />
     </div>
   );
 };
