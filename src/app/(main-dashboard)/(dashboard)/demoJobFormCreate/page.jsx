@@ -29,7 +29,6 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
   //   const { data: session } = useSession();
   const { toast } = useToast();
   const isEditMode = Boolean(jobId);
-  // console.log(initialData.skills)
 
   const form = useForm({
     defaultValues: {
@@ -131,12 +130,11 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent>
             <Tabs
-              //   defaultValue="basic"
               value={tabs[currentTab]}
               className="space-y-4"
             >
               <TabsList className="grid grid-cols-4 gap-4 dark:bg-gray-900">
-                {/* Display icons only on small screens */}
+                {/* Displaying only icons only on small screens */}
                 {tabs.map((tab, index) => (
                   <TabsTrigger
                     key={tab}

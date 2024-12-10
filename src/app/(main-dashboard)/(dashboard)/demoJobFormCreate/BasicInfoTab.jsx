@@ -7,14 +7,27 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css";
 import { useState } from "react";
 import { StepsList } from "./components/List";
 import { stepsData } from "./components/stepsData";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 export function BasicInfoTab({ form }) {
   const [steps, setSteps] = useState([""]);
   const [inputValue, setInputValue] = useState("");
   const [selectedSteps, setSelectedSteps] = useState([]);
+
+  const modules = {
+    toolbar: [
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ align: [] }],
+      ["clean"],
+    ],
+  };
 
   const handleStepChange = (index, value) => {
     const newSteps = [...steps];
@@ -63,8 +76,8 @@ export function BasicInfoTab({ form }) {
             <FormControl>
               <Textarea
                 {...field}
-                placeholder="Detailed job description..."
-                className="min-h-[70px] sm:min-h-[60px] dark:border-gray-300"
+                placeholder="Detailed Job Overview..."
+                className="min-h-[70px] sm:min-h-[60px] dark:border-gray-300 "
               />
             </FormControl>
             <FormMessage />
@@ -72,6 +85,7 @@ export function BasicInfoTab({ form }) {
         )}
       />
 
+      {/* Employee Benefits */}
       <FormField
         control={form.control}
         name="employeeBenefits"
@@ -79,10 +93,13 @@ export function BasicInfoTab({ form }) {
           <FormItem>
             <FormLabel>Employee Benefits</FormLabel>
             <FormControl>
-              <Textarea
-                {...field}
-                placeholder="List of benefits..."
-                className="min-h-[70px] sm:min-h-[60px] dark:border-gray-200"
+              <ReactQuill
+                value={field.value}
+                onChange={field.onChange}
+                modules={modules}
+                theme="snow"
+                className="dark:bg-gray-800 dark:text-gray-300"
+                placeholder="Detailed Employee Benefits..."
               />
             </FormControl>
             <FormMessage />
@@ -90,6 +107,7 @@ export function BasicInfoTab({ form }) {
         )}
       />
 
+      {/* Job Responsibilities */}
       <FormField
         control={form.control}
         name="responsibilities"
@@ -97,11 +115,16 @@ export function BasicInfoTab({ form }) {
           <FormItem>
             <FormLabel>Job Responsibilities</FormLabel>
             <FormControl>
-              <Textarea
-                {...field}
-                placeholder="List of responsibilities..."
-                className="min-h-[70px] sm:min-h-[60px] dark:border-gray-200"
+
+              <ReactQuill
+                value={field.value}
+                onChange={field.onChange}
+                modules={modules}
+                theme="snow"
+                placeholder="Detailed Job Responsibilities..."
+                className=" dark:bg-gray-800" 
               />
+
             </FormControl>
             <FormMessage />
           </FormItem>
