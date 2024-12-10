@@ -1,58 +1,69 @@
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import React from "react";
+import { Button } from "@/components/ui/button";
 
-const OurPagination = ({ table }) => {
-  const totalPages = table.getPageCount();
-  const currentPage = table.getState().pagination.pageIndex;
+const OurPagination = ({ totalPages, currentPage, onPageChange }) => {
+  const getPageNumbers = () => {
+    const visiblePages = [];
+    const range = 2;
+
+    if (totalPages <= 7) {
+      for (let i = 0; i < totalPages; i++) visiblePages.push(i + 1);
+    } else {
+      if (currentPage <= 2) {
+        visiblePages.push(0, 1, 2, 3, "...", totalPages - 1);
+      } else if (currentPage >= totalPages - 3) {
+        visiblePages.push(0, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1);
+      } else {
+        visiblePages.push(0, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages - 1);
+      }
+    }
+    return visiblePages;
+  };
+
+  const handlePageClick = (page) => {
+    if (page !== "..." && page >= 0 && page < totalPages) {
+      onPageChange(page);
+    }
+  };
+  
+
+  const pageNumbers = getPageNumbers();
 
   return (
-    <Pagination>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious
-            href="#"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-            className="!text-sm text-gray-500 dark:text-gray-300"
-          />
-        </PaginationItem>
+    <div className="flex justify-center items-center space-x-2 mt-4">
+      {/* Previous Button */}
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => handlePageClick(currentPage - 1)}
+        disabled={currentPage === 0}
+      >
+        Previous
+      </Button>
 
-        {Array.from({ length: totalPages }, (_, index) => (
-          <PaginationItem key={index}>
-            <PaginationLink
-              href="#"
-              onClick={() => table.setPageIndex(index)}
-              isActive={index === currentPage}
-              className="!text-sm text-gray-500 dark:text-gray-300"
-            >
-              {index + 1}
-            </PaginationLink>
-          </PaginationItem>
-        ))}
+      {/* Pagination Buttons */}
+      {pageNumbers.map((page, index) => (
+        <Button
+          key={index}
+          variant={page === currentPage ? "solid" : "ghost"}
+          size="sm"
+          onClick={() => handlePageClick(page)}
+          className={page === "..." ? "text-gray-500" : ""}
+        >
+          {page}
+        </Button>
+      ))}
 
-        {totalPages > 5 && (
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-        )}
-
-        <PaginationItem>
-          <PaginationNext
-            href="#"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-            className="!text-sm text-gray-500 dark:text-gray-300"
-          />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
+      {/* Next Button */}
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => handlePageClick(currentPage + 1)}
+        disabled={currentPage === totalPages - 1}
+      >
+        Next
+      </Button>
+    </div>
   );
 };
 

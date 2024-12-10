@@ -18,9 +18,7 @@ const JobDetailsPage = () => {
       const matchedJobInfo = jobDocuments.docs.find(
         (doc) => doc.job.id === jobId
       );
-
-        setCurrentJobInfo(matchedJobInfo);
-
+      setCurrentJobInfo(matchedJobInfo);
     }
   }, [jobId, currentJobInfo]);
 

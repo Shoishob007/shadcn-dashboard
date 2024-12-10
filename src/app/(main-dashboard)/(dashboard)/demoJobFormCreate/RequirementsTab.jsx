@@ -6,6 +6,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css";
 import { useSkillsStore } from "@/stores/job-createStore/skillStore";
 import { useDegreeLevelStore } from "@/stores/job-createStore/degreeLevelStore";
 import { useStudyFieldStore } from "@/stores/job-createStore/studyFieldStore";
@@ -15,18 +17,37 @@ import {
   degreeLevelData,
   fieldOfStudyData,
 } from "../../../../stores/job-createStore/component/JobCreateData";
+import { Input } from "@/components/ui/input";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 export function RequirementsTab({ form }) {
-  const { skillTags, addSkill, removeSkill, initializeSkills } = useSkillsStore();
-  const { degreeTags, addDegree, removeDegree, initializeDegrees } = useDegreeLevelStore();
-  const { fieldOfStudyTags, addFieldOfStudy, removeFieldOfStudy, initializeFieldOfStudy } = useStudyFieldStore();
-  
+  const { skillTags, addSkill, removeSkill, initializeSkills } =
+    useSkillsStore();
+  const { degreeTags, addDegree, removeDegree, initializeDegrees } =
+    useDegreeLevelStore();
+  const {
+    fieldOfStudyTags,
+    addFieldOfStudy,
+    removeFieldOfStudy,
+    initializeFieldOfStudy,
+  } = useStudyFieldStore();
+
   const [skillInputValue, setSkillInputValue] = useState("");
   const [skillSuggestions, setSkillSuggestions] = useState([]);
   const [degreeInputValue, setDegreeInputValue] = useState("");
   const [degreeSuggestions, setDegreeSuggestions] = useState([]);
   const [studyInputValue, setStudyInputValue] = useState("");
   const [studySuggestions, setStudySuggestions] = useState([]);
+
+  const modules = {
+    toolbar: [
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ align: [] }],
+      ["clean"],
+    ],
+  };
 
   // Initializing store values from form default values
   useEffect(() => {
@@ -36,11 +57,11 @@ export function RequirementsTab({ form }) {
     if (defaultValues?.skills?.length > 0) {
       initializeSkills(defaultValues.skills);
     }
-    
+
     if (defaultValues?.degreeLevel) {
       initializeDegrees([defaultValues.degreeLevel]);
     }
-    
+
     if (defaultValues?.fieldOfStudy?.length > 0) {
       initializeFieldOfStudy(defaultValues.fieldOfStudy);
     }
@@ -49,13 +70,13 @@ export function RequirementsTab({ form }) {
   // Syncing form values with store state
   useEffect(() => {
     if (skillTags.length > 0) {
-      form.setValue('skills', skillTags);
+      form.setValue("skills", skillTags);
     }
     if (degreeTags.length > 0) {
-      form.setValue('degreeLevel', degreeTags);
+      form.setValue("degreeLevel", degreeTags);
     }
     if (fieldOfStudyTags.length > 0) {
-      form.setValue('fieldOfStudy', fieldOfStudyTags);
+      form.setValue("fieldOfStudy", fieldOfStudyTags);
     }
   }, [skillTags, degreeTags, fieldOfStudyTags, form]);
 
@@ -135,7 +156,7 @@ export function RequirementsTab({ form }) {
 
   return (
     <div className="space-y-4">
-      <FormField
+      {/* <FormField
         control={form.control}
         name="requirements"
         render={({ field }) => (
@@ -146,6 +167,27 @@ export function RequirementsTab({ form }) {
                 {...field}
                 placeholder="List all job requirements..."
                 className="min-h-[60px]"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      /> */}
+
+      <FormField
+        control={form.control}
+        name="requirements"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Job Requirements</FormLabel>
+            <FormControl>
+              <ReactQuill
+                value={field.value}
+                onChange={field.onChange}
+                modules={modules}
+                theme="snow"
+                className="dark:bg-gray-900"
+                placeholder="Detailed Job Requirements..."
               />
             </FormControl>
             <FormMessage />
@@ -177,7 +219,7 @@ export function RequirementsTab({ form }) {
               ))}
             </div>
             <div className="relative mt-2">
-              <input
+              <Input
                 type="text"
                 value={skillInputValue}
                 onChange={handleSkillInputChange}
@@ -210,7 +252,7 @@ export function RequirementsTab({ form }) {
             <div>
               <FormLabel className="font-medium">Degree Level</FormLabel>
               <div className="relative mt-2">
-                <input
+                <Input
                   type="text"
                   value={degreeInputValue}
                   onChange={handleDegreeInputChange}
@@ -259,7 +301,7 @@ export function RequirementsTab({ form }) {
             <div>
               <FormLabel className="font-medium">Field of Study</FormLabel>
               <div className="relative mt-2">
-                <input
+                <Input
                   type="text"
                   value={studyInputValue}
                   onChange={handleStudyFieldInputChange}
