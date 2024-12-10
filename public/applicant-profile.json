@@ -1,0 +1,175 @@
+{
+  "docs": [
+    {
+      "id": "96bd2057-f4aa-4ff9-ace3-f29232847175",
+      "applicant": {
+        "id": "9c1b3703-7af0-43c2-a83b-dbc9ebad8935",
+        "provider": "credentials",
+        "sid": null,
+        "pictureUrl": null,
+        "role": "applicant",
+        "updatedAt": "2024-10-26T12:46:17.874Z",
+        "createdAt": "2024-10-26T12:44:57.500Z",
+        "email": "emam.khalid.jion@example.com",
+        "_verified": true,
+        "loginAttempts": 0
+      },
+      "jobRole": [
+        {
+          "id": "1107be94-9795-4482-bab3-23083ab2efca",
+          "title": "Backend Developer",
+          "updatedAt": "2024-10-23T10:41:48.689Z",
+          "createdAt": "2024-10-23T10:41:48.689Z"
+        },
+        {
+          "id": "4ce8efc6-7be4-4244-aa2a-80e073468ace",
+          "title": "Frontend Developer",
+          "updatedAt": "2024-10-23T10:41:31.246Z",
+          "createdAt": "2024-10-23T10:41:31.246Z"
+        }
+      ],
+      "designation": {
+        "id": "bc498653-b598-4246-b4f5-46ba6eb8ab80",
+        "title": "Software Engineer",
+        "updatedAt": "2024-10-26T06:20:46.819Z",
+        "createdAt": "2024-10-26T06:20:46.819Z"
+      },
+      "skills": [
+        {
+          "id": "a1e18457-0a76-448e-8d31-36955bb96d21",
+          "title": "Node.js",
+          "updatedAt": "2024-10-26T13:02:20.488Z",
+          "createdAt": "2024-10-26T13:02:20.488Z"
+        }
+      ],
+      "name": "Emam Khalid Jion",
+      "firstName": "Emam",
+      "lastName": "Khalid Jion",
+      "address": "Dhaka, Bangladesh",
+      "phone": "01712345678",
+      "email": "emam.khalid.jion@example.com",
+      "contactInfo": "Feel free to contact via email or phone.",
+      "applicantWebsiteUrl": "https://emamkhalidjion.dev",
+      "img": "updated-image-url",
+      "cv": "updated-cv-url",
+      "socialLinks": [
+        {
+          "id": "672078b2a6ec3f270c70f69a",
+          "socialMediaUrl": "https://linkedin.com/in/emamkhalidjion",
+          "socialMedia": {
+            "id": "f42982dd-4eba-4e8e-9294-6a9458fe0826",
+            "title": "LinkedIn",
+            "updatedAt": "2024-10-29T04:34:21.480Z",
+            "createdAt": "2024-10-29T04:34:21.480Z"
+          }
+        },
+        {
+          "id": "672078b2a6ec3f270c70f69b",
+          "socialMediaUrl": "https://github.com/emamkhalidjion",
+          "socialMedia": {
+            "id": "e3541401-a2ec-47fa-8768-b802edb3715b",
+            "title": "GitHub",
+            "updatedAt": "2024-10-29T05:23:04.131Z",
+            "createdAt": "2024-10-29T05:23:04.131Z"
+          }
+        }
+      ],
+      "bloodGroup": "O+",
+      "trainingAndCertifications": [
+        {
+          "id": "672078b2a6ec3f270c70f69c",
+          "title": "Next Level Web Development",
+          "yearOfExperience": 1,
+          "beginning": "2023-01-01T12:00:00.000Z",
+          "ending": "2023-12-31T12:00:00.000Z",
+          "certificateUpload": "updated-certificate-url"
+        }
+      ],
+      "experiences": [
+        {
+          "id": "672078b2a6ec3f270c70f69d",
+          "companyName": "LEADS Corporation",
+          "yearOfExperience": 5,
+          "beginning": "2014-10-16T12:00:00.000Z",
+          "ending": "2015-10-15T12:00:00.000Z",
+          "jobRole": [
+            {
+              "id": "1107be94-9795-4482-bab3-23083ab2efca",
+              "title": "Backend Developer",
+              "updatedAt": "2024-10-23T10:41:48.689Z",
+              "createdAt": "2024-10-23T10:41:48.689Z"
+            },
+            {
+              "id": "4ce8efc6-7be4-4244-aa2a-80e073468ace",
+              "title": "Frontend Developer",
+              "updatedAt": "2024-10-23T10:41:31.246Z",
+              "createdAt": "2024-10-23T10:41:31.246Z"
+            }
+          ],
+          "designation": {
+            "id": "1b4ab8b5-3a8c-40ad-ad89-bceadd3915a7",
+            "title": "Senior Software Engineer",
+            "updatedAt": "2024-10-29T04:44:00.480Z",
+            "createdAt": "2024-10-29T04:44:00.480Z"
+          }
+        }
+      ],
+      "educations": [
+        {
+          "id": "672078b2a6ec3f270c70f69e",
+          "instituteName": "University of Liberal Arts Bangladesh",
+          "duration": 4,
+          "beginning": "2015-01-01T12:00:00.000Z",
+          "ending": "2019-01-01T12:00:00.000Z",
+          "fieldOfStudy": {
+            "id": "530d77dc-d325-47b9-b363-c7ad66283881",
+            "title": "CSE",
+            "updatedAt": "2024-10-29T04:44:50.360Z",
+            "createdAt": "2024-10-29T04:44:50.360Z"
+          },
+          "degreeLevel": {
+            "id": "be5b4d94-1dd4-4807-a60d-30a980544cad",
+            "title": "B.Sc",
+            "updatedAt": "2024-10-29T04:45:35.005Z",
+            "createdAt": "2024-10-29T04:45:35.005Z"
+          },
+          "eduCertificateUpload": "updated-education-certificate-url"
+        }
+      ],
+      "academicActivity": [
+        {
+          "id": "672078b2a6ec3f270c70f69f",
+          "title": "Capstone Project",
+          "description": "Developed a full-stack e-commerce platform for graduation.",
+          "duration": 1,
+          "beginning": "2018-01-01T12:00:00.000Z",
+          "ending": "2019-01-01T12:00:00.000Z",
+          "academicActivityType": {
+            "id": "90ed11d9-c842-4f4d-af9d-83b93fe39ee1",
+            "title": "Project",
+            "updatedAt": "2024-10-29T05:17:55.684Z",
+            "createdAt": "2024-10-29T05:17:55.684Z"
+          }
+        }
+      ],
+      "extracurricularActivity": [
+        {
+          "id": "672078b2a6ec3f270c70f6a0",
+          "title": "Tech Club Member",
+          "description": "Actively participated in coding competitions and hackathons."
+        }
+      ],
+      "updatedAt": "2024-10-29T05:54:58.772Z",
+      "createdAt": "2024-10-29T05:46:47.071Z"
+    }
+  ],
+  "hasNextPage": false,
+  "hasPrevPage": false,
+  "limit": 10,
+  "nextPage": null,
+  "page": 1,
+  "pagingCounter": 1,
+  "prevPage": null,
+  "totalDocs": 1,
+  "totalPages": 1
+}
