@@ -14,6 +14,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
+import OurPagination from "@/components/Pagination";
 
 const socialMediaIcons = {
   linkedin: FaLinkedin,
@@ -46,7 +47,9 @@ const ApplicantsList = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const jobId = searchParams.get("jobId");
-
+  const itemsPerPage = 9;
+  const [currentPaginationPage, setCurrentPaginationPage] = useState(0);
+  const [filteredApplicantsList, setFilteredApplicantsList] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("applied");
   const [selectedStep, setSelectedStep] = useState("All");
   const [currentJob, setCurrentJob] = useState(null);
@@ -101,6 +104,21 @@ const ApplicantsList = () => {
   const handleViewDetails = (id) => {
     router.push(`/demoAppList/demoAppDetails?id=${id}`);
   };
+
+  useEffect(() => {
+    const applicants = filteredApplicants;
+    setFilteredApplicantsList(applicants);
+  }, [selectedStatus, selectedStep, filteredApplicants]);
+
+  const startIndex = currentPaginationPage * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentPaginatedApplicants = filteredApplicants.slice(
+    startIndex,
+    endIndex
+  ); 
+  
+
+  const totalPaginationPages = Math.ceil(filteredApplicantsList.length / itemsPerPage);
 
   return (
     <div className="space-y-6">
@@ -179,7 +197,7 @@ const ApplicantsList = () => {
         </ToggleGroup>
 
         <div className="applicantsListGrid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredApplicants.map((applicant) => {
+          {currentPaginatedApplicants.map((applicant) => {
             const totalExperience = calculateTotalExperience(
               applicant.experiences || []
             );
@@ -291,6 +309,12 @@ const ApplicantsList = () => {
           })}
         </div>
       </div>
+
+      <OurPagination
+        totalPages={totalPaginationPages}
+        currentPage={currentPaginationPage}
+        onPageChange={(page) => setCurrentPaginationPage(page)}
+      />
     </div>
   );
 };
