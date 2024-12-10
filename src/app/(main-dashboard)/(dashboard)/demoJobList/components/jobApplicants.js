@@ -7,7 +7,7 @@ export const documents = {
                 organization: {
                     id: "5fa8f763-5353-4247-9e7f-62e3cfd3a0ac",
                     organization: "2b609f3e-756e-402e-9bcd-6204ed465e81",
-                    orgName: "org2",
+                    orgName: "Max Innovations Co.",
                     orgTagline: null,
                     orgMission: null,
                     orgVision: null,
@@ -111,7 +111,7 @@ export const documents = {
 
                     applicant: {
                         pictureUrl:
-                        "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3387&q=80",
+                            "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3387&q=80",
                     }
                 },
                 {
@@ -199,7 +199,7 @@ export const documents = {
 
                     applicant: {
                         pictureUrl:
-                        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+                            "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
                     }
                 },
                 {
@@ -288,7 +288,7 @@ export const documents = {
 
                     applicant: {
                         pictureUrl:
-                        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+                            "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
                     }
                 },
                 {
@@ -376,14 +376,14 @@ export const documents = {
 
                     applicant: {
                         pictureUrl:
-                        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
+                            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
                     }
                 },
                 {
                     id: 5,
                     name: "Ashfaq Tanzim",
                     status: "shortlisted",
-                    steps:"interview",
+                    steps: "interview",
                     CVScore: 50,
                     certifications: [
                         {
@@ -465,7 +465,7 @@ export const documents = {
 
                     applicant: {
                         pictureUrl:
-                        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3540&q=80",
+                            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3540&q=80",
                     }
                 },],
             updatedAt: "2024-11-02T06:15:36.163Z",
@@ -478,7 +478,7 @@ export const documents = {
                 organization: {
                     id: "5fa8f763-5353-4247-9e7f-62e3cfd3a0ac",
                     organization: "2b609f3e-756e-402e-9bcd-6204ed465e81",
-                    orgName: "org2",
+                    orgName: "Max Innovations Co.",
                     orgTagline: null,
                     orgMission: null,
                     orgVision: null,
@@ -497,46 +497,54 @@ export const documents = {
             },
             applicants: [
                 {
-                    id: 1,
+                    id: 6,
                     name: "John Doe",
+                    status: "shortlisted",
+                    steps: "Technical Test",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3387&q=80",
                     }
                 },
                 {
-                    id: 2,
+                    id: 7,
                     name: "Robert Johnson",
+                    status: "hired",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
                     }
                 },
                 {
-                    id: 3,
+                    id: 8,
                     name: "Jane Smith",
+                    status: "shortlisted",
+                    steps: "Aptitude Test",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
                     }
                 },
                 {
-                    id: 4,
+                    id: 9,
                     name: "Emily Davis",
+                    status: "applied",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
                     }
                 },
                 {
-                    id: 5,
+                    id: 10,
                     name: "Tyler Durden",
+                    status: "shortlisted",
+                    steps: "Technical Test",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3540&q=80",
                     }
                 }],
-                 updatedAt: "2024-11-02T06:15:36.163Z",
+            updatedAt: "2024-11-02T06:15:36.163Z",
             createdAt: "2024-11-02T06:15:36.163Z"
         },
         {
@@ -546,7 +554,7 @@ export const documents = {
                 organization: {
                     id: "5fa8f763-5353-4247-9e7f-62e3cfd3a0ac",
                     organization: "2b609f3e-756e-402e-9bcd-6204ed465e81",
-                    orgName: "org2",
+                    orgName: "Max Innovations Co.",
                     orgTagline: null,
                     orgMission: null,
                     orgVision: null,
@@ -565,80 +573,54 @@ export const documents = {
             },
             applicants: [
                 {
-                    id: 1,
+                    id: 11,
                     name: "John Doe",
+                    status: "shortlisted",
+                    steps: "Interview",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3387&q=80",
                     }
                 },
                 {
-                    id: 2,
+                    id: 12,
                     name: "Robert Johnson",
+                    status: "hired",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
                     }
                 },
                 {
-                    id: 3,
+                    id: 13,
                     name: "Jane Smith",
+                    status: "shortlisted",
+                    steps: "Screening Test",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
                     }
                 },
                 {
-                    id: 4,
+                    id: 14,
                     name: "Emily Davis",
+                    status: "applied",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
                     }
                 },
                 {
-                    id: 5,
+                    id: 15,
                     name: "Tyler Durden",
+                    status: "applied",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3540&q=80",
                     }
                 }
-                // {
-                //     id: "2796fe3d-87f5-49ca-b5aa-566125a379cd",
-                //     applicant: {
-                //         id: "587376b3-d8dc-41e7-8672-6e0715b8b5ad",
-                //         provider: "credentials",
-                //         sid: null,
-                //         pictureUrl: null,
-                //         role: "applicant",
-                //         updatedAt: "2024-10-31T06:19:50.832Z",
-                //         createdAt: "2024-10-31T06:19:50.832Z",
-                //         email: "applicant1@test.com",
-                //         _verified: true,
-                //         loginAttempts: 0
-                //     },
-                //     jobRole: [],
-                //     skills: [],
-                //     name: null,
-                //     firstName: null,
-                //     lastName: null,
-                //     address: null,
-                //     phone: null,
-                //     email: null,
-                //     contactInfo: null,
-                //     applicantWebsiteUrl: null,
-                //     socialLinks: [],
-                //     bloodGroup: null,
-                //     trainingAndCertifications: [],
-                //     experiences: [],
-                //     educations: [],
-                //     academicActivity: [],
-                //     extracurricularActivity: [],
-                //     updatedAt: "2024-11-01T14:59:46.580Z",
-                //     createdAt: "2024-11-01T14:59:46.580Z"
-                // }
-            ], updatedAt: "2024-11-02T06:15:36.163Z",
+            ],
+            updatedAt: "2024-11-02T06:15:36.163Z",
             createdAt: "2024-11-02T06:15:36.163Z"
         },
     ],

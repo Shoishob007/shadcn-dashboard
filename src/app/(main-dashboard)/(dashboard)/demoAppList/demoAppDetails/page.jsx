@@ -24,8 +24,10 @@ import { StepSelector } from "./components/StepSelector";
 const ApplicantDetails = () => {
   const searchParams = useSearchParams();
   const applicantId = searchParams.get("id");
-  const applicant = applicantsData.find((app) => app.id === parseInt(applicantId));
-console.log(applicant)
+  const applicant = applicantsData.find(
+    (app) => app.id === parseInt(applicantId)
+  );
+  console.log(applicant);
   const [selectedStep, setSelectedStep] = useState(applicant?.steps || "");
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -88,7 +90,10 @@ console.log(applicant)
             <div className="flex items-start sm:items-center gap-4">
               <div>
                 <Avatar className="h-16 sm:h-24 w-16 sm:w-24 border-4 border-emerald-300 dark:border-emerald-400">
-                  <AvatarImage src="/path/to/image.jpg" alt={applicantName} />
+                  <AvatarImage
+                    src={applicant.applicant?.pictureUrl}
+                    alt={applicantName}
+                  />
                   <AvatarFallback className="text-xl sm:text-2xl md:text-4xl bg-emerald-400 dark:bg-emerald-500 text-white">
                     {applicantName.charAt(0)}
                   </AvatarFallback>
@@ -170,42 +175,44 @@ console.log(applicant)
             </div>
 
             {applicant.status === "applied" ? (
-          <StepSelector
-            selectedStep={selectedStep}
-            onStepChange={handleStepChange}
-          />
-        ) : applicant.status === "shortlisted" ? (
-          <div className="flex gap-2 items-center">
-            <div
-              className="text-[10px] bg-yellow-100 text-yellow-600 border border-yellow-500 font-medium dark:border-gray-600 dark:bg-gray-100 dark:text-gray-700 dark:hover:bg-gray-200 p-1.5 rounded-md cursor-pointer"
-              onClick={toggleDropdown}
-            >
-              {schedule.date
-                ? `${selectedStep}: ${schedule.date.toLocaleDateString()} at ${schedule.time}`
-                : `Appearing ${selectedStep || "Step not defined"}`}
-            </div>
-            
-            {isDropdownOpen && (
               <StepSelector
                 selectedStep={selectedStep}
                 onStepChange={handleStepChange}
               />
+            ) : applicant.status === "shortlisted" ? (
+              <div className="flex gap-2 items-center">
+                <div
+                  className="text-[10px] bg-yellow-100 text-yellow-600 border border-yellow-500 font-medium dark:border-gray-600 dark:bg-gray-100 dark:text-gray-700 dark:hover:bg-gray-200 p-1.5 rounded-md cursor-pointer"
+                  onClick={toggleDropdown}
+                >
+                  {schedule.date
+                    ? `${selectedStep}: ${schedule.date.toLocaleDateString()} at ${
+                        schedule.time
+                      }`
+                    : `Appearing ${selectedStep || "Step not defined"}`}
+                </div>
+
+                {isDropdownOpen && (
+                  <StepSelector
+                    selectedStep={selectedStep}
+                    onStepChange={handleStepChange}
+                  />
+                )}
+              </div>
+            ) : (
+              <Button
+                variant="default"
+                size="xs"
+                className={`border ${
+                  applicant.status === "hired"
+                    ? "bg-emerald-100 text-emerald-600 border-emerald-600 dark:border-gray-600 dark:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-200"
+                    : "bg-red-100 text-red-600"
+                }`}
+                disabled
+              >
+                This applicant is {applicant.status}
+              </Button>
             )}
-          </div>
-        ) : (
-          <Button
-            variant="default"
-            size="xs"
-            className={`border ${
-              applicant.status === "hired"
-                ? "bg-emerald-100 text-emerald-600 border-emerald-600 dark:border-gray-600 dark:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-200"
-                : "bg-red-100 text-red-600"
-            }`}
-            disabled
-          >
-            This applicant is {applicant.status}
-          </Button>
-        )}
           </div>
         </div>
 

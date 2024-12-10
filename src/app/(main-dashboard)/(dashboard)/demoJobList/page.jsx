@@ -52,6 +52,10 @@ const JobList = () => {
     router.push("/demoJobFormCreate");
   };
 
+  function capitalizeText(text) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  }
+
   return (
     <div className="space-y-2">
       <JobFilters
@@ -110,7 +114,7 @@ const JobList = () => {
                                 Expired
                               </div>
                             ) : (
-                              <div className="text-green-500 text-xs font-semibold flex gap-1 items-center border border-emerald-500 pr-2 rounded-md">
+                              <div className="text-green-500 text-xs font-semibold flex gap-1 items-center border border-emerald-500 pr-2 rounded-md  md:mt-1">
                                 <Dot
                                   strokeWidth={4}
                                   size={20}
@@ -131,13 +135,13 @@ const JobList = () => {
                             variant="secondary"
                             className="dark:bg-gray-900"
                           >
-                            {document.jobType}
+                            {capitalizeText(document.jobType)}
                           </Badge>
                           <Badge
                             variant="secondary"
                             className="dark:bg-gray-900"
                           >
-                            {document.employeeType}
+                            {capitalizeText(document.employeeType)}
                           </Badge>
                           <Badge
                             variant="secondary"
