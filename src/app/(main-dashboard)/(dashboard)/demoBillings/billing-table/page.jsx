@@ -17,6 +17,8 @@ const BillingTable = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [orderDate, setOrderDate] = useState("");
 
+  const services = ["All", "SMS Package", "Hot Job Listing"]
+
   const data = [
     {
       id: 1,
@@ -51,7 +53,7 @@ const BillingTable = () => {
   });
 
   return (
-    <div className="p-6">
+    <div className="p-4">
       <h2 className="text-xl text-center font-semibold underline underline-offset-2 mb-4">
         My Billings
       </h2>
@@ -63,21 +65,27 @@ const BillingTable = () => {
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="w-full sm:w-1/4 flex items-center justify-between"
+              className="w-full sm:w-1/4 flex items-center justify-between hover:bg-white"
             >
               {selectedService === "All"
                 ? "Filter by Service"
                 : selectedService}
-              <ChevronDown className="w-5 h-5 ml-2" />
+              <ChevronDown className="w-5 h-5 md:ml-2" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-full">
-            {["All", "SMS Package", "Hot Job Listing"].map((service) => (
+            {services.map((service) => (
               <DropdownMenuItem
                 key={service}
                 onSelect={() => setSelectedService(service)}
               >
-                {service}
+                <div className="flex items-center justify-between w-full gap-4 text-sm">
+                  <div>
+                  {service}
+                </div>
+                </div>
+                {selectedService === service && "✔"}
+
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
@@ -88,7 +96,7 @@ const BillingTable = () => {
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="w-full sm:w-1/4 flex items-center justify-between"
+              className="w-full sm:w-1/4 flex items-center justify-between hover:bg-white"
             >
               {selectedStatus === "All" ? "Filter by Status" : selectedStatus}
               <ChevronDown className="w-5 h-5 ml-2" />
@@ -100,7 +108,13 @@ const BillingTable = () => {
                 key={status}
                 onSelect={() => setSelectedStatus(status)}
               >
-                {status}
+                <div className="flex items-center justify-between w-full gap-4 text-sm">
+                  <div>
+                  {status}
+                  </div>
+                </div>
+                {selectedStatus === status && "✔"}
+                
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
@@ -112,17 +126,14 @@ const BillingTable = () => {
             type="date"
             value={orderDate}
             onChange={(e) => setOrderDate(e.target.value)}
-            className="w-full bg-white dark:bg-gray-800"
+            className="w-full bg-white dark:bg-gray-800 hover:bg-white"
           />
-          {/* <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" /> */}
         </div>
-
-        {/* <Button className="w-full sm:w-auto px-3 py-1 text-xs">Search</Button> */}
       </div>
 
       {/* Table */}
       <Table className="w-full">
-        <thead className="bg-gray-200 dark:bg-gray-900">
+        <thead className="bg-gray-300 dark:bg-gray-900">
           <tr>
             <th className="p-2">SL</th>
             <th>Quotation No.</th>

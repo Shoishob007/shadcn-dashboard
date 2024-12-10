@@ -95,9 +95,9 @@ const InterviewSchedule = () => {
   return (
     <>
       {" "}
-      <PageTitle title={pageTitle} className={"ml-2"} />
+      <PageTitle title={pageTitle} className={"ml-2 mb-2"} />
       <div className="h-full dark:text-gray-200">
-        <Card className="p-4 sm:py-8 sm:px-6 border-none shadow-md">
+        <Card className="p-4 sm:py-8 sm:px-6 border-none">
           <div className="flex items-center justify-center mb-4 ">
             <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
               <CalendarClock className="h-5 sm:h-6 w-5 sm:w-6" />
