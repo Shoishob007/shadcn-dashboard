@@ -7,10 +7,22 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+
 export function LocationTab({ form }) {
+  const modules = {
+    toolbar: [
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ align: [] }],
+      ["clean"],
+    ],
+  };
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 gap-4">
@@ -29,7 +41,9 @@ export function LocationTab({ form }) {
         />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4"> {/* Use grid for two columns */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {" "}
+        {/* Use grid for two columns */}
         <FormField
           control={form.control}
           name="email"
@@ -47,7 +61,6 @@ export function LocationTab({ form }) {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="phone"
@@ -85,11 +98,14 @@ export function LocationTab({ form }) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>Additional Contact Information</FormLabel>
-            <FormControl className="dark:border-gray-300 ">
-              <Textarea
-                {...field}
-                placeholder="Any additional contact details..."
-                className="min-h-[80px]"
+            <FormControl>
+              <ReactQuill
+                value={field.value}
+                onChange={field.onChange}
+                modules={modules}
+                theme="snow"
+                className="dark:bg-gray-900"
+                placeholder="Detailed Job Requirements..."
               />
             </FormControl>
             <FormMessage />
@@ -99,4 +115,3 @@ export function LocationTab({ form }) {
     </div>
   );
 }
-
