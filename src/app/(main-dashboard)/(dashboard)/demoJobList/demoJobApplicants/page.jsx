@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
@@ -25,10 +26,10 @@ const socialMediaIcons = {
 };
 
 const steps = [
-  "Screening Test",
-  "Aptitude Test",
-  "Technical Test",
-  "Interview",
+  "screening test",
+  "aptitude test",
+  "technical test",
+  "interview",
 ];
 
 const calculateTotalExperience = (experiences) => {
@@ -51,11 +52,11 @@ const DemoApplicants = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const jobId = searchParams.get("jobId");
-  const itemsPerPage = 3;
-  const [currentPaginationPage, setCurrentPaginationPage] = useState(0);
+  const itemsPerPage = 9;
+  const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
   const [filteredApplicantsList, setFilteredApplicantsList] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("applied");
-  const [selectedStep, setSelectedStep] = useState("All");
+  const [selectedStep, setSelectedStep] = useState("");
   const [currentJob, setCurrentJob] = useState(null);
   const [currentJobInfo, setCurrentJobInfo] = useState(null);
   const [applicants, setApplicants] = useState([]);
@@ -80,7 +81,7 @@ const DemoApplicants = () => {
     }
   }, [jobId]);
 
-  // Filter logic
+  // Filtering logic
   const filteredApplicants = applicants.filter((applicant) => {
     const applicantStatus = applicant.status || "applied";
 
@@ -93,11 +94,11 @@ const DemoApplicants = () => {
       );
     }
 
-    if (selectedStatus === "shortlisted" && selectedStep === "All") {
+    if (selectedStatus === "shortlisted" && selectedStep === "all") {
       return applicantStatus === "shortlisted";
     }
 
-    if (selectedStatus === "shortlisted" && selectedStep !== "All") {
+    if (selectedStatus === "shortlisted" && selectedStep !== "all") {
       return (
         applicantStatus === "shortlisted" && applicant.steps === selectedStep
       );
@@ -105,12 +106,21 @@ const DemoApplicants = () => {
 
     return selectedStatus === applicantStatus;
   });
-
+  
   const handleViewDetails = (id) => {
     router.push(`/demoAppList/demoAppDetails?id=${id}`);
   };
 
-  const startIndex = currentPaginationPage * itemsPerPage;
+  function capitalizeText(text) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  }
+
+  useEffect(() => {
+    const applicants = filteredApplicants;
+    setFilteredApplicantsList(applicants);
+  }, [selectedStatus, selectedStep]);
+
+  const startIndex = (currentPaginationPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentPaginatedApplicants = filteredApplicants.slice(
     startIndex,
@@ -136,13 +146,13 @@ const DemoApplicants = () => {
       {!isEditing && (
         <div className="flex-1">
           <ToggleGroup
-            className="flex gap-2 mb-4 justify-start bg-white dark:bg-gray-800 w-fit rounded-full"
+            className="flex gap-0 mb-4 justify-start bg-white dark:bg-gray-800 w-fit rounded-full shadow-sm"
             type="single"
             value={selectedStatus}
             onValueChange={(value) => value && setSelectedStatus(value)}
           >
             <ToggleGroupItem
-              className={`px-6 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+              className={`px-4 py-2 text-sm font-medium rounded-l-full transition-all duration-300 ${
                 selectedStatus === "applied"
                   ? "!text-white dark:!text-blue-900 shadow-md !bg-gray-800 dark:!bg-blue-300"
                   : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-900 dark:text-gray-300"
@@ -153,7 +163,7 @@ const DemoApplicants = () => {
             </ToggleGroupItem>
 
             <ToggleGroupItem
-              className={`px-6 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+              className={`px-6 py-2 text-sm font-medium rounded-none transition-all duration-300 ${
                 selectedStatus === "shortlisted"
                   ? "!text-white dark:!text-yellow-900 shadow-md !bg-gray-800 dark:!bg-yellow-300"
                   : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-900 dark:text-gray-300"
@@ -161,7 +171,7 @@ const DemoApplicants = () => {
               value="shortlisted"
             >
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-2">
+                <DropdownMenuTrigger className="flex items-center justify-between w-full">
                   Shortlisted
                   <ChevronDown
                     className={`w-4 h-4 ${
@@ -172,10 +182,10 @@ const DemoApplicants = () => {
                   />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuItem onSelect={() => setSelectedStep("All")}>
+                  <DropdownMenuItem onSelect={() => setSelectedStep("all")}>
                     <div className="flex items-center justify-between w-full text-sm">
                       <div>All</div>
-                      {selectedStep === "All" && "✔"}
+                      {selectedStep === "all" && "✔"}
                     </div>
                   </DropdownMenuItem>
                   {steps.map((step) => (
@@ -184,7 +194,7 @@ const DemoApplicants = () => {
                       onSelect={() => setSelectedStep(step)}
                     >
                       <div className="flex items-center justify-between w-full gap-4 text-sm">
-                        <div>{step}</div>
+                        <div>{capitalizeText(step)}</div>
                         {selectedStep === step && "✔"}
                       </div>
                     </DropdownMenuItem>
@@ -194,7 +204,7 @@ const DemoApplicants = () => {
             </ToggleGroupItem>
 
             <ToggleGroupItem
-              className={`px-6 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+              className={`px-6 py-2 text-sm font-medium rounded-r-full transition-all duration-300 ${
                 selectedStatus === "hired"
                   ? "!text-white dark:!text-emerald-900 shadow-md !bg-gray-800 dark:!bg-emerald-300"
                   : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-900 dark:text-gray-300"

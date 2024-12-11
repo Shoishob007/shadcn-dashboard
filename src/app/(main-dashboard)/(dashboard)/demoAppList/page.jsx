@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
@@ -23,10 +24,10 @@ const socialMediaIcons = {
 };
 
 const steps = [
-  "Screening Test",
-  "Aptitude Test",
-  "Technical Test",
-  "Interview",
+  "screening test",
+  "aptitude test",
+  "technical test",
+  "interview",
 ];
 
 const calculateTotalExperience = (experiences) => {
@@ -48,10 +49,10 @@ const ApplicantsList = () => {
   const searchParams = useSearchParams();
   const jobId = searchParams.get("jobId");
   const itemsPerPage = 9;
-  const [currentPaginationPage, setCurrentPaginationPage] = useState(0);
+  const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
   const [filteredApplicantsList, setFilteredApplicantsList] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("applied");
-  const [selectedStep, setSelectedStep] = useState("All");
+  const [selectedStep, setSelectedStep] = useState("");
   const [currentJob, setCurrentJob] = useState(null);
 
   useEffect(() => {
@@ -70,7 +71,7 @@ const ApplicantsList = () => {
     }))
   );
 
-  console.log(allApplicants);
+  // console.log(allApplicants);
 
   // Filter logic
   const filteredApplicants = allApplicants.filter((applicant) => {
@@ -85,11 +86,11 @@ const ApplicantsList = () => {
       );
     }
 
-    if (selectedStatus === "shortlisted" && selectedStep === "All") {
+    if (selectedStatus === "shortlisted" && selectedStep === "all") {
       return applicantStatus === "shortlisted";
     }
 
-    if (selectedStatus === "shortlisted" && selectedStep !== "All") {
+    if (selectedStatus === "shortlisted" && selectedStep !== "all") {
       return (
         applicantStatus === "shortlisted" && applicant.steps === selectedStep
       );
@@ -105,12 +106,16 @@ const ApplicantsList = () => {
     router.push(`/demoAppList/demoAppDetails?id=${id}`);
   };
 
+  function capitalizeText(text) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  }
+
   useEffect(() => {
     const applicants = filteredApplicants;
     setFilteredApplicantsList(applicants);
-  }, [selectedStatus, selectedStep, filteredApplicants]);
+  }, [selectedStatus, selectedStep]);
 
-  const startIndex = currentPaginationPage * itemsPerPage;
+  const startIndex = (currentPaginationPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentPaginatedApplicants = filteredApplicants.slice(
     startIndex,
@@ -124,13 +129,13 @@ const ApplicantsList = () => {
     <div className="space-y-6">
       <div className="flex-1">
         <ToggleGroup
-          className="flex gap-2 mb-4 justify-start bg-white dark:bg-gray-800 w-fit rounded-full"
+          className="flex gap-0 mb-4 justify-start bg-white dark:bg-gray-800 w-fit rounded-full shadow-sm"
           type="single"
           value={selectedStatus}
           onValueChange={(value) => value && setSelectedStatus(value)}
         >
           <ToggleGroupItem
-            className={`px-6 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+            className={`px-6 py-2 text-sm font-medium rounded-l-full transition-all duration-300 ${
               selectedStatus === "applied"
                 ? "!text-white dark:!text-blue-900 shadow-md !bg-gray-800 dark:!bg-blue-300"
                 : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-900 dark:text-gray-300"
@@ -141,7 +146,7 @@ const ApplicantsList = () => {
           </ToggleGroupItem>
 
           <ToggleGroupItem
-            className={`px-6 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+            className={`px-4 py-2 text-sm font-medium rounded-none transition-all duration-300 ${
               selectedStatus === "shortlisted"
                 ? "!text-white dark:!text-yellow-900 shadow-md !bg-gray-800 dark:!bg-yellow-300"
                 : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-900 dark:text-gray-300"
@@ -149,7 +154,7 @@ const ApplicantsList = () => {
             value="shortlisted"
           >
             <DropdownMenu className="min-w-40">
-              <DropdownMenuTrigger className="flex items-center gap-2">
+              <DropdownMenuTrigger className="flex items-center justify-between w-full">
                 Shortlisted
                 <ChevronDown
                   className={`w-4 h-4 ${
@@ -161,12 +166,12 @@ const ApplicantsList = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem
-                  key="All"
-                  onSelect={() => setSelectedStep("All")}
+                  key="all"
+                  onSelect={() => setSelectedStep("all")}
                 >
                   <div className="flex items-center justify-between w-full text-sm">
                     <div>All</div>
-                    {selectedStep === "All" && "✔"}
+                    {selectedStep === "all" && "✔"}
                   </div>
                 </DropdownMenuItem>
                 {steps.map((step) => (
@@ -175,7 +180,7 @@ const ApplicantsList = () => {
                     onSelect={() => setSelectedStep(step)}
                   >
                     <div className="flex items-center justify-between w-full gap-4 text-sm">
-                      <div>{step}</div>
+                      <div>{capitalizeText(step)}</div>
                       <div>{selectedStep === step && "✔"}</div>
                     </div>
                   </DropdownMenuItem>
@@ -185,7 +190,7 @@ const ApplicantsList = () => {
           </ToggleGroupItem>
 
           <ToggleGroupItem
-            className={`px-6 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+            className={`px-6 py-2 text-sm font-medium rounded-r-full transition-all duration-300 ${
               selectedStatus === "hired"
                 ? "!text-white dark:!text-emerald-900 shadow-md !bg-gray-800 dark:!bg-emerald-300"
                 : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-900 dark:text-gray-300"
@@ -239,7 +244,7 @@ const ApplicantsList = () => {
                         {applicant.status
                           ? applicant.status.charAt(0).toUpperCase() +
                             applicant.status.slice(1)
-                          : "Applied"}
+                          : "applied"}
                       </div>
                     </div>
                   </div>
