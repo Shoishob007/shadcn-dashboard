@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const paragraphStyle = {
   WebkitLineClamp: 2,
@@ -11,6 +11,14 @@ const paragraphStyle = {
 
 const ProfileAbout = () => {
   const [isParagraphOpen, setIsParagraphOpen] = useState(false);
+  const [showReadMoreBtn, setShowReadMoreBtn] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    // console.log(ref.current.scrollHeight, ref.current.clientHeight);
+    if (ref.current) {
+      setShowReadMoreBtn(ref.current.scrollHeight !== ref.current.clientHeight);
+    }
+  }, []);
 
   return (
     <section className="">
@@ -25,6 +33,7 @@ const ProfileAbout = () => {
           <p
             style={isParagraphOpen ? null : paragraphStyle}
             className="text-xs text-[#383838]"
+            ref={ref}
           >
             I'm Emam Khalid Jion, a self-employed MERN Stack Developer with a
             passion for crafting dynamic, scalable, and user-friendly web
@@ -39,12 +48,14 @@ const ProfileAbout = () => {
             take on new opportunities that allow me to grow and contribute to
             impactful projects.
           </p>
-          <span
-            onClick={() => setIsParagraphOpen(!isParagraphOpen)}
-            className="text-blue-600 text-xs hover:underline cursor-pointer"
-          >
-            {isParagraphOpen ? "Read less" : "Read more"}
-          </span>
+          {showReadMoreBtn && (
+            <span
+              onClick={() => setIsParagraphOpen(!isParagraphOpen)}
+              className="text-blue-600 text-xs hover:underline cursor-pointer"
+            >
+              {isParagraphOpen ? "Read less" : "Read more"}
+            </span>
+          )}
         </div>
       </div>
     </section>

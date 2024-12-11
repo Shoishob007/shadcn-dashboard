@@ -40,6 +40,24 @@
           "title": "Node.js",
           "updatedAt": "2024-10-26T13:02:20.488Z",
           "createdAt": "2024-10-26T13:02:20.488Z"
+        },
+        {
+          "id": "a1e18457-0a76-448e-8d31-36955bb96d22",
+          "title": "Next.js",
+          "updatedAt": "2024-10-26T13:02:20.488Z",
+          "createdAt": "2024-10-26T13:02:20.488Z"
+        },
+        {
+          "id": "a1e18457-0a76-448e-8d31-36955bb96d23",
+          "title": "Typescript",
+          "updatedAt": "2024-10-26T13:02:20.488Z",
+          "createdAt": "2024-10-26T13:02:20.488Z"
+        },
+        {
+          "id": "a1e18457-0a76-448e-8d31-36955bb96d24",
+          "title": "Redux",
+          "updatedAt": "2024-10-26T13:02:20.488Z",
+          "createdAt": "2024-10-26T13:02:20.488Z"
         }
       ],
       "name": "Emam Khalid Jion",
@@ -88,7 +106,7 @@
       "experiences": [
         {
           "id": "672078b2a6ec3f270c70f69d",
-          "companyName": "LEADS Corporation",
+          "companyName": "Fintechhub Limited",
           "yearOfExperience": 5,
           "beginning": "2014-10-16T12:00:00.000Z",
           "ending": "2015-10-15T12:00:00.000Z",
@@ -119,8 +137,8 @@
           "id": "672078b2a6ec3f270c70f69e",
           "instituteName": "University of Liberal Arts Bangladesh",
           "duration": 4,
-          "beginning": "2015-01-01T12:00:00.000Z",
-          "ending": "2019-01-01T12:00:00.000Z",
+          "beginning": "2019-01-01T12:00:00.000Z",
+          "ending": "2024-06-08T12:00:00.000Z",
           "fieldOfStudy": {
             "id": "530d77dc-d325-47b9-b363-c7ad66283881",
             "title": "CSE",
