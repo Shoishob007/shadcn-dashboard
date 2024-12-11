@@ -33,13 +33,14 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
   const form = useForm({
     defaultValues: {
       jobStatus: initialData?.jobStatus ?? true,
-      publishDate: initialData?.publishDate ?? new Date().toISOString().split("T")[0],
+      publishDate:
+        initialData?.publishDate ?? new Date().toISOString().split("T")[0],
       skills: initialData?.skills ?? [],
       fieldOfStudy: initialData?.fieldOfStudy ?? [],
       degreeLevel: initialData?.degreeLevel ?? "",
-      ...initialData || {
+      ...(initialData || {
         jobStatus: true,
-      },
+      }),
     },
   });
 
@@ -118,7 +119,7 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
   return (
     <Card className="w-full max-w-5xl mx-auto p-6">
       <CardHeader className="text-center p-4">
-      <CardTitle className="text-lg sm:text-2xl font-semibold">
+        <CardTitle className="text-lg sm:text-2xl font-semibold">
           {isEditMode ? "Edit Your Job" : "Create New Job"}
         </CardTitle>
         <CardDescription className="text-xs sm:text-sm">
@@ -129,10 +130,7 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent>
-            <Tabs
-              value={tabs[currentTab]}
-              className="space-y-4"
-            >
+            <Tabs value={tabs[currentTab]} className="space-y-4">
               <TabsList className="grid grid-cols-4 gap-4 dark:bg-gray-900">
                 {/* Displaying only icons only on small screens */}
                 {tabs.map((tab, index) => (
@@ -192,8 +190,7 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
                   Next
                 </Button>
               ) : (
-                <Button                   className="px-3 py-1"
-                type="submit">
+                <Button className="px-3 py-1" type="submit">
                   {isEditMode ? "Update" : "Create"}
                 </Button>
               )}

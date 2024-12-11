@@ -5,7 +5,14 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { formatRelativeDate } from "@/app/utils/formatRelativeDate";
-import { BriefcaseBusiness, CalendarDays, Dot, Plus } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  CalendarDays,
+  Clock,
+  Dot,
+  Plus,
+  UserCog,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { JobFilters } from "@/components/filters/JobFilters";
 import { documents } from "./components/jobData";
@@ -130,24 +137,34 @@ const JobList = () => {
                     </div>
                     <div className="text-gray-600 text-[10px] md:text-xs md:flex md:flex-col gap-2 md:gap-4 dark:text-gray-300 hidden">
                       <div>
-                        <div className="flex flex-wrap md:justify-start gap-1 w-full max-w-[300px]">
+                        <div className="flex flex-wrap md:justify-start gap-1 w-full max-w-[350px]">
                           <Badge
                             variant="secondary"
                             className="dark:bg-gray-900"
                           >
-                            {capitalizeText(document.jobType)}
+                            <div className="flex items-center gap-2">
+                              <BriefcaseBusiness className="h-4 w-4" />
+                              {capitalizeText(document.jobType)}
+                            </div>
+                          </Badge>
+
+                          <Badge
+                            variant="secondary"
+                            className="dark:bg-gray-900"
+                          >
+                            <div className="flex items-center gap-2">
+                              <Clock className="h-4 w-4" />
+                              {capitalizeText(document.employeeType)}
+                            </div>
                           </Badge>
                           <Badge
                             variant="secondary"
                             className="dark:bg-gray-900"
                           >
-                            {capitalizeText(document.employeeType)}
-                          </Badge>
-                          <Badge
-                            variant="secondary"
-                            className="dark:bg-gray-900"
-                          >
-                            {document.jobRole}
+                            <div className="flex items-center gap-2">
+                              <UserCog className="h-4 w-4" />
+                              {capitalizeText(document.jobRole)}
+                            </div>
                           </Badge>
                         </div>
                       </div>
@@ -204,15 +221,34 @@ const JobList = () => {
 
                     <div className="flex items-center justify-center gap-10">
                       <div className="flex md:hidden flex-wrap justify-center gap-1 w-full max-w-[300px]">
-                        <Badge variant="secondary" className="dark:bg-gray-900">
-                          {document.jobType}
-                        </Badge>
-                        <Badge variant="secondary" className="dark:bg-gray-900">
-                          {document.employeeType}
-                        </Badge>
-                        <Badge variant="secondary" className="dark:bg-gray-900">
-                          {document.jobRole}
-                        </Badge>
+                      <Badge
+                            variant="secondary"
+                            className="dark:bg-gray-900"
+                          >
+                            <div className="flex items-center gap-2">
+                              <BriefcaseBusiness className="h-4 w-4" />
+                              {capitalizeText(document.jobType)}
+                            </div>
+                          </Badge>
+
+                          <Badge
+                            variant="secondary"
+                            className="dark:bg-gray-900"
+                          >
+                            <div className="flex items-center gap-2">
+                              <Clock className="h-4 w-4" />
+                              {capitalizeText(document.employeeType)}
+                            </div>
+                          </Badge>
+                          <Badge
+                            variant="secondary"
+                            className="dark:bg-gray-900"
+                          >
+                            <div className="flex items-center gap-2">
+                              <UserCog className="h-4 w-4" />
+                              {capitalizeText(document.jobRole)}
+                            </div>
+                          </Badge>
                       </div>
                       {/* Action Buttons */}
                       <div className="flex space-y-2 flex-col text-xs md:text-md">
@@ -220,8 +256,10 @@ const JobList = () => {
                           variant="ghost"
                           size="sm"
                           className="border border-gray-400"
-                          onClick={() => handleViewApplicantList(document.job.id)}
-                          >
+                          onClick={() =>
+                            handleViewApplicantList(document.job.id)
+                          }
+                        >
                           View All Applicants
                         </Button>
                         <Button

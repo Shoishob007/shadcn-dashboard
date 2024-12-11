@@ -29,7 +29,7 @@ export const documents = {
                     id: 1,
                     name: "Shoishob Al-Baki",
                     status: "shortlisted",
-                    steps: "Aptitude Test",
+                    steps: "aptitude test",
                     CVScore: 50,
                     certifications: [
                         {
@@ -206,7 +206,7 @@ export const documents = {
                     id: 3,
                     name: "Shoikot Arfin",
                     status: "shortlisted",
-                    steps: "technical Test",
+                    steps: "technical test",
                     CVScore: 50,
                     certifications: [
                         {
@@ -500,7 +500,7 @@ export const documents = {
                     id: 6,
                     name: "John Doe",
                     status: "shortlisted",
-                    steps: "Technical Test",
+                    steps: "technical test",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3387&q=80",
@@ -519,7 +519,7 @@ export const documents = {
                     id: 8,
                     name: "Jane Smith",
                     status: "shortlisted",
-                    steps: "Aptitude Test",
+                    steps: "aptitude test",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
@@ -538,7 +538,7 @@ export const documents = {
                     id: 10,
                     name: "Tyler Durden",
                     status: "shortlisted",
-                    steps: "Technical Test",
+                    steps: "technical test",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3540&q=80",
@@ -576,7 +576,7 @@ export const documents = {
                     id: 11,
                     name: "John Doe",
                     status: "shortlisted",
-                    steps: "Interview",
+                    steps: "interview",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3387&q=80",
@@ -595,7 +595,7 @@ export const documents = {
                     id: 13,
                     name: "Jane Smith",
                     status: "shortlisted",
-                    steps: "Screening Test",
+                    steps: "screening test",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
