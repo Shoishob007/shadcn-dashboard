@@ -1,13 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { FileUser, Pencil, Settings, Share2, University } from "lucide-react";
+import { FileUser, Pencil, Settings, University } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import applicant from "../../../../../../public/assests/applicant.png";
 import banner from "../../../../../../public/assests/profile-banner.png";
+import ProfileShareBtn from "./ProfileShareBtn";
 
 const ProfileHeader = ({ profileInfo }) => {
-  // const { name } = profileInfo;
-  console.log(profileInfo);
   return (
     <section>
       <div className="relative">
@@ -46,7 +45,7 @@ const ProfileHeader = ({ profileInfo }) => {
                     </span>
                     <div>
                       {info.educations.map((edu) => (
-                        <p>{edu.instituteName}</p>
+                        <p key={edu.id}>{edu.instituteName}</p>
                       ))}
                     </div>
                   </div>
@@ -63,9 +62,7 @@ const ProfileHeader = ({ profileInfo }) => {
             </div>
             <div className="flex flex-col justify-between">
               <div className="flex gap-3">
-                <Button variant="outline">
-                  <Share2 size={16} />
-                </Button>
+                <ProfileShareBtn profileInfo={profileInfo} />
                 <Button variant="outline">
                   <Settings size={16} />
                 </Button>

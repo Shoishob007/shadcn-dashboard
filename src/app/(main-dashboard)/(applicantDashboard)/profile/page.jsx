@@ -30,11 +30,11 @@ const ApplicantProfile = () => {
         <Separator className="my-6" />
         <Resume />
         <Separator className="my-6" />
-        <Skills />
+        <Skills profileInfo={profileInfo} />
         <Separator className="my-6" />
         <WorkExperience />
         <Separator className="my-6" />
-        <Educations />
+        <Educations profileInfo={profileInfo} />
         <Separator className="my-6" />
         <Projects />
         <Separator className="my-6" />

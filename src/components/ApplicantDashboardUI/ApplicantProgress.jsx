@@ -24,7 +24,7 @@ const ApplicantProgress = ({ currentStepIndex }) => {
             } ${(i + 1 < currentStep || complete) && "complete"}`}
           >
             <div
-              className={`w-7 h-7 text-sm flex z-10 relative bg-slate-700 rounded-full items-center justify-center font-semibold text-white step`}
+              className={`w-7 h-7 text-sm flex z-10 relative bg-black rounded-full items-center justify-center font-semibold text-white step`}
             >
               {i + 1 < currentStep || complete ? (
                 <span className="border border-green-500 w-7 h-7 bg-green-500 text-white rounded-full flex items-center justify-center">
