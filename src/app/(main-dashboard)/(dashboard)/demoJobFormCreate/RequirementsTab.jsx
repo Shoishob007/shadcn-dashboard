@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import dynamic from "next/dynamic";
-import "react-quill/dist/quill.snow.css";
+import "react-quill-new/dist/quill.snow.css";
 import { useSkillsStore } from "@/stores/job-createStore/skillStore";
 import { useDegreeLevelStore } from "@/stores/job-createStore/degreeLevelStore";
 import { useStudyFieldStore } from "@/stores/job-createStore/studyFieldStore";
@@ -19,7 +19,7 @@ import {
 } from "../../../../stores/job-createStore/component/JobCreateData";
 import { Input } from "@/components/ui/input";
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 export function RequirementsTab({ form }) {
   const { skillTags, addSkill, removeSkill, initializeSkills } =
@@ -39,6 +39,8 @@ export function RequirementsTab({ form }) {
   const [degreeSuggestions, setDegreeSuggestions] = useState([]);
   const [studyInputValue, setStudyInputValue] = useState("");
   const [studySuggestions, setStudySuggestions] = useState([]);
+  const [requirementsContent, setRequirementsContent] = useState("");
+
 
   const modules = {
     toolbar: [
@@ -52,7 +54,7 @@ export function RequirementsTab({ form }) {
   // Initializing store values from form default values
   useEffect(() => {
     const defaultValues = form.getValues();
-    console.log("Default Values:", defaultValues);
+    // console.log("Default Values:", defaultValues);
 
     if (defaultValues?.skills?.length > 0) {
       initializeSkills(defaultValues.skills);
@@ -65,7 +67,26 @@ export function RequirementsTab({ form }) {
     if (defaultValues?.fieldOfStudy?.length > 0) {
       initializeFieldOfStudy(defaultValues.fieldOfStudy);
     }
+
+    const requirements = form.getValues("requirements") || [];
+
+    if (Array.isArray(requirements)) {
+      const content = requirements.map(item => `<p>${item}</p>`).join("");
+      setRequirementsContent(content);
+    }
+
   }, [form, initializeSkills, initializeDegrees, initializeFieldOfStudy]);
+
+  const handleRequirementsChange = (content) => {
+    setRequirementsContent(content);
+    
+    const items = content
+      .split('</p>')
+      .map(item => item.replace(/<p>|<br>/g, '').trim())
+      .filter(Boolean);
+    
+    form.setValue("requirements", items);
+  };
 
   // Syncing form values with store state
   useEffect(() => {
@@ -97,6 +118,7 @@ export function RequirementsTab({ form }) {
       setSkillSuggestions([]);
     }
   };
+
 
   const handleDegreeInputChange = (e) => {
     const value = e.target.value;
@@ -156,24 +178,6 @@ export function RequirementsTab({ form }) {
 
   return (
     <div className="space-y-4">
-      {/* <FormField
-        control={form.control}
-        name="requirements"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Job Requirements</FormLabel>
-            <FormControl className="dark:border-gray-300">
-              <Textarea
-                {...field}
-                placeholder="List all job requirements..."
-                className="min-h-[60px]"
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      /> */}
-
       <FormField
         control={form.control}
         name="requirements"
@@ -182,13 +186,14 @@ export function RequirementsTab({ form }) {
             <FormLabel>Job Requirements</FormLabel>
             <FormControl>
               <ReactQuill
-                value={field.value}
-                onChange={field.onChange}
+                value={requirementsContent}
+                onChange={handleRequirementsChange}
                 modules={modules}
                 theme="snow"
                 className="dark:bg-gray-900"
                 placeholder="Detailed Job Requirements..."
               />
+              
             </FormControl>
             <FormMessage />
           </FormItem>

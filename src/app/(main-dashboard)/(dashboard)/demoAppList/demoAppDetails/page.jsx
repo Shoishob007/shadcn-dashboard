@@ -89,7 +89,7 @@ const ApplicantDetails = () => {
 
   return (
     <>
-      <Card className="w-full max-w-5xl mx-auto p-5 rounded-lg bg-white dark:bg-gray-800 grid grid-col-1 sm:grid-cols-3 gap-4 overflow-hidden">
+      <Card className="w-full max-w-5xl mx-auto p-5 rounded-lg bg-white dark:bg-gray-800 grid grid-col-1 sm:grid-cols-3 gap-4 sm:gap-0 md:gap-4 overflow-hidden">
         {/* Left Section */}
         <div className="col-span-2 sm:col-span-1 bg-gray-50 dark:bg-gray-700 flex flex-col items-center justify-between py-6 rounded-lg">
           <div className="flex flex-col items-center">
@@ -202,7 +202,11 @@ const ApplicantDetails = () => {
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Click to change</p>
+                      {isDropdownOpen ? (
+                        <p>Click to close</p>
+                      ) : (
+                        <p>Click to change</p>
+                      )}
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -235,9 +239,9 @@ const ApplicantDetails = () => {
         <div className="col-span-2 grid grid-cols-2 gap-2 px-1 sm:px-5">
           {/* Experiences Section */}
           <div className="col-span-2 sm:col-span-1">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 border w-fit px-2 py-0.5 bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-200 border-black rounded-md">
               <CirclePlus size={16} />{" "}
-              <h3 className="text-md font-semibold mb-1">Experiences</h3>
+              <h3 className="text-sm font-semibold">Experiences</h3>
             </div>
             {experiences.map((exp, index) => (
               <div key={index} className="mb-3 text-sm">
@@ -258,9 +262,9 @@ const ApplicantDetails = () => {
 
           {/* Certification Section */}
           <div className="col-span-2 sm:col-span-1">
-            <div className="cols-span-2 sm:col-span-1 flex items-center gap-2">
+            <div className="cols-span-2 sm:col-span-1 flex items-center gap-2 border w-fit px-2 py-0.5 bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-200 border-black rounded-md">
               <File size={16} />{" "}
-              <h3 className="text-md font-semibold mb-1">Certifications</h3>
+              <h3 className="text-sm font-semibold">Certifications</h3>
             </div>
             {certifications &&
               certifications.map((certificate, index) => (
@@ -286,9 +290,9 @@ const ApplicantDetails = () => {
 
           {/* Education Section */}
           <div className="col-span-2 sm:col-span-1">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 border w-fit px-2 py-0.5 bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-200 border-black rounded-md">
               <GraduationCap size={16} />{" "}
-              <h3 className="text-md font-semibold mb-1">Education</h3>
+              <h3 className="text-sm font-semibold">Education</h3>
             </div>
             {education.map((edu, index) => (
               <div key={index} className="mb-2 text-sm">
@@ -306,9 +310,9 @@ const ApplicantDetails = () => {
           <div className="col-span-2 sm:col-span-1 flex flex-col">
             {/* Academic Activities Section */}
             <div className="">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 border w-fit px-2 py-0.5 bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-200 border-black rounded-md">
                 <NotebookPen size={16} />{" "}
-                <h3 className="text-md font-semibold mb-1">
+                <h3 className="text-sm font-semibold">
                   Academic Activities
                 </h3>
               </div>
@@ -337,9 +341,9 @@ const ApplicantDetails = () => {
 
             {/* Extracurricular Activities */}
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 border w-fit px-2 py-0.5 bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-200 border-black rounded-md">
                 <SquareActivity size={16} />{" "}
-                <h3 className="text-md font-semibold mb-1">
+                <h3 className="text-sm font-semibold">
                   Extracurricular Activities
                 </h3>
               </div>
@@ -358,9 +362,9 @@ const ApplicantDetails = () => {
 
           {/* Skills Section */}
           <div className="flex flex-col items-start col-span-2 gap-2">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 border w-fit px-2 py-0.5 bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-200 border-black rounded-md">
               <Settings size={20} />{" "}
-              <h3 className="text-md font-medium w-full">Skills</h3>
+              <h3 className="text-sm font-medium w-full">Skills</h3>
             </div>
             <div className="flex flex-wrap gap-2 ">
               {skills.map((skill, index) => (

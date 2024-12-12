@@ -6,13 +6,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import dynamic from "next/dynamic";
-import "react-quill/dist/quill.snow.css";
+import "react-quill-new/dist/quill.snow.css";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 export function LocationTab({ form }) {
   const modules = {
@@ -23,6 +22,10 @@ export function LocationTab({ form }) {
       ["clean"],
     ],
   };
+
+  const contactInfo = form.getValues("contactInfo");
+  // console.log(contactInfo)
+
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 gap-4">
@@ -100,12 +103,12 @@ export function LocationTab({ form }) {
             <FormLabel>Additional Contact Information</FormLabel>
             <FormControl>
               <ReactQuill
-                value={field.value}
+                value={field.value || contactInfo}
                 onChange={field.onChange}
                 modules={modules}
                 theme="snow"
                 className="dark:bg-gray-900"
-                placeholder="Detailed Job Requirements..."
+                placeholder="Additional contact info..."
               />
             </FormControl>
             <FormMessage />
