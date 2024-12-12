@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { SquarePen } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { documents as jobDocuments } from "../components/jobData";
+import dynamic from "next/dynamic";
 import CreateJobForm from "../../demoJobFormCreate/page";
 
 const JobDetailsPage = () => {

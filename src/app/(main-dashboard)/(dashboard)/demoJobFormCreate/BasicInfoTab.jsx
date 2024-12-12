@@ -8,17 +8,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import dynamic from "next/dynamic";
-import "react-quill/dist/quill.snow.css";
-import { useState } from "react";
+import "react-quill-new/dist/quill.snow.css";
+import { useEffect, useState } from "react";
 import { StepsList } from "./components/List";
 import { stepsData } from "./components/stepsData";
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 export function BasicInfoTab({ form }) {
   const [steps, setSteps] = useState([""]);
   const [inputValue, setInputValue] = useState("");
   const [selectedSteps, setSelectedSteps] = useState([]);
+  const [responsibilitiesContent, setResponsibilitiesContent] = useState("");
+  const [benefitsContent, setBenefitsContent] = useState("");
 
   const modules = {
     toolbar: [
@@ -28,23 +30,41 @@ export function BasicInfoTab({ form }) {
       ["clean"],
     ],
   };
+  useEffect(() => {
+    const responsibilities = form.getValues("responsibilities") || [];
+    const employeeBenefits = form.getValues("employeeBenefits") || [];
 
-  const handleStepChange = (index, value) => {
-    const newSteps = [...steps];
-    newSteps[index] = value;
-    setSteps(newSteps);
-  };
-
-  const handleKeyDown = (e, index) => {
-    if (e.key === "Enter" && steps[index].trim() !== "") {
-      const newSteps = [...steps];
-      newSteps.push("");
-      setSteps(newSteps);
+    if (Array.isArray(responsibilities)) {
+      const content = responsibilities.map(item => `<p>${item}</p>`).join("");
+      setResponsibilitiesContent(content);
     }
+
+    if (Array.isArray(employeeBenefits)) {
+      const content = employeeBenefits.map(item => `<p>${item}</p>`).join("");
+      setBenefitsContent(content);
+    }
+  }, [form]);
+
+  const handleResponsibilitiesChange = (content) => {
+    setResponsibilitiesContent(content);
+    
+    const items = content
+      .split('</p>')
+      .map(item => item.replace(/<p>|<br>/g, '').trim())
+      .filter(Boolean);
+    
+    form.setValue("responsibilities", items);
   };
 
-  const handleStepSelection = (step) => {
-    setInputValue(step);
+  const handleBenefitsChange = (content) => {
+    setBenefitsContent(content);
+    
+    const items = content
+      .split('</p>')
+      .map(item => item.replace(/<p>|<br>/g, '').trim())
+      .filter(Boolean);
+    
+    form.setValue("employeeBenefits", items);
   };
 
   return (
@@ -94,8 +114,8 @@ export function BasicInfoTab({ form }) {
             <FormLabel>Employee Benefits</FormLabel>
             <FormControl>
               <ReactQuill
-                value={field.value}
-                onChange={field.onChange}
+                value={benefitsContent}
+                onChange={handleBenefitsChange}
                 modules={modules}
                 theme="snow"
                 className="dark:bg-gray-800 dark:text-gray-300"
@@ -115,13 +135,13 @@ export function BasicInfoTab({ form }) {
           <FormItem>
             <FormLabel>Job Responsibilities</FormLabel>
             <FormControl>
-              <ReactQuill
-                value={field.value}
-                onChange={field.onChange}
+            <ReactQuill
+                value={responsibilitiesContent}
+                onChange={handleResponsibilitiesChange}
                 modules={modules}
                 theme="snow"
+                className="dark:bg-gray-800 dark:text-gray-300"
                 placeholder="Detailed Job Responsibilities..."
-                className=" dark:bg-gray-800" 
               />
 
             </FormControl>

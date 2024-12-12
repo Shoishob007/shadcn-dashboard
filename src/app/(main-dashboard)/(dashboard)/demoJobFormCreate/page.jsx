@@ -33,6 +33,11 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
   const form = useForm({
     defaultValues: {
       jobStatus: initialData?.jobStatus ?? true,
+      description: initialData?.description || "",
+      responsibilities: initialData?.responsibilities || [],
+      employeeBenefits: initialData?.employeeBenefits || [],
+      requirements: initialData?.requirements || [],
+      contactInfo: initialData?.contactInfo || "",
       publishDate:
         initialData?.publishDate ?? new Date().toISOString().split("T")[0],
       skills: initialData?.skills ?? [],

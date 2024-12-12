@@ -32,12 +32,6 @@ export default function SideNavbar() {
     );
   }
 
-  const router = useRouter();
-  const handleLogOut = async () => {
-    await signOut();
-    router.push("/login");
-  };
-
   // Determine which links to display based on the current role
   const filteredLinks =
     currentRole === "applicant"

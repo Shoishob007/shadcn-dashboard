@@ -10,6 +10,7 @@ import {
   CalendarDays,
   Clock,
   Dot,
+  Ellipsis,
   Plus,
   UserCog,
 } from "lucide-react";
@@ -18,10 +19,19 @@ import { JobFilters } from "@/components/filters/JobFilters";
 import { documents } from "./components/jobData";
 import { filterJobs } from "../../../utils/filters";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import CreateJobForm from "../demoJobFormCreate/page";
 
 const JobList = () => {
   const router = useRouter();
-
+  const [isEditing, setIsEditing] = useState(false);
+  const [id, setId] = useState(null)
+  const[job, setJob] = useState("")
   const [filters, setFilters] = useState({
     searchQuery: "",
     status: "all",
@@ -59,8 +69,35 @@ const JobList = () => {
     router.push("/demoJobFormCreate");
   };
 
+  const handleEditJob = (job) => {
+    console.log(job)
+    setId(job.job.id)
+    setJob(job)
+    setIsEditing(true)
+    
+  };
+
+  const handleShareJob = () => {
+    console.log("Share Job clicked");
+  };
+
+  const handleDeleteJob = () => {
+    console.log("Delete Job clicked");
+  };
+
   function capitalizeText(text) {
     return text.charAt(0).toUpperCase() + text.slice(1);
+  }
+
+  if (isEditing) {
+    return (
+      <CreateJobForm
+        jobId={id}
+        initialData={job}
+        isEditing={isEditing}
+        onClose={() => setIsEditing(false)}
+      />
+    );
   }
 
   return (
@@ -83,8 +120,31 @@ const JobList = () => {
             <>
               <Card
                 key={document.id}
-                className="flex flex-col mx-auto md:flex-row items-center justify-between py-6 md:p-6 px-2 rounded-lg transition-shadow gap-6 md:gap-4 max-w-4xl"
+                className="flex flex-col relative mx-auto md:flex-row items-center justify-between py-6 md:p-6 px-2 rounded-lg transition-shadow gap-6 md:gap-4 max-w-4xl"
               >
+                {/* Dropdown Menu */}
+                <div className="absolute top-2 right-2">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Ellipsis className="cursor-pointer h-4 sm:h-5 w-4 sm:w-5" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-40">
+                      <DropdownMenuItem onClick={() => handleEditJob(document)}>
+                        Edit Job
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleShareJob}>
+                        Share Job
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={handleDeleteJob}
+                        className="hover:!text-red-600"
+                      >
+                        Delete Job
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+
                 <div className="jobListCard flex items-center justify-center md:justify-start w-full md:w-fit">
                   <div className="flex flex-col gap-3 md:gap-5">
                     <div className="flex space-x-0 md:space-x-3 items-start">
@@ -211,7 +271,7 @@ const JobList = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-6 md:gap-8 px-2 md:px-0">
+                <div className="flex items-center gap-6 md:gap-0 px-2 md:px-0">
                   <div className="flex flex-col gap-5 justify-center mt-2">
                     <div className="flex justify-center md:justify-start sm:flex-row text-emerald-600 font-semibold">
                       <div className="flex flex-row items-center justify-center w-full sm:mr-4">
@@ -221,37 +281,28 @@ const JobList = () => {
 
                     <div className="flex items-center justify-center gap-10">
                       <div className="flex md:hidden flex-wrap justify-center gap-1 w-full max-w-[300px]">
-                      <Badge
-                            variant="secondary"
-                            className="dark:bg-gray-900"
-                          >
-                            <div className="flex items-center gap-2">
-                              <BriefcaseBusiness className="h-4 w-4" />
-                              {capitalizeText(document.jobType)}
-                            </div>
-                          </Badge>
+                        <Badge variant="secondary" className="dark:bg-gray-900">
+                          <div className="flex items-center gap-2">
+                            <BriefcaseBusiness className="h-4 w-4" />
+                            {capitalizeText(document.jobType)}
+                          </div>
+                        </Badge>
 
-                          <Badge
-                            variant="secondary"
-                            className="dark:bg-gray-900"
-                          >
-                            <div className="flex items-center gap-2">
-                              <Clock className="h-4 w-4" />
-                              {capitalizeText(document.employeeType)}
-                            </div>
-                          </Badge>
-                          <Badge
-                            variant="secondary"
-                            className="dark:bg-gray-900"
-                          >
-                            <div className="flex items-center gap-2">
-                              <UserCog className="h-4 w-4" />
-                              {capitalizeText(document.jobRole)}
-                            </div>
-                          </Badge>
+                        <Badge variant="secondary" className="dark:bg-gray-900">
+                          <div className="flex items-center gap-2">
+                            <Clock className="h-4 w-4" />
+                            {capitalizeText(document.employeeType)}
+                          </div>
+                        </Badge>
+                        <Badge variant="secondary" className="dark:bg-gray-900">
+                          <div className="flex items-center gap-2">
+                            <UserCog className="h-4 w-4" />
+                            {capitalizeText(document.jobRole)}
+                          </div>
+                        </Badge>
                       </div>
                       {/* Action Buttons */}
-                      <div className="flex space-y-2 flex-col text-xs md:text-md">
+                      <div className="flex space-y-2 md:space-y-0 md:space-x-1 flex-col md:flex-row text-xs md:text-md">
                         <Button
                           variant="ghost"
                           size="sm"
