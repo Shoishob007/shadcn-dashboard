@@ -204,7 +204,7 @@ export const documents = {
                 },
                 {
                     id: 3,
-                    name: "Shoikot Arfin",
+                    name: "Summa Amin",
                     status: "shortlisted",
                     steps: "technical test",
                     CVScore: 50,
@@ -293,7 +293,7 @@ export const documents = {
                 },
                 {
                     id: 4,
-                    name: "Raju",
+                    name: "Shejuti",
                     status: "applied",
                     CVScore: 50,
                     certifications: [

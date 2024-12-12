@@ -20,6 +20,12 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StepSelector } from "./components/StepSelector";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const ApplicantDetails = () => {
   const searchParams = useSearchParams();
@@ -181,16 +187,25 @@ const ApplicantDetails = () => {
               />
             ) : applicant.status === "shortlisted" ? (
               <div className="flex gap-2 items-center">
-                <div
-                  className="text-[10px] bg-yellow-100 text-yellow-600 border border-yellow-500 font-medium dark:border-gray-600 dark:bg-gray-100 dark:text-gray-700 dark:hover:bg-gray-200 p-1.5 rounded-md cursor-pointer"
-                  onClick={toggleDropdown}
-                >
-                  {schedule.date
-                    ? `${selectedStep}: ${schedule.date.toLocaleDateString()} at ${
-                        schedule.time
-                      }`
-                    : `Appearing ${selectedStep || "Step not defined"}`}
-                </div>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div
+                        className="text-[10px] bg-yellow-100 text-yellow-600 border border-yellow-500 font-medium dark:border-gray-600 dark:bg-gray-100 dark:text-gray-700 dark:hover:bg-gray-200 p-1.5 rounded-md cursor-pointer"
+                        onClick={toggleDropdown}
+                      >
+                        {schedule.date
+                          ? `${selectedStep}: ${schedule.date.toLocaleDateString()} at ${
+                              schedule.time
+                            }`
+                          : `Appearing ${selectedStep || "Step not defined"}`}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Click to change</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
 
                 {isDropdownOpen && (
                   <StepSelector
