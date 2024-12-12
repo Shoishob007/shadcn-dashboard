@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  CalendarDays,
-  SquarePen,
-  Users,
-  BriefcaseBusiness,
-  Clock,
-  UserCog,
-} from "lucide-react";
+import { CalendarDays, SquarePen, Users, BriefcaseBusiness, Clock, UserCog } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import CreateJobForm from "../../demoJobFormCreate/page";
 
@@ -27,11 +20,12 @@ const JobInfoCard = ({ job, isEditing, setIsEditing }) => {
         initialData={job}
         isEditing={isEditing}
         onClose={() => {
-          setIsEditing(false);
+          setIsEditing(false); 
         }}
       />
     );
   }
+
 
   return (
     <Card className="p-6 mb-6 w-full bg-white dark:bg-gray-800 flex justify-between">
@@ -60,39 +54,38 @@ const JobInfoCard = ({ job, isEditing, setIsEditing }) => {
           </div>
           <div
             className="flex gap-2 items-center p-1 rounded-sm cursor-pointer md:mr-2"
-            onClick={() => {
-              setIsEditing(true);
-            }}
+            onClick={() => { setIsEditing(true)}}
           >
             <SquarePen className="dark:text-gray-300 h-4 w-4" />{" "}
             <span className="text-[10px] sm:text-sm">Edit Job</span>
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2 justify-between">
-          <div className="flex flex-wrap gap-2 ">
+        <div className="grid grid-cols-2">
+          <div className="flex flex-wrap gap-2 w-fit">
             {job.jobType && (
               <Badge variant="secondary" className="dark:bg-gray-900">
-                <div className="flex items-center gap-2">
-                  <BriefcaseBusiness className="h-4 w-4" />
-                  {capitalizeText(job.jobType)}
+                <div className="flex items-center gap-2 w-fit">
+                  <BriefcaseBusiness className="h-4 w-4"/>
+                {capitalizeText(job.jobType)}
                 </div>
               </Badge>
             )}
             {job.employeeType && (
               <Badge variant="secondary" className="dark:bg-gray-900">
                 <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
+                  <Clock className="h-4 w-4"/>
                   {capitalizeText(job.employeeType)}
-                </div>
+                  </div>
+                  
               </Badge>
             )}
             {job.jobRole && (
               <Badge variant="secondary" className="dark:bg-gray-900">
                 <div className="flex items-center gap-2">
-                  <UserCog className="h-4 w-4" />
+                  <UserCog className="h-4 w-4"/>
                   {capitalizeText(job.jobRole)}
-                </div>
+                  </div>
               </Badge>
             )}
           </div>

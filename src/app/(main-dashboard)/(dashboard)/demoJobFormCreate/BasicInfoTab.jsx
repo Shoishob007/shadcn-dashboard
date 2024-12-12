@@ -115,7 +115,6 @@ export function BasicInfoTab({ form }) {
           <FormItem>
             <FormLabel>Job Responsibilities</FormLabel>
             <FormControl>
-
               <ReactQuill
                 value={field.value}
                 onChange={field.onChange}

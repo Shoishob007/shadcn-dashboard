@@ -261,7 +261,7 @@ export const applicantsData = [
   {
     id: 3,
     jobTitle: "Human Resources Manager",
-    applicantName: "Shoikot Arfin",
+    applicantName: "Summa Amin",
     applicantEmail: "arfin@outlook.com",
     applicant: {
       id: "9c1b3703-7af0-43c2-a83b-dbc9ebad8935",
@@ -377,7 +377,7 @@ export const applicantsData = [
   {
     id: 4,
     jobTitle: "Marketing Manager",
-    applicantName: "Raju",
+    applicantName: "Shejuti",
     applicantEmail: "shoishob@hotmail.com",
     applicant: {
       id: "9c1b3703-7af0-43c2-a83b-dbc9ebad8935",
