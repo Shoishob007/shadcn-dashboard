@@ -33,7 +33,8 @@ export default function ResumeUploader() {
   const handleUpload = () => {
     if (selectedFile) {
       alert(`Uploaded file: ${selectedFile.name}`);
-      console.log("File URL:", fileURL); // URL console e dekhabo
+      console.log("File URL:", fileURL);
+      console.log("File:", selectedFile);
     } else {
       alert("Please select a file to upload.");
     }
