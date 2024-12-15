@@ -84,7 +84,7 @@ export const SidebarLinks = () => {
     },
     {
       title: "Profile",
-      href: "/profile-demo",
+      href: "/profile",
       icon: UsersRound,
       variant: "ghost",
     },
