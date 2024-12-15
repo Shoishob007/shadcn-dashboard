@@ -1,17 +1,20 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Pencil } from "lucide-react";
+import { useState } from "react";
+import BasicDetails from "./(UpdateProfile)/BasicDetails";
+import ResumeUploader from "./(UpdateProfile)/ResumeUploader";
+import UpdateAbout from "./(UpdateProfile)/UpdateAbout";
+import UpdateEducation from "./(UpdateProfile)/UpdateEducation";
+import UpdateExperience from "./(UpdateProfile)/UpdateExperience";
+import UpdateProjects from "./(UpdateProfile)/UpdateProjects";
+import UpdateSkills from "./(UpdateProfile)/UpdateSkills";
+import UpdateSocials from "./(UpdateProfile)/UpdateSocials";
 
 const ProfileUpdatePage = () => {
+  const [activeSection, setActiveSection] = useState("basic");
   return (
     <div className="">
       <Sheet>
@@ -23,17 +26,90 @@ const ProfileUpdatePage = () => {
             <span>Edit Profile</span>
           </Button>
         </SheetTrigger>
-        <SheetContent
-          side="bottom"
-          className="w-full h-full p-4 bg-white shadow-lg border-t border-gray-300"
-        >
-          <SheetHeader>
-            <SheetTitle className="text-lg font-semibold ">
-              Edit Your Profile
-            </SheetTitle>
-            <SheetDescription className="text-sm text-gray-600"></SheetDescription>
-          </SheetHeader>
-          <div className="py-4 bg-[#f6f6f6] h-full w-full px-4">content </div>
+
+        <SheetContent side="bottom" className="w-full h-full p-0">
+          <div className="flex h-full">
+            {/* Sidebar */}
+            <div className="w-72 bg-gray-100 border-r">
+              <nav className="flex flex-col p-4 gap-2">
+                <Button
+                  variant={activeSection === "basic" ? "default" : "outline"}
+                  className="justify-start"
+                  onClick={() => setActiveSection("basic")}
+                >
+                  Basic Details
+                </Button>
+                <Button
+                  variant={activeSection === "resume" ? "default" : "outline"}
+                  className="justify-start"
+                  onClick={() => setActiveSection("resume")}
+                >
+                  Resume
+                </Button>
+                <Button
+                  variant={activeSection === "about" ? "default" : "outline"}
+                  className="justify-start"
+                  onClick={() => setActiveSection("about")}
+                >
+                  About
+                </Button>
+                <Button
+                  variant={activeSection === "skills" ? "default" : "outline"}
+                  className="justify-start"
+                  onClick={() => setActiveSection("skills")}
+                >
+                  Skills
+                </Button>
+                <Button
+                  variant={
+                    activeSection === "education" ? "default" : "outline"
+                  }
+                  className="justify-start"
+                  onClick={() => setActiveSection("education")}
+                >
+                  Education
+                </Button>
+                <Button
+                  variant={
+                    activeSection === "experience" ? "default" : "outline"
+                  }
+                  className="justify-start"
+                  onClick={() => setActiveSection("experience")}
+                >
+                  Work Experience
+                </Button>
+                <Button
+                  variant={activeSection === "socials" ? "default" : "outline"}
+                  className="justify-start"
+                  onClick={() => setActiveSection("socials")}
+                >
+                  Social Links
+                </Button>
+                <Button
+                  variant={activeSection === "projects" ? "default" : "outline"}
+                  className="justify-start"
+                  onClick={() => setActiveSection("projects")}
+                >
+                  Projects
+                </Button>
+              </nav>
+            </div>
+
+            {/* Right Content */}
+            <div className="w-2/3 p-6">
+              {activeSection === "basic" && <BasicDetails />}
+              {activeSection === "resume" && <ResumeUploader />}
+
+              {activeSection === "about" && <UpdateAbout />}
+              {activeSection === "skills" && <UpdateSkills />}
+
+              {activeSection === "education" && <UpdateEducation />}
+
+              {activeSection === "experience" && <UpdateExperience />}
+              {activeSection === "socials" && <UpdateSocials />}
+              {activeSection === "projects" && <UpdateProjects />}
+            </div>
+          </div>
         </SheetContent>
       </Sheet>
     </div>
