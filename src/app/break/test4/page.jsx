@@ -1,9 +1,11 @@
-import ShareSheet from "./components/ShareSheet";
+import ProfileUpdateSidebar from "./components/ProfileUpdateSidebar";
 
 const SharePages = () => {
-  return <div>
-    <ShareSheet/>
-  </div>;
+  return (
+    <div>
+      <ProfileUpdateSidebar />
+    </div>
+  );
 };
 
 export default SharePages;

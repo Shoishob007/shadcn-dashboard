@@ -5,6 +5,7 @@ import Link from "next/link";
 import applicant from "../../../../../../public/assests/applicant.png";
 import banner from "../../../../../../public/assests/profile-banner.png";
 import ProfileShareBtn from "./ProfileShareBtn";
+import ProfileUpdatePage from "./ProfileUpdatePage";
 
 const ProfileHeader = ({ profileInfo }) => {
   return (
@@ -68,12 +69,7 @@ const ProfileHeader = ({ profileInfo }) => {
                 </Button>
               </div>
               <div>
-                <Button>
-                  <span>
-                    <Pencil />
-                  </span>
-                  <span>Edit Profile</span>
-                </Button>
+                <ProfileUpdatePage/>
               </div>
             </div>
           </div>

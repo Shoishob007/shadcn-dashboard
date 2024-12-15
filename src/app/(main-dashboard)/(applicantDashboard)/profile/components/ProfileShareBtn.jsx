@@ -56,7 +56,9 @@ const ProfileShareBtn = ({ profileInfo }) => {
               })}
             </div>
             <div className="mt-[30px]">
-              <h1 className="text-[#727272] text-[12px]">Share by Link</h1>
+              <h1 className="text-[#727272] text-[12px] text-left">
+                Share by Link
+              </h1>
               <div className="mt-2.5 flex items-center justify-between border border-gray-300 rounded-md p-2 bg-gray-50">
                 <span className="text-sm text-gray-800 truncate">
                   {linkToShare}
