@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { CloudUpload, FileText } from "lucide-react";
+import { Check, CloudUpload, FileText } from "lucide-react";
 import { useState } from "react";
 
 export default function ResumeUploader() {
@@ -28,12 +28,10 @@ export default function ResumeUploader() {
 
   return (
     <div className=" p-6 bg-white">
-      <h2 className="text-xl font-semibold text-gray-800 mb-1">
-        Resume
-      </h2>
+      <h2 className="text-xl font-semibold text-gray-800 mb-1">Resume</h2>
       <p className="text-sm text-gray-500 mb-8">
-        Highlight your skills and experience by uploading a resume in PDF, DOC,
-        or DOCX format.
+        Transform your resume into a powerful showcase that highlights your
+        skills and captures employers' attention.
       </p>
 
       {/* Upload Box */}
@@ -89,7 +87,8 @@ export default function ResumeUploader() {
 
       {/* Upload Button */}
       <div className="flex justify-end mt-6">
-        <Button onClick={handleUpload} className="px-6 py-2">
+        <Button onClick={handleUpload} className="px-4 py-2">
+          <Check />
           Upload Resume
         </Button>
       </div>
