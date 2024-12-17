@@ -3,6 +3,7 @@ import ProfileOverview from "./ProfileOverview.jsx";
 import Socials from "./Socials.jsx";
 import Password from "./Password.jsx";
 import Branches from "./Branches.jsx";
+import User from "./User.jsx";
 import Delete from "./Delete.jsx";
 
 // import Skills from "./Skills";
@@ -24,6 +25,9 @@ const ProfileTabs = () => {
           <TabsTrigger className="ml-8" value="branches">
             Branches
           </TabsTrigger>
+          <TabsTrigger className="ml-8" value="user">
+            Users
+          </TabsTrigger>
           <TabsTrigger className="ml-8" value="delete">
             Delete
           </TabsTrigger>
@@ -42,6 +46,9 @@ const ProfileTabs = () => {
           </TabsContent>
           <TabsContent value="branches">
             <Branches />
+          </TabsContent>
+          <TabsContent value="user">
+            <User />
           </TabsContent>
           <TabsContent value="delete">
             <Delete />{" "}

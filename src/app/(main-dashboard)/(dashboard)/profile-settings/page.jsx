@@ -13,7 +13,7 @@ const ProfileDemo = () => {
   return (
     <div>
       <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
-      <section className="bg-white p-4 shadow-md rounded-md">
+      <section className="bg-white dark:bg-gray-900 p-4 shadow-md rounded-md">
         {/* Profile Header */}
         <ProfileHeader />
         <section className="mb-8">
