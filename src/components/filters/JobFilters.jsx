@@ -5,13 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Plus, RotateCcw } from "lucide-react";
 
 const statusOptions = [
-  { label: "All Status", value: "all" },
+  { label: "Any Status", value: "all" },
   { label: "Open", value: "open" },
   { label: "Expired", value: "expired" },
 ];
 
 const jobRoleOptions = [
-  { label: "All Roles", value: "all" },
+  { label: "Any Roles", value: "all" },
   { label: "Full-Stack", value: "Full-Stack Engineer" },
   { label: "Frontend", value: "Frontend Engineer" },
   { label: "Backend", value: "Backend Engineer" },

@@ -604,7 +604,7 @@ export const documents = {
                 {
                     id: 14,
                     name: "Emily Davis",
-                    status: "applied",
+                    status: "rejected",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
@@ -613,7 +613,7 @@ export const documents = {
                 {
                     id: 15,
                     name: "Tyler Durden",
-                    status: "applied",
+                    status: "rejected",
                     applicant: {
                         pictureUrl:
                             "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3540&q=80",
