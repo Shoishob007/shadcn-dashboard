@@ -150,8 +150,6 @@ export default function SocialSettings() {
 
   return (
     <>
-      <PageTitle title={pageTitle} className="pb-4 ml-2" />
-
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 space-y-8">
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold tracking-tight">

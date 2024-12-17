@@ -55,15 +55,10 @@ const PricingCards = () => {
               : "border-gray-200 hover:border-gray-500"
           } w-72`}
         >
-          {plan.recommended && (
-            <div className="bg-blue-500 dark:bg-blue-400 text-white text-center py-1 rounded-lg text-sm">
-              Recommended
-            </div>
-          )}
-          <h3 className="text-lg sm:text-xl font-semibold text-center mb-4">
+          <h3 className="text-lg sm:text-xl font-semibold text-center mb-2">
             {plan.title}
           </h3>
-          <p className="text-center text-base font-semibold mb-4 border-b-2 pb-2 border-gray-600 border-dashed">
+          <p className="text-center text-base font-semibold mb-4 border-b-2 pb-2 border-gray-600 border-dotted">
             {plan.price} BDT
           </p>
           <ul className="mb-6 text-sm">
@@ -80,8 +75,9 @@ const PricingCards = () => {
               </li>
             ))}
           </ul>
-          <Button className="w-full py-2 rounded-md font-normal text-sm">
-            Choose {plan.title}
+          <Button className={`w-full py-2 rounded-md font-normal text-sm ${plan.recommended ? "bg-blue-500 dark:bg-blue-400 hover:bg-blue-600 hover:dark:bg-blue-300": ""}`}>
+            {plan.recommended ? `Choose ${plan.title} (Recommended)` : `Choose ${plan.title}`
+            }
           </Button>
         </div>
       ))}

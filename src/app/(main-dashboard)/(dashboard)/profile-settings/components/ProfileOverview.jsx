@@ -12,7 +12,7 @@ import { usePathname } from "next/navigation";
 import FormatTitle from "@/components/TitleFormatter";
 import PageTitle from "@/components/PageTitle";
 
-export default function ProfileSettings() {
+export default function ProfileOverview() {
   const { data: session } = useSession();
 
   const {
@@ -23,8 +23,6 @@ export default function ProfileSettings() {
     saveProfile,
     loading,
   } = useProfileStore();
-  const pathname = usePathname();
-  const pageTitle = FormatTitle(pathname);
 
   const accessToken = session?.access_token;
   const organizationId = session?.organizationId;
@@ -58,9 +56,7 @@ export default function ProfileSettings() {
 
   return (
     <>
-      <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
-
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mr-2 dark:text-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg dark:text-gray-200">
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div className="space-y-2">
             <h2 className="text-2xl font-semibold tracking-tight">
@@ -70,7 +66,7 @@ export default function ProfileSettings() {
               Customize your organization&apos;s public profile information.
             </p>
           </div>
-
+{/* 
           <div className="flex items-center space-x-4">
             <Image
               src={session?.user?.image}
@@ -89,7 +85,7 @@ export default function ProfileSettings() {
               className="hidden"
               // onChange={handleLogoChange}
             />
-          </div>
+          </div> */}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
