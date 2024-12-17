@@ -32,8 +32,7 @@ export default function DeleteAccount() {
   return (
     <>
       {" "}
-      <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
-      <div className="">
+      <div className="p-6">
         <Card className="border-destructive/50 dark:border-red-500/50">
           <CardHeader>
             <div className="flex items-center gap-2 text-destructive dark:text-red-600">

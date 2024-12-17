@@ -18,6 +18,7 @@ export const applicantsData = [
     },
     status: "shortlisted",
     steps: "Aptitude Test",
+    CV: 'https://morth.nic.in/sites/default/files/dd12-13_0.pdf',
     CVScore: 50,
     applicantWebsiteUrl: "https://test.com",
     skills: [
@@ -153,6 +154,7 @@ export const applicantsData = [
       loginAttempts: 0
     },
     status: "hired",
+    CV: 'https://morth.nic.in/sites/default/files/dd12-13_0.pdf',
     CVScore: 65,
     deadline: new Date("2024-11-05"),
     interviewSchedule: new Date("2024-11-14"),
@@ -278,6 +280,7 @@ export const applicantsData = [
     },
     status: "shortlisted",
     steps: "Technical Test",
+    CV: 'https://morth.nic.in/sites/default/files/dd12-13_0.pdf',
     CVScore: 50,
     interviewSchedule: new Date("2024-11-10"),
     skills: [
@@ -394,6 +397,7 @@ export const applicantsData = [
       loginAttempts: 0
     },
     status: "applied",
+    CV: 'https://morth.nic.in/sites/default/files/dd12-13_0.pdf',
     CVScore: 50,
     skills: [
       "JavaScript",
@@ -533,6 +537,7 @@ export const applicantsData = [
     },
     status: "shortlisted",
     steps: "interview",
+    CV: 'https://morth.nic.in/sites/default/files/dd12-13_0.pdf',
     CVScore: 60,
     deadline: new Date("2024-10-01"),
     interviewSchedule: new Date("2024-10-10"),

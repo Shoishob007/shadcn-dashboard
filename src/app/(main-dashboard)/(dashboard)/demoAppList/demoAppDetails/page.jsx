@@ -76,6 +76,7 @@ const ApplicantDetails = () => {
     applicantEmail,
     phone,
     address,
+    CV,
     experiences,
     education,
     skills,
@@ -86,6 +87,8 @@ const ApplicantDetails = () => {
     certifications,
     extracurricularActivity,
   } = applicant;
+
+  console.log(CV)
 
   return (
     <>
@@ -174,6 +177,7 @@ const ApplicantDetails = () => {
               <Button
                 variant="default"
                 size="xs"
+                onClick={() => window.open(`${CV}, '_blank'`)}
                 className="border border-red-600 bg-red-100 text-red-600 hover:bg-red-200 shadow-none dark:border-gray-600 dark:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-200"
               >
                 Download CV
