@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import OurPagination from "@/components/Pagination";
+import { AppFilters } from "@/components/filters/JobFilters";
 
 const socialMediaIcons = {
   linkedin: FaLinkedin,
@@ -54,6 +55,22 @@ const ApplicantsList = () => {
   const [selectedStatus, setSelectedStatus] = useState("applied");
   const [selectedStep, setSelectedStep] = useState("");
   const [currentJob, setCurrentJob] = useState(null);
+  const [filters, setFilters] = useState({
+    searchQuery: "",
+  });
+
+  const handleFilterChange = (filterName, value) => {
+    setFilters((prev) => ({
+      ...prev,
+      [filterName]: value,
+    }));
+  };
+
+  const handleReset = () => {
+    setFilters({
+      searchQuery: "",
+    });
+  };
 
   useEffect(() => {
     if (jobId) {
@@ -71,35 +88,42 @@ const ApplicantsList = () => {
     }))
   );
 
-  // console.log(allApplicants);
-
   // Filter logic
   const filteredApplicants = allApplicants.filter((applicant) => {
     const applicantStatus = applicant.status || "applied";
+    const searchQuery = filters.searchQuery.toLowerCase();
 
-    if (selectedStatus === "applied") {
-      return (
-        applicantStatus === "applied" ||
-        applicantStatus === "shortlisted" ||
-        applicantStatus === "hired" ||
-        !applicant.status
+    // Status filter
+    const statusMatch =
+      selectedStatus === "applied"
+        ? applicantStatus === "applied" ||
+          applicantStatus === "shortlisted" ||
+          applicantStatus === "hired" ||
+          !applicant.status
+        : selectedStatus === "shortlisted" && selectedStep === "all"
+        ? applicantStatus === "shortlisted"
+        : selectedStatus === "shortlisted" && selectedStep !== "all"
+        ? applicantStatus === "shortlisted" && applicant.steps === selectedStep
+        : selectedStatus === applicantStatus;
+
+    // Search filter
+    const searchMatch =
+      !searchQuery ||
+      applicant.name.toLowerCase().includes(searchQuery) ||
+      applicant.job?.organization?.orgName
+        ?.toLowerCase()
+        .includes(searchQuery) ||
+      applicant.education?.some((edu) =>
+        edu.degree.toLowerCase().includes(searchQuery)
+      ) ||
+      applicant.experiences?.some(
+        (exp) =>
+          exp.title?.toLowerCase().includes(searchQuery) ||
+          exp.company?.toLowerCase().includes(searchQuery)
       );
-    }
 
-    if (selectedStatus === "shortlisted" && selectedStep === "all") {
-      return applicantStatus === "shortlisted";
-    }
-
-    if (selectedStatus === "shortlisted" && selectedStep !== "all") {
-      return (
-        applicantStatus === "shortlisted" && applicant.steps === selectedStep
-      );
-    }
-
-    return selectedStatus === applicantStatus;
+    return statusMatch && searchMatch;
   });
-
-  console.log(filteredApplicants);
 
   const handleViewDetails = (id) => {
     router.push(`/demoAppList/demoAppDetails?id=${id}`);
@@ -112,7 +136,7 @@ const ApplicantsList = () => {
   useEffect(() => {
     const applicants = filteredApplicants;
     setFilteredApplicantsList(applicants);
-  }, [selectedStatus, selectedStep]);
+  }, [selectedStatus, selectedStep, filters.searchQuery]);
 
   const startIndex = (currentPaginationPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -128,8 +152,9 @@ const ApplicantsList = () => {
   return (
     <div className="space-y-6">
       <div className="flex-1">
+        <div className="flex items-center justify-between">
         <ToggleGroup
-          className="flex gap-0 mb-4 justify-start bg-white dark:bg-gray-800 w-fit rounded-full shadow-sm"
+          className="flex gap-0 justify-start bg-white dark:bg-gray-800 w-fit rounded-full shadow-sm"
           type="single"
           value={selectedStatus}
           onValueChange={(value) => value && setSelectedStatus(value)}
@@ -138,7 +163,7 @@ const ApplicantsList = () => {
             className={`px-6 py-2 text-sm font-medium rounded-l-full transition-all duration-300 ${
               selectedStatus === "applied"
                 ? "!text-white dark:!text-blue-900 shadow-md !bg-gray-800 dark:!bg-blue-300"
-                : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-900 dark:text-gray-300"
+                : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
             }`}
             value="applied"
           >
@@ -149,7 +174,7 @@ const ApplicantsList = () => {
             className={`px-4 py-2 text-sm font-medium rounded-none transition-all duration-300 ${
               selectedStatus === "shortlisted"
                 ? "!text-white dark:!text-yellow-900 shadow-md !bg-gray-800 dark:!bg-yellow-300"
-                : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-900 dark:text-gray-300"
+                : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
             }`}
             value="shortlisted"
           >
@@ -193,7 +218,7 @@ const ApplicantsList = () => {
             className={`px-6 py-2 text-sm font-medium rounded-r-full transition-all duration-300 ${
               selectedStatus === "hired"
                 ? "!text-white dark:!text-emerald-900 shadow-md !bg-gray-800 dark:!bg-emerald-300"
-                : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-900 dark:text-gray-300"
+                : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
             }`}
             value="hired"
           >
@@ -201,16 +226,28 @@ const ApplicantsList = () => {
           </ToggleGroupItem>
         </ToggleGroup>
 
+        <div className="w-fit">
+        <AppFilters
+        applicants={documents.docs?.applicants}
+        filters={filters}
+        onFilterChange={handleFilterChange}
+        onReset={handleReset}
+      />
+        </div>
+        </div>
+        
+
         {currentPaginatedApplicants.length > 0 ? (
           <div className="applicantsListGrid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {currentPaginatedApplicants.map((applicant) => {
               const totalExperience = calculateTotalExperience(
                 applicant.experiences || []
               );
+
               return (
                 <Card
                   key={applicant.id}
-                  className="flex flex-col justify-between p-6 rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg bg-white dark:bg-gray-800"
+                  className="flex flex-col justify-between mt-4 p-6 rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg bg-white dark:bg-gray-800"
                 >
                   <div className="flex flex-col sm:flex-row gap-4 items-center mb-4">
                     <Avatar className="md:h-12 h-16 w-16 md:w-12 border border-emerald-500 text-sm">
