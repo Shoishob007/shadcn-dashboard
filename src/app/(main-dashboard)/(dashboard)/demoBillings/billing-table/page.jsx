@@ -10,9 +10,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Table } from "@/components/ui/table";
 import { Calendar, ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const BillingTable = () => {
+  const router = useRouter()
   const [selectedService, setSelectedService] = useState("All");
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [orderDate, setOrderDate] = useState("");
@@ -161,6 +163,7 @@ const BillingTable = () => {
                     variant="outline"
                     size="sm"
                     className=" hover:bg-gray-300 dark:hover:bg-gray-900 dark:border-gray-500 px-3 py-1 rounded-md"
+                    onClick={() => router.push(`/demoBillings/billing-table/payment?amount=${item.amount}`)}
                   >
                     Go for payment
                   </Button>

@@ -168,7 +168,7 @@ export default function SocialSettings() {
                   value={selectedPlatform}
                   onValueChange={handlePlatformSelect}
                 >
-                  <SelectTrigger className="w-[300px] border dark:border-white rounded-md">
+                  <SelectTrigger className="w-[300px] border dark:border-gray-400 rounded-md">
                     <SelectValue placeholder="Add social platform" />
                   </SelectTrigger>
                   <SelectContent>
@@ -298,13 +298,13 @@ export default function SocialSettings() {
                 <Card
                   key={platform}
                   className={cn(
-                    "transition-all duration-200  shadow-none",
+                    "transition-all duration-200 shadow-none",
                     isEditing
                       ? bgColor
                       : "hover:bg-gray-50 dark:hover:bg-gray-700"
                   )}
                 >
-                  <CardContent className="p-4 border dark:border-white rounded-md">
+                  <CardContent className="p-4 border dark:border-gray-400 rounded-md">
                     <div className="space-y-4">
                       <div className="flex items-center justify-between ">
                         <div className="flex items-center gap-2">
