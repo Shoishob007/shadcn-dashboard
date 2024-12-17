@@ -90,6 +90,7 @@ const DemoApplicants = () => {
         applicantStatus === "applied" ||
         applicantStatus === "shortlisted" ||
         applicantStatus === "hired" ||
+        applicantStatus === "rejected" ||
         !applicant.status
       );
     }
@@ -155,7 +156,7 @@ const DemoApplicants = () => {
               className={`px-4 py-2 text-sm font-medium rounded-l-full transition-all duration-300 ${
                 selectedStatus === "applied"
                   ? "!text-white dark:!text-blue-900 shadow-md !bg-gray-800 dark:!bg-blue-300"
-                  : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-900 dark:text-gray-300"
+                  : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
               }`}
               value="applied"
             >
@@ -166,7 +167,7 @@ const DemoApplicants = () => {
               className={`px-6 py-2 text-sm font-medium rounded-none transition-all duration-300 ${
                 selectedStatus === "shortlisted"
                   ? "!text-white dark:!text-yellow-900 shadow-md !bg-gray-800 dark:!bg-yellow-300"
-                  : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-900 dark:text-gray-300"
+                  : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
               }`}
               value="shortlisted"
             >
@@ -204,14 +205,24 @@ const DemoApplicants = () => {
             </ToggleGroupItem>
 
             <ToggleGroupItem
-              className={`px-6 py-2 text-sm font-medium rounded-r-full transition-all duration-300 ${
+              className={`px-6 py-2 text-sm font-medium rounded-none transition-all duration-300 ${
                 selectedStatus === "hired"
                   ? "!text-white dark:!text-emerald-900 shadow-md !bg-gray-800 dark:!bg-emerald-300"
-                  : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-900 dark:text-gray-300"
+                  : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
               }`}
               value="hired"
             >
               Hired
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              className={`px-6 py-2 text-sm font-medium rounded-r-full transition-all duration-300 ${
+                selectedStatus === "rejected"
+                  ? "!text-white dark:!text-red-900 shadow-md !bg-gray-800 dark:!bg-red-300"
+                  : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
+              }`}
+              value="rejected"
+            >
+              Rejected
             </ToggleGroupItem>
           </ToggleGroup>
           {currentPaginatedApplicants.length > 0 ? (
@@ -252,7 +263,9 @@ const DemoApplicants = () => {
                                 ? "bg-yellow-100 text-yellow-600"
                                 : applicant.status === "hired"
                                 ? "bg-emerald-100 text-emerald-600"
-                                : "bg-red-100 text-red-600"
+                                : applicant.status === "rejected"
+                                ? "bg-red-100 text-red-600" 
+                                : "bg-blue-100 text-blue-600"
                             }`}
                           >
                             {applicant.status
@@ -326,9 +339,7 @@ const DemoApplicants = () => {
               })}
             </div>
           ) : (
-            <p className="text-center text-gray-500">
-              No applicants found!
-            </p>
+            <p className="text-center text-gray-500">No applicants found!</p>
           )}
         </div>
       )}
