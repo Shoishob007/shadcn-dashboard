@@ -12,15 +12,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertTriangle } from "lucide-react";
 import useDeleteProfileStore from "@/stores/profile-settings/useDeleteProfileStore";
-import { usePathname } from "next/navigation";
-import FormatTitle from "@/components/TitleFormatter";
-import PageTitle from "@/components/PageTitle";
 
 export default function DeleteAccount() {
   const { formData, setFormData, deleteProfile, resetFormData } =
     useDeleteProfileStore();
-  const pathname = usePathname();
-  const pageTitle = FormatTitle(pathname);
 
   const handleDelete = (e) => {
     e.preventDefault();
