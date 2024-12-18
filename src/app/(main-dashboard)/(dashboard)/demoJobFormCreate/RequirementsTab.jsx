@@ -41,7 +41,6 @@ export function RequirementsTab({ form }) {
   const [studySuggestions, setStudySuggestions] = useState([]);
   const [requirementsContent, setRequirementsContent] = useState("");
 
-
   const modules = {
     toolbar: [
       ["bold", "italic", "underline", "strike"],
@@ -71,20 +70,19 @@ export function RequirementsTab({ form }) {
     const requirements = form.getValues("requirements") || [];
 
     if (Array.isArray(requirements)) {
-      const content = requirements.map(item => `<p>${item}</p>`).join("");
+      const content = requirements.map((item) => `<p>${item}</p>`).join("");
       setRequirementsContent(content);
     }
-
   }, [form, initializeSkills, initializeDegrees, initializeFieldOfStudy]);
 
   const handleRequirementsChange = (content) => {
     setRequirementsContent(content);
-    
+
     const items = content
-      .split('</p>')
-      .map(item => item.replace(/<p>|<br>/g, '').trim())
+      .split("</p>")
+      .map((item) => item.replace(/<p>|<br>/g, "").trim())
       .filter(Boolean);
-    
+
     form.setValue("requirements", items);
   };
 
@@ -113,12 +111,14 @@ export function RequirementsTab({ form }) {
             !skillTags.includes(skill)
         )
         .slice(0, 5);
+      if (!filtered.includes(value)) {
+        filtered.push(value);
+      }
       setSkillSuggestions(filtered);
     } else {
       setSkillSuggestions([]);
     }
   };
-
 
   const handleDegreeInputChange = (e) => {
     const value = e.target.value;
@@ -132,6 +132,10 @@ export function RequirementsTab({ form }) {
             !degreeTags.includes(degree)
         )
         .slice(0, 5);
+
+      if (!filtered.includes(value)) {
+        filtered.push(value);
+      }
       setDegreeSuggestions(filtered);
     } else {
       setDegreeSuggestions([]);
@@ -150,6 +154,9 @@ export function RequirementsTab({ form }) {
             !fieldOfStudyTags.includes(studyField)
         )
         .slice(0, 5);
+      if (!filtered.includes(value)) {
+        filtered.push(value);
+      }
       setStudySuggestions(filtered);
     } else {
       setStudySuggestions([]);
@@ -193,7 +200,6 @@ export function RequirementsTab({ form }) {
                 className="dark:bg-gray-900"
                 placeholder="Detailed Job Requirements..."
               />
-              
             </FormControl>
             <FormMessage />
           </FormItem>

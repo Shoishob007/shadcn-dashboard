@@ -195,7 +195,7 @@
   }
 }
 
-@media (min-width: 500px) {
+@media (min-width: 550px) {
   .applicantsListGrid {
     grid-template-columns: repeat(2, 1fr);
   }

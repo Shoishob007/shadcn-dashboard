@@ -47,7 +47,7 @@ const calculateTotalExperience = (experiences) => {
   return `${years} years ${months} months`;
 };
 
-// Get unique job titles by matching IDs
+// unique job titles by matching IDs
 const getJobTitles = () => {
   const jobTitles = new Set();
   jobApplicants.docs.forEach((applicantDoc) => {
@@ -61,7 +61,7 @@ const getJobTitles = () => {
 };
 
 const jobTitles = getJobTitles();
-console.log(jobTitles);
+// console.log(jobTitles);
 
 const ApplicantsList = () => {
   const router = useRouter();
@@ -189,15 +189,15 @@ const ApplicantsList = () => {
   return (
     <div className="space-y-6">
       <div className="flex-1">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-1 justify-between">
           <ToggleGroup
-            className="flex gap-0 justify-start bg-white dark:bg-gray-800 w-fit rounded-full shadow-sm"
+            className="flex gap-0 justify-start bg-white dark:bg-gray-800 w-fit rounded-full shadow-sm h-7 md:h-9"
             type="single"
             value={selectedStatus}
             onValueChange={(value) => value && setSelectedStatus(value)}
           >
             <ToggleGroupItem
-              className={`px-6 py-2 text-sm font-medium rounded-l-full transition-all duration-300 ${
+              className={`h-7 md:h-9 pr-2 pl-3 md:px-6 py-1 md:py-2 text-xs md:text-sm font-medium rounded-l-full transition-all duration-300 ${
                 selectedStatus === "applied"
                   ? "!text-white dark:!text-blue-900 shadow-md !bg-gray-800 dark:!bg-blue-300"
                   : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
@@ -208,7 +208,7 @@ const ApplicantsList = () => {
             </ToggleGroupItem>
 
             <ToggleGroupItem
-              className={`px-4 py-2 text-sm font-medium rounded-none transition-all duration-300 ${
+              className={`h-7 md:h-9 px-2 md:px-6 py-1 md:py-2 text-xs md:text-sm font-medium rounded-none transition-all duration-300 ${
                 selectedStatus === "shortlisted"
                   ? "!text-white dark:!text-yellow-900 shadow-md !bg-gray-800 dark:!bg-yellow-300"
                   : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
@@ -252,7 +252,7 @@ const ApplicantsList = () => {
             </ToggleGroupItem>
 
             <ToggleGroupItem
-              className={`px-6 py-2 text-sm font-medium rounded-none transition-all duration-300 ${
+              className={`h-7 md:h-9 px-2 md:px-6 py-1 md:py-2 text-xs md:text-sm font-medium rounded-none transition-all duration-300 ${
                 selectedStatus === "hired"
                   ? "!text-white dark:!text-emerald-900 shadow-md !bg-gray-800 dark:!bg-emerald-300"
                   : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
@@ -262,7 +262,7 @@ const ApplicantsList = () => {
               Hired
             </ToggleGroupItem>
             <ToggleGroupItem
-              className={`px-6 py-2 text-sm font-medium rounded-r-full transition-all duration-300 ${
+              className={`h-7 md:h-9 pr-3 pl-2 md:px-6 py-1 md:py-2 text-xs md:text-sm font-medium rounded-r-full transition-all duration-300 ${
                 selectedStatus === "rejected"
                   ? "!text-white dark:!text-red-900 shadow-md !bg-gray-800 dark:!bg-red-300"
                   : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"

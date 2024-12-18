@@ -70,7 +70,7 @@ const JobDetailsPage = () => {
           onClick={() => setIsEditing(true)}
         >
           <SquarePen className="dark:text-gray-300" size={16} />{" "}
-          <span className="text-[10px] sm:text-sm">Edit Job</span>
+          <span className="text-xs sm:text-sm font-medium">Edit Job</span>
         </div>
       </div>
       <div className="px-6 sm:px-10 py-3">

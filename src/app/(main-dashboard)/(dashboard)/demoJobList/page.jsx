@@ -3,6 +3,14 @@ import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { formatRelativeDate } from "@/app/utils/formatRelativeDate";
 import {
@@ -26,18 +34,42 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import CreateJobForm from "../demoJobFormCreate/page";
+import { capitalizeText } from "@/components/Capitalize";
+import { Input } from "@/components/ui/input";
+
+// unique job roles by matching IDs
+const getJobRoles = () => {
+  const jobRoles = new Set();
+  documents.docs.forEach((applicantDoc) => {
+    const jobId = applicantDoc.job.id;
+    const matchingJob = documents.docs.find((job) => job.job.id === jobId);
+    if (matchingJob) {
+      jobRoles.add(matchingJob.jobRole);
+    }
+  });
+  return Array.from(jobRoles);
+};
+
+const jobRoles = getJobRoles();
+console.log(jobRoles);
 
 const JobList = () => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
-  const [id, setId] = useState(null)
-  const[job, setJob] = useState("")
+  const [id, setId] = useState(null);
+  const [job, setJob] = useState("");
   const [filters, setFilters] = useState({
     searchQuery: "",
     status: "all",
     jobRole: "all",
     experienceRange: "all",
     applicantCount: "all",
+  });
+  const [deleteDialog, setDeleteDialog] = useState({
+    isOpen: false,
+    job: null,
+    password: "",
+    reason: "",
   });
 
   const handleFilterChange = (filterName, value) => {
@@ -46,8 +78,6 @@ const JobList = () => {
       [filterName]: value,
     }));
   };
-
-  const filteredJobs = filterJobs(documents.docs, filters);
 
   const handleReset = () => {
     setFilters({
@@ -70,24 +100,48 @@ const JobList = () => {
   };
 
   const handleEditJob = (job) => {
-    console.log(job)
-    setId(job.job.id)
-    setJob(job)
-    setIsEditing(true)
-    
+    console.log(job);
+    setId(job.job.id);
+    setJob(job);
+    setIsEditing(true);
   };
 
   const handleShareJob = () => {
     console.log("Share Job clicked");
   };
 
-  const handleDeleteJob = () => {
-    console.log("Delete Job clicked");
+  const handleDeleteJob = (job) => {
+    setDeleteDialog({ isOpen: true, job, password: "", reason: "" });
   };
 
-  function capitalizeText(text) {
-    return text.charAt(0).toUpperCase() + text.slice(1);
-  }
+  const handleConfirmDelete = () => {
+    if (!deleteDialog.job.published) {
+      // Handle deletion with password
+      console.log("Password provided:", deleteDialog.password);
+      // Implement API call or logic to delete job
+    } else {
+      // Handle deletion with reason
+      console.log("Reason provided:", deleteDialog.reason);
+      // Implement logic to move job to junk box
+    }
+    setDeleteDialog({ isOpen: false, job: null, password: "", reason: "" });
+  };
+
+  // Job role filter
+  const jobRole =
+    filters.selectedRole === "all" ||
+    !filters.selectedRole ||
+    (() => {
+      const matchingJob = jobData.docs.find(
+        (job) => job.job.id === applicant.job.id
+      );
+      return (
+        matchingJob &&
+        matchingJob.role.toLowerCase() === filters.selectedRole.toLowerCase()
+      );
+    })();
+
+  const filteredJobs = filterJobs(documents.docs, filters);
 
   if (isEditing) {
     return (
@@ -106,6 +160,7 @@ const JobList = () => {
         jobs={documents.docs}
         filters={filters}
         onFilterChange={handleFilterChange}
+        jobRoles={jobRoles}
         onReset={handleReset}
         handleCreateJob={handleCreateJob}
       />
@@ -136,7 +191,7 @@ const JobList = () => {
                         Share Job
                       </DropdownMenuItem>
                       <DropdownMenuItem
-                        onClick={handleDeleteJob}
+                        onClick={() => handleDeleteJob(document)}
                         className="hover:!text-red-600"
                       >
                         Delete Job
@@ -332,6 +387,55 @@ const JobList = () => {
       ) : (
         <p className="text-center text-gray-500">No jobs match your filters.</p>
       )}
+
+      {/* Delete Dialog */}
+      <Dialog open={deleteDialog.isOpen} onOpenChange={(isOpen) => setDeleteDialog({ ...deleteDialog, isOpen })}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Job</DialogTitle>
+            {!deleteDialog.job?.published ? (
+              <>
+                <DialogDescription>Please enter your password to confirm deletion:</DialogDescription>
+                <Input
+                  type="password"
+                  placeholder="Enter password"
+                  value={deleteDialog.password}
+                  onChange={(e) =>
+                    setDeleteDialog((prev) => ({ ...prev, password: e.target.value }))
+                  }
+                  className="mt-2"
+                />
+                <Button
+                  onClick={handleConfirmDelete}
+                  disabled={!deleteDialog.password.trim()}
+                  className="mt-4"
+                >
+                  Delete
+                </Button>
+              </>
+            ) : (
+              <>
+                <DialogDescription>Please explain why you&apos;re deleting this job:</DialogDescription>
+                <Input
+                  placeholder="Enter reason"
+                  value={deleteDialog.reason}
+                  onChange={(e) =>
+                    setDeleteDialog((prev) => ({ ...prev, reason: e.target.value }))
+                  }
+                  className="mt-2"
+                />
+                <Button
+                  onClick={handleConfirmDelete}
+                  disabled={!deleteDialog.reason.trim()}
+                  className="mt-4"
+                >
+                  Move to Junk Box
+                </Button>
+              </>
+            )}
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
