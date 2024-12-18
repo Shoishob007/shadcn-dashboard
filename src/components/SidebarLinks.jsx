@@ -1,5 +1,4 @@
 import {
-  Bell,
   BriefcaseBusiness,
   CalendarDays,
   Circle,
@@ -102,24 +101,24 @@ export const SidebarLinks = () => {
     //     },
     //   ],
     // },
-    {
-      title: "Notifications",
-      href: "/notification",
-      icon: Bell,
-      variant: "ghost",
-      submenu: [
-        {
-          title: "View Notifications",
-          href: "/notification/view",
-          icon: Circle,
-        },
-        {
-          title: "Notification settings",
-          href: "/notification/settings",
-          icon: Circle,
-        },
-      ],
-    },
+    // {
+    //   title: "Notifications",
+    //   href: "/notification",
+    //   icon: Bell,
+    //   variant: "ghost",
+    //   submenu: [
+    //     {
+    //       title: "View Notifications",
+    //       href: "/notification/view",
+    //       icon: Circle,
+    //     },
+    //     {
+    //       title: "Notification settings",
+    //       href: "/notification/settings",
+    //       icon: Circle,
+    //     },
+    //   ],
+    // },
     // getAuthLinks(),
   ];
 
