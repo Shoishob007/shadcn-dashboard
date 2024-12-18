@@ -3,24 +3,16 @@
 
 "use client";
 import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/applicants/components/applicantsData";
-import JobApplied from "@/components/ApplicantDashboardUI/JobApplied";
+import ApplicantRecentApplied from "@/components/ApplicantDashboardUI/ApplicantRecentApplied";
+import DashboardCardSection from "@/components/ApplicantDashboardUI/DashboardCardSection";
 import Card, { CardContent } from "@/components/Card";
 import ApplicantsCard from "@/components/SalesCard";
 import { Badge } from "@/components/ui/badge";
 import useRoleStore from "@/stores/roleStore/useRoleStore";
-import {
-  Activity,
-  ArchiveX,
-  Briefcase,
-  CalendarDays,
-  Loader,
-  TableOfContents,
-  Users,
-} from "lucide-react";
+import { Briefcase, CalendarDays, Users } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import InterviewSchedule from "./(main-dashboard)/(dashboard)/interviews/schedule/page";
-import DashboardCardSection from "@/components/ApplicantDashboardUI/DashboardCardSection";
-import { useSession } from "next-auth/react";
 
 const cardData = [
   {
@@ -46,11 +38,9 @@ const cardData = [
   },
 ];
 
-
 export default function Home() {
   const { currentRole, setRole } = useRoleStore();
-    const { data: session } = useSession();
-  
+  const { data: session } = useSession();
 
   return (
     <div className="flex flex-col gap-5 w-full">
@@ -66,11 +56,12 @@ export default function Home() {
             </div>
           </div>
           <div>
-              <DashboardCardSection/>
+            <DashboardCardSection />
 
             {/* Recently Job applied section */}
             <section>
-              <JobApplied />
+              {/* <JobApplied /> */}
+              <ApplicantRecentApplied />
             </section>
 
             {/* <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
@@ -116,7 +107,9 @@ export default function Home() {
           <div className="mb-6">
             <div className="flex items-center gap-2">
               <span className="text-lg md:text-2xl">Welcome!</span>{" "}
-              <h1 className="font-medium text-lg md:text-2xl">{session?.user?.name}</h1>{" "}
+              <h1 className="font-medium text-lg md:text-2xl">
+                {session?.user?.name}
+              </h1>{" "}
               <Badge>{currentRole}</Badge>
             </div>
           </div>
@@ -139,7 +132,9 @@ export default function Home() {
             </CardContent>
             <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-800 hover:border-gray-950">
               <section>
-                <p className="text-lg font-semibold text-center">Recent Applications</p>
+                <p className="text-lg font-semibold text-center">
+                  Recent Applications
+                </p>
                 {/* <p className="text-sm text-gray-400">
                   Top applicants according to CV score
                 </p> */}
@@ -150,7 +145,7 @@ export default function Home() {
                   email={d.applicant.email}
                   name={d.applicantName}
                   position={d.jobTitle}
-                  status = {d.status}
+                  status={d.status}
                 />
               ))}
             </CardContent>

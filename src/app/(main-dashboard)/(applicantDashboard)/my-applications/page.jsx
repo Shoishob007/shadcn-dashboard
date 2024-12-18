@@ -18,6 +18,7 @@ import companyLogo from "../../../../../public/assests/company.png";
 const MyApplications = () => {
   const applications = [
     {
+      id: "1",
       jobTitle: "Frontend Developer",
       companyName: "Tech Innovators Ltd.",
       jobStatus: "Open",
@@ -31,6 +32,7 @@ const MyApplications = () => {
       category: "Software Development",
     },
     {
+      id: "2",
       jobTitle: "UI/UX Designer",
       companyName: "DesignCraft Studio",
       jobStatus: "Closed",
@@ -44,6 +46,7 @@ const MyApplications = () => {
       category: "Design",
     },
     {
+      id: "3",
       jobTitle: "JavaScript Developer",
       companyName: "CodeCrafters Inc.",
       jobStatus: "Open",
@@ -57,6 +60,7 @@ const MyApplications = () => {
       category: "Web Development",
     },
     {
+      id: "4",
       jobTitle: "Backend Engineer",
       companyName: "DevSolutions",
       jobStatus: "Closed",
@@ -70,6 +74,7 @@ const MyApplications = () => {
       category: "Software Engineering",
     },
     {
+      id: "5",
       jobTitle: "DevOps Engineer",
       companyName: "CloudBridge Systems",
       jobStatus: "Open",
@@ -140,7 +145,7 @@ const ApplicationCards = ({ applications }) => {
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {currentApplications.map((app, index) => (
-          <Link href={"/job-details"} key={index}>
+          <Link href={`/my-applications/${app.id}`} key={index}>
             <div className="bg-white border border-gray-200 shadow rounded-lg p-6 relative">
               {/* Company Logo and Job Info */}
               <div className="flex items-center justify-between ">
