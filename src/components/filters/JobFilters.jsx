@@ -28,6 +28,7 @@ export const JobFilters = ({
   jobs,
   filters,
   onFilterChange,
+  jobRoles,
   onReset,
   handleCreateJob,
 }) => {
@@ -68,7 +69,13 @@ export const JobFilters = ({
               />
               <RangeFilter
                 placeholder="Job Role"
-                options={jobRoleOptions}
+                options={[
+                  { value: "all", label: "Any Job Roles" },
+                  ...jobRoles.map((role) => ({
+                    value: role,
+                    label: role,
+                  })),
+                ]}
                 value={filters.jobRole}
                 onChange={(value) => onFilterChange("jobRole", value)}
                 className="min-w-24 max-w-40"
@@ -115,8 +122,8 @@ export const AppFilters = ({
   return (
     <div className="flex mx-auto max-w-4xl items-center">
       <div className="w-full space-y-2 dark:bg-gray-900 rounded-lg">
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-row items-center gap-2 md:gap-4">
             {/* Job title filter */}
             <div className="flex gap-0 md:gap-4">
               <RangeFilter
@@ -135,7 +142,7 @@ export const AppFilters = ({
             </div>
 
             {/* Search bar Filters */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
               <SearchBar
                 applicants={applicants}
                 placeholder="Search by name, location, organization..."
@@ -150,7 +157,7 @@ export const AppFilters = ({
                   className="flex items-center gap-2 p-2 dark:border-gray-500 dark:hover:bg-gray-900 h-7 md:h-9"
                 >
                   <RotateCcw className="w-2 h-2" />
-                  <span className=" text-[10px] md:text-xs">Reset</span>
+                  <span className=" text-[10px] hidden md:block md:text-xs">Reset</span>
                 </Button>
               </div>
             </div>

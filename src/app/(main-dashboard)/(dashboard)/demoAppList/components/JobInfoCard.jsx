@@ -57,7 +57,7 @@ const JobInfoCard = ({ job, isEditing, setIsEditing }) => {
             onClick={() => { setIsEditing(true)}}
           >
             <SquarePen className="dark:text-gray-300 h-4 w-4" />{" "}
-            <span className="text-[10px] sm:text-sm">Edit Job</span>
+            <span className="text-xs sm:text-sm font-medium">Edit Job</span>
           </div>
         </div>
 
