@@ -5,12 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import useProfileStore from "@/stores/profile-settings/useProfileStore";
-import { useEffect } from "react";
-import { usePathname } from "next/navigation";
-import FormatTitle from "@/components/TitleFormatter";
-import PageTitle from "@/components/PageTitle";
+import { Pencil, X } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function ProfileOverview() {
   const { data: session } = useSession();
@@ -23,6 +26,8 @@ export default function ProfileOverview() {
     saveProfile,
     loading,
   } = useProfileStore();
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const accessToken = session?.access_token;
   const organizationId = session?.organizationId;
@@ -37,161 +42,229 @@ export default function ProfileOverview() {
     e.preventDefault();
     if (accessToken && organizationId) {
       saveProfile(accessToken, organizationId);
+      setIsEditing(false);
     }
   };
-
-  // const handleLogoChange = async (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     const success = await uploadLogoImage(file);
-  //     if (success) {
-  //       console.log("Profile picture updated successfully");
-  //     }
-  //   }
-  // };
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setFormData(profileDetails);
+  };
 
   if (loading && !profileDetails) {
     return <div>Loading profile details...</div>;
   }
 
   return (
-    <>
-      <div className="bg-white dark:bg-gray-800 rounded-lg dark:text-gray-200">
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-semibold tracking-tight">
-              Edit Organization Profile
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Customize your organization&apos;s public profile information.
-            </p>
-          </div>
-{/* 
-          <div className="flex items-center space-x-4">
-            <Image
-              src={session?.user?.image}
-              alt="Profile"
-              width={80}
-              height={80}
-              className="rounded-full"
-            />
-            <label htmlFor="logo-upload" className="cursor-pointer">
-              <Button variant="outline">Change Logo</Button>
-            </label>
-            <input
-              id="logo-upload"
-              type="file"
-              accept="image/*"
-              className="hidden"
-              // onChange={handleLogoChange}
-            />
-          </div> */}
+    <div className="bg-white dark:bg-gray-800 rounded-lg dark:text-gray-200">
+      <div className="flex justify-between items-center p-6">
+        <div className="space-y-2">
+          <h2 className="text-2xl font-semibold tracking-tight">
+            Organization Profile
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Update your profile information as per choice.
+          </p>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="orgName">Organization Name</Label>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsEditing(!isEditing)}
+                className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
+              >
+                {isEditing ? (
+                  <X className="w-5 h-5" />
+                ) : (
+                  <Pencil className="w-5 h-5" />
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {isEditing ? <p>Cancel Editing</p> : <p>Click to edit</p>}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
+
+      <form
+        onSubmit={handleSubmit}
+        className={`px-6 py-2 space-y-6 ${
+          isEditing ? "" : "pointer-events-none"
+        }`}
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {/* Organization Name */}
+          <Field label="Organization Name" id="orgName" isEditing={isEditing}>
+            {isEditing ? (
               <Input
                 id="orgName"
                 value={formData.orgName}
                 onChange={(e) => setFormData({ orgName: e.target.value })}
-                placeholder="Organization name"
               />
-            </div>
+            ) : (
+              formData.orgName || "Not provided"
+            )}
+          </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="orgEmail">Organization Email</Label>
+          {/* Organization Email */}
+          <Field label="Organization Email" id="orgEmail" isEditing={isEditing}>
+            {isEditing ? (
               <Input
                 id="orgEmail"
                 type="email"
                 value={formData.orgEmail}
                 onChange={(e) => setFormData({ orgEmail: e.target.value })}
-                placeholder="organization@example.com"
               />
-            </div>
+            ) : (
+              formData.orgEmail || "Not provided"
+            )}
+          </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="orgAddress">Address</Label>
+          {/* Address */}
+          <Field label="Address" id="orgAddress" isEditing={isEditing}>
+            {isEditing ? (
               <Input
                 id="orgAddress"
                 value={formData.orgAddress}
                 onChange={(e) => setFormData({ orgAddress: e.target.value })}
-                placeholder="Organization Address"
               />
-            </div>
+            ) : (
+              formData.orgAddress || "Not provided"
+            )}
+          </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="orgWebsiteUrl">Website</Label>
+          {/* Website */}
+          <Field label="Website" id="orgWebsiteUrl" isEditing={isEditing}>
+            {isEditing ? (
               <Input
                 id="orgWebsiteUrl"
                 value={formData.orgWebsiteUrl}
                 onChange={(e) => setFormData({ orgWebsiteUrl: e.target.value })}
-                placeholder="https://example.com"
               />
-            </div>
+            ) : (
+              formData.orgWebsiteUrl || "Not provided"
+            )}
+          </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="orgPhone">Phone</Label>
+          {/* Phone */}
+          <Field label="Phone" id="orgPhone" isEditing={isEditing}>
+            {isEditing ? (
               <Input
                 id="orgPhone"
                 value={formData.orgPhone}
                 onChange={(e) => setFormData({ orgPhone: e.target.value })}
-                placeholder="Organization Phone"
               />
-            </div>
+            ) : (
+              formData.orgPhone || "Not provided"
+            )}
+          </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="orgEstablishedYear">Established Year</Label>
+          {/* Established Year */}
+          <Field
+            label="Established Year"
+            id="orgEstablishedYear"
+            isEditing={isEditing}
+          >
+            {isEditing ? (
               <Input
                 id="orgEstablishedYear"
                 type="number"
                 value={formData.orgEstablishedYear}
                 onChange={(e) =>
-                  setFormData({ orgEstablishedYear: parseInt(e.target.value) })
+                  setFormData({
+                    orgEstablishedYear: parseInt(e.target.value) || "",
+                  })
                 }
-                placeholder="Year established"
               />
-            </div>
+            ) : (
+              formData.orgEstablishedYear || "Not provided"
+            )}
+          </Field>
 
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="orgTagline">Tagline</Label>
+          {/* Tagline */}
+          <Field
+            label="Tagline"
+            id="orgTagline"
+            isEditing={isEditing}
+            mdColSpan
+          >
+            {isEditing ? (
               <Input
                 id="orgTagline"
+                className="text-xs sm:text-sm"
                 value={formData.orgTagline}
                 onChange={(e) => setFormData({ orgTagline: e.target.value })}
-                placeholder="Organization tagline"
               />
-            </div>
+            ) : (
+              formData.orgTagline || "Not provided"
+            )}
+          </Field>
 
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="orgMission">Mission</Label>
+          {/* Mission */}
+          <Field
+            label="Mission"
+            id="orgMission"
+            isEditing={isEditing}
+            mdColSpan
+          >
+            {isEditing ? (
               <Textarea
                 id="orgMission"
                 value={formData.orgMission}
                 onChange={(e) => setFormData({ orgMission: e.target.value })}
-                placeholder="Organization mission"
                 rows={4}
               />
-            </div>
+            ) : (
+              formData.orgMission || "Not provided"
+            )}
+          </Field>
 
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="orgVision">Vision</Label>
+          {/* Vision */}
+          <Field label="Vision" id="orgVision" isEditing={isEditing} mdColSpan>
+            {isEditing ? (
               <Textarea
                 id="orgVision"
                 value={formData.orgVision}
                 onChange={(e) => setFormData({ orgVision: e.target.value })}
-                placeholder="Organization vision"
                 rows={4}
               />
-            </div>
-          </div>
+            ) : (
+              formData.orgVision || "Not provided"
+            )}
+          </Field>
+        </div>
 
-          <div className="flex justify-end">
+        {isEditing && (
+          <div className="flex justify-end mt-4 space-x-4">
+            <Button type="button" variant="outline" onClick={handleCancelEdit}>
+              Cancel
+            </Button>
             <Button type="submit" disabled={loading}>
-              {loading ? "Saving..." : "Save Profile"}
+              {loading ? "Saving..." : "Save Changes"}
             </Button>
           </div>
-        </form>
-      </div>
-    </>
+        )}
+      </form>
+    </div>
   );
 }
+
+const Field = ({ label, id, children, isEditing, mdColSpan }) => {
+  return (
+    <div
+      className={`space-y-1 ${mdColSpan ? "md:col-span-3 sm:col-span-2" : ""}`}
+    >
+      <Label className="text-base" htmlFor={id}>
+        {label}
+      </Label>
+      {isEditing ? (
+        children
+      ) : (
+        <p className="text-gray-800 dark:text-gray-300 text-sm ">{children}</p>
+      )}
+    </div>
+  );
+};

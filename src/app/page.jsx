@@ -139,17 +139,18 @@ export default function Home() {
             </CardContent>
             <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-800 hover:border-gray-950">
               <section>
-                <p className="text-lg font-semibold">Recent Applications</p>
-                <p className="text-sm text-gray-400">
+                <p className="text-lg font-semibold text-center">Recent Applications</p>
+                {/* <p className="text-sm text-gray-400">
                   Top applicants according to CV score
-                </p>
+                </p> */}
               </section>
               {applicantsData.map((d, i) => (
                 <ApplicantsCard
                   key={i}
-                  email={d.applicantEmail}
+                  email={d.applicant.email}
                   name={d.applicantName}
-                  position={d.status}
+                  position={d.jobTitle}
+                  status = {d.status}
                 />
               ))}
             </CardContent>

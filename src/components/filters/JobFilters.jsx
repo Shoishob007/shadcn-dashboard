@@ -108,6 +108,7 @@ export const JobFilters = ({
 export const AppFilters = ({
   applicants,
   filters,
+  jobTitles,
   onFilterChange,
   onReset,
 }) => {
@@ -115,8 +116,25 @@ export const AppFilters = ({
     <div className="flex mx-auto max-w-4xl items-center">
       <div className="w-full space-y-2 dark:bg-gray-900 rounded-lg">
         <div className="flex flex-col gap-4">
-          {/* Search bar and Range Filters */}
           <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+            {/* Job title filter */}
+            <div className="flex gap-0 md:gap-4">
+              <RangeFilter
+                placeholder="Select Job"
+                options={[
+                  { value: "all", label: "Any job titles" },
+                  ...jobTitles.map((title) => ({
+                    value: title,
+                    label: title,
+                  })),
+                ]}
+                value={filters.selectedTitle}
+                onChange={(value) => onFilterChange("selectedTitle", value)}
+                className="px-4 py-2 border rounded-md"
+              />
+            </div>
+
+            {/* Search bar Filters */}
             <div className="flex items-center gap-4">
               <SearchBar
                 applicants={applicants}
@@ -137,31 +155,6 @@ export const AppFilters = ({
               </div>
             </div>
 
-            <div className="flex gap-0 md:gap-4">
-              {/* Range Filters */}
-              {/* <RangeFilter
-                placeholder="Status"
-                options={statusOptions}
-                value={filters.status}
-                onChange={(value) => onFilterChange("status", value)}
-                className="min-w-24 max-w-40"
-              /> */}
-              {/* <RangeFilter
-                placeholder="Job Role"
-                options={jobRoleOptions}
-                value={filters.jobRole}
-                onChange={(value) => onFilterChange("jobRole", value)}
-                className="min-w-24 max-w-40"
-              /> */}
-              {/* <RangeFilter
-                placeholder="Experience"
-                options={experienceOptions}
-                value={filters.experienceRange}
-                onChange={(value) => onFilterChange("experienceRange", value)}
-                className="min-w-24 max-w-40"
-              /> */}
-            </div>
-
             <div className="hidden md:block">
               {/* Reset button */}
               <Button
@@ -176,12 +169,6 @@ export const AppFilters = ({
           </div>
         </div>
       </div>
-      {/* <div>
-        <Button onClick={handleCreateJob} className="p-2">
-          <Plus className="h-3 w-3" />
-          <span className="text-xs hidden md:block">Post New Job</span>
-        </Button>
-      </div> */}
     </div>
   );
 };

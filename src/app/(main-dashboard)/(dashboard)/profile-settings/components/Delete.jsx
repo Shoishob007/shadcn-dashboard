@@ -32,7 +32,7 @@ export default function DeleteAccount() {
           <CardHeader>
             <div className="flex items-center gap-2 text-destructive dark:text-red-600">
               <AlertTriangle className="h-5 w-5" />
-              <CardTitle>Delete Account</CardTitle>
+              <CardTitle className="text-base">Delete Account</CardTitle>
             </div>
             <CardDescription>
               This action cannot be undone. This will permanently delete your
@@ -42,7 +42,7 @@ export default function DeleteAccount() {
           <CardContent>
             <form onSubmit={handleDelete} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="password">
+                <Label className="text-base" htmlFor="password">
                   Please enter your password to confirm:
                 </Label>
                 <Input
