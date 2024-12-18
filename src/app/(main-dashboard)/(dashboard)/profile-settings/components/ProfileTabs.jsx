@@ -14,7 +14,7 @@ const ProfileTabs = () => {
       <Tabs defaultValue="overview" className="">
         <TabsList className="bg-transparent">
           <TabsTrigger className="" value="overview">
-            Overview
+            Account
           </TabsTrigger>
           <TabsTrigger className="ml-8" value="password">
             Password

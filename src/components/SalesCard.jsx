@@ -2,6 +2,7 @@
 "use client";
 
 import React from "react";
+import { capitalizeText } from "./Capitalize";
 
 export default function ApplicantsCard(props) {
   return (
@@ -17,12 +18,13 @@ export default function ApplicantsCard(props) {
         </div>
         <div className="text-sm">
           <p className="dark:text-gray-200">{props.name}</p>
-          <div className="text-ellipsis overflow-hidden whitespace-nowrap w-[120px]  sm:w-auto  text-gray-400 dark:text-gray-200">
-            {props.email}
+          <div className="text-ellipsis overflow-hidden whitespace-nowrap w-[120px]  sm:w-auto  text-gray-400 dark:text-gray-200 text-xs">
+          {props.position}
           </div>
         </div>
       </section>
-      <p className="dark:text-gray-200">{props.position}</p>
+      {/* <p className="dark:text-gray-200 text-xs">{props.position}</p> */}
+      <p className="dark:text-gray-200 text-sm">{capitalizeText(props.status)}</p>
     </div>
   );
 }

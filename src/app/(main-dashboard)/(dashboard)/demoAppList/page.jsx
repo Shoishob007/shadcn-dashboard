@@ -5,7 +5,8 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { documents } from "../demoJobList/components/jobApplicants";
+import { documents as jobApplicants } from "../demoJobList/components/jobApplicants";
+import { documents as jobData } from "../demoJobList/components/jobData";
 import { FaFacebook, FaGoogle, FaLinkedin } from "react-icons/fa";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -17,6 +18,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import OurPagination from "@/components/Pagination";
 import { AppFilters } from "@/components/filters/JobFilters";
+import { capitalizeText } from "@/components/Capitalize";
 
 const socialMediaIcons = {
   linkedin: FaLinkedin,
@@ -45,6 +47,22 @@ const calculateTotalExperience = (experiences) => {
   return `${years} years ${months} months`;
 };
 
+// Get unique job titles by matching IDs
+const getJobTitles = () => {
+  const jobTitles = new Set();
+  jobApplicants.docs.forEach((applicantDoc) => {
+    const jobId = applicantDoc.job.id;
+    const matchingJob = jobData.docs.find((job) => job.job.id === jobId);
+    if (matchingJob) {
+      jobTitles.add(matchingJob.title);
+    }
+  });
+  return Array.from(jobTitles);
+};
+
+const jobTitles = getJobTitles();
+console.log(jobTitles);
+
 const ApplicantsList = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -57,6 +75,7 @@ const ApplicantsList = () => {
   const [currentJob, setCurrentJob] = useState(null);
   const [filters, setFilters] = useState({
     searchQuery: "",
+    selectedTitle: "all",
   });
 
   const handleFilterChange = (filterName, value) => {
@@ -69,19 +88,20 @@ const ApplicantsList = () => {
   const handleReset = () => {
     setFilters({
       searchQuery: "",
+      selectedTitle: "all",
     });
   };
 
   useEffect(() => {
     if (jobId) {
-      const job = documents.docs.find((doc) => doc.job.id === jobId);
+      const job = jobApplicants.docs.find((doc) => doc.job.id === jobId);
       if (job) {
         setCurrentJob(job.job);
       }
     }
   }, [jobId]);
 
-  const allApplicants = documents.docs.flatMap((doc) =>
+  const allApplicants = jobApplicants.docs.flatMap((doc) =>
     doc.applicants.map((applicant) => ({
       ...applicant,
       job: doc.job,
@@ -107,6 +127,21 @@ const ApplicantsList = () => {
         ? applicantStatus === "shortlisted" && applicant.steps === selectedStep
         : selectedStatus === applicantStatus;
 
+    // Job title filter
+    const jobTitleMatch =
+    filters.selectedTitle === "all" ||
+    !filters.selectedTitle ||
+    (() => {
+      const matchingJob = jobData.docs.find(
+        (job) => job.job.id === applicant.job.id
+      );
+      return (
+        matchingJob &&
+        matchingJob.title.toLowerCase() ===
+          filters.selectedTitle.toLowerCase()
+      );
+    })();
+
     // Search filter
     const searchMatch =
       !searchQuery ||
@@ -123,21 +158,22 @@ const ApplicantsList = () => {
           exp.company?.toLowerCase().includes(searchQuery)
       );
 
-    return statusMatch && searchMatch;
+    return statusMatch && searchMatch && jobTitleMatch;
   });
 
   const handleViewDetails = (id) => {
     router.push(`/demoAppList/demoAppDetails?id=${id}`);
   };
 
-  function capitalizeText(text) {
-    return text.charAt(0).toUpperCase() + text.slice(1);
-  }
-
   useEffect(() => {
     const applicants = filteredApplicants;
     setFilteredApplicantsList(applicants);
-  }, [selectedStatus, selectedStep, filters.searchQuery]);
+  }, [
+    selectedStatus,
+    selectedStep,
+    filters.searchQuery,
+    filters.selectedTitle,
+  ]);
 
   const startIndex = (currentPaginationPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -239,8 +275,9 @@ const ApplicantsList = () => {
 
           <div className="w-fit">
             <AppFilters
-              applicants={documents.docs?.applicants}
+              applicants={jobApplicants.docs?.applicants}
               filters={filters}
+              jobTitles={jobTitles}
               onFilterChange={handleFilterChange}
               onReset={handleReset}
             />

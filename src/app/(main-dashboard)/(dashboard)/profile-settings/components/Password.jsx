@@ -1,19 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import PageTitle from "@/components/PageTitle";
-import FormatTitle from "@/components/TitleFormatter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import usePasswordStore from "@/stores/profile-settings/usePasswordStore";
-import { usePathname } from "next/navigation";
 
 export default function PasswordSettings() {
   const { formData, setFormData, savePassword, resetFormData } =
     usePasswordStore();
-  const pathname = usePathname();
-  const pageTitle = FormatTitle(pathname);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,7 +36,7 @@ export default function PasswordSettings() {
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="currentPassword">Current Password</Label>
+              <Label className="text-base" htmlFor="currentPassword">Current Password</Label>
               <Input
                 id="currentPassword"
                 type="password"
@@ -53,7 +49,7 @@ export default function PasswordSettings() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="newPassword">New Password</Label>
+              <Label className="text-base" htmlFor="newPassword">New Password</Label>
               <Input
                 id="newPassword"
                 type="password"
@@ -64,7 +60,7 @@ export default function PasswordSettings() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm New Password</Label>
+              <Label className="text-base" htmlFor="confirmPassword">Confirm New Password</Label>
               <Input
                 id="confirmPassword"
                 type="password"

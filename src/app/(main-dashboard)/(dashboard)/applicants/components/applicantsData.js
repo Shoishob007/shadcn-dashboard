@@ -12,7 +12,7 @@ export const applicantsData = [
       role: "applicant",
       updatedAt: "2024-10-26T12:46:17.874Z",
       createdAt: "2024-10-26T12:44:57.500Z",
-      email: "badhon.alam303@gmail.com",
+      email: "shoishob@hotmail.com",
       _verified: true,
       loginAttempts: 0
     },
@@ -149,7 +149,7 @@ export const applicantsData = [
       role: "applicant",
       updatedAt: "2024-10-26T12:46:17.874Z",
       createdAt: "2024-10-26T12:44:57.500Z",
-      email: "badhon.alam303@gmail.com",
+      email: "ataullah@gmail.com",
       _verified: true,
       loginAttempts: 0
     },
@@ -274,7 +274,7 @@ export const applicantsData = [
       role: "applicant",
       updatedAt: "2024-10-26T12:46:17.874Z",
       createdAt: "2024-10-26T12:44:57.500Z",
-      email: "badhon.alam303@gmail.com",
+      email: "arfin@outlook.com",
       _verified: true,
       loginAttempts: 0
     },
@@ -381,7 +381,7 @@ export const applicantsData = [
     id: 4,
     jobTitle: "Marketing Manager",
     applicantName: "Shejuti",
-    applicantEmail: "shoishob@hotmail.com",
+    applicantEmail: "shejuti@hotmail.com",
     applicant: {
       id: "9c1b3703-7af0-43c2-a83b-dbc9ebad8935",
       provider: "credentials",
@@ -392,7 +392,7 @@ export const applicantsData = [
       role: "applicant",
       updatedAt: "2024-10-26T12:46:17.874Z",
       createdAt: "2024-10-26T12:44:57.500Z",
-      email: "badhon.alam303@gmail.com",
+      email: "shejuti@hotmail.com",
       _verified: true,
       loginAttempts: 0
     },
@@ -531,7 +531,7 @@ export const applicantsData = [
       role: "applicant",
       updatedAt: "2024-10-26T12:46:17.874Z",
       createdAt: "2024-10-26T12:44:57.500Z",
-      email: "badhon.alam303@gmail.com",
+      email: "ashfaq@gmail.com",
       _verified: true,
       loginAttempts: 0
     },
