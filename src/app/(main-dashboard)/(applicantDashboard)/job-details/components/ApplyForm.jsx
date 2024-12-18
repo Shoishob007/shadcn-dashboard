@@ -46,7 +46,7 @@ const ApplyForm = () => {
       showConfirmButton: false,
       timer: 1500,
     });
-    router.push("/job-search");
+    router.push("/my-applications");
   };
 
   return (
@@ -159,7 +159,7 @@ const ApplyForm = () => {
               >
                 Apply Now{" "}
                 <span>
-                  <SendHorizontal size={18} />
+                  <SendHorizontal size={16} />
                 </span>
               </button>
             </DialogFooter>

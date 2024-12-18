@@ -139,6 +139,7 @@
 
   body {
     @apply dark:bg-gray-800 bg-white;
+    overflow: hidden;
   }
 }
 
