@@ -1,5 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { RotateCcw } from "lucide-react";
 import { useState } from "react";
 import JobSearchCard from "./components/JobSearchCard";
@@ -19,7 +28,8 @@ const JobSearch = () => {
       description:
         "We are looking for a passionate frontend developer to join our team and build amazing web experiences.",
       logo: "/assets/google.png",
-      jobStatus: "Open", // Added jobStatus
+      jobStatus: "Open",
+      experience: "2+ years",
     },
     {
       id: 2,
@@ -34,7 +44,8 @@ const JobSearch = () => {
       description:
         "Join our design team to create stunning user interfaces and enhance user experiences.",
       logo: "/assets/netflix.png",
-      jobStatus: "Open", // Added jobStatus
+      jobStatus: "Open",
+      experience: "3+ years",
     },
     {
       id: 3,
@@ -49,7 +60,8 @@ const JobSearch = () => {
       description:
         "We need a backend engineer to help us scale and improve our server infrastructure.",
       logo: "/assets/amazon.png",
-      jobStatus: "Closed", // Added jobStatus
+      jobStatus: "Closed",
+      experience: "3+ years",
     },
     {
       id: 4,
@@ -64,7 +76,8 @@ const JobSearch = () => {
       description:
         "We are hiring a marketing manager to lead our campaigns and boost our online presence.",
       logo: "/assets/facebook.png",
-      jobStatus: "Pending", // Added jobStatus
+      jobStatus: "Pending",
+      experience: "5+ years",
     },
     {
       id: 5,
@@ -79,7 +92,8 @@ const JobSearch = () => {
       description:
         "Develop innovative and user-friendly mobile applications for millions of music lovers worldwide.",
       logo: "/assets/spotify.png",
-      jobStatus: "Open", // Added jobStatus
+      jobStatus: "Open",
+      experience: "2+ years",
     },
     {
       id: 6,
@@ -94,7 +108,8 @@ const JobSearch = () => {
       description:
         "Analyze complex datasets and create predictive models to drive business decisions.",
       logo: "/assets/ibm.png",
-      jobStatus: "Closed", // Added jobStatus
+      jobStatus: "Closed",
+      experience: "4+ years",
     },
     {
       id: 7,
@@ -109,7 +124,8 @@ const JobSearch = () => {
       description:
         "Lead cross-functional teams to design and launch groundbreaking products for global audiences.",
       logo: "/assets/apple.png",
-      jobStatus: "Open", // Added jobStatus
+      jobStatus: "Open",
+      experience: "6+ years",
     },
     {
       id: 8,
@@ -124,7 +140,8 @@ const JobSearch = () => {
       description:
         "Craft engaging blog posts, articles, and website content to attract and retain readers.",
       logo: "/assets/hubspot.png",
-      jobStatus: "Pending", // Added jobStatus
+      jobStatus: "Pending",
+      experience: "1+ years",
     },
     {
       id: 9,
@@ -139,7 +156,8 @@ const JobSearch = () => {
       description:
         "Automate and streamline infrastructure to support high-availability systems for millions of users.",
       logo: "/assets/slack.png",
-      jobStatus: "Open", // Added jobStatus
+      jobStatus: "Open",
+      experience: "3+ years",
     },
     {
       id: 10,
@@ -154,7 +172,8 @@ const JobSearch = () => {
       description:
         "Create visually stunning designs that elevate branding and marketing efforts.",
       logo: "/assets/adobe.png",
-      jobStatus: "Closed", // Added jobStatus
+      jobStatus: "Closed",
+      experience: "4+ years",
     },
     {
       id: 11,
@@ -169,7 +188,8 @@ const JobSearch = () => {
       description:
         "Protect critical systems and networks from threats while ensuring data integrity.",
       logo: "/assets/cisco.png",
-      jobStatus: "Open", // Added jobStatus
+      jobStatus: "Open",
+      experience: "3+ years",
     },
     {
       id: 12,
@@ -184,18 +204,18 @@ const JobSearch = () => {
       description:
         "Plan and execute marketing campaigns to drive user engagement and growth.",
       logo: "/assets/twitter.png",
-      jobStatus: "Pending", // Added jobStatus
+      jobStatus: "Pending",
+      experience: "2+ years",
     },
   ];
 
-  // State for filter criteria
+  const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({
     location: "",
     employmentType: "",
     jobCategory: "",
   });
 
-  // Handle filter change
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({
@@ -204,16 +224,15 @@ const JobSearch = () => {
     }));
   };
 
-  // Reset filters
   const handleResetFilters = () => {
     setFilters({
       location: "",
       employmentType: "",
       jobCategory: "",
     });
+    setCurrentPage(1);
   };
 
-  // Filtered jobs based on criteria
   const filteredJobs = jobs.filter((job) => {
     return (
       (filters.location ? job.location.includes(filters.location) : true) &&
@@ -226,10 +245,20 @@ const JobSearch = () => {
     );
   });
 
-  return (
-    <div>
-      <h1 className="text-2xl font-bold">Job Search</h1>
+  const jobsPerPage = 6;
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
+
+  return (
+    <div className="overflow-hidden">
+      <h1 className="text-xl font-semibold">Job Search</h1>
       {/* Filter Section */}
       <div className="flex gap-4 mt-6">
         <select
@@ -268,7 +297,6 @@ const JobSearch = () => {
           <option value="Marketing">Marketing</option>
         </select>
 
-        {/* Reset Button */}
         <Button
           variant="ghost"
           onClick={handleResetFilters}
@@ -282,12 +310,63 @@ const JobSearch = () => {
       </div>
 
       {/* Job Listings */}
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-6">
-        {filteredJobs.length === 0 ? (
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {currentJobs.length === 0 ? (
           <p>No jobs found based on your filters.</p>
         ) : (
-          filteredJobs.map((job) => <JobSearchCard key={job.id} job={job} />)
+          currentJobs.map((job) => <JobSearchCard key={job.id} job={job} />)
         )}
+      </div>
+
+      {/* Pagination Section */}
+      <div className="mt-6 flex justify-center">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage > 1) {
+                    handlePageChange(currentPage - 1);
+                  }
+                }}
+                className="cursor-pointer"
+              />
+            </PaginationItem>
+
+            {/* Dynamically generate page numbers */}
+            {Array.from({ length: totalPages }, (_, index) => (
+              <PaginationItem key={index + 1}>
+                <PaginationLink
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handlePageChange(index + 1);
+                  }}
+                  isActive={currentPage === index + 1}
+                  className="cursor-pointer"
+                >
+                  {index + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+
+            <PaginationItem>
+              <PaginationNext
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage < totalPages) {
+                    handlePageChange(currentPage + 1);
+                  }
+                }}
+                className="cursor-pointer"
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );
