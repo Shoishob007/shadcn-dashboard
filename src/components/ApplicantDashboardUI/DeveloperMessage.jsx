@@ -6,10 +6,13 @@ const DeveloperMessage = () => {
     <div className="flex items-center justify-center flex-col gap-3">
       <Image src={developer} alt="Developer" width={560} />
       <div>
-        <h2 className="font-semibold my-3 text-xl">
+        <h1 className="text-3xl font-semibold mb-1 text-center">
+          Coming Soon!
+        </h1>
+        <p className=" mb-3 ">
           Shh… the developer is coding magic into this page. Don't disturb, or
           it might turn into a potato!
-        </h2>
+        </p>
       </div>
     </div>
   );
