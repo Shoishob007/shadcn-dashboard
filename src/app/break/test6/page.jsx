@@ -12,11 +12,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import companyLogo from "../../../../../public/assests/company.png";
+import companyLogo from "../../../../public/assests/company.png";
 
-const MyApplications = () => {
+const AppliedJobsPage = () => {
   const applications = [
     {
       id: "1",
@@ -90,12 +89,10 @@ const MyApplications = () => {
     },
   ];
 
-  const searchParams = useSearchParams();
-  const activeTab = searchParams.get("tab") || "Applied";
   return (
     <div>
-      <h1 className="text-xl font-semibold mb-6">My Applications</h1>
-      <Tabs defaultValue={activeTab}>
+      <h1 className="text-xl font-semibold mb-6">Applied Jobs</h1>
+      <Tabs defaultValue="Applied">
         <TabsList className="mb-6">
           <TabsTrigger className="ml-6 text-md" value="Applied">
             Applied
@@ -131,7 +128,7 @@ const MyApplications = () => {
 };
 
 const ApplicationCards = ({ applications }) => {
-  const itemsPerPage = 6;
+  const itemsPerPage = 3;
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(applications.length / itemsPerPage);
@@ -211,59 +208,57 @@ const ApplicationCards = ({ applications }) => {
           </Link>
         ))}
       </div>
-      {applications.length > itemsPerPage && (
-        <div className="mt-6 flex justify-center">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
+      <div className="mt-6 flex justify-center">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage > 1) {
+                    handlePageChange(currentPage - 1);
+                  }
+                }}
+                className="cursor-pointer"
+              />
+            </PaginationItem>
+
+            {/* Dynamically generate page numbers */}
+            {Array.from({ length: totalPages }, (_, index) => (
+              <PaginationItem key={index + 1}>
+                <PaginationLink
                   onClick={(e) => {
                     e.preventDefault();
-                    if (currentPage > 1) {
-                      handlePageChange(currentPage - 1);
-                    }
+                    handlePageChange(index + 1);
                   }}
+                  isActive={currentPage === index + 1}
                   className="cursor-pointer"
-                />
+                >
+                  {index + 1}
+                </PaginationLink>
               </PaginationItem>
+            ))}
 
-              {/* Dynamically generate page numbers */}
-              {Array.from({ length: totalPages }, (_, index) => (
-                <PaginationItem key={index + 1}>
-                  <PaginationLink
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePageChange(index + 1);
-                    }}
-                    isActive={currentPage === index + 1}
-                    className="cursor-pointer"
-                  >
-                    {index + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
 
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-
-              <PaginationItem>
-                <PaginationNext
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (currentPage < totalPages) {
-                      handlePageChange(currentPage + 1);
-                    }
-                  }}
-                  className="cursor-pointer"
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
-      )}
+            <PaginationItem>
+              <PaginationNext
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage < totalPages) {
+                    handlePageChange(currentPage + 1);
+                  }
+                }}
+                className="cursor-pointer"
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
     </div>
   );
 };
 
-export default MyApplications;
+export default AppliedJobsPage;
