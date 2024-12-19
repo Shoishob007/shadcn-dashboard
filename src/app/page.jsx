@@ -4,7 +4,6 @@
 "use client";
 import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/applicants/components/applicantsData";
 import ApplicantRecentApplied from "@/components/ApplicantDashboardUI/ApplicantRecentApplied";
-import DashboardCardSection from "@/components/ApplicantDashboardUI/DashboardCardSection";
 import Card, { CardContent } from "@/components/Card";
 import ApplicantsCard from "@/components/SalesCard";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +12,7 @@ import { Briefcase, CalendarDays, Users } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import InterviewSchedule from "./(main-dashboard)/(dashboard)/interviews/schedule/page";
+import DashboardCardSection from "@/components/ApplicantDashboardUI/DashboardCardSection";
 
 const cardData = [
   {
@@ -63,43 +63,6 @@ export default function Home() {
               {/* <JobApplied /> */}
               <ApplicantRecentApplied />
             </section>
-
-            {/* <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
-              <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-800 hover:border-gray-950">
-                <section>
-                  <p className="text-lg font-semibold">Recent Applications</p>
-                  <p className="text-sm text-gray-400">
-                    Top applications according to CV score
-                  </p>
-                </section>
-                {topApplications.map((d, i) => (
-                  <ApplicantsCard
-                    key={i}
-                    email={d.company}
-                    name={d.jobTitle}
-                    position={d.status}
-                  />
-                ))}
-              </CardContent>
-              <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-800 hover:border-gray-950">
-                <section>
-                  <p className="text-lg font-semibold"> Recent Job Postings </p>
-                  <p className="text-sm text-gray-400">
-                    Recent jobs from last months
-                  </p>
-                </section>
-                {jobs.map((d, i) => (
-                  <Link href={"/recent-job"}>
-                    <ApplicantsCard
-                      key={i}
-                      email={d.jobTitle}
-                      name={d.company}
-                      position={d.position}
-                    />
-                  </Link>
-                ))}
-              </CardContent>
-            </section> */}
           </div>
         </div>
       ) : (
