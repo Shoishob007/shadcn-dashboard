@@ -10,7 +10,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, MapPin } from "lucide-react";
+import { Calendar, GraduationCap, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -168,64 +168,76 @@ const ApplicationCards = ({ applications }) => {
                     <h2 className="text-lg font-semibold">{app.jobTitle}</h2>
                     <p className="text-sm text-gray-600">{app.companyName}</p>
                   </div>
-                  <Image src={companyLogo} alt="Company Logo" width={60} />
+                  <div className="flex justify-between items-center mt-4">
+                    <div>
+                      <div className="flex gap-2">
+                        <div
+                          className={`py-1 px-3 rounded-full text-xs font-medium flex items-center gap-1 ${
+                            app.jobStatus === "Open"
+                              ? "border border-green-600 text-green-600"
+                              : "border border-red-600 text-red-600"
+                          }`}
+                        >
+                          <div
+                            className={`w-1.5 h-1.5 rounded-full ${
+                              app.jobStatus === "Open"
+                                ? "bg-green-600"
+                                : "bg-red-500"
+                            }`}
+                          ></div>{" "}
+                          <span>{app.jobStatus}</span>
+                        </div>
+                        <span
+                          className={`py-1 px-3 rounded-full text-xs font-medium ${
+                            app.applicantStatus === "Shortlisted"
+                              ? "bg-yellow-100 text-yellow-600"
+                              : app.applicantStatus === "Rejected"
+                              ? "bg-red-100 text-red-600"
+                              : "bg-blue-100 text-blue-600"
+                          }`}
+                        >
+                          {app.applicantStatus}
+                        </span>
+                      </div>
+                    </div>
+                    <Image src={companyLogo} alt="Company Logo" width={60} />
+                  </div>
                 </div>
 
                 {/* Job Details */}
-                <div className="mt-4 space-y-2">
-                  <p className="text-sm text-gray-700">
+                <div className=" space-y-2">
+                  {/* <p className="text-sm text-gray-700">
                     <span className="font-medium">Category:</span>{" "}
                     {app.category}
-                  </p>
+                  </p> */}
                   <p className="text-sm text-gray-700 flex items-center gap-2">
                     <MapPin size={16} /> {app.location}
                   </p>
-                  <p className="text-sm text-gray-700 flex items-center gap-2">
-                    <Calendar size={16} /> Application Date:{" "}
-                    {app.applicationDate}
-                  </p>
-                  <p className="text-sm text-gray-700 flex items-center gap-2">
+                  <div className="text-sm text-gray-700 flex items-center gap-2">
+                    <span>
+                      <GraduationCap size={16} />
+                    </span>
+                    <div>
+                      <span>B.Sc</span>{" "}
+                      <span>Computer Science and Engineering</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-700 flex items-center gap-2">
+                      <Calendar size={16} /> Application Date:{" "}
+                      {app.applicationDate}
+                    </p>
+                    <div className=" flex items-center justify-center">
+                      <ApplicantProgress currentStepIndex={currentStepIndex} />
+                    </div>
+                    <p className="font-semibold text-gray-800">{app.salary}</p>
+                  </div>
+                  {/* <p className="text-sm text-gray-700 flex items-center gap-2">
                     <Calendar size={16} /> Deadline: {app.deadline}
-                  </p>
+                  </p> */}
                 </div>
 
                 {/* Status and Salary */}
-                <div className="flex justify-between items-center mt-4">
-                  <div className="flex gap-2">
-                    <div
-                      className={`py-1 px-3 rounded-full text-xs font-medium flex items-center gap-1 ${
-                        app.jobStatus === "Open"
-                          ? "border border-green-600 text-green-600"
-                          : "border border-red-600 text-red-600"
-                      }`}
-                    >
-                      <div
-                        className={`w-1.5 h-1.5 rounded-full ${
-                          app.jobStatus === "Open"
-                            ? "bg-green-600"
-                            : "bg-red-500"
-                        }`}
-                      ></div>{" "}
-                      <span>{app.jobStatus}</span>
-                    </div>
-                    <span
-                      className={`py-1 px-3 rounded-full text-xs font-medium ${
-                        app.applicantStatus === "Shortlisted"
-                          ? "bg-yellow-100 text-yellow-600"
-                          : app.applicantStatus === "Rejected"
-                          ? "bg-red-100 text-red-600"
-                          : "bg-blue-100 text-blue-600"
-                      }`}
-                    >
-                      {app.applicantStatus}
-                    </span>
-                  </div>
-
-                  <div className=" flex justify-center items-center">
-                    <ApplicantProgress currentStepIndex={currentStepIndex} />
-                  </div>
-                  <p className="font-semibold text-gray-800">{app.salary}</p>
-                </div>
               </div>
             </Link>
           );

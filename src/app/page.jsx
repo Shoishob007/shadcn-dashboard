@@ -3,7 +3,8 @@
 
 "use client";
 import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/applicants/components/applicantsData";
-import ApplicantRecentApplied from "@/components/ApplicantDashboardUI/ApplicantRecentApplied";
+import DashboardCardSection from "@/components/ApplicantDashboardUI/DashboardCardSection";
+import LatestJobApplied from "@/components/ApplicantDashboardUI/LatestJobApplied";
 import Card, { CardContent } from "@/components/Card";
 import ApplicantsCard from "@/components/SalesCard";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +13,6 @@ import { Briefcase, CalendarDays, Users } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import InterviewSchedule from "./(main-dashboard)/(dashboard)/interviews/schedule/page";
-import DashboardCardSection from "@/components/ApplicantDashboardUI/DashboardCardSection";
 
 const cardData = [
   {
@@ -61,7 +61,8 @@ export default function Home() {
             {/* Recently Job applied section */}
             <section>
               {/* <JobApplied /> */}
-              <ApplicantRecentApplied />
+              {/* <ApplicantRecentApplied /> */}
+              <LatestJobApplied />
             </section>
           </div>
         </div>

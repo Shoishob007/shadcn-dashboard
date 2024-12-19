@@ -1,9 +1,9 @@
-import { ToggleGroupDemo } from "./components/ToggleGroupDemo";
+import ToggleTabsExample from "./components/ToggleTabsExample";
 
 const TestPage2 = () => {
   return (
     <div>
-      <ToggleGroupDemo />
+      <ToggleTabsExample />
     </div>
   );
 };
