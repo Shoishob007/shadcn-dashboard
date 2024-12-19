@@ -4,7 +4,7 @@ import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const ApplicantProgress = ({ currentStepIndex }) => {
-  const steps = ["Applied", "In Review", "Coding Test", "Interview", "Offer"];
+  const steps = ["In Review", "Coding Test", "Interview", "Offer"];
   const [currentStep, setCurrentStep] = useState(1);
   const [complete, setComplete] = useState(false);
 
@@ -19,22 +19,22 @@ const ApplicantProgress = ({ currentStepIndex }) => {
         {steps.map((step, i) => (
           <div
             key={i}
-            className={`relative flex flex-col justify-center items-center w-36 step-items ${
+            className={`relative flex flex-col justify-center items-center w-20 step-items ${
               currentStep === i + 1 && "active"
             } ${(i + 1 < currentStep || complete) && "complete"}`}
           >
             <div
-              className={`w-7 h-7 text-sm flex z-10 relative bg-black rounded-full items-center justify-center font-semibold text-white step`}
+              className={`w-5 h-5 text-[10px] flex z-10 relative bg-black rounded-full items-center justify-center font-semibold text-white step`}
             >
               {i + 1 < currentStep || complete ? (
-                <span className="border border-green-500 w-7 h-7 bg-green-500 text-white rounded-full flex items-center justify-center">
+                <span className="border border-green-500 w-5 h-5 bg-green-500 text-white rounded-full flex items-center justify-center">
                   <Check size={16} />
                 </span>
               ) : (
                 i + 1
               )}
             </div>
-            <p className="text-gray-500 text-[12px]">{step}</p>
+            <p className="text-gray-500 text-[10px]">{step}</p>
           </div>
         ))}
       </div>
