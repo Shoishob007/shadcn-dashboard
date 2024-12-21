@@ -216,7 +216,7 @@ export function RequirementsTab({ form }) {
               {skillTags.map((skill, index) => (
                 <div
                   key={index}
-                  className="relative h-7 bg-background border border-input hover:bg-background rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
+                  className="relative h-7 bg-gray-100 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
                 >
                   {skill}
                   <button

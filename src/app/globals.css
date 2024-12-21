@@ -260,3 +260,230 @@
     background-size: 20px 20px;
   }
 }
+
+
+/* React Scheduler CSS */
+
+@import "../../node_modules/@syncfusion/ej2-base/styles/material.css";
+@import "../../node_modules/@syncfusion/ej2-buttons/styles/material.css";
+@import "../../node_modules/@syncfusion/ej2-calendars/styles/material.css";
+@import "../../node_modules/@syncfusion/ej2-dropdowns/styles/material.css";
+@import "../../node_modules/@syncfusion/ej2-inputs/styles/material.css";
+@import "../../node_modules/@syncfusion/ej2-lists/styles/material.css";
+@import "../../node_modules/@syncfusion/ej2-navigations/styles/material.css";
+@import "../../node_modules/@syncfusion/ej2-popups/styles/material.css";
+@import "../../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css";
+@import "../../node_modules/@syncfusion/ej2-react-schedule/styles/material.css";
+
+/* Syncfusion Scheduler Theme Styles */
+
+.e-schedule {
+  border-color: #e5e7eb;
+  background-color: #f9fafb;
+  color: #1f2937; 
+}
+
+.e-schedule .e-schedule-toolbar,
+.e-schedule .e-timeline-month-header-calendar,
+.e-schedule .e-timeline-month-header {
+  border-color: #e5e7eb;
+  background-color: #f9fafb;
+  color: #1f2937;
+}
+
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment,
+.e-schedule .e-month-view .e-appointment {
+  color: #1f2937;
+  background-color: #f9fafb;
+}
+
+.e-schedule .e-month-view .e-work-cells,
+.e-schedule .e-vertical-view .e-work-cells {
+  border-color: #e5e7eb;
+  color: #1f2937;
+}
+
+.e-schedule .e-month-view .e-work-cells:hover,
+.e-schedule .e-vertical-view .e-work-cells:hover {
+  background-color: #f3f4f6; 
+  color: #1f2937;
+}
+
+.e-schedule .e-month-view .e-current-date,
+.e-schedule .e-vertical-view .e-current-date {
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+
+.e-schedule .e-header-cells,
+.e-schedule .e-resource-cells,
+.e-schedule .e-work-cells {
+  border-color: #e5e7eb;
+}
+
+.e-schedule .e-month-agenda-view,
+.e-schedule-dialog,
+.e-quick-popup-wrapper {
+  color: #1f2937;
+  border-color: #e5e7eb;
+  background-color: #ffffff;
+}
+
+.e-schedule .e-agenda-view .e-appointment {
+  border-left: 4px solid #3b82f6;
+  background-color: #ffffff;
+  color: #1f2937;
+}
+
+/* Dark Mode Styling */
+.dark .e-schedule {
+  background-color: #1f2937;
+  color: #e5e7eb; 
+}
+
+.dark .e-schedule .e-schedule-toolbar,
+.dark .e-schedule .e-timeline-month-header-calendar,
+.dark .e-schedule .e-timeline-month-header {
+  background-color: #374151;
+  color: #e5e7eb;
+}
+
+.dark .e-table-container .e-table-wrap .e-schedule-table .e-date-header-container .e-date-header-wrap .e-schedule-table .e-header-cells{
+  background-color: #1f2937;
+}
+
+.dark .e-table-container .e-table-wrap .e-schedule-table .e-date-header-container .e-date-header-wrap .e-schedule-table .e-header-cells > span{
+  color:#e5e7eb
+}
+
+.dark .e-table-container .e-table-wrap .e-schedule-table .e-content-wrap .e-schedule-table .e-work-cells,
+.dark .e-table-container .e-table-wrap .e-schedule-table .e-header-cells, .dark .e-table-container .e-table-wrap .e-schedule-table .e-time-slots{
+  background-color: #1f2937;
+}
+.dark .e-table-container .e-table-wrap .e-schedule-table .e-content-wrap .e-schedule-table .e-work-cells .e-date-header, 
+.dark .e-table-container .e-table-wrap .e-schedule-table .e-header-cells, .dark .e-table-container .e-table-wrap .e-schedule-table .e-time-slots > span{
+  color:#e5e7eb
+}
+
+.dark .e-schedule .e-schedule-toolbar-container .e-header-popup .e-header-calendar{
+  border: 1px solid gray;
+}
+
+.dark .e-schedule .e-schedule-toolbar-container .e-header-popup .e-header-calendar {
+  background-color: #1f2937;
+}
+
+.dark .e-schedule .e-schedule-toolbar-container .e-header-popup .e-header-calendar .e-header .e-day, 
+.dark .e-schedule .e-schedule-toolbar-container .e-header-popup .e-header-calendar .e-header .e-icon-container .e-prev > span,
+.dark .e-schedule .e-schedule-toolbar-container .e-header-popup .e-header-calendar .e-header .e-icon-container .e-next > span,
+.dark .e-schedule .e-schedule-toolbar-container .e-header-popup .e-header-calendar .e-calendar-content-table .e-week-header th,
+.dark .e-schedule .e-schedule-toolbar-container .e-header-popup .e-header-calendar .e-calendar-content-table .e-cell > span
+{
+  color:#e5e7eb
+}
+
+.dark .e-schedule .e-schedule-toolbar-container .e-header-popup .e-header-calendar .e-footer-container
+{
+  background-color: #1f2937;
+}
+
+.dark .e-schedule .e-schedule-toolbar .e-toolbar-items .e-toolbar-item > button {
+  background-color: #1f2937;
+}
+
+.dark .e-schedule .e-schedule-toolbar .e-toolbar-items .e-toolbar-item > #e-tbr-btn_4 > span{
+  color: #DC2626;
+}
+
+.dark .e-schedule .e-schedule-toolbar .e-toolbar-items .e-toolbar-item > button:hover {
+  background-color: #111827;
+}
+
+.dark .e-schedule .e-schedule-toolbar .e-toolbar-items .e-toolbar-item > button > span{
+  color: #e5e7eb;
+}
+
+.dark .e-schedule .e-vertical-view .e-day-wrapper .e-appointment,
+.dark .e-schedule .e-month-view .e-appointment {
+  color: #e5e7eb;
+  background-color: #374151;
+}
+
+.dark .e-schedule .e-month-view .e-work-cells,
+.dark .e-schedule .e-vertical-view .e-work-cells {
+  border-color: #374151;
+  color: #1f2937;
+}
+.dark .e-toolbar-items{
+  background-color: #374151;
+}
+
+.dark .e-popup-content{
+  background-color: #374151;
+  color: #e5e7eb;
+}
+
+.dark .e-quick-popup-wrapper > .e-cell-popup > .e-popup-header > .e-header-icon-wrapper > button , 
+.dark .e-quick-popup-wrapper > .e-cell-popup > table > form > span{
+  color: #e5e7eb;
+}
+
+/* .dark .e-popup-content > .e-popup-table{
+  background-color: #374151;
+} */
+
+.dark .e-quick-popup-wrapper .e-cell-popup .e-popup-content .e-popup-table .e-schedule-form .e-input-group > input, 
+.dark .e-quick-popup-wrapper .e-cell-popup .e-popup-content .e-popup-table .e-date-time .e-date-time-details, 
+.dark .e-quick-popup-wrapper .e-cell-popup .e-popup-content .e-popup-table .e-schedule-form .e-input-group > input::placeholder{
+  color: #e5e7eb;
+}
+
+
+.dark .e-date-time > .e-date-time-icon, .dark .e-date-time > .e-date-time-wrapper > .e-date-time-details{
+color: #e5e7eb
+}
+
+.dark .e-description > .e-description-icon, .dark .e-description > .e-description-details{
+  color: #e5e7eb
+  }
+
+  .dark .e-popup-footer > .e-event-details{
+    color: #e5e7eb
+    }
+  
+
+.dark .e-tbar-btn{
+  background-color: #374151;
+}
+
+.dark .e-schedule .e-month-view .e-work-cells:hover,
+.dark .e-schedule .e-vertical-view .e-work-cells:hover {
+  background-color: #4b5563;
+  color: #e5e7eb;
+}
+
+.dark .e-schedule .e-month-view .e-current-date,
+.dark .e-schedule .e-vertical-view .e-current-date {
+  background-color: #374151; 
+  color: #e5e7eb;
+}
+
+.dark .e-schedule .e-header-cells,
+.dark .e-schedule .e-resource-cells,
+.dark .e-schedule .e-work-cells {
+  border-color: #374151;
+}
+
+.dark .e-schedule .e-month-agenda-view,
+.dark .e-schedule-dialog,
+.dark .e-quick-popup-wrapper {
+  color: #e5e7eb;
+  border-color: #4b5563;
+  background-color: #374151;
+}
+
+.dark .e-schedule .e-agenda-view .e-appointment {
+  border-left: 4px solid #3b82f6;
+  background-color: #4b5563;
+  color: #e5e7eb;
+}

@@ -24,6 +24,11 @@ const experienceOptions = [
   { label: "5+ years", value: "5-999" },
 ];
 
+const sortOptions = [
+  { label: "Latest First", value: "latest" },
+  { label: "Oldest First", value: "oldest" },
+];
+
 export const JobFilters = ({
   jobs,
   filters,
@@ -67,7 +72,7 @@ export const JobFilters = ({
                 onChange={(value) => onFilterChange("status", value)}
                 className="min-w-24 max-w-40"
               />
-              <RangeFilter
+              {/* <RangeFilter
                 placeholder="Job Role"
                 options={[
                   { value: "all", label: "Any Job Roles" },
@@ -79,12 +84,19 @@ export const JobFilters = ({
                 value={filters.jobRole}
                 onChange={(value) => onFilterChange("jobRole", value)}
                 className="min-w-24 max-w-40"
-              />
+              /> */}
               <RangeFilter
                 placeholder="Experience"
                 options={experienceOptions}
                 value={filters.experienceRange}
                 onChange={(value) => onFilterChange("experienceRange", value)}
+                className="min-w-24 max-w-40"
+              />
+              <RangeFilter
+                placeholder="Sort By"
+                options={sortOptions}
+                value={filters.sortBy}
+                onChange={(value) => onFilterChange("sortBy", value)}
                 className="min-w-24 max-w-40"
               />
             </div>
@@ -157,7 +169,9 @@ export const AppFilters = ({
                   className="flex items-center gap-2 p-2 dark:border-gray-500 dark:hover:bg-gray-900 h-7 md:h-9"
                 >
                   <RotateCcw className="w-2 h-2" />
-                  <span className=" text-[10px] hidden md:block md:text-xs">Reset</span>
+                  <span className=" text-[10px] hidden md:block md:text-xs">
+                    Reset
+                  </span>
                 </Button>
               </div>
             </div>
