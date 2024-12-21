@@ -1,12 +1,12 @@
-import * as React from "react";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   DotsHorizontalIcon,
 } from "@radix-ui/react-icons";
+import * as React from "react";
 
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
 
 const Pagination = ({ className, ...props }) => (
   <nav
@@ -54,8 +54,11 @@ const PaginationPrevious = ({ className, ...props }) => (
     className={cn("gap-1 pl-2.5", className)}
     {...props}
   >
-    <ChevronLeftIcon className="h-4 w-4" />
-    <span>Previous</span>
+    <Button>
+      {" "}
+      <ChevronLeftIcon className="h-4 w-4" />
+      Previous
+    </Button>
   </PaginationLink>
 );
 PaginationPrevious.displayName = "PaginationPrevious";
@@ -67,8 +70,9 @@ const PaginationNext = ({ className, ...props }) => (
     className={cn("gap-1 pr-2.5", className)}
     {...props}
   >
-    <span>Next</span>
-    <ChevronRightIcon className="h-4 w-4" />
+    <Button>
+      Next <ChevronRightIcon className="h-4 w-4" />
+    </Button>
   </PaginationLink>
 );
 PaginationNext.displayName = "PaginationNext";
@@ -88,9 +92,9 @@ PaginationEllipsis.displayName = "PaginationEllipsis";
 export {
   Pagination,
   PaginationContent,
-  PaginationLink,
-  PaginationItem,
-  PaginationPrevious,
-  PaginationNext,
   PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
 };

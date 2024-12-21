@@ -21,10 +21,9 @@ const ApplicantRecentApplied = () => {
   return (
     <div className="mt-[30px]">
       <h1 className="font-medium text-xl mb-5">Recent Job Applied</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2  gap-6">
         {jobs.map((job, index) => {
           const progressSteps = [
-            "Applied",
             "In Review",
             "Coding Test",
             "Interview",

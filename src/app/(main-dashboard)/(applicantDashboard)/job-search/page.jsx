@@ -318,56 +318,57 @@ const JobSearch = () => {
         )}
       </div>
 
-      {/* Pagination Section */}
-      <div className="mt-6 flex justify-center">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (currentPage > 1) {
-                    handlePageChange(currentPage - 1);
-                  }
-                }}
-                className="cursor-pointer"
-              />
-            </PaginationItem>
-
-            {/* Dynamically generate page numbers */}
-            {Array.from({ length: totalPages }, (_, index) => (
-              <PaginationItem key={index + 1}>
-                <PaginationLink
+      {filteredJobs.length > jobsPerPage && (
+        <div className="mt-6 flex justify-center">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
                   onClick={(e) => {
                     e.preventDefault();
-                    handlePageChange(index + 1);
+                    if (currentPage > 1) {
+                      handlePageChange(currentPage - 1);
+                    }
                   }}
-                  isActive={currentPage === index + 1}
                   className="cursor-pointer"
-                >
-                  {index + 1}
-                </PaginationLink>
+                />
               </PaginationItem>
-            ))}
 
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
+              {/* Dynamically generate page numbers */}
+              {Array.from({ length: totalPages }, (_, index) => (
+                <PaginationItem key={index + 1}>
+                  <PaginationLink
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(index + 1);
+                    }}
+                    isActive={currentPage === index + 1}
+                    className="cursor-pointer"
+                  >
+                    {index + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
 
-            <PaginationItem>
-              <PaginationNext
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (currentPage < totalPages) {
-                    handlePageChange(currentPage + 1);
-                  }
-                }}
-                className="cursor-pointer"
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+
+              <PaginationItem>
+                <PaginationNext
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (currentPage < totalPages) {
+                      handlePageChange(currentPage + 1);
+                    }
+                  }}
+                  className="cursor-pointer"
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 };

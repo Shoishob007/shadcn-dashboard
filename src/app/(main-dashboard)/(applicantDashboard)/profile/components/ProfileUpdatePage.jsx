@@ -96,7 +96,7 @@ const ProfileUpdatePage = () => {
             </div>
 
             {/* Right Content */}
-            <div className="w-2/3 p-6">
+            <div className="w-2/3 p-6 ">
               {activeSection === "basic" && <BasicDetails />}
               {activeSection === "resume" && <ResumeUploader />}
 
