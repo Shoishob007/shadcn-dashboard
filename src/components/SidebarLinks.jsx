@@ -192,8 +192,8 @@ export const SidebarLinks = () => {
     },
 
     {
-      title: "Scheduled Interviews",
-      href: "/interviews/schedule",
+      title: "Schedule",
+      href: "/demoSchedule",
       icon: CalendarDays,
       variant: "ghost",
       // submenu: [
@@ -216,7 +216,7 @@ export const SidebarLinks = () => {
     },
     {
       title: "My Billings",
-      href: "/demoBillings/billing-table",
+      href: "/demoBillings",
       icon: ReceiptText,
       variant: "default",
     },

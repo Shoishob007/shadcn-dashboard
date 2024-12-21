@@ -2,17 +2,20 @@
 /** @format */
 
 "use client";
+import ApplicantRecentApplied from "@/components/ApplicantDashboardUI/ApplicantRecentApplied";
 import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/applicants/components/applicantsData";
 import DashboardCardSection from "@/components/ApplicantDashboardUI/DashboardCardSection";
 import LatestJobApplied from "@/components/ApplicantDashboardUI/LatestJobApplied";
 import Card, { CardContent } from "@/components/Card";
-import ApplicantsCard from "@/components/SalesCard";
 import { Badge } from "@/components/ui/badge";
 import useRoleStore from "@/stores/roleStore/useRoleStore";
 import { Briefcase, CalendarDays, Users } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import InterviewSchedule from "./(main-dashboard)/(dashboard)/interviews/schedule/page";
+import JobList from "./(main-dashboard)/(dashboard)/demoJobList/page";
+import { useState } from "react";
+import ApplicantsList from "./(main-dashboard)/(dashboard)/demoAppList/page";
 
 const cardData = [
   {
@@ -34,13 +37,16 @@ const cardData = [
     amount: "10",
     discription: "+10 since last month",
     icon: CalendarDays,
-    href: "/interviews/schedule",
+    href: "/demoSchedule",
   },
 ];
 
 export default function Home() {
   const { currentRole, setRole } = useRoleStore();
   const { data: session } = useSession();
+  const [showFilters, setShowFilters] = useState(false);
+  const [limitToSix, setLimitToSix] = useState(true);
+
 
   return (
     <div className="flex flex-col gap-5 w-full">
@@ -89,29 +95,18 @@ export default function Home() {
               </Link>
             ))}
           </section>
-          <section className="grid grid-cols-1 gap-4 transition-all lg:grid-cols-2 dark:text-gray-200">
+          <section className="grid grid-cols-1 gap-4 transition-all dark:text-gray-200">
             <CardContent className="bg-white dark:bg-gray-800 hover:border-gray-950 ">
-              <p className="text-xl font-semibold text-center">Interviews</p>
-              <InterviewSchedule className="shadow-none" />
+              <p className="text-xl font-semibold text-center">Recent Jobs</p>
+              <JobList showFilters={showFilters} className="shadow-none" />
             </CardContent>
             <CardContent className="flex justify-between gap-4 bg-white dark:bg-gray-800 hover:border-gray-950">
               <section>
                 <p className="text-lg font-semibold text-center">
                   Recent Applications
                 </p>
-                {/* <p className="text-sm text-gray-400">
-                  Top applicants according to CV score
-                </p> */}
               </section>
-              {applicantsData.map((d, i) => (
-                <ApplicantsCard
-                  key={i}
-                  email={d.applicant.email}
-                  name={d.applicantName}
-                  position={d.jobTitle}
-                  status={d.status}
-                />
-              ))}
+              <ApplicantsList limitToSix={limitToSix}/>
             </CardContent>
           </section>
         </div>

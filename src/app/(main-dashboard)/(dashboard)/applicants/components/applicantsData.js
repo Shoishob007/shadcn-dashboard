@@ -131,6 +131,12 @@ export const applicantsData = [
       }
     ],
 
+    interviewSchedule: new Date("2024-11-14"),
+    schedule : {
+      date:  new Date("2024-11-14"),
+      time: "14:30",
+    },
+
     bloodGroup: "O+",
     designation: "Software Engineer",
     phone: "01111666999",
@@ -157,7 +163,6 @@ export const applicantsData = [
     CV: 'https://morth.nic.in/sites/default/files/dd12-13_0.pdf',
     CVScore: 65,
     deadline: new Date("2024-11-05"),
-    interviewSchedule: new Date("2024-11-14"),
     skills: [
       "JavaScript",
       "React",
@@ -283,6 +288,10 @@ export const applicantsData = [
     CV: 'https://morth.nic.in/sites/default/files/dd12-13_0.pdf',
     CVScore: 50,
     interviewSchedule: new Date("2024-11-10"),
+    schedule : {
+      date:  new Date("2024-11-20"),
+      time: "14:30",
+    },
     skills: [
       "JavaScript",
       "React",
@@ -540,7 +549,11 @@ export const applicantsData = [
     CV: 'https://morth.nic.in/sites/default/files/dd12-13_0.pdf',
     CVScore: 60,
     deadline: new Date("2024-10-01"),
-    interviewSchedule: new Date("2024-10-10"),
+    interviewSchedule: new Date("2024-12-12"),
+    schedule : {
+      date:  new Date("2024-12-12"),
+      time: "14:30",
+    },
     skills: [
       "JavaScript",
       "React",

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const plans = [
   {
@@ -44,15 +45,15 @@ const plans = [
 ];
 
 const PricingCards = () => {
+    const router = useRouter()
+  
   return (
     <div className="flex flex-wrap justify-center gap-6 p-4">
       {plans.map((plan, index) => (
         <div
           key={index}
-          className={`border rounded-lg p-6 hover:shadow-md transition-all duration-200 hover:scale-105 bg-white dark:bg-gray-800 ${
-            plan.recommended
-              ? "hover:border-blue-500"
-              : "border-gray-200 hover:border-gray-500"
+          className={`border rounded-lg p-6 hover:shadow-md transition-all duration-200 hover:scale-105 bg-white dark:bg-gray-800 border-gray-700 ${
+            plan.recommended ? "hover:border-blue-500" : " hover:border-black"
           } w-72`}
         >
           <h3 className="text-lg sm:text-xl font-semibold text-center mb-2">
@@ -75,9 +76,21 @@ const PricingCards = () => {
               </li>
             ))}
           </ul>
-          <Button className={`w-full py-2 rounded-md font-normal text-sm ${plan.recommended ? "bg-blue-500 dark:bg-blue-400 hover:bg-blue-600 hover:dark:bg-blue-300": ""}`}>
-            {plan.recommended ? `Choose ${plan.title} (Recommended)` : `Choose ${plan.title}`
+          <Button
+            onClick={() =>
+              router.push(
+                `/demoBillings/pricing/payment?amount=${plan.price}`
+              )
             }
+            className={`w-full py-2 rounded-md font-normal text-sm ${
+              plan.recommended
+                ? "bg-blue-500 dark:bg-blue-400 hover:bg-blue-600 hover:dark:bg-blue-300"
+                : ""
+            }`}
+          >
+            {plan.recommended
+              ? `Choose ${plan.title} (Recommended)`
+              : `Choose ${plan.title}`}
           </Button>
         </div>
       ))}
