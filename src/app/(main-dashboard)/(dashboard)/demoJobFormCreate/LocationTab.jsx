@@ -35,7 +35,7 @@ export function LocationTab({ form }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Address</FormLabel>
-              <FormControl className="dark:border-gray-300 ">
+              <FormControl className="dark:border-gray-400 ">
                 <Input {...field} placeholder="Full address" />
               </FormControl>
               <FormMessage />
@@ -53,7 +53,7 @@ export function LocationTab({ form }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Contact Email</FormLabel>
-              <FormControl className="dark:border-gray-300 ">
+              <FormControl className="dark:border-gray-400 ">
                 <Input
                   type="email"
                   {...field}
@@ -107,7 +107,6 @@ export function LocationTab({ form }) {
                 onChange={field.onChange}
                 modules={modules}
                 theme="snow"
-                className="dark:bg-gray-900"
                 placeholder="Additional contact info..."
               />
             </FormControl>

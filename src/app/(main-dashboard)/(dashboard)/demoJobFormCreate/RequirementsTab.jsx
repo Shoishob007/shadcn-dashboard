@@ -170,7 +170,7 @@ export function RequirementsTab({ form }) {
   };
 
   const handleDegreeSelect = (degree) => {
-    // Clear existing degrees before adding new one
+    // Clearing existing degrees before adding new one
     initializeDegrees([]);
     addDegree(degree);
     setDegreeInputValue("");
@@ -197,7 +197,6 @@ export function RequirementsTab({ form }) {
                 onChange={handleRequirementsChange}
                 modules={modules}
                 theme="snow"
-                className="dark:bg-gray-900"
                 placeholder="Detailed Job Requirements..."
               />
             </FormControl>
@@ -216,15 +215,15 @@ export function RequirementsTab({ form }) {
               {skillTags.map((skill, index) => (
                 <div
                   key={index}
-                  className="relative h-7 bg-gray-100 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
+                  className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
                 >
                   {skill}
                   <button
                     type="button"
-                    className="absolute top-1/3 -right-3 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground"
+                    className="absolute top-2/3 -right-2 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
                     onClick={() => removeSkill(skill)}
                   >
-                    ×
+                    X
                   </button>
                 </div>
               ))}
@@ -238,12 +237,12 @@ export function RequirementsTab({ form }) {
                 className="border text-sm w-full rounded-md px-3 py-2"
               />
               {skillSuggestions.length > 0 && (
-                <ul className="absolute bg-white border border-gray-200 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
+                <ul className="absolute bg-white dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
                   {skillSuggestions.map((skill, index) => (
                     <li
                       key={index}
                       onClick={() => handleSkillSelect(skill)}
-                      className="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                      className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
                     >
                       {skill}
                     </li>

@@ -38,7 +38,7 @@ export const JobFilters = ({
   handleCreateJob,
 }) => {
   return (
-    <div className="flex mx-auto max-w-4xl items-center">
+    <div className="flex mx-auto max-w-5xl items-center">
       <div className="w-full space-y-2 dark:bg-gray-900 rounded-lg">
         <div className="flex flex-col gap-4">
           {/* Search bar and Range Filters */}

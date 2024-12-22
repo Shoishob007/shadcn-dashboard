@@ -18,14 +18,14 @@ const BillingTable = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [orderDate, setOrderDate] = useState("");
 
-  const services = ["All", "SMS Package", "Hot Job Listing"]
+  const services = ["All", "Free Package", "Standard Package"]
 
   const data = [
     {
       id: 1,
       quotation: "20240609-28",
       date: "2024-06-09",
-      service: "SMS Package",
+      service: "Free Package",
       amount: "1000 BDT",
       invoice: "14175 EDT",
     },
@@ -33,7 +33,7 @@ const BillingTable = () => {
       id: 2,
       quotation: "20241114-53",
       date: "2024-11-14",
-      service: "Hot Job Listing",
+      service: "Standard Package",
       amount: "14175 BDT",
       invoice: "14175 EDT",
     },
@@ -52,12 +52,9 @@ const BillingTable = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl text-center font-semibold underline underline-offset-2 mb-4">
-        My Billings
-      </h2>
 
       {/* Filters */}
-      <div className="flex flex-row gap-4 mb-6 justify-center">
+      <div className="flex flex-row gap-4 mb-6 justify-end">
         {/* Service Filter */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

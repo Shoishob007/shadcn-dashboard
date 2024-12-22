@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
@@ -52,22 +54,20 @@ const PricingCards = () => {
       {plans.map((plan, index) => (
         <div
           key={index}
-          className={`border rounded-lg p-6 hover:shadow-md transition-all duration-200 hover:scale-105 bg-white dark:bg-gray-800 border-gray-700 ${
-            plan.recommended ? "hover:border-blue-500" : " hover:border-black"
-          } w-72`}
+          className={`rounded-lg p-6 hover:shadow-md transition-all duration-200 hover:scale-105 bg-white dark:bg-gray-800 border-gray-700 w-72`}
         >
           <h3 className="text-lg sm:text-xl font-semibold text-center mb-2">
             {plan.title}
           </h3>
-          <p className="text-center text-base font-semibold mb-4 border-b-2 pb-2 border-gray-600 border-dotted">
-            {plan.price} BDT
+          <p className="text-center text-base font-semibold mb-4 pb-2">
+            {plan.price} BDT/<span className="text-sm text-gray-500">month</span>
           </p>
           <ul className="mb-6 text-sm">
             {Object.entries(plan.features).map(([feature, available]) => (
               <li key={feature} className="flex items-center mb-2">
                 <span
                   className={`mr-2 ${
-                    available ? "text-green-500" : "text-gray-400"
+                    available ? "text-emerald-500" : "text-red-500"
                   }`}
                 >
                   {available ? "✔" : "✘"}
