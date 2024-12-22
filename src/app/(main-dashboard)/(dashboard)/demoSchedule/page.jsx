@@ -63,6 +63,7 @@ const Scheduler = () => {
   return (
     <div className="rounded-lg border bg-card">
       <ScheduleComponent
+        currentView="Month"
         eventSettings={{
           dataSource: events,
         }}
