@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Pencil } from "lucide-react";
@@ -15,6 +13,7 @@ import UpdateSocials from "./(UpdateProfile)/UpdateSocials";
 
 const ProfileUpdatePage = () => {
   const [activeSection, setActiveSection] = useState("basic");
+
   return (
     <div className="">
       <Sheet>
@@ -27,10 +26,13 @@ const ProfileUpdatePage = () => {
           </Button>
         </SheetTrigger>
 
-        <SheetContent side="bottom" className="w-full h-full p-0">
+        <SheetContent
+          side="bottom"
+          className="w-full h-[95%] overflow-hidden p-0"
+        >
           <div className="flex h-full">
             {/* Sidebar */}
-            <div className="w-72 bg-gray-100 border-r">
+            <div className="w-72 bg-gray-100 border-r h-full sticky top-0">
               <nav className="flex flex-col p-4 gap-2">
                 <Button
                   variant={activeSection === "basic" ? "default" : "outline"}
@@ -96,15 +98,12 @@ const ProfileUpdatePage = () => {
             </div>
 
             {/* Right Content */}
-            <div className="w-2/3 p-6 ">
+            <div className="flex-1 p-6 overflow-y-auto">
               {activeSection === "basic" && <BasicDetails />}
               {activeSection === "resume" && <ResumeUploader />}
-
               {activeSection === "about" && <UpdateAbout />}
               {activeSection === "skills" && <UpdateSkills />}
-
               {activeSection === "education" && <UpdateEducation />}
-
               {activeSection === "experience" && <UpdateExperience />}
               {activeSection === "socials" && <UpdateSocials />}
               {activeSection === "projects" && <UpdateProjects />}
