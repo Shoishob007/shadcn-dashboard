@@ -20,13 +20,13 @@ const UpdateProjects = () => {
             Project Type <span className="text-red-500">*</span>
           </label>
           <div className="mt-2 flex gap-4">
-            <button className="py-2 px-4 border rounded-md text-xs font-medium text-gray-700 bg-gray-100 hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button className="py-2 px-4 border rounded-md text-xs font-medium text-gray-700 bg-gray-100 hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-black">
               Full Time
             </button>
-            <button className="py-2 px-4 border rounded-md text-xs font-medium text-gray-700 bg-gray-100 hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button className="py-2 px-4 border rounded-md text-xs font-medium text-gray-700 bg-gray-100 hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-black">
               Part Time
             </button>
-            <button className="py-2 px-4 border rounded-md text-xs font-medium text-gray-700 bg-gray-100 hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button className="py-2 px-4 border rounded-md text-xs font-medium text-gray-700 bg-gray-100 hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-black">
               Freelance
             </button>
           </div>
