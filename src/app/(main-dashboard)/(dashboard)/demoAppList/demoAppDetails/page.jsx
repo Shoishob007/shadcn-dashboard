@@ -240,7 +240,7 @@ const ApplicantDetails = () => {
         </div>
 
         {/* Right Section */}
-        <div className="col-span-2 grid grid-cols-2 gap-2 px-1 sm:px-5">
+        <div className="col-span-2 grid grid-cols-2 gap-2 px-1 sm:px-5 overflow-y-auto">
           {/* Experiences Section */}
           <div className="col-span-2 sm:col-span-1">
             <div className="flex items-center gap-2 border w-fit px-2 py-0.5 bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-200 border-black rounded-md">

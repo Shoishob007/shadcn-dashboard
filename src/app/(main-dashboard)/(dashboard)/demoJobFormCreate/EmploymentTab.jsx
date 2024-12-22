@@ -26,7 +26,7 @@ export function EmploymentTab({ form }) {
             <FormItem>
               <FormLabel>Employment Type</FormLabel>
               <FormControl>
-                <div className="flex items-center border dark:border-gray-300 rounded-md">
+                <div className="flex items-center border dark:border-gray-400 rounded-md">
                   {/* <SlidersHorizontal className="mx-3 text-gray-400 w-4" /> */}
                   <Select
                     onValueChange={field.onChange}
@@ -55,7 +55,7 @@ export function EmploymentTab({ form }) {
             <FormItem>
               <FormLabel>Job Type</FormLabel>
               <FormControl>
-                <div className="flex items-center border dark:border-gray-300  rounded-md">
+                <div className="flex items-center border dark:border-gray-400  rounded-md">
                   {/* <SlidersVertical className="mx-3 text-gray-400 w-4" /> */}
                   <Select
                     onValueChange={field.onChange}
@@ -85,7 +85,7 @@ export function EmploymentTab({ form }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Salary Range</FormLabel>
-              <FormControl className="dark:border-gray-300 ">
+              <FormControl className="dark:border-gray-400 ">
                 <Input {...field} placeholder="e.g. 80,000 - 100,000 BDT" />
               </FormControl>
               <FormMessage />
@@ -99,7 +99,7 @@ export function EmploymentTab({ form }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Years of Experience</FormLabel>
-              <FormControl className="dark:border-gray-300 ">
+              <FormControl className="dark:border-gray-400 ">
                 <Input
                   type="number"
                   {...field}
@@ -121,7 +121,7 @@ export function EmploymentTab({ form }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Publish Date</FormLabel>
-              <FormControl className="dark:border-gray-300 ">
+              <FormControl className="dark:border-gray-400 ">
                 <Input type="date" {...field} />
               </FormControl>
               <FormMessage />
@@ -135,7 +135,7 @@ export function EmploymentTab({ form }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Application Deadline</FormLabel>
-              <FormControl className="dark:border-gray-300">
+              <FormControl className="dark:border-gray-400">
                 <Input type="date" {...field} />
               </FormControl>
               <FormMessage />

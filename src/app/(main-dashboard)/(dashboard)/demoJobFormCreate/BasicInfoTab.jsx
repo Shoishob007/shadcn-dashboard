@@ -79,7 +79,7 @@ export function BasicInfoTab({ form }) {
               <Input
                 {...field}
                 placeholder="e.g. Senior Software Engineer"
-                className="dark:border-gray-300"
+                className="dark:border-gray-400"
               />
             </FormControl>
             <FormMessage />
@@ -97,7 +97,7 @@ export function BasicInfoTab({ form }) {
               <Textarea
                 {...field}
                 placeholder="Detailed Job Overview..."
-                className="min-h-[70px] sm:min-h-[60px] dark:border-gray-300 "
+                className="min-h-[70px] sm:min-h-[60px] dark:border-gray-400 "
               />
             </FormControl>
             <FormMessage />
@@ -118,7 +118,7 @@ export function BasicInfoTab({ form }) {
                 onChange={handleBenefitsChange}
                 modules={modules}
                 theme="snow"
-                className="dark:bg-gray-800 dark:text-gray-300"
+                className="dark:bg-gray-800 dark:text-gray-400"
                 placeholder="Detailed Employee Benefits..."
               />
             </FormControl>
@@ -140,7 +140,7 @@ export function BasicInfoTab({ form }) {
                 onChange={handleResponsibilitiesChange}
                 modules={modules}
                 theme="snow"
-                className="dark:bg-gray-800 dark:text-gray-300"
+                className="dark:bg-gray-800 dark:text-gray-400"
                 placeholder="Detailed Job Responsibilities..."
               />
 

@@ -2,13 +2,14 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { SquarePen } from "lucide-react";
+import { SquarePen, Users } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { documents as jobDocuments } from "../components/jobData";
-import dynamic from "next/dynamic";
 import CreateJobForm from "../../demoJobFormCreate/page";
+import { useRouter } from "next/navigation";
 
 const JobDetailsPage = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const jobId = searchParams.get("jobId");
   const [currentJobInfo, setCurrentJobInfo] = useState(null);
@@ -33,6 +34,11 @@ const JobDetailsPage = () => {
     );
   }
 
+  const handleViewApplicantList = (jobId) => {
+    router.push(`/demoJobList/demoJobApplicants?jobId=${jobId}`);
+  };
+
+
   if (isEditing) {
     return (
       <CreateJobForm
@@ -46,7 +52,7 @@ const JobDetailsPage = () => {
 
   // const jobData = currentJobInfo
   const job = currentJobInfo;
-  console.log(job);
+  // console.log(job);
 
   return (
     <div className="max-w-5xl mx-auto bg-white dark:bg-gray-800 rounded-lg">
@@ -65,12 +71,21 @@ const JobDetailsPage = () => {
             <p className="text-gray-500 dark:text-gray-400">{job.location}</p>
           </div>
         </header>
-        <div
-          className="flex gap-2 items-center border p-1 rounded-sm dark:border-gray-300 cursor-pointer"
-          onClick={() => setIsEditing(true)}
-        >
-          <SquarePen className="dark:text-gray-300" size={16} />{" "}
-          <span className="text-xs sm:text-sm font-medium">Edit Job</span>
+        <div className="flex flex-col gap-2">
+          <div
+            className="flex gap-2 items-center border p-1 rounded-sm dark:border-gray-300 cursor-pointer w-fit"
+            onClick={() => setIsEditing(true)}
+          >
+            <SquarePen className="dark:text-gray-300" size={16} />{" "}
+            <span className="text-xs sm:text-sm font-medium">Edit Job</span>
+          </div>
+          <div
+            className="flex gap-2 items-center border p-1 rounded-sm dark:border-gray-300 cursor-pointer"
+            onClick={() => handleViewApplicantList(job.job.id)}
+          >
+            <Users className="dark:text-gray-300" size={16} />{" "}
+            <span className="text-xs sm:text-sm font-medium">View Applicants</span>
+          </div>
         </div>
       </div>
       <div className="px-6 sm:px-10 py-3">

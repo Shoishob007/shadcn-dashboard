@@ -136,14 +136,14 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent>
             <Tabs value={tabs[currentTab]} className="space-y-4">
-              <TabsList className="grid grid-cols-4 gap-4 bg-gray-200 dark:bg-gray-900">
+              <TabsList className="grid grid-cols-4 gap-4 bg-gray-200 dark:bg-gray-900 px-1 py-0">
                 {/* Displaying only icons on small screens */}
                 {tabs.map((tab, index) => (
                   <TabsTrigger
                     key={tab}
                     value={tab}
                     onClick={() => setCurrentTab(index)}
-                    className="sm:flex items-center"
+                    className="sm:flex py-1 items-center data-[state=active]:border-b-2 data-[state=active]:bg-gray-900 data-[state=active]:text-gray-200 dark:data-[state=active]:bg-gray-200 dark:data-[state=active]:text-gray-900 rounded-sm"
                   >
                     {index === 0 && <ScrollText className="w-4 h-4 mr-2 shrink-0" />}
                     {index === 1 && <Briefcase className="w-4 h-4 mr-2 shrink-0" />}
