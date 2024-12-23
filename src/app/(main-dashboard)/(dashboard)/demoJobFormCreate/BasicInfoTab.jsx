@@ -97,7 +97,7 @@ export function BasicInfoTab({ form }) {
               <Textarea
                 {...field}
                 placeholder="Detailed Job Overview..."
-                className="min-h-[70px] sm:min-h-[60px] dark:border-gray-400 "
+                className="min-h-[70px] sm:min-h-[100px] dark:border-gray-400 "
               />
             </FormControl>
             <FormMessage />

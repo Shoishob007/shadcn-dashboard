@@ -47,9 +47,9 @@ const MyPackage = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
-      <Card className="shadow-none border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900">
-        <CardHeader>
+    <div className="mx-auto p-6">
+      <Card className="shadow-none max-w-5xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800">
+        <CardHeader className="px-8 pt-6 pb-2">
           <CardTitle className="text-xl font-bold text-gray-800 dark:text-gray-100">
             {currentPlan.title} Package
           </CardTitle>
@@ -67,11 +67,12 @@ const MyPackage = () => {
             </Button>
           </div>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <CardContent className="px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Available Features */}
             <div>
-              <ul className="pl-5 space-y-2 text-sm">
+            <h1 className="text-base font-semibold mb-2 text-emerald-500 uppercase">You have:</h1>
+              <ul className="space-y-2 text-sm">
                 {availableFeatures.map(([feature]) => (
                   <li
                     key={feature}
@@ -85,7 +86,8 @@ const MyPackage = () => {
             </div>
             {/* Unavailable Features */}
             <div>
-              <ul className="pl-5 space-y-2 text-sm">
+            <h2 className="text-base font-semibold mb-2 text-red-500 uppercase">You dont have:</h2>
+              <ul className="space-y-2 text-sm">
                 {unavailableFeatures.map(([feature]) => (
                   <li
                     key={feature}

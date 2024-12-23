@@ -99,7 +99,7 @@ const BillingTable = () => {
 
       {/* Table */}
       <Table className="w-full">
-        <thead className="bg-gray-300 dark:bg-gray-900">
+        <thead className="bg-gray-300 dark:bg-gray-700">
           <tr>
             <th className="p-2">SL</th>
             <th>Quotation No.</th>
