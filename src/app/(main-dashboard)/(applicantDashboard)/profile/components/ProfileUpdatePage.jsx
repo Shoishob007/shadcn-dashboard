@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Pencil } from "lucide-react";
+import { ArrowDown, Pencil } from "lucide-react";
 import { useState } from "react";
 import BasicDetails from "./(UpdateProfile)/BasicDetails";
 import ResumeUploader from "./(UpdateProfile)/ResumeUploader";
@@ -13,12 +13,13 @@ import UpdateSocials from "./(UpdateProfile)/UpdateSocials";
 
 const ProfileUpdatePage = () => {
   const [activeSection, setActiveSection] = useState("basic");
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   return (
-    <div className="">
-      <Sheet>
+    <div>
+      <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetTrigger asChild>
-          <Button>
+          <Button onClick={() => setIsSheetOpen(true)}>
             <span>
               <Pencil />
             </span>
@@ -28,11 +29,23 @@ const ProfileUpdatePage = () => {
 
         <SheetContent
           side="bottom"
-          className="w-full h-[95%] overflow-hidden p-0"
+          className="w-full h-full overflow-hidden p-0 pb-10"
         >
-          <div className="flex h-full">
+          <div>
+            <div className="flex gap-2.5 items-center h-[70px] pl-[30px] border-b border-[#ddd] shadow">
+              <Button
+                onClick={() => setIsSheetOpen(false)}
+                className="h-[30px] w-[30px]  flex items-center justify-center rounded-full cursor-pointer"
+                variant="outline"
+              >
+                <ArrowDown size={16} />
+              </Button>
+              <h1 className="text-lg font-medium">Edit Profile</h1>
+            </div>
+          </div>
+          <div className="flex h-full px-4 pt-4">
             {/* Sidebar */}
-            <div className="w-72 bg-gray-100 border-r h-full sticky top-0">
+            <div className="w-72 bg-[#f6f6f6] border-r h-full sticky top-0">
               <nav className="flex flex-col p-4 gap-2">
                 <Button
                   variant={activeSection === "basic" ? "default" : "outline"}
@@ -98,7 +111,7 @@ const ProfileUpdatePage = () => {
             </div>
 
             {/* Right Content */}
-            <div className="flex-1 p-6 overflow-y-auto">
+            <div className="flex-1 pb-10 overflow-y-auto">
               {activeSection === "basic" && <BasicDetails />}
               {activeSection === "resume" && <ResumeUploader />}
               {activeSection === "about" && <UpdateAbout />}

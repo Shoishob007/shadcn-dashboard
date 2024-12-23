@@ -1,9 +1,9 @@
-import ToggleTabsExample from "./components/ToggleTabsExample";
+import ImageUp from "./components/ImageUp";
 
 const TestPage2 = () => {
   return (
     <div>
-      <ToggleTabsExample />
+      <ImageUp />
     </div>
   );
 };

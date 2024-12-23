@@ -46,20 +46,35 @@ const BasicDetails = () => {
                 <label className="mb-2.5 text-xs" htmlFor="firstname">
                   First Name
                 </label>
-                <Input type="text" placeholder="" defaultValue="Emam" />
+                <Input
+                  type="text"
+                  placeholder=""
+                  defaultValue="Emam"
+                  {...register("firstname", { required: true })}
+                />
               </div>
               <div className="w-full md:w-1/2 space-y-1">
                 <label className="mb-2.5 text-xs" htmlFor="lastname">
                   Last Name
                 </label>
-                <Input type="text" placeholder="" defaultValue="Khalid Jion" />
+                <Input
+                  type="text"
+                  placeholder=""
+                  defaultValue="Khalid Jion"
+                  {...register("lastname", { required: true })}
+                />
               </div>
             </div>
             <div className="space-y-1 mt-1">
               <label className="mb-2.5 text-xs" htmlFor="username">
                 Username
               </label>
-              <Input type="text" placeholder="" defaultValue="emamjion88" />
+              <Input
+                type="text"
+                placeholder=""
+                defaultValue="emamjion88"
+                {...register("username", { required: true })}
+              />
             </div>
           </div>
         </div>
@@ -72,6 +87,7 @@ const BasicDetails = () => {
               type="email"
               placeholder=""
               defaultValue="emamjion@gmail.com"
+              {...register("email", { required: true })}
             />
           </div>
           <div className="space-y-1 mt-3">
@@ -106,7 +122,12 @@ const BasicDetails = () => {
             <label className="mb-2.5 text-xs" htmlFor="location">
               Location
             </label>
-            <Input type="text" placeholder="" defaultValue="" />
+            <Input
+              type="text"
+              placeholder=""
+              defaultValue=""
+              {...register("location", { required: true })}
+            />
           </div>
         </div>
         <div className="flex items-center justify-end mt-5">
