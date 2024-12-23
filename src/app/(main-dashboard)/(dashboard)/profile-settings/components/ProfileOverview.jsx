@@ -1,19 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useState, useEffect } from "react";
-import useProfileStore from "@/stores/profile-settings/useProfileStore";
-import { Pencil, X } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import useProfileStore from "@/stores/profile-settings/useProfileStore";
+import { Pencil, X } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export default function ProfileOverview() {
   const { data: session } = useSession();
@@ -26,6 +26,8 @@ export default function ProfileOverview() {
     saveProfile,
     loading,
   } = useProfileStore();
+
+  console.log(formData);
 
   const [isEditing, setIsEditing] = useState(false);
 

@@ -1,5 +1,5 @@
 const nextConfig = {
-    /*
+  /* 
     crossOrigin: 'anonymous',
     async headers() {
         return [
@@ -14,20 +14,31 @@ const nextConfig = {
             }
         ]
     },
+    
 
-    images: {
-        domains: ['github.com', 'avatars.githubusercontent.com'], // Add any other domains you need
-    },
-    */
-
-    images: {
-        remotePatterns: [
-          {
-            protocol: 'https',
-            hostname: '**',
-          },
-        ],
+  /*
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "https://hhdb.nakhlah.xyz/api/:path*",
       },
-}
+    ];
+  },
 
-module.exports = nextConfig
+  images: {
+    domains: ["github.com", "avatars.githubusercontent.com"], // Add any other domains you need
+  },
+  */
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
+};
+
+module.exports = nextConfig;
