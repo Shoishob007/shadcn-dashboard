@@ -11,7 +11,7 @@ import {
 import React from "react";
 import { useTheme } from "next-themes";
 
-import { applicantsData } from "../applicants/components/applicantsData";
+import { applicantsData } from "../demoAppList/components/applicantsData";
 import { registerLicense } from "@syncfusion/ej2-base";
 
 registerLicense(

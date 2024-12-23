@@ -15,7 +15,7 @@ import ApplicantsList from "./(main-dashboard)/(dashboard)/demoAppList/page";
 import { useRouter } from "next/navigation";
 import { documents as jobApplicants } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobApplicants";
 import { documents as jobData } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobData";
-import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/applicants/components/applicantsData";
+import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/demoAppList/components/applicantsData";
 
 
 const allApplicants = jobApplicants.docs.flatMap((doc) =>
