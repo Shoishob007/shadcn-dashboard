@@ -22,11 +22,11 @@ const useProfileStore = create((set, get) => ({
             formData: { ...state.formData, ...newData },
         })),
 
-    fetchProfile: async (accessToken) => {
+    fetchProfile: async (accessToken, orgID) => {
         set({ loading: true, error: null });
         try {
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/organizations`,
+                `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${orgID}`,
                 {
                     method: "GET",
                     headers: {
@@ -39,9 +39,8 @@ const useProfileStore = create((set, get) => ({
                 throw new Error("Failed to fetch profile details");
             }
 
-            const data = await response.json();
-            const profile = data.docs[0];
-            console.log(data)
+            const profile = await response.json();
+            // console.log(profile)
             set({
                 profileDetails: profile,
                 formData: { ...get().formData, ...profile },
@@ -65,11 +64,14 @@ const useProfileStore = create((set, get) => ({
         try {
             const transformedFormData = {
                 ...get().formData,
+                img: get().formData?.img?.id || null,
                 socialLinks: get().formData.socialLinks?.map((link) => ({
                     socialMediaUrl: link.socialMediaUrl,
                     socialMedia: link.socialMedia?.id,
                 })),
             };
+
+            console.log("Transformed Data ::", transformedFormData)
 
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${orgID}`,
@@ -96,7 +98,8 @@ const useProfileStore = create((set, get) => ({
             });
 
             toast({
-                title: "Profile updated successfully!",
+                title: "Success!",
+                description:"Profile updated successfully.",
                 variant: "ourSuccess",
             });
         } catch (error) {
