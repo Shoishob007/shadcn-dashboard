@@ -18,6 +18,7 @@ import {
   fieldOfStudyData,
 } from "../../../../stores/job-createStore/component/JobCreateData";
 import { Input } from "@/components/ui/input";
+import { X } from "lucide-react";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
@@ -220,10 +221,10 @@ export function RequirementsTab({ form }) {
                   {skill}
                   <button
                     type="button"
-                    className="absolute top-2/3 -right-2 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
+                    className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
                     onClick={() => removeSkill(skill)}
                   >
-                    X
+                    <X className="h-4 w-4"/>
                   </button>
                 </div>
               ))}
@@ -287,15 +288,15 @@ export function RequirementsTab({ form }) {
                 {degreeTags.map((degree, index) => (
                   <div
                     key={index}
-                    className="relative h-7 bg-background border border-input hover:bg-background rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
-                  >
+                    className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
+                    >
                     {degree}
                     <button
                       type="button"
-                      className="absolute top-1/3 -right-3 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground"
+                      className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground"
                       onClick={() => removeDegree(degree)}
                     >
-                      ×
+                    <X className="h-4 w-4"/>
                     </button>
                   </div>
                 ))}
@@ -336,15 +337,15 @@ export function RequirementsTab({ form }) {
                 {fieldOfStudyTags.map((studyField, index) => (
                   <div
                     key={index}
-                    className="relative h-7 bg-background border border-input hover:bg-background rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
-                  >
+                    className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
+                    >
                     {studyField}
                     <button
                       type="button"
-                      className="absolute top-1/3 -right-3 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground"
+                      className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground"
                       onClick={() => removeFieldOfStudy(studyField)}
                     >
-                      ×
+                    <X className="h-4 w-4"/>
                     </button>
                   </div>
                 ))}

@@ -68,7 +68,7 @@ const socialPlatforms = {
   },
 };
 
-export default function SocialSettings() {
+export default function SocialSettings({imageId}) {
   const { formData, setFormData, saveSocial, fetchSocialDetails } =
     useSocialStore();
   const [selectedPlatform, setSelectedPlatform] = useState("");
@@ -101,7 +101,7 @@ export default function SocialSettings() {
         Object.entries(newFormData).filter(([_, value]) => value.trim() !== "")
       );
 
-      await saveSocial(accessToken, organizationId, filteredFormData);
+      await saveSocial(accessToken, organizationId, filteredFormData, imageId);
       setEditingPlatform("");
       setSelectedPlatform("");
       setTempFormData({});
@@ -129,14 +129,16 @@ export default function SocialSettings() {
     try {
       const updatedFormData = { ...formData };
       delete updatedFormData[platform];
-      await saveSocial(accessToken, organizationId, updatedFormData);
       setFormData(updatedFormData);
+
+      // console.log("Payload after delete :: ", payload);
+      await saveSocial(accessToken, organizationId, updatedFormData, imageId);
       setEditingPlatform("");
       setSelectedPlatform("");
-      await fetchSocialDetails(accessToken, organizationId);
-      window.location.reload();
+      // await fetchSocialDetails(accessToken, organizationId);
     } catch (error) {
       console.error("Error removing platform:", error);
+      setFormData(formData);
     } finally {
       setIsDeleting(false);
     }
