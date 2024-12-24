@@ -21,6 +21,7 @@ const ProfileSetting = () => {
   const organizationId = session?.organizationId;
   // console.log("Current token : ", accessToken);
 
+
   useEffect(() => {
     const fetchUserCoverPhoto = async () => {
       if (accessToken && session) {
