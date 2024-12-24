@@ -25,11 +25,11 @@ const useSocialStore = create((set, get) => ({
     setFormData: (newData) =>
         set((state) => ({ formData: { ...state.formData, ...newData } })),
 
-    fetchSocialDetails: async (token) => {
+    fetchSocialDetails: async (token, orgID) => {
         set({ loading: true });
         try {
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/organizations`,
+                `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${orgID}`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
@@ -38,7 +38,7 @@ const useSocialStore = create((set, get) => ({
             if (!response.ok) throw new Error("Failed to fetch social links.");
 
             const data = await response.json();
-            const socialLinks = data.docs[0].socialLinks || [];
+            const socialLinks = data.socialLinks || [];
 
             console.log("Fetched social links:", socialLinks);
 
@@ -53,9 +53,19 @@ const useSocialStore = create((set, get) => ({
                 return acc;
             }, {});
 
+            // Reset all platforms to empty strings first
+            const resetFormData = {
+                github: "",
+                twitter: "",
+                linkedin: "",
+                facebook: "",
+                instagram: "",
+                youtube: "",
+            };
+
             set({
                 socialDetails: socialLinks,
-                formData: { ...get().formData, ...socialData },
+                formData: { ...resetFormData, ...socialData },
             });
         } catch (error) {
             console.error(error);
@@ -69,23 +79,24 @@ const useSocialStore = create((set, get) => ({
         }
     },
 
-    saveSocial: async (token, orgID, customFormData = null) => {
+    saveSocial: async (token, orgID, customFormData = null, imageId) => {
         set({ loading: true });
         try {
             const formDataToUse = customFormData || get().formData;
 
             // Preparing the updated social links with only the relevant changes
             const socialLinks = Object.entries(formDataToUse)
-                .filter(([_, url]) => url.trim() !== "")
+                .filter(([_, url]) => url && url.trim() !== "")
                 .map(([platform, url]) => ({
                     socialMedia: socialMediaIds[platform],
                     socialMediaUrl: url,
                 }));
 
-            console.log("Social Links:", socialLinks);
+            // console.log("Social Links:", socialLinks);
 
             const payload = {
                 socialLinks: socialLinks,
+                img: imageId,
             };
             console.log("Payload sent: ", payload)
 
@@ -108,19 +119,45 @@ const useSocialStore = create((set, get) => ({
                 throw new Error("Failed to save social links.");
             }
 
-            console.log("Response from Api :", response)
-
             const updatedData = await response.json();
-            set({ socialDetails: updatedData.doc.socialLinks });
+
+             // Updating the store with the new data immediately
+             const newSocialLinks = updatedData.doc.socialLinks;
+             const newSocialData = newSocialLinks.reduce((acc, link) => {
+                 const platform = Object.entries(socialMediaIds).find(
+                     ([_, id]) => id === link.socialMedia.id
+                 )?.[0];
+                 if (platform) {
+                     acc[platform] = link.socialMediaUrl || "";
+                 }
+                 return acc;
+             }, {});
+ 
+             // Resetting form data with new values
+             const resetFormData = {
+                 github: "",
+                 twitter: "",
+                 linkedin: "",
+                 facebook: "",
+                 instagram: "",
+                 youtube: "",
+             };
+
+
+            set({
+                socialDetails: newSocialLinks,
+                formData: { ...resetFormData, ...newSocialData },
+            });
 
             toast({
-                title: "Social links updated successfully!",
+                title: "Success!",
+                description:"Social links updated successfully.",
                 variant: "ourSuccess",
             });
         } catch (error) {
             console.error(error);
             toast({
-                title: "Error updating social links",
+                title: "Error updating social links!",
                 description: error.message,
                 variant: "ourDestructive",
             });

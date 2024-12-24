@@ -35,7 +35,7 @@ const ProfileSetting = () => {
           if (response.ok) {
             const userData = await response.json();
             // console.log("Response for cover photo: ", userData.img.url)
-            const fullImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${userData.img.url || ""}`;
+            const fullImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${userData.img.url}`;
             setCoverPhoto(fullImageUrl || "");
             setLoadingCoverPhoto(false);
           } else {

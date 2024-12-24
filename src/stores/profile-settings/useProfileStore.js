@@ -61,10 +61,12 @@ const useProfileStore = create((set, get) => ({
     saveProfile: async (token, orgID) => {
         set({ loading: true, error: null });
 
+        console.log("Image id::", get().formData)
+
         try {
             const transformedFormData = {
                 ...get().formData,
-                img: get().formData?.img?.id || null,
+                img: get().formData?.img?.id,
                 socialLinks: get().formData.socialLinks?.map((link) => ({
                     socialMediaUrl: link.socialMediaUrl,
                     socialMedia: link.socialMedia?.id,

@@ -5,10 +5,44 @@ import Password from "./Password.jsx";
 import Branches from "./Branches.jsx";
 import User from "./User.jsx";
 import Delete from "./Delete.jsx";
-
-// import Skills from "./Skills";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 const ProfileTabs = () => {
+  const { data: session } = useSession();
+  const accessToken = session?.access_token;
+  const organizationId = session?.organizationId;
+  const [imageId, setImageId] = useState(null); 
+
+  useEffect(() => {
+    const fetchImageId = async () => {
+      if (accessToken && organizationId) {
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${organizationId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+            setImageId(data.img?.id || null);
+          } else {
+            console.error("Failed to fetch organization data.");
+          }
+        } catch (error) {
+          console.error("Error fetching organization data:", error);
+        }
+      }
+    };
+
+    fetchImageId();
+  }, [session, accessToken, organizationId]);
+
+
   return (
     <div>
       <Tabs defaultValue="overview" className="">
@@ -42,7 +76,7 @@ const ProfileTabs = () => {
             <Password />
           </TabsContent>
           <TabsContent value="socials">
-            <Socials />
+            <Socials imageId={imageId} />
           </TabsContent>
           <TabsContent value="branches">
             <Branches />
