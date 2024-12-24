@@ -1,5 +1,6 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Educations from "./components/Educations";
 import ProfileAbout from "./components/ProfileAbout";
@@ -21,6 +22,9 @@ const ApplicantProfile = () => {
     };
     getProfileData();
   }, []);
+
+  const session = useSession();
+  console.log("session", session);
   return (
     <div>
       {/* Profile Headaer part */}

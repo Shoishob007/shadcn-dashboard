@@ -7,8 +7,8 @@ import profileImg from "../../../../../public/assests/applicant.png";
 import coverPhoto from "../../../../../public/assests/profile-banner.png";
 
 const ImageUp = () => {
-  const [coverPreview, setCoverPreview] = useState(coverPhoto); // Cover photo preview state
-  const [profilePreview, setProfilePreview] = useState(profileImg); // Profile logo preview state
+  const [coverPreview, setCoverPreview] = useState(coverPhoto);
+  const [profilePreview, setProfilePreview] = useState(profileImg);
 
   // Handle cover photo upload
   const handleCoverUpload = (event) => {

@@ -20,7 +20,6 @@ import VerificationSent from "../components/VerificationSent";
 import { registerSchema } from "../schemas/formSchemas";
 
 export default function RegisterForm() {
-  console.log(process.env.NEXT_PUBLIC_API_URL);
   const {
     register,
     handleSubmit,
@@ -33,7 +32,6 @@ export default function RegisterForm() {
     useRegisterStore();
 
   const onSubmit = async (data) => {
-    console.log("submitted", data);
     setFormData(data);
     await registerUser(data);
   };

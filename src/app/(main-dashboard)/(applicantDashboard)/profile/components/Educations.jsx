@@ -13,7 +13,7 @@ const Educations = ({ profileInfo }) => {
       <div>
         {profileInfo.map((info) => {
           return (
-            <div>
+            <div key={info.id}>
               {info.educations.map((education) => {
                 return (
                   <div key={education.id} className="flex gap-2.5">
