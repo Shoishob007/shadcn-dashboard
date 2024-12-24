@@ -168,7 +168,7 @@ export const authOptions = {
                 session.access_token = token.access_token;
                 session.organizationId = token.organizationId;
 
-                // console.log("Current Server Session :", session)
+                console.log("Current Server Session :", session)
             }
             return session;
         },

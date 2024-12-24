@@ -6,8 +6,6 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-// import SettingsContainer from "./components/SettingsContainer";
-// import SettingsNav from "./components/SettingsNav";
 import { Camera } from "lucide-react";
 import { uploadCoverImage, uploadLogoImage } from "./imageUpload.js";
 import { useRouter } from "next/navigation";
@@ -21,16 +19,37 @@ const ProfileSetting = () => {
 
   const accessToken = session?.access_token;
   const organizationId = session?.organizationId;
-  // console.log("Current session : ", session);
+  // console.log("Current token : ", accessToken);
 
   useEffect(() => {
-    const cachedCoverPhoto = localStorage.getItem("coverPhoto");
-    if (cachedCoverPhoto) {
-      console.log("Got the chached photo");
-      setCoverPhoto(cachedCoverPhoto);
-      setLoadingCoverPhoto(false);
-    }
-  }, []);
+    const fetchUserCoverPhoto = async () => {
+      if (accessToken && session) {
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${organizationId}`, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+
+          if (response.ok) {
+            const userData = await response.json();
+            // console.log("Response for cover photo: ", userData.img.url)
+            const fullImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${userData.img.url || ""}`;
+            setCoverPhoto(fullImageUrl || "");
+            setLoadingCoverPhoto(false);
+          } else {
+            console.error("Failed to fetch user cover photo.");
+            setLoadingCoverPhoto(false);
+          }
+        } catch (error) {
+          console.error("Error fetching user cover photo:", error);
+          setLoadingCoverPhoto(false);
+        }
+      }
+    };
+
+    fetchUserCoverPhoto();
+  }, [accessToken, session, organizationId]);
 
   useEffect(() => {
     setProfileImage(session?.user?.image || "");
@@ -44,15 +63,12 @@ const ProfileSetting = () => {
       const newCoverPhoto = await uploadCoverImage(
         file,
         accessToken,
-        organizationId,
-        setCoverPhoto
+        organizationId
       );
       if (newCoverPhoto) {
-        console.log("New cover photo set:", newCoverPhoto);
+        // console.log("New cover photo set:", newCoverPhoto);
         setCoverPhoto(newCoverPhoto);
-        localStorage.setItem("coverPhoto", newCoverPhoto);
         setLoadingCoverPhoto(false);
-        window.location.reload();
       } else {
         console.error("Failed to upload cover photo.");
       }
@@ -63,17 +79,20 @@ const ProfileSetting = () => {
 
   const handleLogoChange = async (e) => {
     const file = e.target.files[0];
+    console.log("File selected ::", file);
     if (file) {
       const success = await uploadLogoImage(
         file,
         accessToken,
         session,
         organizationId,
-        update
+        async (updatedSession) => {
+          setProfileImage(updatedSession.user.image);
+          // console.log("Logo updated successfully");
+        }
       );
-      if (success) {
-        setProfileImage(file);
-        console.log("Logo updated successfully");
+      if (!success) {
+        console.error("Failed to upload logo.");
       }
     }
   };
@@ -95,7 +114,6 @@ const ProfileSetting = () => {
   const handleClick = () => {
     router.push("/demoBillings/pricing");
   };
-
 
   return (
     <>
@@ -141,7 +159,7 @@ const ProfileSetting = () => {
               alt="Profile logo"
               width={100}
               height={100}
-              className="rounded-full border-2 border-white"
+              className="rounded-full border-2 border-white aspect-square object-cover"
             />
             <label htmlFor="logo-upload" className="absolute bottom-0 right-0">
               <Camera
