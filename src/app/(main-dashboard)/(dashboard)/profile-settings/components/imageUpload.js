@@ -1,12 +1,3 @@
-import { getSession } from "next-auth/react";
-// import { getServerSession } from "next-auth";
-// import { authOptions } from "../../pages/api/auth/[...nextauth]";
-
-const refreshSession = async () => {
-    const updatedSession = await getSession();
-    return updatedSession;
-};
-
 export const uploadCoverImage = async (file, accessToken, organizationId) => {
     if (file) {
         const formData = new FormData();
@@ -30,7 +21,7 @@ export const uploadCoverImage = async (file, accessToken, organizationId) => {
             }
 
             const result = await response.json();
-            console.log("Patch request response: ", result)
+            // console.log("Patch request response: ", result)
             const updatedImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${result.doc.img.url}`;
             console.log("Cover image updated successfully:", updatedImageUrl);
             return updatedImageUrl;
@@ -54,7 +45,7 @@ export const uploadLogoImage = async (file, accessToken, session, orgId, update)
 
         if (response.ok) {
             const result = await response.json();
-            console.log(result.doc)
+            // console.log(result.doc)
             const imageUrl = `${process.env.NEXT_PUBLIC_API_URL}${result.doc.url}`;
 
             console.log("Profile/logo image uploaded successfully:", imageUrl);
@@ -73,27 +64,24 @@ export const uploadLogoImage = async (file, accessToken, session, orgId, update)
                 }
             );
 
-            console.log("Update response after the patch request :", updateResponse.json())
+            // console.log("Update response after the patch request :", updateResponse.json())
 
             if (!updateResponse.ok) {
                 console.error("Failed to update organization with new pictureUrl");
                 return false;
             }
 
-            console.log("Organization updated with new pictureUrl");
+            // console.log("Organization updated with new pictureUrl");
 
-            if (session) {
-                const updatedSession = {
-                    ...session,
-                    user: {
-                        ...session.user,
-                        image: imageUrl,
-                    },
-                };
-                await update(updatedSession);
-            }
+            const updatedSession = {
+                ...session,
+                user: {
+                    ...session.user,
+                    image: imageUrl,
+                },
+            };
 
-            await refreshSession();
+            await update(updatedSession);
 
             console.log("Session updated with new profile image");
             return true;

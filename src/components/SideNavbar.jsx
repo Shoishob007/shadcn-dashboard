@@ -42,7 +42,7 @@ export default function SideNavbar() {
     <div
       className={cn(
         "h-[calc(100vh-1rem)] sticky border-r bg-white dark:bg-gray-800 my-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out flex flex-col py-6",
-        isCollapsed ? "w-16" : "w-[220px]"
+        isCollapsed ? "w-16" : "w-[200px]"
       )}
     >
       {/* Top section with logo */}
