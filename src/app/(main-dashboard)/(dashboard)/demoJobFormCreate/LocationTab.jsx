@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import dynamic from "next/dynamic";
-import "react-quill-new/dist/quill.snow.css";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
@@ -25,6 +24,12 @@ export function LocationTab({ form }) {
 
   const contactInfo = form.getValues("contactInfo");
   // console.log(contactInfo)
+
+  const stripHtml = (html) => {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || div.innerText || "";
+  };
 
   return (
     <div className="space-y-4">
@@ -104,7 +109,7 @@ export function LocationTab({ form }) {
             <FormControl>
               <ReactQuill
                 value={field.value || contactInfo}
-                onChange={field.onChange}
+                onChange={(value) => field.onChange(stripHtml(value))}
                 modules={modules}
                 theme="snow"
                 placeholder="Additional contact info..."

@@ -79,38 +79,73 @@ export const authOptions = {
 
 
                     const user = await res.json();
-                    // console.log("User Authorized :", user)
+                    console.log("User Authorized :", user)
 
                     if (res.ok && user) {
 
-                        const orgResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/organizations`, {
-                            method: 'GET',
-                            headers: {
-                                'Authorization': `Bearer ${user.token}`,
-                                'Content-Type': 'application/json',
-                            },
-                        });
+                        if (user.user.role == "org") {
+                            const orgResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/organizations`, {
+                                method: 'GET',
+                                headers: {
+                                    'Authorization': `Bearer ${user.token}`,
+                                    'Content-Type': 'application/json',
+                                },
+                            });
 
-                        if (orgResponse.ok) {
-                            const orgData = await orgResponse.json();
-                            const organizationId = orgData.docs[0]?.id;
-                            console.log("Organization ID:", organizationId);
-                            // console.log("Organization :", orgData.docs[0]);
+                            if (orgResponse.ok) {
+                                const orgData = await orgResponse.json();
+                                const organizationId = orgData.docs[0]?.id;
+                                // console.log("Organization ID:", organizationId);
+                                // console.log("Organization :", orgData.docs[0]);
 
 
-                            return {
-                                id: user.user.id,
-                                email: user.user.email || null,
-                                name: orgData.docs[0]?.orgName || null,
-                                tagline: orgData.docs[0]?.orgTagline || null,
-                                mission: orgData.docs[0]?.orgMission || null,
-                                vision: orgData.docs[0]?.orgVision || null,
-                                address: orgData.docs[0]?.orgAddress || null,
-                                image: user.user.pictureUrl || null,
-                                accessToken: user.token,
-                                organizationId,
-                            };
-                        } else {
+                                return {
+                                    id: user.user.id,
+                                    email: user.user.email || null,
+                                    name: orgData.docs[0]?.orgName || null,
+                                    // tagline: orgData.docs[0]?.orgTagline || null,
+                                    // mission: orgData.docs[0]?.orgMission || null,
+                                    // vision: orgData.docs[0]?.orgVision || null,
+                                    // address: orgData.docs[0]?.orgAddress || null,
+                                    image: user.user.pictureUrl || null,
+                                    accessToken: user.token,
+                                    organizationId,
+                                };
+                            }
+                        }
+
+                        else if (user.user.role == "applicant") {
+                            {
+                                const applicantResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/applicants`, {
+                                    method: 'GET',
+                                    headers: {
+                                        'Authorization': `Bearer ${user.token}`,
+                                        'Content-Type': 'application/json',
+                                    },
+                                });
+
+                                if (orgResponse.ok) {
+                                    const applicantData = await applicantResponse.json();
+                                    // console.log("Organization ID:", organizationId);
+                                    // console.log("Organization :", orgData.docs[0]);
+
+
+                                    return {
+                                        id: user.user.id,
+                                        email: user.user.email || null,
+                                        name: applicantData.docs[0]?.name || null,
+                                        // tagline: applicantData.docs[0]?.orgTagline || null,
+                                        // mission: applicantData.docs[0]?.orgMission || null,
+                                        // vision: applicantData.docs[0]?.orgVision || null,
+                                        // address: applicantData.docs[0]?.orgAddress || null,
+                                        image: user.user.pictureUrl || null,
+                                        accessToken: user.token,
+                                    };
+                                }
+                            }
+                        }
+
+                        else {
                             console.error("Failed to fetch organization data:", orgResponse.statusText);
                         }
                         return null;
