@@ -24,7 +24,7 @@ const ApplicantProfile = () => {
   }, []);
 
   const session = useSession();
-  console.log("session", session);
+  console.log("current session::", session);
   return (
     <div>
       {/* Profile Headaer part */}

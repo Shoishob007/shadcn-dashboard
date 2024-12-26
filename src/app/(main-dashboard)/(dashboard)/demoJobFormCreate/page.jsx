@@ -28,7 +28,7 @@ const tabs = ["Basic Info", "Employment", "Requirements", "Location"];
 const CreateJobForm = ({ onClose, jobId, initialData }) => {
   //   const { data: session } = useSession();
   const { toast } = useToast();
-  const isEditMode = Boolean(jobId);
+  const [isEditMode, setIsEditMode] = useState(Boolean(jobId));
 
   const form = useForm({
     defaultValues: {
@@ -65,8 +65,8 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
   };
 
   const onSubmit = async (data) => {
-    if (isEditMode) {
-      if (currentTab === tabs.length - 1) {
+    if (currentTab === tabs.length - 1) {
+      if (isEditMode) {
         toast({
           title: "Success",
           description: "Job updated successfully!",
@@ -74,16 +74,15 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
         });
         console.log(data);
         reset();
+        onClose?.();
       } else {
-        if (currentTab === tabs.length - 1) {
-          toast({
-            title: "Success",
-            description: "Job created successfully!",
-            variant: "ourSuccess",
-          });
-          console.log(data);
-          reset();
-        }
+        toast({
+          title: "Success",
+          description: "Job updated successfully!",
+          variant: "ourSuccess",
+        });
+        console.log(data);
+        reset();
       }
 
       //   try {
@@ -121,6 +120,12 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
     }
   };
 
+  const handleDiscardEditing = () => {
+    setIsEditMode(false);
+    onClose();
+    reset();
+  };
+
   return (
     <Card className="w-full max-w-5xl mx-auto p-6">
       <CardHeader className="text-center p-4">
@@ -145,10 +150,18 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
                     onClick={() => setCurrentTab(index)}
                     className="sm:flex py-1 items-center data-[state=active]:border-b-2 data-[state=active]:bg-gray-900 data-[state=active]:text-gray-200 dark:data-[state=active]:bg-gray-200 dark:data-[state=active]:text-gray-900 rounded-sm"
                   >
-                    {index === 0 && <ScrollText className="w-4 h-4 mr-2 shrink-0" />}
-                    {index === 1 && <Briefcase className="w-4 h-4 mr-2 shrink-0" />}
-                    {index === 2 && <GraduationCap className="w-4 h-4 mr-2 shrink-0" />}
-                    {index === 3 && <MapPin className="w-4 h-4 mr-2 shrink-0" />}
+                    {index === 0 && (
+                      <ScrollText className="w-4 h-4 mr-2 shrink-0" />
+                    )}
+                    {index === 1 && (
+                      <Briefcase className="w-4 h-4 mr-2 shrink-0" />
+                    )}
+                    {index === 2 && (
+                      <GraduationCap className="w-4 h-4 mr-2 shrink-0" />
+                    )}
+                    {index === 3 && (
+                      <MapPin className="w-4 h-4 mr-2 shrink-0" />
+                    )}
                     <span className="hidden sm:inline">{tab}</span>
                   </TabsTrigger>
                 ))}
@@ -176,7 +189,7 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
             <Button
               variant="ghost"
               className="px-2 py-1 border border-gray-400"
-              onClick={onClose}
+              onClick={handleDiscardEditing}
             >
               Cancel
             </Button>
