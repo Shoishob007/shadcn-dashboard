@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-key */
 "use client";
+import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/demoAppList/components/applicantsData";
 import DashboardCardSection from "@/components/ApplicantDashboardUI/DashboardCardSection";
 import LatestJobApplied from "@/components/ApplicantDashboardUI/LatestJobApplied";
 import Card, { CardContent } from "@/components/Card";
@@ -8,15 +9,12 @@ import useRoleStore from "@/stores/roleStore/useRoleStore";
 import { Briefcase, CalendarDays, Users } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import InterviewSchedule from "./(main-dashboard)/(dashboard)/interviews/schedule/page";
-import JobList from "./(main-dashboard)/(dashboard)/demoJobList/page";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ApplicantsList from "./(main-dashboard)/(dashboard)/demoAppList/page";
-import { useRouter } from "next/navigation";
 import { documents as jobApplicants } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobApplicants";
 import { documents as jobData } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobData";
-import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/demoAppList/components/applicantsData";
-
+import JobList from "./(main-dashboard)/(dashboard)/demoJobList/page";
 
 const allApplicants = jobApplicants.docs.flatMap((doc) =>
   doc.applicants.map((applicant) => ({
@@ -25,8 +23,9 @@ const allApplicants = jobApplicants.docs.flatMap((doc) =>
   }))
 );
 
-const totalSchedules = applicantsData.filter(applicant => applicant.schedule).length;
-
+const totalSchedules = applicantsData.filter(
+  (applicant) => applicant.schedule
+).length;
 
 const cardData = [
   {
@@ -56,13 +55,13 @@ export default function Home() {
   const router = useRouter();
   const { currentRole, setRole } = useRoleStore();
   const { data: session } = useSession();
+  console.log("dashboard session", session);
   const [showFilters, setShowFilters] = useState(false);
   const [limitToSix, setLimitToSix] = useState(true);
 
   const handleClick = () => {
     router.push("/demoBillings/pricing");
   };
-
 
   return (
     <div className="flex flex-col gap-5 w-full">
@@ -73,7 +72,7 @@ export default function Home() {
           <div className="mb-6">
             <div className="flex items-center gap-2">
               <span className="text-2xl">Welcome!</span>{" "}
-              <h1 className="font-medium text-2xl">Emam Jion</h1>{" "}
+              <h1 className="font-medium text-2xl">{session?.user?.name}</h1>{" "}
               <Badge>{currentRole}</Badge>
             </div>
           </div>
@@ -134,7 +133,7 @@ export default function Home() {
                   Recent Applications
                 </p>
               </section>
-              <ApplicantsList limitToSix={limitToSix}/>
+              <ApplicantsList limitToSix={limitToSix} />
             </CardContent>
           </section>
         </div>
