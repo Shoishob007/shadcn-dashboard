@@ -131,7 +131,7 @@ export const authOptions = {
                                     const applicantData = await applicantResponse.json();
                                     // console.log("Organization ID:", organizationId);
                                     // console.log("Organization :", orgData.docs[0]);
-                                    const applicant = orgData.docs.find(
+                                    const applicant = applicantData.docs.find(
                                         (doc) => doc.applicant.id === user.user.id
                                     );
 
