@@ -23,8 +23,15 @@ const ApplicantProfile = () => {
     getProfileData();
   }, []);
 
-  const session = useSession();
+  const { data: session } = useSession();
   console.log("current session::", session);
+  const [profileImage, setProfileImage] = useState(session?.user?.image || "");
+  console.log("profile image", profileImage);
+  const [coverImage, setCoverImage] = useState("");
+
+  useEffect(() => {
+    setProfileImage(session?.user?.image || "");
+  }, [session]);
   return (
     <div>
       {/* Profile Headaer part */}

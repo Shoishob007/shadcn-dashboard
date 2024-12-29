@@ -194,36 +194,35 @@ export const authOptions = {
             }
 
             return token;
-        },
-
-        async session({ session, token, trigger }) {
-
-            if (trigger === "update" && token?.image) {
-                session.user.image = token.image;
-            }
-
-            if (token) {
-                session.user.id = token.id;
-                session.user.email = token.email;
-                session.user.image = token.image;
-                session.access_token = token.access_token;
-                session.organizationId = token.organizationId;
-
-                console.log("Current Server Session :", session)
-            }
-            return session;
-        },
-
-        async redirect({ baseUrl }) {
-            return baseUrl;
-        }
     },
-    pages: {
-        signIn: '/login',
-        error: '/auth/error',
-        verifyRequest: '/verify-request',
+
+    async session({ session, token, trigger }) {
+      if (trigger === "update" && token?.image) {
+        session.user.image = token.image;
+      }
+
+      if (token) {
+        session.user.id = token.id;
+        session.user.email = token.email;
+        session.user.image = token.image;
+        session.access_token = token.access_token;
+        session.organizationId = token.organizationId;
+
+        console.log("Current Server Session :", session);
+      }
+      return session;
     },
-    secret: process.env.NEXTAUTH_SECRET,
+
+    async redirect({ baseUrl }) {
+      return baseUrl;
+    },
+  },
+  pages: {
+    signIn: "/login",
+    error: "/auth/error",
+    verifyRequest: "/verify-request",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default (req, res) => NextAuth(req, res, authOptions);
