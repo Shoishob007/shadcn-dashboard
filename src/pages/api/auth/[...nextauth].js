@@ -94,7 +94,10 @@ export const authOptions = {
 
                             if (orgResponse.ok) {
                                 const orgData = await orgResponse.json();
-                                const organizationId = orgData.docs[0]?.id;
+                                const organization = orgData.docs.find(
+                                    (doc) => doc.organization.id === user.user.id
+                                );
+                                const organizationId = organization?.id;
                                 // console.log("Organization ID:", organizationId);
                                 // console.log("Organization :", orgData.docs[0]);
 
@@ -102,7 +105,7 @@ export const authOptions = {
                                 return {
                                     id: user.user.id,
                                     email: user.user.email || null,
-                                    name: orgData.docs[0]?.orgName || null,
+                                    name: organization.orgName || null,
                                     // tagline: orgData.docs[0]?.orgTagline || null,
                                     // mission: orgData.docs[0]?.orgMission || null,
                                     // vision: orgData.docs[0]?.orgVision || null,
@@ -128,12 +131,15 @@ export const authOptions = {
                                     const applicantData = await applicantResponse.json();
                                     // console.log("Organization ID:", organizationId);
                                     // console.log("Organization :", orgData.docs[0]);
+                                    const applicant = orgData.docs.find(
+                                        (doc) => doc.applicant.id === user.user.id
+                                    );
 
 
                                     return {
                                         id: user.user.id,
                                         email: user.user.email || null,
-                                        name: applicantData.docs[0]?.name || null,
+                                        name: applicant?.name || null,
                                         // tagline: applicantData.docs[0]?.orgTagline || null,
                                         // mission: applicantData.docs[0]?.orgMission || null,
                                         // vision: applicantData.docs[0]?.orgVision || null,
