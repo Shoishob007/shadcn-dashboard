@@ -1,4 +1,4 @@
-import { Badge } from "../ui/badge";
+import { Badge } from "@/components/ui/badge";
 import DashboardCardSection from "./DashboardCardSection";
 import FeaturedJobs from "./FeaturedJobs";
 import LatestJobApplied from "./LatestJobApplied";

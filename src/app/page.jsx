@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-key */
 "use client";
 import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/demoAppList/components/applicantsData";
+import ApplicantDashboardPage from "@/components/ApplicantDashboardUI/ApplicantDashboardPage";
 import Card, { CardContent } from "@/components/Card";
 import { Badge } from "@/components/ui/badge";
 import useRoleStore from "@/stores/roleStore/useRoleStore";
@@ -13,7 +14,6 @@ import ApplicantsList from "./(main-dashboard)/(dashboard)/demoAppList/page";
 import { documents as jobApplicants } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobApplicants";
 import { documents as jobData } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobData";
 import JobList from "./(main-dashboard)/(dashboard)/demoJobList/page";
-import ApplicantDashboardPage from "@/components/ApplicantDashboardUI/ApplicantDashboardPage";
 
 const allApplicants = jobApplicants.docs.flatMap((doc) =>
   doc.applicants.map((applicant) => ({
@@ -64,10 +64,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-5 w-full">
-      {/* <PageTitle title="Dashboard" className={"ml-2"} /> */}
 
       {currentRole === "applicant" ? (
-        <ApplicantDashboardPage/>
+        <ApplicantDashboardPage currentRole={currentRole} session={session} />
       ) : (
         <div>
           <div className="mb-6 flex justify-between">

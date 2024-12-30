@@ -28,7 +28,7 @@ const JobCard = ({ job }) => {
             <CardTitle className="text-xl font-semibold text-gray-800">
               {job.title}
             </CardTitle>
-            <p className="text-sm text-gray-500">{job.company}</p>
+            <p className="text-sm text-center text-gray-500">{job.company}</p>
           </div>
         </CardHeader>
 

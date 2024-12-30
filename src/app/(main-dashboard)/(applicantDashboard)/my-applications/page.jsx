@@ -1,5 +1,4 @@
 "use client";
-import ApplicantProgress from "@/components/ApplicantDashboardUI/ApplicantProgress";
 import {
   Pagination,
   PaginationContent,
@@ -93,51 +92,16 @@ const MyApplications = () => {
 
   const searchParams = useSearchParams();
   const activeTab = searchParams.get("tab") || "Applied";
-  return (
-    <div>
-      <h1 className="text-xl font-semibold mb-6">My Applications</h1>
-      <Tabs defaultValue={activeTab}>
-        <TabsList className="mb-6">
-          <TabsTrigger className="ml-6 text-md" value="Applied">
-            Applied
-          </TabsTrigger>
-          <TabsTrigger className="ml-6 text-md" value="Shortlisted">
-            Shortlisted
-          </TabsTrigger>
-          <TabsTrigger className="ml-6 text-md" value="Rejected">
-            Rejected
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="Applied">
-          <ApplicationCards applications={applications} />
-        </TabsContent>
-        <TabsContent value="Shortlisted">
-          <ApplicationCards
-            applications={applications.filter(
-              (app) => app.applicantStatus === "Shortlisted"
-            )}
-          />
-        </TabsContent>
-        <TabsContent value="Rejected">
-          <ApplicationCards
-            applications={applications.filter(
-              (app) => app.applicantStatus === "Rejected"
-            )}
-          />
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
-};
-
-const ApplicationCards = ({ applications }) => {
-  const itemsPerPage = 4;
+  const [selectedStatus, setSelectedStatus] = useState(activeTab);
   const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
 
-  const totalPages = Math.ceil(applications.length / itemsPerPage);
+  const filteredApplications = applications.filter(
+    (app) => app.applicantStatus === selectedStatus || selectedStatus === "All"
+  );
+  const totalPages = Math.ceil(filteredApplications.length / itemsPerPage);
 
-  const currentApplications = applications.slice(
+  const currentApplications = filteredApplications.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -148,102 +112,54 @@ const ApplicationCards = ({ applications }) => {
 
   return (
     <div>
-      <div className="grid grid-cols-1  gap-6">
-        {currentApplications.map((app, index) => {
-          const progressSteps = [
-            "In Review",
-            "Coding Test",
-            "Interview",
-            "Offer",
-          ];
-          // const currentStepIndex = progressSteps.indexOf(job.applicantStatus);
-          const currentStepIndex =
-            progressSteps.indexOf(app.applicantStatus) + 1;
-          return (
-            <Link href={`/my-applications/${app.id}`} key={index}>
-              <div className="bg-white border border-gray-200 shadow rounded-lg p-6 relative">
-                {/* Company Logo and Job Info */}
-                <div className="flex items-center justify-between ">
-                  <div>
-                    <h2 className="text-lg font-semibold">{app.jobTitle}</h2>
-                    <p className="text-sm text-gray-600">{app.companyName}</p>
-                  </div>
-                  <div className="flex justify-between items-center mt-4">
-                    <div>
-                      <div className="flex gap-2">
-                        <div
-                          className={`py-1 px-3 rounded-full text-xs font-medium flex items-center gap-1 ${
-                            app.jobStatus === "Open"
-                              ? "border border-green-600 text-green-600"
-                              : "border border-red-600 text-red-600"
-                          }`}
-                        >
-                          <div
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              app.jobStatus === "Open"
-                                ? "bg-green-600"
-                                : "bg-red-500"
-                            }`}
-                          ></div>{" "}
-                          <span>{app.jobStatus}</span>
-                        </div>
-                        <span
-                          className={`py-1 px-3 rounded-full text-xs font-medium ${
-                            app.applicantStatus === "Shortlisted"
-                              ? "bg-yellow-100 text-yellow-600"
-                              : app.applicantStatus === "Rejected"
-                              ? "bg-red-100 text-red-600"
-                              : "bg-blue-100 text-blue-600"
-                          }`}
-                        >
-                          {app.applicantStatus}
-                        </span>
-                      </div>
-                    </div>
-                    <Image src={companyLogo} alt="Company Logo" width={60} />
-                  </div>
-                </div>
+      <h1 className="text-xl font-semibold mb-6">My Applications</h1>
+      <Tabs value={selectedStatus} onValueChange={setSelectedStatus}>
+        <TabsList className="mb-6">
+          <TabsTrigger
+            value="Applied"
+            className={`h-7 md:h-9 pr-2 pl-3 md:px-6 py-1 md:py-2 text-xs md:text-sm font-medium rounded-l-full transition-all duration-300 cursor-pointer ${
+              selectedStatus === "Applied"
+                ? "!text-white dark:!text-blue-900 shadow-md !bg-gray-800 dark:!bg-blue-300 "
+                : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
+            }`}
+          >
+            Applied
+          </TabsTrigger>
+          <TabsTrigger
+            value="Shortlisted"
+            className={`h-7 md:h-9 pr-2 pl-3 md:px-6 py-1 md:py-2 text-xs md:text-sm font-medium transition-all duration-300 cursor-pointer ${
+              selectedStatus === "Shortlisted"
+                ? "!text-white dark:!text-yellow-900 shadow-md !bg-gray-800 dark:!bg-yellow-300 rounded-l-none"
+                : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
+            }`}
+          >
+            Shortlisted
+          </TabsTrigger>
+          <TabsTrigger
+            value="Rejected"
+            className={` h-7 md:h-9 pr-2 pl-3 md:px-6 py-1 md:py-2 text-xs md:text-sm font-medium rounded-r-full transition-all duration-300 cursor-pointer ${
+              selectedStatus === "Rejected"
+                ? "!text-white dark:!text-red-900 shadow-md !bg-gray-800 dark:!bg-red-300 rounded-l-none"
+                : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
+            }`}
+          >
+            Rejected
+          </TabsTrigger>
+        </TabsList>
 
-                {/* Job Details */}
-                <div className=" space-y-2">
-                  {/* <p className="text-sm text-gray-700">
-                    <span className="font-medium">Category:</span>{" "}
-                    {app.category}
-                  </p> */}
-                  <p className="text-sm text-gray-700 flex items-center gap-2">
-                    <MapPin size={16} /> {app.location}
-                  </p>
-                  <div className="text-sm text-gray-700 flex items-center gap-2">
-                    <span>
-                      <GraduationCap size={16} />
-                    </span>
-                    <div>
-                      <span>B.Sc</span>{" "}
-                      <span>Computer Science and Engineering</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-gray-700 flex items-center gap-2">
-                      <Calendar size={16} /> Application Date:{" "}
-                      {app.applicationDate}
-                    </p>
-                    <div className=" flex items-center justify-center">
-                      <ApplicantProgress currentStepIndex={currentStepIndex} />
-                    </div>
-                    <p className="font-semibold text-gray-800">{app.salary}</p>
-                  </div>
-                  {/* <p className="text-sm text-gray-700 flex items-center gap-2">
-                    <Calendar size={16} /> Deadline: {app.deadline}
-                  </p> */}
-                </div>
+        <TabsContent value="Applied">
+          <ApplicationCards applications={currentApplications} />
+        </TabsContent>
+        <TabsContent value="Shortlisted">
+          <ApplicationCards applications={currentApplications} />
+        </TabsContent>
+        <TabsContent value="Rejected">
+          <ApplicationCards applications={currentApplications} />
+        </TabsContent>
+      </Tabs>
 
-                {/* Status and Salary */}
-              </div>
-            </Link>
-          );
-        })}
-      </div>
-      {applications.length > itemsPerPage && (
+      {/* Pagination Section */}
+      {filteredApplications.length > itemsPerPage && (
         <div className="mt-6 flex justify-center">
           <Pagination>
             <PaginationContent>
@@ -294,6 +210,44 @@ const ApplicationCards = ({ applications }) => {
           </Pagination>
         </div>
       )}
+    </div>
+  );
+};
+
+const ApplicationCards = ({ applications }) => {
+  return (
+    <div>
+      <div className="grid grid-cols-1 gap-6">
+        {applications.map((app, index) => (
+          <Link href={`/my-applications/${app.id}`} key={index}>
+            <div className="bg-white border border-gray-200 shadow rounded-lg p-6 relative">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold">{app.jobTitle}</h2>
+                  <p className="text-sm text-gray-600">{app.companyName}</p>
+                </div>
+                <Image src={companyLogo} alt="Company Logo" width={60} />
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm text-gray-700 flex items-center gap-2">
+                  <MapPin size={16} /> {app.location}
+                </p>
+                <p className="text-sm text-gray-700 flex items-center gap-2">
+                  <GraduationCap size={16} />{" "}
+                  <span>B.Sc Computer Science and Engineering</span>
+                </p>
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-gray-700 flex items-center gap-2">
+                    <Calendar size={16} /> Application Date:{" "}
+                    {app.applicationDate}
+                  </p>
+                  <p className="font-semibold text-gray-800">{app.salary}</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };

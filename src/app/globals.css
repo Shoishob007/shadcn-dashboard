@@ -139,7 +139,7 @@
 
   body {
     @apply dark:bg-gray-800 bg-white;
-    /* overflow: hidden; */
+    overflow: hidden;
   }
 }
 
@@ -618,7 +618,7 @@
   .e-location-container
   .e-float-input
   .e-float-text,
-  .dark
+.dark
   .e-dialog
   .e-dlg-content
   .e-form-container
@@ -627,8 +627,8 @@
   .e-start-location-row
   .e-location-container
   .e-float-input
-  .e-float-text, 
-  .dark
+  .e-float-text,
+.dark
   .e-dialog
   .e-dlg-content
   .e-form-container
@@ -637,7 +637,7 @@
   .e-start-end-row
   .e-start-container
   .e-float-input,
-  .dark
+.dark
   .e-dialog
   .e-dlg-content
   .e-form-container
@@ -647,7 +647,7 @@
   .e-start-container
   .e-float-input
   .e-float-text,
-  .dark
+.dark
   .e-dialog
   .e-dlg-content
   .e-form-container
@@ -657,7 +657,7 @@
   .e-start-container
   .e-float-input
   > span,
-  .dark
+.dark
   .e-dialog
   .e-dlg-content
   .e-form-container
@@ -666,7 +666,7 @@
   .e-start-end-row
   .e-end-container
   .e-float-input,
-  .dark
+.dark
   .e-dialog
   .e-dlg-content
   .e-form-container
@@ -675,7 +675,8 @@
   .e-start-end-row
   .e-end-container
   .e-float-input
-  .e-float-text, .dark
+  .e-float-text,
+.dark
   .e-dialog
   .e-dlg-content
   .e-form-container
@@ -684,7 +685,8 @@
   .e-start-end-row
   .e-end-container
   .e-float-input
-  > span, .dark
+  > span,
+.dark
   .e-dialog
   .e-dlg-content
   .e-form-container
@@ -694,7 +696,8 @@
   .e-all-day-container
   .e-checkbox-wrapper
   > label
-  .e-label, .dark
+  .e-label,
+.dark
   .e-dialog
   .e-dlg-content
   .e-form-container
@@ -705,129 +708,124 @@
   .e-checkbox-wrapper
   > label
   .e-label,
-  .dark
-  .e-dialog
-  .e-dlg-content
-  .e-form-container
-  .e-schedule-form
-  .e-dialog-parent
-  .e-time-zone-row
-  .e-start-time-zone-container
-  .e-float-input,
-  .dark
-  .e-dialog
-  .e-dlg-content
-  .e-form-container
-  .e-schedule-form
-  .e-dialog-parent
-  .e-time-zone-row
-  .e-start-time-zone-container
-  .e-float-input
-  .e-float-text,
-  .dark
-  .e-dialog
-  .e-dlg-content
-  .e-form-container
-  .e-schedule-form
-  .e-dialog-parent
-  .e-time-zone-row
-  .e-start-time-zone-container
-  .e-float-input
-  .e-input-group-icon,
-  .dark
-  .e-dialog
-  .e-dlg-content
-  .e-form-container
-  .e-schedule-form
-  .e-dialog-parent
-  .e-time-zone-row
-  .e-end-time-zone-container
-  .e-float-input,
-  .dark
-  .e-dialog
-  .e-dlg-content
-  .e-form-container
-  .e-schedule-form
-  .e-dialog-parent
-  .e-time-zone-row
-  .e-end-time-zone-container
-  .e-float-input
-  .e-float-text,
-  .dark
-  .e-dialog
-  .e-dlg-content
-  .e-form-container
-  .e-schedule-form
-  .e-dialog-parent
-  .e-time-zone-row
-  .e-end-time-zone-container
-  .e-float-input
-  .e-input-group-icon,   .dark
-  .e-dialog
-  .e-dlg-content
-  .e-form-container
-  .e-schedule-form
-  .e-dialog-parent
-  .e-description-row
-  .e-description-container
-  .e-float-input,
-  .dark
-  .e-dialog
-  .e-dlg-content
-  .e-form-container
-  .e-schedule-form
-  .e-dialog-parent
-  .e-description-row
-  .e-description-container
-  .e-float-input
-  .e-float-text,
-  .dark
-  .e-dialog
-  .e-dlg-content
-  .e-form-container
-  .e-schedule-form
-  .e-dialog-parent
-  .e-control
-  .e-editor
-  .e-input-wrapper
-  .e-float-input
-  .e-input-group-icon,
-  .dark
-  .e-dialog
-  .e-dlg-content
-  .e-form-container
-  .e-schedule-form
-  .e-dialog-parent
-  .e-control
-  .e-editor
-  .e-input-wrapper
-  .e-float-input
-  .e-float-text,
-  .dark
-  .e-dialog
-  .e-dlg-content
-  .e-form-container
-  .e-schedule-form
-  .e-dialog-parent
-  .e-control
-  .e-editor
-  .e-input-wrapper
-  .e-float-input{
-  @apply text-gray-300 ;
-}
-  .dark
-  .e-dialog
-  .e-footer-content > button, .dark
-  .e-dialog
-  .e-footer-content{
-    @apply bg-gray-700 text-gray-300
-
-  }
-
 .dark
-.e-dialog
-.e-footer-content > button:hover{
-  @apply bg-gray-800 
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-time-zone-row
+  .e-start-time-zone-container
+  .e-float-input,
+.dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-time-zone-row
+  .e-start-time-zone-container
+  .e-float-input
+  .e-float-text,
+.dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-time-zone-row
+  .e-start-time-zone-container
+  .e-float-input
+  .e-input-group-icon,
+.dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-time-zone-row
+  .e-end-time-zone-container
+  .e-float-input,
+.dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-time-zone-row
+  .e-end-time-zone-container
+  .e-float-input
+  .e-float-text,
+.dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-time-zone-row
+  .e-end-time-zone-container
+  .e-float-input
+  .e-input-group-icon,
+.dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-description-row
+  .e-description-container
+  .e-float-input,
+.dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-description-row
+  .e-description-container
+  .e-float-input
+  .e-float-text,
+.dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-control
+  .e-editor
+  .e-input-wrapper
+  .e-float-input
+  .e-input-group-icon,
+.dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-control
+  .e-editor
+  .e-input-wrapper
+  .e-float-input
+  .e-float-text,
+.dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-control
+  .e-editor
+  .e-input-wrapper
+  .e-float-input {
+  @apply text-gray-300;
+}
+.dark .e-dialog .e-footer-content > button,
+.dark .e-dialog .e-footer-content {
+  @apply bg-gray-700 text-gray-300;
+}
+
+.dark .e-dialog .e-footer-content > button:hover {
+  @apply bg-gray-800;
 }
 
 /* .dark
