@@ -1,8 +1,6 @@
 /* eslint-disable react/jsx-key */
 "use client";
 import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/demoAppList/components/applicantsData";
-import DashboardCardSection from "@/components/ApplicantDashboardUI/DashboardCardSection";
-import LatestJobApplied from "@/components/ApplicantDashboardUI/LatestJobApplied";
 import Card, { CardContent } from "@/components/Card";
 import { Badge } from "@/components/ui/badge";
 import useRoleStore from "@/stores/roleStore/useRoleStore";
@@ -15,6 +13,7 @@ import ApplicantsList from "./(main-dashboard)/(dashboard)/demoAppList/page";
 import { documents as jobApplicants } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobApplicants";
 import { documents as jobData } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobData";
 import JobList from "./(main-dashboard)/(dashboard)/demoJobList/page";
+import ApplicantDashboardPage from "@/components/ApplicantDashboardUI/ApplicantDashboardPage";
 
 const allApplicants = jobApplicants.docs.flatMap((doc) =>
   doc.applicants.map((applicant) => ({
@@ -68,25 +67,7 @@ export default function Home() {
       {/* <PageTitle title="Dashboard" className={"ml-2"} /> */}
 
       {currentRole === "applicant" ? (
-        <div>
-          <div className="mb-6">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">Welcome!</span>{" "}
-              <h1 className="font-medium text-2xl">{session?.user?.name}</h1>{" "}
-              <Badge>{currentRole}</Badge>
-            </div>
-          </div>
-          <div>
-            <DashboardCardSection />
-
-            {/* Recently Job applied section */}
-            <section>
-              {/* <JobApplied /> */}
-              {/* <ApplicantRecentApplied /> */}
-              <LatestJobApplied />
-            </section>
-          </div>
-        </div>
+        <ApplicantDashboardPage/>
       ) : (
         <div>
           <div className="mb-6 flex justify-between">
