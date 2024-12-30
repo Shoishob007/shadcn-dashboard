@@ -277,17 +277,52 @@
 /* Syncfusion Scheduler Theme Styles */
 
 .e-schedule {
-  border-color: #e5e7eb;
   background-color: #f9fafb;
   color: #1f2937;
 }
 
 .e-schedule .e-schedule-toolbar,
 .e-schedule .e-timeline-month-header-calendar,
-.e-schedule .e-timeline-month-header {
+.e-schedule .e-timeline-month-header,
+.e-schedule .e-schedule-toolbar-items {
   border-color: #e5e7eb;
-  background-color: #f9fafb;
-  color: #1f2937;
+  @apply bg-gray-800;
+}
+
+.e-toolbar .e-toolbar-items,
+.e-toolbar .e-toolbar-items .e-toolbar-item > button,
+.e-schedule
+  .e-schedule-toolbar
+  .e-toolbar-items
+  .e-toolbar-item.e-date-range
+  .e-tbar-btn
+  .e-tbar-btn-text,
+.e-toolbar .e-toolbar-items .e-toolbar-item .e-btn-icon,
+.e-toolbar .e-popup-up-icon.e-icons {
+  @apply bg-gray-800 text-gray-300;
+}
+
+.e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:first-child,
+.e-toolbar .e-toolbar-items .e-toolbar-left .e-toolbar-item:last-child,
+.e-toolbar .e-toolbar-item .e-tbar-btn .e-tbar-btn-text {
+  @apply text-gray-300;
+}
+
+.e-schedule .e-schedule-toolbar .e-active-view .e-tbar-btn-text {
+  @apply text-red-500 font-bold;
+}
+
+.e-toolbar .e-toolbar-item .e-tbar-btn:hover:active .e-tbar-btn-text {
+  @apply scale-105 duration-200;
+}
+
+.e-toolbar .e-toolbar-item .e-tbar-btn:hover .e-tbar-btn-text {
+  @apply text-red-500 font-bold;
+}
+
+.e-schedule .e-schedule-toolbar .e-hor-nav,
+.e-schedule .e-schedule-toolbar .e-hor-nav > div {
+  @apply text-gray-300 bg-gray-800 border-none;
 }
 
 .e-schedule .e-vertical-view .e-day-wrapper .e-appointment,
@@ -334,6 +369,10 @@
   color: #1f2937;
 }
 
+.e-dialog .e-dlg-header-content + .e-dlg-content {
+  @apply pt-2;
+}
+
 /* Dark Mode Styling */
 .dark .e-schedule {
   background-color: #1f2937;
@@ -343,11 +382,10 @@
 .dark .e-schedule .e-schedule-toolbar,
 .dark .e-schedule .e-timeline-month-header-calendar,
 .dark .e-schedule .e-timeline-month-header {
-  background-color: #374151;
   color: #e5e7eb;
 }
 
-.dark
+/* .dark
   .e-table-container
   .e-table-wrap
   .e-schedule-table
@@ -356,7 +394,7 @@
   .e-schedule-table
   .e-header-cells {
   background-color: #1f2937;
-}
+} */
 
 .dark
   .e-table-container
@@ -379,7 +417,7 @@
   .e-work-cells,
 .dark .e-table-container .e-table-wrap .e-schedule-table .e-header-cells,
 .dark .e-table-container .e-table-wrap .e-schedule-table .e-time-slots {
-  background-color: #1f2937;
+  @apply bg-gray-800;
 }
 .dark
   .e-table-container
@@ -407,7 +445,7 @@
   .e-schedule-toolbar-container
   .e-header-popup
   .e-header-calendar {
-  background-color: #1f2937;
+  @apply bg-gray-800;
 }
 
 .dark
@@ -451,7 +489,18 @@
   .e-calendar-content-table
   .e-cell
   > span {
-  color: #e5e7eb;
+  @apply text-gray-200 bg-gray-800 rounded-full;
+}
+
+.dark
+  .e-schedule
+  .e-schedule-toolbar-container
+  .e-header-popup
+  .e-header-calendar
+  .e-calendar-content-table
+  .e-selected
+  > span {
+  @apply bg-rose-600;
 }
 
 .dark
@@ -512,6 +561,288 @@
   border-color: #374151;
   color: #1f2937;
 }
+
+.dark .e-dlg-header-content {
+  @apply bg-gray-700 text-gray-300;
+}
+
+.dark .e-dlg-header .e-title-text,
+.dark .e-dlg-header,
+.dark .e-dialog .e-btn.e-dlg-closeicon-btn .e-btn-icon {
+  @apply text-gray-300;
+}
+
+.dark .e-dialog .e-btn.e-dlg-closeicon-btn:hover {
+  @apply bg-gray-800 scale-110 duration-200;
+}
+
+.dark .e-dialog .e-dlg-content {
+  @apply bg-gray-800;
+}
+
+.dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-title-location-row
+  .e-subject-container
+  .e-float-input,
+.dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-title-location-row
+  .e-subject-container
+  .e-float-input
+  .e-float-text,
+.dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-title-location-row
+  .e-location-container
+  .e-float-input,
+.dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-title-location-row
+  .e-location-container
+  .e-float-input
+  .e-float-text,
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-start-location-row
+  .e-location-container
+  .e-float-input
+  .e-float-text, 
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-start-end-row
+  .e-start-container
+  .e-float-input,
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-start-end-row
+  .e-start-container
+  .e-float-input
+  .e-float-text,
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-start-end-row
+  .e-start-container
+  .e-float-input
+  > span,
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-start-end-row
+  .e-end-container
+  .e-float-input,
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-start-end-row
+  .e-end-container
+  .e-float-input
+  .e-float-text, .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-start-end-row
+  .e-end-container
+  .e-float-input
+  > span, .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-all-day-time-zone-row
+  .e-all-day-container
+  .e-checkbox-wrapper
+  > label
+  .e-label, .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-all-day-time-zone-row
+  .e-time-zone-container
+  .e-checkbox-wrapper
+  > label
+  .e-label,
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-time-zone-row
+  .e-start-time-zone-container
+  .e-float-input,
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-time-zone-row
+  .e-start-time-zone-container
+  .e-float-input
+  .e-float-text,
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-time-zone-row
+  .e-start-time-zone-container
+  .e-float-input
+  .e-input-group-icon,
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-time-zone-row
+  .e-end-time-zone-container
+  .e-float-input,
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-time-zone-row
+  .e-end-time-zone-container
+  .e-float-input
+  .e-float-text,
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-time-zone-row
+  .e-end-time-zone-container
+  .e-float-input
+  .e-input-group-icon,   .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-description-row
+  .e-description-container
+  .e-float-input,
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-description-row
+  .e-description-container
+  .e-float-input
+  .e-float-text,
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-control
+  .e-editor
+  .e-input-wrapper
+  .e-float-input
+  .e-input-group-icon,
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-control
+  .e-editor
+  .e-input-wrapper
+  .e-float-input
+  .e-float-text,
+  .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-control
+  .e-editor
+  .e-input-wrapper
+  .e-float-input{
+  @apply text-gray-300 ;
+}
+  .dark
+  .e-dialog
+  .e-footer-content > button, .dark
+  .e-dialog
+  .e-footer-content{
+    @apply bg-gray-700 text-gray-300
+
+  }
+
+.dark
+.e-dialog
+.e-footer-content > button:hover{
+  @apply bg-gray-800 
+}
+
+/* .dark
+  .e-dialog
+  .e-dlg-content
+  .e-form-container
+  .e-schedule-form
+  .e-dialog-parent
+  .e-title-location-row
+  .e-subject-container
+  .e-float-input
+  .e-float-text:focus {
+  @apply text-rose-600;
+} */
+
 .dark .e-toolbar-items {
   background-color: #374151;
 }
@@ -531,9 +862,9 @@
   color: #e5e7eb;
 }
 
-/* .dark .e-popup-content > .e-popup-table{
+.dark .e-popup-content > .e-popup-table {
   background-color: #374151;
-} */
+}
 
 .dark
   .e-quick-popup-wrapper

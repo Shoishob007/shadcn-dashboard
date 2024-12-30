@@ -61,7 +61,7 @@ const Scheduler = () => {
   }
 
   return (
-    <div className="rounded-lg border bg-card">
+    <div className="rounded-lg dark:bg-gray-800 p-4 border-none dark:border dark:border-gray-400">
       <ScheduleComponent
         currentView="Month"
         eventSettings={{
