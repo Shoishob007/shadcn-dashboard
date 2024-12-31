@@ -14,7 +14,7 @@ import logo from "../../../public/assests/company.png";
 const JobCard = ({ job }) => {
   return (
     <Link href={`/job-detail/${job.id}`} className="">
-      <Card className="w-full shadow-hover:border hover:border-black duration-300 bg-white rounded cursor-pointer">
+      <Card className="w-full shadow hover:border hover:border-black duration-300 bg-white rounded cursor-pointer">
         {/* Header with Company Logo and Name */}
         <CardHeader className="flex items-center space-x-4 bg-gray-50 p-4 rounded-t-md">
           <Image
@@ -35,7 +35,7 @@ const JobCard = ({ job }) => {
         {/* Content with Job Details */}
         <CardContent className="p-4 flex flex-col justify-between">
           <p className="text-sm text-gray-600 leading-relaxed line-clamp-4">
-            {job.description.slice(0,150)}...
+            {job.description.slice(0, 150)}...
           </p>
           <ul className="mt-3 text-sm text-gray-600 space-y-2">
             <li className="flex items-center space-x-2">
@@ -48,11 +48,13 @@ const JobCard = ({ job }) => {
             </li>
             <li className="flex items-center space-x-2">
               <Clock className="w-4 h-4 text-gray-500" />
-              <span>Employment Type: {job.employmentType}</span>
+              <span>Employment Type: {job.employeeType}</span>
             </li>
             <li className="flex items-center space-x-2">
               <User className="w-4 h-4 text-gray-500" />
-              <span>Experience: {job.experience}</span>
+              <span>
+                Experience: {job.yearOfExperience} years of experience
+              </span>
             </li>
             <li className="flex items-center space-x-2">
               <Code className="w-4 h-4 text-gray-500" />

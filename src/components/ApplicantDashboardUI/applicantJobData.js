@@ -43,6 +43,8 @@ export const jobs = [
     applicantCount: 50,
     deadline: "2024-12-15",
     published: "2024-11-20",
+    isApplied: true,
+    status: "Applied",
   },
   {
     id: 2,
@@ -88,6 +90,8 @@ export const jobs = [
     applicantCount: 40,
     deadline: "2024-12-30",
     published: "2024-11-28",
+    isApplied: true,
+    status: "Rejected",
   },
   {
     id: 3,
@@ -133,6 +137,8 @@ export const jobs = [
     applicantCount: 60,
     deadline: "2024-12-20",
     published: "2024-11-25",
+    isApplied: true,
+    status: "Shortlisted",
   },
   {
     id: 4,
@@ -178,6 +184,8 @@ export const jobs = [
     applicantCount: 30,
     deadline: "2024-12-25",
     published: "2024-11-22",
+    isApplied: false,
+    status: "",
   },
   {
     id: 5,
@@ -223,6 +231,8 @@ export const jobs = [
     applicantCount: 25,
     deadline: "2024-12-18",
     published: "2024-11-24",
+    isApplied: true,
+    status: "Applied",
   },
   {
     id: 6,
@@ -268,6 +278,8 @@ export const jobs = [
     applicantCount: 35,
     deadline: "2024-12-22",
     published: "2024-11-26",
+    isApplied: false,
+    status: "Applied",
   },
   {
     id: 7,
@@ -313,6 +325,8 @@ export const jobs = [
     applicantCount: 20,
     deadline: "2024-12-15",
     published: "2024-11-23",
+    isApplied: true,
+    status: "Shortlisted",
   },
   {
     id: 8,
@@ -358,6 +372,8 @@ export const jobs = [
     applicantCount: 15,
     deadline: "2024-12-28",
     published: "2024-11-30",
+    isApplied: true,
+    status: "Rejected",
   },
   {
     id: 9,
@@ -403,6 +419,8 @@ export const jobs = [
     applicantCount: 25,
     deadline: "2024-12-30",
     published: "2024-11-29",
+    isApplied: true,
+    status: "Applied",
   },
   {
     id: 10,
@@ -493,6 +511,8 @@ export const jobs = [
     applicantCount: 40,
     deadline: "2024-12-20",
     published: "2024-11-25",
+    isApplied: false,
+    status: "",
   },
   {
     id: 12,
@@ -543,5 +563,7 @@ export const jobs = [
     applicantCount: 22,
     deadline: "2024-12-27",
     published: "2024-11-28",
+    isApplied: false,
+    status: "",
   },
 ];
