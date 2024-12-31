@@ -35,7 +35,7 @@ const JobCard = ({ job }) => {
         {/* Content with Job Details */}
         <CardContent className="p-4 flex flex-col justify-between">
           <p className="text-sm text-gray-600 leading-relaxed line-clamp-4">
-            {job.description}
+            {job.description.slice(0,150)}...
           </p>
           <ul className="mt-3 text-sm text-gray-600 space-y-2">
             <li className="flex items-center space-x-2">
@@ -64,7 +64,7 @@ const JobCard = ({ job }) => {
         {/* Footer with Border and Apply Button */}
         <hr className="border-gray-200" />
         <CardFooter className="flex justify-between items-center bg-gray-50 p-4 rounded-b-md mt-auto">
-          <p className="text-sm text-gray-500">Posted: {job.postedDate}</p>
+          <p className="text-sm text-gray-500">Posted: {job.published}</p>
           <Button variant="outline">View Details</Button>
         </CardFooter>
       </Card>

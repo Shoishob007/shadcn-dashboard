@@ -1,67 +1,79 @@
-import { Briefcase, Calendar, MapPin } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Briefcase, Calendar, DollarSign, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import companyLogo from "../../../../../../public/assests/company.png";
 
 const JobSearchCard = ({ job }) => {
   return (
-    <Link href={`/job-search/${job.id}`}>
-      <div className="max-w-sm w-full bg-white border border-gray-200 shadow-lg rounded-lg p-5 hover:shadow transition-all duration-300 flex flex-col">
-        {/* Header: Job Title and Company Logo */}
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <h2 className="text-lg font-semibold text-gray-800">
-              {job.jobTitle || "Untitled Job"}
-            </h2>
-            <p className="text-sm text-gray-600">
-              {job.companyName || "Unknown Company"}
-            </p>
-          </div>
+    <Link href={`/job-search/${job.id}`} className="">
+      <Card className="w-full shadow-hover:border hover:border-black duration-300 bg-white rounded cursor-pointer">
+        {/* Header with Company Logo and Name */}
+        <CardHeader className="flex items-center space-x-4 bg-gray-50 p-4 rounded-t-md">
           <Image
             src={companyLogo}
-            alt={`${job.companyName || "Company"} Logo`}
             width={50}
             height={50}
-            className="rounded-full object-cover"
+            alt="logo"
+            className="rounded-full border border-gray-300"
           />
-        </div>
+          <div>
+            <CardTitle className="text-xl font-semibold text-gray-800">
+              {job.title || "Untitled Job"}
+            </CardTitle>
+            <p className="text-sm text-center text-gray-500">
+              {job.orgName || "Unknown Company"}
+            </p>
+          </div>
+        </CardHeader>
 
-        {/* Job Meta Info */}
-        <div className="space-y-2">
-          <p className="text-sm text-gray-700 flex items-center gap-2">
-            <MapPin size={16} className="text-gray-500" />{" "}
-            {job.location || "Location Unavailable"}
+        {/* Content with Job Details */}
+        <CardContent className="p-4 flex flex-col justify-between">
+          <p className="text-sm text-gray-600 leading-relaxed line-clamp-4">
+            {job.description}
           </p>
-          <p className="text-sm text-gray-700 flex items-center gap-2">
-            <Calendar size={16} className="text-gray-500" /> Deadline:{" "}
-            {job.deadline || "Not Mentioned"}
-          </p>
-          {/* Experience */}
-          <p className="text-sm text-gray-700 flex items-center gap-2">
-            <Briefcase size={16} className="text-gray-500" /> Experience:{" "}
-            {job.experience || "Not Specified"}
-          </p>
-        </div>
+          <ul className="mt-3 text-sm text-gray-600 space-y-2">
+            <li className="flex items-center space-x-2">
+              <MapPin className="w-4 h-4 text-gray-500" />
+              <span>Location: {job.location || "Location Unavailable"}</span>
+            </li>
+            <li className="flex items-center space-x-2">
+              <DollarSign className="w-4 h-4 text-gray-500" />
+              <span>
+                Salary: {job.salary ? `$${job.salary}` : "Negotiable"}
+              </span>
+            </li>
+            <li className="flex items-center space-x-2">
+              <Calendar className="w-4 h-4 text-gray-500" />
+              <span>Deadline: {job.deadline || "Not Mentioned"}</span>
+            </li>
+            <li className="flex items-center space-x-2">
+              <Briefcase className="w-4 h-4 text-gray-500" />
+              <span>
+                Experience:{" "}
+                {(job.yearOfExperience && `${job.yearOfExperience} Years`) ||
+                  "Not Specified"}
+              </span>
+            </li>
+          </ul>
+        </CardContent>
 
-        {/* Footer: Job Type and Salary */}
-        <div className="flex justify-between items-center mt-5">
-          {/* Job Type */}
-          <span
-            className={`py-1 px-3 rounded-full text-xs font-medium ${
-              job.employmentType === "Full-Time"
-                ? "bg-green-100 text-green-600"
-                : "bg-blue-100 text-blue-600"
-            }`}
-          >
-            {job.employmentType || "Type Unspecified"}
-          </span>
-
-          {/* Salary */}
-          <p className="text-sm font-semibold text-gray-800">
-            {job.salary ? `${job.salary}` : "Negotiable"}
+        {/* Footer with Border and Apply Button */}
+        <hr className="border-gray-200" />
+        <CardFooter className="flex justify-between items-center bg-gray-50 p-4 rounded-b-md mt-auto">
+          <p className="text-sm text-gray-500">
+            Posted: {job.published || "Unknown"}
           </p>
-        </div>
-      </div>
+          <Button variant="outline">View Details</Button>
+        </CardFooter>
+      </Card>
     </Link>
   );
 };
