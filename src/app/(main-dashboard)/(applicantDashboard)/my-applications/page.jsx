@@ -1,4 +1,13 @@
 "use client";
+import { jobs } from "@/components/ApplicantDashboardUI/applicantJobData";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Pagination,
   PaginationContent,
@@ -9,96 +18,31 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, GraduationCap, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import companyLogo from "../../../../../public/assests/company.png";
 
-const MyApplications = () => {
-  const applications = [
-    {
-      id: "1",
-      jobTitle: "Frontend Developer",
-      companyName: "Tech Innovators Ltd.",
-      jobStatus: "Open",
-      applicantStatus: "Shortlisted", // Shortlisted
-      applicationDate: "2024-12-01",
-      deadline: "2024-12-15",
-      salary: "$50,000",
-      jobType: "Full-Time",
-      employeeType: "Contractual",
-      location: "Remote",
-      category: "Software Development",
-    },
-    {
-      id: "2",
-      jobTitle: "UI/UX Designer",
-      companyName: "DesignCraft Studio",
-      jobStatus: "Closed",
-      applicantStatus: "Applied", // Applied
-      applicationDate: "2024-11-28",
-      deadline: "2024-12-10",
-      salary: "$60,000",
-      jobType: "Full-Time",
-      employeeType: "Permanent",
-      location: "On-site",
-      category: "Design",
-    },
-    {
-      id: "3",
-      jobTitle: "JavaScript Developer",
-      companyName: "CodeCrafters Inc.",
-      jobStatus: "Open",
-      applicantStatus: "Shortlisted", // Shortlisted
-      applicationDate: "2024-11-20",
-      deadline: "2024-12-05",
-      salary: "$55,000",
-      jobType: "Part-Time",
-      employeeType: "Freelance",
-      location: "Remote",
-      category: "Web Development",
-    },
-    {
-      id: "4",
-      jobTitle: "Backend Engineer",
-      companyName: "DevSolutions",
-      jobStatus: "Closed",
-      applicantStatus: "Rejected", // Rejection
-      applicationDate: "2024-10-10",
-      deadline: "2024-10-30",
-      salary: "$70,000",
-      jobType: "Full-Time",
-      employeeType: "Permanent",
-      location: "On-site",
-      category: "Software Engineering",
-    },
-    {
-      id: "5",
-      jobTitle: "DevOps Engineer",
-      companyName: "CloudBridge Systems",
-      jobStatus: "Open",
-      applicantStatus: "Applied", // Applied
-      applicationDate: "2024-12-02",
-      deadline: "2024-12-20",
-      salary: "$80,000",
-      jobType: "Full-Time",
-      employeeType: "Permanent",
-      location: "Remote",
-      category: "Cloud Infrastructure",
-    },
-  ];
+import { DollarSign, User } from "lucide-react";
 
+const MyApplications = () => {
   const searchParams = useSearchParams();
+
   const activeTab = searchParams.get("tab") || "Applied";
+  console.log(activeTab);
   const [selectedStatus, setSelectedStatus] = useState(activeTab);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
+  const itemsPerPage = 6;
 
-  const filteredApplications = applications.filter(
-    (app) => app.applicantStatus === selectedStatus || selectedStatus === "All"
-  );
+  const filteredApplications = jobs.filter((app) => {
+    if (selectedStatus === "Applied") {
+      return app.isApplied;
+    } else {
+      return app.isApplied && app.applicantStatus === selectedStatus;
+    }
+  });
   const totalPages = Math.ceil(filteredApplications.length / itemsPerPage);
 
   const currentApplications = filteredApplications.slice(
@@ -217,34 +161,83 @@ const MyApplications = () => {
 const ApplicationCards = ({ applications }) => {
   return (
     <div>
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {applications.map((app, index) => (
           <Link href={`/my-applications/${app.id}`} key={index}>
-            <div className="bg-white border border-gray-200 shadow rounded-lg p-6 relative">
-              <div className="flex items-center justify-between">
+            <Card className="flex flex-col justify-between w-full shadow hover:border hover:border-black duration-300 bg-white rounded cursor-pointer">
+              {/* Header with Company Logo and Job Title */}
+              <CardHeader className="flex items-center space-x-4 bg-gray-50 p-4 rounded-t-md">
+                <Image
+                  src={companyLogo}
+                  width={50}
+                  height={50}
+                  alt="logo"
+                  className="rounded-full border border-gray-300"
+                />
                 <div>
-                  <h2 className="text-lg font-semibold">{app.jobTitle}</h2>
-                  <p className="text-sm text-gray-600">{app.companyName}</p>
-                </div>
-                <Image src={companyLogo} alt="Company Logo" width={60} />
-              </div>
-              <div className="space-y-2">
-                <p className="text-sm text-gray-700 flex items-center gap-2">
-                  <MapPin size={16} /> {app.location}
-                </p>
-                <p className="text-sm text-gray-700 flex items-center gap-2">
-                  <GraduationCap size={16} />{" "}
-                  <span>B.Sc Computer Science and Engineering</span>
-                </p>
-                <div className="flex items-center justify-between">
-                  <p className="text-sm text-gray-700 flex items-center gap-2">
-                    <Calendar size={16} /> Application Date:{" "}
-                    {app.applicationDate}
+                  <CardTitle className="text-xl font-semibold text-gray-800">
+                    {app.title}
+                  </CardTitle>
+                  <p className="text-sm text-center text-gray-500">
+                    {app.orgName}
                   </p>
-                  <p className="font-semibold text-gray-800">{app.salary}</p>
                 </div>
-              </div>
-            </div>
+              </CardHeader>
+
+              {/* Content with Job Application Details */}
+              <CardContent className="p-4 flex flex-col flex-grow">
+                <p className="text-sm text-gray-600 leading-relaxed line-clamp-4">
+                  {app.description.slice(0, 150)}...
+                </p>
+                <ul className="mt-3 text-sm text-gray-600 space-y-2">
+                  <li className="flex items-center space-x-2">
+                    <MapPin className="w-4 h-4 text-gray-500" />
+                    <span>Location: {app.location}</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <DollarSign className="w-4 h-4 text-gray-500" />
+                    <span>Salary: {app.salary}</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <User className="w-4 h-4 text-gray-500" />
+                    <span>
+                      Experience: {app.yearOfExperience} Years of Experience
+                    </span>
+                  </li>
+                </ul>
+
+                {/* Application Status */}
+                <div className="mt-4 text-sm text-gray-700">
+                  <p>
+                    Status:
+                    <span
+                      className={`font-semibold ml-1 ${
+                        app.status === "Applied"
+                          ? "text-blue-500"
+                          : app.status === "Shortlisted"
+                          ? "text-yellow-500"
+                          : app.status === "Hired"
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {app.status}
+                    </span>
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Applied on: {app.published}
+                  </p>
+                </div>
+              </CardContent>
+
+              {/* Footer with Apply Button */}
+              <hr className="border-gray-200" />
+              <CardFooter className="flex justify-between items-center bg-gray-50 p-4 rounded-b-md mt-auto">
+                <Button variant="outline" onClick={() => alert("View Status")}>
+                  View Status
+                </Button>
+              </CardFooter>
+            </Card>
           </Link>
         ))}
       </div>
