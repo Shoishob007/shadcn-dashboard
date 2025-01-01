@@ -47,23 +47,24 @@ const MyApplications = () => {
   );
   const myRejected = jobs.filter((rejected) => rejected.status === "Rejected");
 
-  const filteredApplications = jobs.filter((app) => {
-    if (selectedStatus === "Applied") {
-      return app.isApplied;
-    } else {
-      return app.isApplied && app.applicantStatus === selectedStatus;
-    }
-  });
-  const totalPages = Math.ceil(filteredApplications.length / itemsPerPage);
+  // const filteredApplications = jobs.filter((app) => {
+  //   if (selectedStatus === "Applied") {
+  //     return app.isApplied;
+  //   } else {
+  //     return app.isApplied && app.applicantStatus === selectedStatus;
+  //   }
+  // });
+  
+  // const totalPages = Math.ceil(filteredApplications.length / itemsPerPage);
 
-  const currentApplications = filteredApplications.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  // const currentApplications = filteredApplications.slice(
+  //   (currentPage - 1) * itemsPerPage,
+  //   currentPage * itemsPerPage
+  // );
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
+  // const handlePageChange = (page) => {
+  //   setCurrentPage(page);
+  // };
 
   return (
     <div>
@@ -112,59 +113,6 @@ const MyApplications = () => {
           <ApplicationCards applications={myRejected} />
         </TabsContent>
       </Tabs>
-
-      {/* Pagination Section */}
-      {filteredApplications.length > itemsPerPage && (
-        <div className="mt-6 flex justify-center">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (currentPage > 1) {
-                      handlePageChange(currentPage - 1);
-                    }
-                  }}
-                  className="cursor-pointer"
-                />
-              </PaginationItem>
-
-              {/* Dynamically generate page numbers */}
-              {Array.from({ length: totalPages }, (_, index) => (
-                <PaginationItem key={index + 1}>
-                  <PaginationLink
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePageChange(index + 1);
-                    }}
-                    isActive={currentPage === index + 1}
-                    className="cursor-pointer"
-                  >
-                    {index + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
-
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-
-              <PaginationItem>
-                <PaginationNext
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (currentPage < totalPages) {
-                      handlePageChange(currentPage + 1);
-                    }
-                  }}
-                  className="cursor-pointer"
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
-      )}
     </div>
   );
 };

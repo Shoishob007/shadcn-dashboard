@@ -13,15 +13,15 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 
+import { Button } from "@/components/ui/button";
 import { SendHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import ApplicantResumeUpload from "./ApplicantResumeUpload";
-import { Button } from "@/components/ui/button";
 
-const ApplyForm = ({ setAppliedStatus }) => {
+const ApplyForm = ({ setAppliedStatus, appliedStatus }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasApplied, setHasApplied] = useState(false);
   const {
@@ -47,7 +47,7 @@ const ApplyForm = ({ setAppliedStatus }) => {
       showConfirmButton: false,
       timer: 1500,
     });
-    router.push("/my-applications");
+    // router.push("/my-applications");
   };
 
   return (
@@ -157,7 +157,6 @@ const ApplyForm = ({ setAppliedStatus }) => {
               <Button
                 type="submit"
                 className="mt-2 text-sm flex items-center gap-1 px-3 py-3 rounded bg-[#212121] hover:bg-[#151515] duration-300 text-white font-medium outline-none border-none"
-                // onClick={() => }
               >
                 Apply Now{" "}
                 <span>
@@ -173,11 +172,3 @@ const ApplyForm = ({ setAppliedStatus }) => {
 };
 
 export default ApplyForm;
-
-// inputStyle={{
-//   width: "100%",
-//   backgroundColor: "#f5f5f5",
-//   border: "1px solid #ccc",
-//   padding: "10px",
-//   borderRadius: "5px",
-// }}
