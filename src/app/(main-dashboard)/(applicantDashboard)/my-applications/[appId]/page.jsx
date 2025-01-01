@@ -1,4 +1,5 @@
 import { jobs } from "@/components/ApplicantDashboardUI/applicantJobData";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import companyLogo from "../../../../../../public/assests/company.png";
 import ApplyForm from "../../job-details/components/ApplyForm";
@@ -94,8 +95,12 @@ const JobDetailsPage = ({ params }) => {
             ))}
           </ul>
         </section>
-        <section>
-          <ApplyForm />
+        <section className="flex items-center justify-end">
+          {jobData.isApplied ? (
+            <Button className='px-4' disabled>Applied</Button>
+          ) : (
+            <ApplyForm />
+          )}
         </section>
       </div>
     </div>

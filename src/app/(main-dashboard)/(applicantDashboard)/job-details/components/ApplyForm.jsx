@@ -19,8 +19,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import ApplicantResumeUpload from "./ApplicantResumeUpload";
+import { Button } from "@/components/ui/button";
 
-const ApplyForm = () => {
+const ApplyForm = ({ setAppliedStatus }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasApplied, setHasApplied] = useState(false);
   const {
@@ -153,15 +154,16 @@ const ApplyForm = () => {
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
-              <button
+              <Button
                 type="submit"
                 className="mt-2 text-sm flex items-center gap-1 px-3 py-3 rounded bg-[#212121] hover:bg-[#151515] duration-300 text-white font-medium outline-none border-none"
+                // onClick={() => }
               >
                 Apply Now{" "}
                 <span>
                   <SendHorizontal size={16} />
                 </span>
-              </button>
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
