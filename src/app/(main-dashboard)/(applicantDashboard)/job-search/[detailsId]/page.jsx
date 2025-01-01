@@ -1,11 +1,15 @@
+"use client";
+
 import { jobs } from "@/components/ApplicantDashboardUI/applicantJobData";
 import Image from "next/image";
+import { useState } from "react";
 import companyLogo from "../../../../../../public/assests/company.png";
 import ApplyForm from "../../job-details/components/ApplyForm";
 
 const JobDetailsPage = ({ params }) => {
   const jobId = params.detailsId;
   const jobData = jobs.find((data) => data.id === parseInt(jobId));
+  const [appliedStatus, setAppliedStatus] = useState(false);
 
   return (
     <div
@@ -95,7 +99,10 @@ const JobDetailsPage = ({ params }) => {
           </ul>
         </section>
         <section>
-          <ApplyForm />
+          <ApplyForm
+            appliedStatus={appliedStatus}
+            setAppliedStatus={setAppliedStatus}
+          />
         </section>
       </div>
     </div>
