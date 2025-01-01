@@ -177,10 +177,16 @@ const ApplicantDetails = () => {
               <Button
                 variant="default"
                 size="xs"
-                onClick={() => window.open(`${CV}, '_blank'`)}
                 className="border border-red-600 bg-red-100 text-red-600 hover:bg-red-200 shadow-none dark:border-gray-600 dark:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-200"
+                onClick={() => {
+                  if (CV) {
+                    window.open(CV, "_blank", "noopener,noreferrer");
+                  } else {
+                    alert("No CV available to download");
+                  }
+                }}
               >
-                Download CV
+                View Resume
               </Button>
             </div>
 
@@ -228,7 +234,7 @@ const ApplicantDetails = () => {
                 size="xs"
                 className={`border ${
                   applicant.status === "hired"
-                    ? "bg-emerald-100 text-emerald-600 border-emerald-600 dark:border-gray-600 dark:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-200"
+                    ? "bg-emerald-100 text-emerald-600 border-emerald-600 dark:border-gray-600 dark:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-200 disabled:opacity-50"
                     : "bg-red-100 text-red-600"
                 }`}
                 disabled

@@ -133,7 +133,7 @@ export const applicantsData = [
 
     interviewSchedule: new Date("2024-11-14"),
     schedule : {
-      date:  new Date("2024-11-14"),
+      date:  new Date("2025-01-14"),
       time: "14:30",
     },
 
@@ -289,8 +289,8 @@ export const applicantsData = [
     CVScore: 50,
     interviewSchedule: new Date("2024-11-10"),
     schedule : {
-      date:  new Date("2024-11-20"),
-      time: "14:30",
+      date:  new Date("2025-01-20"),
+      time: "10:30",
     },
     skills: [
       "JavaScript",
@@ -551,7 +551,7 @@ export const applicantsData = [
     deadline: new Date("2024-10-01"),
     interviewSchedule: new Date("2024-12-12"),
     schedule : {
-      date:  new Date("2024-12-12"),
+      date:  new Date("2025-01-12"),
       time: "14:30",
     },
     skills: [

@@ -101,8 +101,8 @@ export const documents = {
             jobType: "physical",
             steps: ["screening test", "aptitude test", "technical test", "interview"],
             applicantCount: 40,
-            deadline: "2024-12-31",
-            published: "2024-12-12",
+            deadline: "2025-01-31",
+            published: "2024-12-26",
         },
         {
             id: "dfacc5af-c464-47ab-92a4-af019499f618",
@@ -203,8 +203,8 @@ export const documents = {
             jobType: "remote",
             steps: ["screening test", "aptitude test", "technical test", "interview"],
             applicantCount: 80,
-            deadline: "2024-12-22",
-            published: "2024-11-26",
+            deadline: "2025-01-22",
+            published: "2024-12-26",
         },
         {
             id: "dfacc5af-c464-47ab-92a4-af019499h42f",
