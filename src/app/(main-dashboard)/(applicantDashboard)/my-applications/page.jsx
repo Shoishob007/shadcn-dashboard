@@ -1,6 +1,5 @@
 "use client";
 import { jobs } from "@/components/ApplicantDashboardUI/applicantJobData";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,15 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapPin } from "lucide-react";
 import Image from "next/image";
@@ -26,6 +16,7 @@ import { useState } from "react";
 import companyLogo from "../../../../../public/assests/company.png";
 
 import { DollarSign, User } from "lucide-react";
+import ApplicantionStatus from "./components/ApplicantionStatus";
 
 const MyApplications = () => {
   const searchParams = useSearchParams();
@@ -54,7 +45,7 @@ const MyApplications = () => {
   //     return app.isApplied && app.applicantStatus === selectedStatus;
   //   }
   // });
-  
+
   // const totalPages = Math.ceil(filteredApplications.length / itemsPerPage);
 
   // const currentApplications = filteredApplications.slice(
@@ -194,9 +185,7 @@ const ApplicationCards = ({ applications }) => {
               {/* Footer with Apply Button */}
               <hr className="border-gray-200" />
               <CardFooter className="flex justify-between items-center bg-gray-50 p-4 rounded-b-md mt-auto">
-                <Button variant="outline" onClick={() => alert("View Status")}>
-                  View Status
-                </Button>
+                <ApplicantionStatus viewStatus={app.status} />
               </CardFooter>
             </Card>
           </div>
