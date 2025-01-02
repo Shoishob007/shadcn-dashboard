@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Check } from "lucide-react";
+import { CalanderComponent } from "./CalanderComponent";
 
 const UpdateProjects = () => {
   return (
@@ -39,10 +40,7 @@ const UpdateProjects = () => {
               type="date"
               className="block w-1/2 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
             />
-            <Input
-              type="date"
-              className="block w-1/2 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-            />
+            <CalanderComponent />
           </div>
           <div className="mt-2 flex items-center justify-end">
             <label className="inline-flex items-center">

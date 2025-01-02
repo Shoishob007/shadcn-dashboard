@@ -6,9 +6,6 @@ import FormatTitle from "@/components/TitleFormatter";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Card } from "@/components/ui/card";
-import { CalendarDays, Clock, Plus } from "lucide-react";
-import { format } from "date-fns";
-import { useSession } from "next-auth/react";
 import {
   Dialog,
   DialogContent,
@@ -16,10 +13,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { usePathname } from "next/navigation";
-import EventForm from "./components/EventForm";
 import useUpcomingInterviewStore from "@/stores/interviews/useUpcomingInterviewStore";
+import { format } from "date-fns";
+import { CalendarDays, Clock, Plus } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import EventForm from "./components/EventForm";
 
 const InterviewUpcoming = () => {
   const { data: session, status } = useSession();
