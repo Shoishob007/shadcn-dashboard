@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import DashboardCardSection from "./DashboardCardSection";
 import FeaturedJobs from "./FeaturedJobs";
-import LatestJobApplied from "./LatestJobApplied";
+import RecentApplied from "./RecentApplied";
 
 const ApplicantDashboardPage = ({ currentRole, session }) => {
   return (
@@ -13,7 +13,8 @@ const ApplicantDashboardPage = ({ currentRole, session }) => {
       </div>
       <section className="mt-6">
         <DashboardCardSection />
-        <LatestJobApplied />
+        {/* <LatestJobApplied /> */}
+        <RecentApplied/>
         <FeaturedJobs />
       </section>
     </>

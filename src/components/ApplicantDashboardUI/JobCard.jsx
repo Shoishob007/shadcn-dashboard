@@ -28,7 +28,7 @@ const JobCard = ({ job }) => {
             <CardTitle className="text-xl font-semibold text-gray-800">
               {job.title}
             </CardTitle>
-            <p className="text-sm text-center text-gray-500">{job.company}</p>
+            <p className="text-sm text-center text-gray-500">{job.orgName}</p>
           </div>
         </CardHeader>
 
@@ -44,7 +44,7 @@ const JobCard = ({ job }) => {
             </li>
             <li className="flex items-center space-x-2">
               <DollarSign className="w-4 h-4 text-gray-500" />
-              <span>Salary: {job.salary}</span>
+              <span>Salary: ${job.salary}/month</span>
             </li>
             <li className="flex items-center space-x-2">
               <Clock className="w-4 h-4 text-gray-500" />
@@ -58,7 +58,7 @@ const JobCard = ({ job }) => {
             </li>
             <li className="flex items-center space-x-2">
               <Code className="w-4 h-4 text-gray-500" />
-              <span>Skills: {job.skills}</span>
+              <span>Skills: {job.skills.map((skill, i) => (<span key={i}>{skill},</span>))}</span>
             </li>
           </ul>
         </CardContent>
