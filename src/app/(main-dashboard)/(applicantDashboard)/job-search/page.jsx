@@ -2,15 +2,13 @@
 import { jobs } from "@/components/ApplicantDashboardUI/applicantJobData";
 import { Button } from "@/components/ui/button";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { RotateCcw } from "lucide-react";
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useState } from "react";
 import JobSearchCard from "./components/JobSearchCard";
 
@@ -66,8 +64,9 @@ const JobSearch = () => {
     <div className="overflow-hidden">
       <h1 className="text-xl font-semibold">Job Search</h1>
       {/* Filter Section */}
-      <div className="flex gap-4 mt-6">
-        {/* <select
+      <div className="flex justify-between gap-4 mt-6 px-1">
+        <div>
+          {/* <select
           name="location"
           value={filters.location}
           onChange={handleFilterChange}
@@ -79,19 +78,19 @@ const JobSearch = () => {
           <option value="New York, USA">New York, USA</option>
         </select> */}
 
-        <select
-          name="employmentType"
-          value={filters.employmentType}
-          onChange={handleFilterChange}
-          className="border px-4 py-2 rounded text-sm"
-        >
-          <option value="">All Employment Types</option>
-          <option value="full-time">Full-Time</option>
-          <option value="Part-Time">Part-Time</option>
-          <option value="contractual">Contractual</option>
-        </select>
+          <select
+            name="employmentType"
+            value={filters.employmentType}
+            onChange={handleFilterChange}
+            className="border px-4 py-2 rounded text-sm"
+          >
+            <option value="">All Employment Types</option>
+            <option value="full-time">Full-Time</option>
+            <option value="Part-Time">Part-Time</option>
+            <option value="contractual">Contractual</option>
+          </select>
 
-        {/* <select
+          {/* <select
           name="jobCategory"
           value={filters.jobCategory}
           onChange={handleFilterChange}
@@ -103,7 +102,7 @@ const JobSearch = () => {
           <option value="Marketing">Marketing</option>
         </select> */}
 
-        <Button
+          {/* <Button
           variant="ghost"
           onClick={handleResetFilters}
           className="bg-white shadow text-sm px-4 py-2 rounded flex items-center gap-1"
@@ -112,7 +111,26 @@ const JobSearch = () => {
             <RotateCcw size={18} />
           </span>
           <span>Reset</span>
-        </Button>
+        </Button> */}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Select >
+            <SelectTrigger className="w-[180px] bg-white">
+              <SelectValue placeholder="Sort By (Default)" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="apple">Newest</SelectItem>
+                <SelectItem value="banana">Oldest</SelectItem>
+                <SelectItem value="blueberry">Random</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <div>
+            <Button>Filter</Button>
+          </div>
+        </div>
       </div>
 
       {/* Job Listings */}
@@ -123,7 +141,6 @@ const JobSearch = () => {
           filteredJobs.map((job) => <JobSearchCard key={job.id} job={job} />)
         )}
       </div>
-
     </div>
   );
 };
