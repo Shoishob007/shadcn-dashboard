@@ -6,7 +6,7 @@ import { jobs } from "./applicantJobData";
 
 const FeaturedJobs = () => {
   return (
-    <section className="mt-6">
+    <section className="">
       <div>
         <h1 className="text-xl font-semibold mb-3">Featured Jobs</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
