@@ -9,9 +9,9 @@ export default function DashboardCardSection() {
   };
 
   return (
-    <div className="">
-      <div className=" px-4">
-        <div className="flex gap-6">
+    <div>
+      <div>
+        <div className="flex gap-4">
           <div
             onClick={() => handleCardClick("Applied")}
             className="flex-1 cursor-pointer"
