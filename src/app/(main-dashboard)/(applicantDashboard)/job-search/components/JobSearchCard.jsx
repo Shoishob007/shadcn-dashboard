@@ -14,7 +14,7 @@ import companyLogo from "../../../../../../public/assests/company.png";
 const JobSearchCard = ({ job }) => {
   return (
     <Link href={`/job-search/${job.id}`} className="">
-      <Card className="w-full shadow-hover:border hover:border-black duration-300 bg-white rounded cursor-pointer">
+      <Card className="w-full hover:border hover:border-black duration-300 bg-white  rounded cursor-pointer">
         {/* Header with Company Logo and Name */}
         <CardHeader className="flex items-center space-x-4 bg-gray-50 p-4 rounded-t-md">
           <Image
@@ -35,27 +35,27 @@ const JobSearchCard = ({ job }) => {
         </CardHeader>
 
         {/* Content with Job Details */}
-        <CardContent className="p-4 flex flex-col justify-between">
-          <p className="text-sm text-gray-600 leading-relaxed line-clamp-4">
+        <CardContent className="p-4 flex flex-col justify-between ">
+          <p className="text-sm dark:text-gray-300 text-gray-600 leading-relaxed line-clamp-4">
             {job.description}
           </p>
           <ul className="mt-3 text-sm text-gray-600 space-y-2">
-            <li className="flex items-center space-x-2">
-              <MapPin className="w-4 h-4 text-gray-500" />
+            <li className="flex items-center space-x-2 dark:text-gray-300">
+              <MapPin className="w-4 h-4 text-gray-500 dark:text-gray-300" />
               <span>Location: {job.location || "Location Unavailable"}</span>
             </li>
-            <li className="flex items-center space-x-2">
-              <DollarSign className="w-4 h-4 text-gray-500" />
+            <li className="flex items-center space-x-2 dark:text-gray-300">
+              <DollarSign className="w-4 h-4 text-gray-500 dark:text-gray-300" />
               <span>
                 Salary: {job.salary ? `$${job.salary}` : "Negotiable"}
               </span>
             </li>
-            <li className="flex items-center space-x-2">
-              <Calendar className="w-4 h-4 text-gray-500" />
+            <li className="flex items-center space-x-2 dark:text-gray-300">
+              <Calendar className="w-4 h-4 text-gray-500 dark:text-gray-300" />
               <span>Deadline: {job.deadline || "Not Mentioned"}</span>
             </li>
-            <li className="flex items-center space-x-2">
-              <Briefcase className="w-4 h-4 text-gray-500" />
+            <li className="flex items-center space-x-2 dark:text-gray-300">
+              <Briefcase className="w-4 h-4 text-gray-500 dark:text-gray-300" />
               <span>
                 Experience:{" "}
                 {(job.yearOfExperience && `${job.yearOfExperience} Years`) ||
