@@ -7,6 +7,7 @@ import companyLogo from "../../../public/assests/company.png";
 import { Button } from "../ui/button";
 import { jobs } from "./applicantJobData";
 import ApplicantStepsBar from "@/app/(main-dashboard)/(applicantDashboard)/my-applications/components/ApplicantStepsBar";
+import ApplicantProgress from "./ApplicantProgress";
 
 const RecentApplied = () => {
     const recentJobs = jobs.filter((job) => job.isApplied);
@@ -80,8 +81,9 @@ const RecentApplied = () => {
 
                             <hr className="border-gray-200" />
                             <CardFooter className="flex justify-between items-center bg-gray-50 p-4 rounded-b-md mt-auto">
-                                <div className="w-full md:w-1/2">
-                                <ApplicantStepsBar/>
+                                <div className="w-full md:w-[60%]">
+                                {/* <ApplicantStepsBar/> */}
+                                <ApplicantProgress/>
                                 </div>
                                 <ApplicantionStatus viewStatus={app.status} />
                             </CardFooter>

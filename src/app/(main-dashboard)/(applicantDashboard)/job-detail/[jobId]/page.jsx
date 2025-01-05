@@ -39,7 +39,7 @@ const JobDetailsPage = ({ params }) => {
       <div className="px-6 sm:px-10 py-3">
         <section className="mb-4 text-xs sm:text-sm">
           <h2 className="text-base sm:text-lg font-semibold mb-2">
-            Job Description
+            Job Overview
           </h2>
           <p>{jobData.description}</p>
         </section>

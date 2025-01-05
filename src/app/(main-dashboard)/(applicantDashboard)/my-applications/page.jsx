@@ -18,6 +18,7 @@ import companyLogo from "../../../../../public/assests/company.png";
 import { DollarSign, User } from "lucide-react";
 import ApplicantionStatus from "./components/ApplicantionStatus";
 import ApplicantStepsBar from "./components/ApplicantStepsBar";
+import ApplicantProgress from "@/components/ApplicantDashboardUI/ApplicantProgress";
 
 const MyApplications = () => {
   const searchParams = useSearchParams();
@@ -186,8 +187,9 @@ const ApplicationCards = ({ applications }) => {
               {/* Footer with Apply Button */}
               <hr className="border-gray-200" />
               <CardFooter className="flex justify-between items-center bg-gray-50 p-4 rounded-b-md mt-auto">
-               <div className="w-full md:w-1/2">
+               <div className="w-full md:w-[60%]">
                   <ApplicantStepsBar/>
+                  {/* <ApplicantProgress/> */}
                 </div> 
                <ApplicantionStatus viewStatus={app.status} />
               </CardFooter>
