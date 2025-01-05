@@ -67,6 +67,8 @@ export default function UserManagement() {
     }
   };
 
+  console.log(users)
+
   return (
     <div className="p-6 ">
       <div className="max-w-5xl mx-auto bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-400">
@@ -91,7 +93,7 @@ export default function UserManagement() {
             <tbody className="text-gray-700 dark:text-gray-300 text-xs md:text-sm">
               {users.map((user, index) => (
                 <tr
-                  key={user.id}
+                  key={user.E_id}
                   className={` ${
                     index % 2 === 0
                       ? "bg-white dark:bg-gray-700"
@@ -158,7 +160,6 @@ export default function UserManagement() {
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
-                {/* Employee ID */}
                 <div>
                   <Label
                     htmlFor="id"
@@ -175,7 +176,6 @@ export default function UserManagement() {
                     className="dark:border dark:border-gray-400 mt-1"
                   />
                 </div>
-
                 {/* Employee Name */}
                 <div>
                   <Label
@@ -193,7 +193,6 @@ export default function UserManagement() {
                     className="dark:border dark:border-gray-400 mt-1"
                   />
                 </div>
-
                 {/* Designation */}
                 <div>
                   <Label
@@ -211,7 +210,6 @@ export default function UserManagement() {
                     className="dark:border dark:border-gray-400 mt-1"
                   />
                 </div>
-
                 {/* Access Level */}
                 <div>
                   <Label
@@ -269,7 +267,7 @@ export default function UserManagement() {
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
-              <div>
+                <div>
                   <Label
                     htmlFor="id"
                     className="block text-sm font-medium text-gray-600 dark:text-gray-300"
@@ -351,7 +349,8 @@ export default function UserManagement() {
                 </Button>
                 <Button
                   onClick={handleEditUser}
-                  className="bg-blue-600 text-white text-sm hover:bg-blue-700"
+                  variant="outline"
+                  className="bg-white text-emerald-500 border-emerald-300 text-sm hover:bg-emerald-400 hover:text-white"
                 >
                   Save Changes
                 </Button>

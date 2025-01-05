@@ -244,7 +244,7 @@ export default function ProfileOverview() {
             <Button type="button" variant="outline" onClick={handleCancelEdit}>
               Cancel
             </Button>
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" variant='outline' className="text-sm bg-white text-emerald-500 border-emerald-400 hover:text-white hover:bg-emerald-400" disabled={loading}>
               {loading ? "Saving..." : "Save Changes"}
             </Button>
           </div>

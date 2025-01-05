@@ -63,11 +63,11 @@ const getJobTitles = () => {
 const jobTitles = getJobTitles();
 // console.log(jobTitles);
 
-const ApplicantsList = ({ limitToSix = false }) => {
+const ApplicantsList = ({ limitToThree = false }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const jobId = searchParams.get("jobId");
-  const itemsPerPage = limitToSix ? 6 : 9;
+  const itemsPerPage = limitToThree ? 3 : 9;
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
   const [filteredApplicantsList, setFilteredApplicantsList] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("applied");
@@ -189,7 +189,7 @@ const ApplicantsList = ({ limitToSix = false }) => {
   return (
     <div className="space-y-6">
       <div className="flex-1">
-        {!limitToSix && (
+        {!limitToThree && (
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-1 justify-between">
             <ToggleGroup
               className="flex gap-0 justify-start bg-white dark:bg-gray-800 w-fit rounded-full shadow-sm h-7 md:h-9"
@@ -412,7 +412,7 @@ const ApplicantsList = ({ limitToSix = false }) => {
               })}
             </div>
             {/* Button to see all jobs */}
-            {limitToSix && (
+            {limitToThree && (
               <Button
                 onClick={() => router.push("/demoAppList")}
                 className="mt-4 float-right"
@@ -427,7 +427,7 @@ const ApplicantsList = ({ limitToSix = false }) => {
         )}
       </div>
 
-      {!limitToSix && (
+      {!limitToThree && (
         <OurPagination
           totalPages={totalPaginationPages}
           currentPage={currentPaginationPage}

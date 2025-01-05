@@ -52,7 +52,7 @@ const VerticalNavbar = () => {
 
   return (
     <nav
-      className={`bg-white dark:bg-gray-800 ml-4 my-2 mr-4 py-4 px-2 sm:px-6 rounded-lg text-gray-500 dark:text-gray-200 shadow-md border-t-2 text-sm flex items-center
+      className={`bg-white dark:bg-gray-800 ml-4 my-2 mr-4 py-4 px-2 sm:px-6 rounded-lg text-gray-500 dark:text-gray-200 shadow-md text-sm flex items-center
         ${mobileWidth ? "justify-center" : "justify-between"}`}
     >
       <div>
@@ -161,11 +161,11 @@ const VerticalNavbar = () => {
                 <Link href="/profile-settings/password">Change password</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href="#">Try Enterprize</Link>
+                <Link href="/demoBillings/pricing">Try Enterprize</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="p-0">
                 <Button
-                  className="w-32 h-8 shadow-none border-none"
+                  className="w-32 h-8 shadow-none border-none hover:!bg-transparent"
                   variant="outline"
                   onClick={() => {
                     signOut();

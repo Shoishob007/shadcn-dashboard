@@ -48,22 +48,22 @@ const ProfileTabs = () => {
       <Tabs defaultValue="overview" className="">
         <TabsList className="bg-transparent">
           <TabsTrigger className="" value="overview">
-            Account
+            Account Details
           </TabsTrigger>
           <TabsTrigger className="ml-8" value="password">
-            Password
+            Change Password
           </TabsTrigger>
           <TabsTrigger className="ml-8" value="socials">
-            Socials
+            Social Media
           </TabsTrigger>
-          <TabsTrigger className="ml-8" value="branches">
+          {/* <TabsTrigger className="ml-8" value="branches">
             Branches
-          </TabsTrigger>
+          </TabsTrigger> */}
           <TabsTrigger className="ml-8" value="user">
-            Users
+            User Management
           </TabsTrigger>
           <TabsTrigger className="ml-8" value="delete">
-            Delete
+            Delete Account
           </TabsTrigger>
         </TabsList>
 
@@ -78,9 +78,9 @@ const ProfileTabs = () => {
           <TabsContent value="socials">
             <Socials imageId={imageId} />
           </TabsContent>
-          <TabsContent value="branches">
+          {/* <TabsContent value="branches">
             <Branches />
-          </TabsContent>
+          </TabsContent> */}
           <TabsContent value="user">
             <User />
           </TabsContent>
