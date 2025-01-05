@@ -35,35 +35,35 @@ export function BasicInfoTab({ form }) {
     const employeeBenefits = form.getValues("employeeBenefits") || [];
 
     if (Array.isArray(responsibilities)) {
-      const content = responsibilities.map(item => `<p>${item}</p>`).join("");
+      const content = responsibilities.map((item) => `<p>${item}</p>`).join("");
       setResponsibilitiesContent(content);
     }
 
     if (Array.isArray(employeeBenefits)) {
-      const content = employeeBenefits.map(item => `<p>${item}</p>`).join("");
+      const content = employeeBenefits.map((item) => `<p>${item}</p>`).join("");
       setBenefitsContent(content);
     }
   }, [form]);
 
   const handleResponsibilitiesChange = (content) => {
     setResponsibilitiesContent(content);
-    
+
     const items = content
-      .split('</p>')
-      .map(item => item.replace(/<p>|<br>/g, '').trim())
+      .split("</p>")
+      .map((item) => item.replace(/<p>|<br>/g, "").trim())
       .filter(Boolean);
-    
+
     form.setValue("responsibilities", items);
   };
 
   const handleBenefitsChange = (content) => {
     setBenefitsContent(content);
-    
+
     const items = content
-      .split('</p>')
-      .map(item => item.replace(/<p>|<br>/g, '').trim())
+      .split("</p>")
+      .map((item) => item.replace(/<p>|<br>/g, "").trim())
       .filter(Boolean);
-    
+
     form.setValue("employeeBenefits", items);
   };
 
@@ -78,7 +78,7 @@ export function BasicInfoTab({ form }) {
             <FormControl>
               <Input
                 {...field}
-                placeholder="e.g. Senior Software Engineer"
+                placeholder="e.g. Demo Job Title"
                 className="dark:border-gray-400"
               />
             </FormControl>
@@ -98,6 +98,41 @@ export function BasicInfoTab({ form }) {
                 {...field}
                 placeholder="Detailed Job Overview..."
                 className="min-h-[70px] sm:min-h-[100px] dark:border-gray-400 "
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name="jobRole"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Job Role</FormLabel>
+            <FormControl>
+              <Input
+                {...field}
+                placeholder="e.g. Backend Developer"
+                className="dark:border-gray-400"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="designation"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Designation</FormLabel>
+            <FormControl>
+              <Input
+                {...field}
+                placeholder="e.g. Senior Software Engineer"
+                className="dark:border-gray-400"
               />
             </FormControl>
             <FormMessage />
@@ -135,7 +170,7 @@ export function BasicInfoTab({ form }) {
           <FormItem>
             <FormLabel>Job Responsibilities</FormLabel>
             <FormControl>
-            <ReactQuill
+              <ReactQuill
                 value={responsibilitiesContent}
                 onChange={handleResponsibilitiesChange}
                 modules={modules}
@@ -143,7 +178,6 @@ export function BasicInfoTab({ form }) {
                 className="dark:bg-gray-800 dark:text-gray-400"
                 placeholder="Detailed Job Responsibilities..."
               />
-
             </FormControl>
             <FormMessage />
           </FormItem>

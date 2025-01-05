@@ -212,7 +212,7 @@ export function RequirementsTab({ form }) {
         render={({ field }) => (
           <div>
             <FormLabel className="font-medium">Required Skills</FormLabel>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 mt-1">
               {skillTags.map((skill, index) => (
                 <div
                   key={index}

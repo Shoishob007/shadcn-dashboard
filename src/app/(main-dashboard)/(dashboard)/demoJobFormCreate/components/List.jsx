@@ -3,7 +3,8 @@ import { DndContext, closestCenter, DragOverlay } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { SortableRow } from './SortableRow';
 import { Button } from '@/components/ui/button';
-import { PlusCircle } from 'lucide-react';
+import { FileWarning, PlusCircle } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 export function StepsList({ availableSteps, selectedSteps, onStepsChange }) {
   const [activeId, setActiveId] = useState(null);
@@ -59,9 +60,8 @@ export function StepsList({ availableSteps, selectedSteps, onStepsChange }) {
   };
 
   return (
-    <div className="flex gap-6">
+    <div className="flex flex-col-reverse sm:flex-row gap-4 sm:gap-6">
       <div className="flex-1">
-        {/* <h3 className="text-sm font-medium mb-3">Selected Steps</h3> */}
         <DndContext
           onDragEnd={handleDragEnd}
           onDragStart={handleDragStart}
@@ -72,13 +72,20 @@ export function StepsList({ availableSteps, selectedSteps, onStepsChange }) {
             strategy={verticalListSortingStrategy}
           >
             <div className="space-y-2">
-              {selectedSteps.map((step) => (
-                <SortableRow
-                  key={step.id}
-                  item={step}
-                  removeItem={removeStep}
-                />
-              ))}
+              {selectedSteps.length === 0 ? (
+                <div className="flex flex-col h-full items-center justify-center text-center text-gray-700 dark:text-gray-400 bg-secondary dark:bg-gray-800 p-4 rounded-md dark:border dark:border-gray-500">
+                  <FileWarning className="h-6 sm:h-10 w-6 sm:w-10 mb-2" />
+                  <p className="text-xs sm:text-sm ">No steps added yet. Add steps from the box and they will be displyed here!</p>
+                </div>
+              ) : (
+                selectedSteps.map((step) => (
+                  <SortableRow
+                    key={step.id}
+                    item={step}
+                    removeItem={removeStep}
+                  />
+                ))
+              )}
             </div>
           </SortableContext>
 
@@ -94,23 +101,25 @@ export function StepsList({ availableSteps, selectedSteps, onStepsChange }) {
         </DndContext>
       </div>
 
-      <div className="w-64 bg-secondary dark:bg-gray-800 dark:border dark:border-gray-500 p-4 rounded-lg">
-        <h3 className="text-sm font-medium mb-3 text-center">Available Steps</h3>
-        <div className="space-y-2">
+      <div className="w-fit h-fit dark:bg-gray-800 border dark:border-gray-500 p-4 rounded-lg">
+        <h3 className="text-sm font-medium mb-3 text-center dark:underline dark:underline-offset-4">Available Steps</h3>
+        <div className="space-y-2 flex flex-row sm:flex-col">
           {availableSteps.map((step) => (
             <div
               key={step.id}
-              className="flex items-center justify-between bg-white dark:bg-gray-900 rounded-md"
+              className="flex items-center gap-0 sm:justify-between bg-white dark:bg-gray-800 rounded-md"
             >
-              <span className="text-sm p-1">{step.title}</span>
+              <span className="text-xs sm:text-sm p-1 sm:p-2">{step.title}</span>
               <Button
                 size="sm"
                 variant="ghost"
+                className="p-0 hover:!bg-transparent"
                 onClick={() => addStep(step)}
                 disabled={selectedSteps.some(s => s.id === step.id)}
               >
-                <PlusCircle className="h-4 w-4" />
+                <PlusCircle className="h-3 w-3 sm:h-4 sm:w-4 text-gray-800 dark:text-gray-300" />
               </Button>
+              <Separator orientation="vertical" className="px-2"/>
             </div>
           ))}
         </div>
