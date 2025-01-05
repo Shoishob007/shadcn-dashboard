@@ -2,7 +2,19 @@
 "use client";
 
 import { useWindowWidth } from "@react-hook/window-size";
-import { Bell, Menu, User, X } from "lucide-react";
+import {
+  Bell,
+  KeyRound,
+  LogOut,
+  Menu,
+  Ticket,
+  User,
+  UserCog,
+  UserRound,
+  UserRoundPen,
+  Wrench,
+  X,
+} from "lucide-react";
 import Link from "next/link";
 import { cn } from "../lib/utils";
 // import SearchComponent from "./SearchComponent";
@@ -52,7 +64,7 @@ const VerticalNavbar = () => {
 
   return (
     <nav
-      className={`bg-white dark:bg-gray-800 ml-4 my-2 mr-4 py-4 px-2 sm:px-6 rounded-lg text-gray-500 dark:text-gray-200 shadow-md text-sm flex items-center
+      className={`bg-white dark:bg-gray-800 ml-4 my-2 mr-4 py-4 px-2 sm:px-8 rounded-lg text-gray-500 dark:text-gray-200 shadow-md text-sm flex items-center
         ${mobileWidth ? "justify-center" : "justify-between"}`}
     >
       <div>
@@ -90,12 +102,18 @@ const VerticalNavbar = () => {
                 </Link>
               </li>
               <li>
-                {currentRole == "organization" ? <Link href="/demoJobFormCreate" className={cn("hover:underline")}>
-                  Post Job
-                </Link> : <Link href="/contact" className={cn("hover:underline")}>
-                  Contact Us
-                </Link>}
-                
+                {currentRole == "organization" ? (
+                  <Link
+                    href="/demoJobFormCreate"
+                    className={cn("hover:underline")}
+                  >
+                    Post Job
+                  </Link>
+                ) : (
+                  <Link href="/contact" className={cn("hover:underline")}>
+                    Contact Us
+                  </Link>
+                )}
               </li>
             </>
           )}
@@ -121,7 +139,7 @@ const VerticalNavbar = () => {
         </div>
 
         <div className="w-full flex items-center">
-          <ThemeToggle className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
+          <ThemeToggle className="w-4 h-4 sm:w-6 sm:h-5 p-0 m-0" strokeWidth={3} />
         </div>
 
         {/* Notification dropdown */}
@@ -129,17 +147,25 @@ const VerticalNavbar = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div className="relative w-5 h-5 flex items-center justify-center">
-                <Bell className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0 " />
+                <Bell className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0 hover:text-gray-900" />
                 <div className="absolute bg-black dark:bg-gray-200 rounded-full w-5 text-white dark:text-black -top-3 -right-2 flex items-center justify-center">
-                  <span className="">1</span>
+                  <span className="">7</span>
                 </div>
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="mr-4">
               <DropdownMenuLabel>Notification</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>View Notifications</DropdownMenuItem>
-              <DropdownMenuItem>Notification Settings</DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2">
+                <Bell className="h-4 w-4 text-gray-800 dark:text-gray-300" />
+                <Link href="#">View Notifications</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2">
+                <Wrench className="h-4 w-4 text-gray-800 dark:text-gray-300" />
+                <Link href="#">Notification Settings</Link>
+              </DropdownMenuItem>
+              {/* <DropdownMenuItem>View Notifications</DropdownMenuItem>
+              <DropdownMenuItem>Notification Settings</DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
         </section>
@@ -148,24 +174,28 @@ const VerticalNavbar = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div className=" w-5 h-5 flex items-center justify-center">
-                <User className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
+                <UserRound className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="mr-6">
               <DropdownMenuLabel>User Profile</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2">
+                <UserCog className="h-4 w-4 text-gray-800 dark:text-gray-300" />
                 <Link href="/profile-settings">View Profile Settings</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2">
+                <KeyRound className="h-4 w-4 text-gray-800 dark:text-gray-300" />
                 <Link href="/profile-settings/password">Change password</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2">
+                <Ticket className="h-4 w-4 text-gray-800 dark:text-gray-300" />
                 <Link href="/demoBillings/pricing">Try Enterprize</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem className="p-0">
+              <DropdownMenuItem className="flex items-center gap-2">
+                <LogOut className="h-4 w-4 text-gray-800 dark:text-gray-300 rotate-180"/>
                 <Button
-                  className="w-32 h-8 shadow-none border-none hover:!bg-transparent"
+                  className="h-5 p-0 shadow-none border-none hover:!bg-transparent text-black dark:text-gray-300 font-normal"
                   variant="outline"
                   onClick={() => {
                     signOut();

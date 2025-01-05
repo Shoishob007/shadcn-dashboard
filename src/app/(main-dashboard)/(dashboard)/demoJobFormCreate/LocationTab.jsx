@@ -39,7 +39,7 @@ export function LocationTab({ form }) {
           name="location"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Address</FormLabel>
+              <FormLabel>Office Address</FormLabel>
               <FormControl className="dark:border-gray-400 ">
                 <Input {...field} placeholder="Full address" />
               </FormControl>

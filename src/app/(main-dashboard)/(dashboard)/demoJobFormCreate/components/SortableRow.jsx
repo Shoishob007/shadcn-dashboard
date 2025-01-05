@@ -37,25 +37,26 @@ export function SortableRow({ item, removeItem, forceDragging = false }) {
         ref={setNodeRef}
         style={parentStyles}
       >
-        <div className="bg-secondary dark:bg-gray-900 w-full rounded-md flex items-center gap-2 overflow-hidden">
-          <div className="w-12 h-full flex items-center bg-gray-800 dark:bg-gray-300">
-            <p className="w-full h-full text-center text-secondary text-sm p-2">{item.sequence}</p>
+        <div className="bg-secondary dark:bg-gray-900 w-full rounded-md flex items-center gap-2 overflow-hidden max-w-[450px]">
+          <div className="w-fit h-full flex items-center bg-gray-800 dark:bg-gray-300">
+            <p className="w-full h-full text-center text-secondary text-sm py-2 px-3">{item.sequence}</p>
           </div>
 
           <div
             ref={setActivatorNodeRef}
-            className="flex-grow p-2"
+            className="flex-grow"
             style={draggableStyles}
             {...attributes}
             {...listeners}
           >
-            <h2 className="text-sm">{item.title}</h2>
+            <p className="text-xs sm:text-sm">{item.title}</p>
           </div>
 
-          <div className="w-12 h-full flex items-center">
+          <div className="w-fit h-full flex items-center justify-center">
             <Button
-              size="sm"
+              size="xs sm:sm"
               variant="ghost"
+              className="p-1"
               onClick={() => removeItem(item.id)}
             >
               <XIcon className="text-red-500 text-sm h-4 w-4" />
