@@ -41,7 +41,7 @@ export default function SideNavbar() {
   return (
     <div
       className={cn(
-        "h-[calc(100vh-1rem)] sticky border-r bg-white dark:bg-gray-800 my-2 ml-4 shadow-md rounded-lg transition-all duration-300 ease-in-out flex flex-col py-6",
+        "h-[calc(100vh-1rem)] sticky border-r bg-white dark:bg-gray-800 my-2 ml-4 shadow-lg rounded-lg transition-all duration-300 ease-in-out flex flex-col py-6",
         isCollapsed ? "w-16" : "w-[200px]"
       )}
     >

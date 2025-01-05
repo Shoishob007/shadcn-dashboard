@@ -56,7 +56,7 @@ export default function Home() {
   const { data: session } = useSession();
   console.log("dashboard session", session);
   const [showFilters, setShowFilters] = useState(false);
-  const [limitToSix, setLimitToSix] = useState(true);
+  const [limitToThree, setLimitToThree] = useState(true);
 
   const handleClick = () => {
     router.push("/demoBillings/pricing");
@@ -113,7 +113,7 @@ export default function Home() {
                   Recent Applications
                 </p>
               </section>
-              <ApplicantsList limitToSix={limitToSix} />
+              <ApplicantsList limitToThree={limitToThree} />
             </CardContent>
           </section>
         </div>

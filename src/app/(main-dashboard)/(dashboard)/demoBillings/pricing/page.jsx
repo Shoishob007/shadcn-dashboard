@@ -54,7 +54,7 @@ const PricingCards = () => {
       {plans.map((plan, index) => (
         <div
           key={index}
-          className={`rounded-lg p-6 hover:shadow-md transition-all duration-200 hover:scale-105 bg-white dark:bg-gray-800 border-gray-700 w-72`}
+          className={`rounded-lg p-6 hover:shadow-md transition-all duration-200 hover:scale-105 bg-white dark:bg-gray-800 border-gray-700 w-72 shadow-lg`}
         >
           <h3 className="text-lg sm:text-xl font-semibold text-center mb-2">
             {plan.title}
