@@ -54,7 +54,7 @@ const ProfileTabs = () => {
             Change Password
           </TabsTrigger>
           <TabsTrigger className="ml-8" value="socials">
-            Social Media
+            Our Social Media
           </TabsTrigger>
           {/* <TabsTrigger className="ml-8" value="branches">
             Branches

@@ -119,7 +119,7 @@ const ProfileSetting = () => {
   return (
     <>
       <div className="flex flex-col gap-4 justify-center h-full bg-white dark:bg-gray-800 rounded-lg">
-        <div className="relative w-full max-w-screen-2xl m-0 p-4">
+        <div className="relative w-full max-w-screen-2xl m-0 p-2">
           <div className="flex flex-col">
             {loadingCoverPhoto ? (
               <Skeleton className="w-full h-48 md:h-64 lg:h-72" />
