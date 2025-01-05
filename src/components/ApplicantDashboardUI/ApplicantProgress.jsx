@@ -4,7 +4,7 @@ import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const ApplicantProgress = ({ currentStepIndex }) => {
-  const steps = ["In Review", "Coding Test", "Interview", "Offer"];
+  const steps = ["In Review", "Coding", "Interview", "Offer"];
   const [currentStep, setCurrentStep] = useState(1);
   const [complete, setComplete] = useState(false);
 

@@ -78,12 +78,11 @@ const JobDetailsPage = () => {
           <span className="text-sm">Apply Now</span>{" "}
           <SendHorizontal className="dark:text-white" size={16} />
         </button> */}
-        
       </div>
       <div className="px-6 sm:px-10 py-3">
         <section className="mb-4 text-xs sm:text-sm">
           <h2 className="text-base sm:text-lg font-semibold mb-2">
-            Job Description
+            Job Overview
           </h2>
           <p>{jobData.job.description}</p>
         </section>

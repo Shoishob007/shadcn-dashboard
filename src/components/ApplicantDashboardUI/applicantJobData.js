@@ -1,7 +1,7 @@
 export const jobs = [
   {
     id: 1,
-    title: "Frontend Developer",
+    title: "Full Stack Developer",
     orgName: "Red Blocks IT",
     description:
       "Join our creative team to design and implement stunning user interfaces. This role involves collaboration with cross-functional teams to deliver seamless user experiences. If you excel in front-end technologies and love crafting engaging designs, apply now!",

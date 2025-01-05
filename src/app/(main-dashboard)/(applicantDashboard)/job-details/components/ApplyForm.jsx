@@ -47,14 +47,14 @@ const ApplyForm = ({ setAppliedStatus, appliedStatus }) => {
       showConfirmButton: false,
       timer: 1500,
     });
-    // router.push("/my-applications");
+    router.push("/");
   };
 
   return (
-    <div className="mt-[30px] flex items-center justify-end">
-      <Dialog onOpenChange={setIsOpen} open={isOpen}>
+    <div className="mt-[30px] flex items-center justify-end ">
+      <Dialog onOpenChange={setIsOpen} open={isOpen} className=''>
         <DialogTrigger>
-          <div className="">
+          <div className="fixed bottom-8 right-40">
             {hasApplied ? (
               <button
                 disabled={hasApplied}
