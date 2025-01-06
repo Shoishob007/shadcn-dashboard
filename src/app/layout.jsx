@@ -39,7 +39,8 @@ export default function RootLayout({ children, session }) {
   }, [mobileWidth, isManuallyExpanded, setCollapsed, resetState]);
 
   const pathname = usePathname();
-  const noSidebarVarticalbar = pathname.includes("/job-details");
+  const noSidebarVarticalbar = pathname.includes("/job-details") || pathname.includes("/jobs");
+  // const noSidebarVarticalbarWithJObsPage = pathname.includes("/jobs");
   return (
     <html lang="en" suppressHydrationWarning>
       <body
