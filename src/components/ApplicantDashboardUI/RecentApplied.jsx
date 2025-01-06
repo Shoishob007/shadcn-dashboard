@@ -25,7 +25,7 @@ const RecentApplied = () => {
                             className="flex flex-col justify-between w-full shadow hover:border hover:border-black duration-300 bg-white rounded cursor-pointer"
           >
                             <Link href={`/my-applications/${app.id}`}>
-                            <CardHeader className="flex items-center space-x-4 bg-gray-50 p-4 rounded-t-md">
+                            <CardHeader className="flex items-center space-x-4 bg-gray-50 p-5 rounded-t-md">
                                 <Image
                                 src={companyLogo}
                                 width={50}
@@ -39,7 +39,7 @@ const RecentApplied = () => {
                                 </div>
                             </CardHeader>
 
-                            <CardContent className="p-4 flex flex-col flex-grow">
+                            <CardContent className="p-5 flex flex-col flex-grow">
                                 <p className="text-sm text-gray-600 leading-relaxed line-clamp-4">
                                 {app.description.slice(0, 100)}...
                                 </p>
@@ -80,7 +80,7 @@ const RecentApplied = () => {
                             </Link>
 
                             <hr className="border-gray-200" />
-                            <CardFooter className="flex justify-between items-center bg-gray-50 p-4 rounded-b-md mt-auto">
+                            <CardFooter className="flex justify-between items-center bg-gray-50 p-5 rounded-b-md mt-auto">
                                 <div className="w-full md:w-[60%]">
                                 {/* <ApplicantStepsBar/> */}
                                 <ApplicantProgress/>

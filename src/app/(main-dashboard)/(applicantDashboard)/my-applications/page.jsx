@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import { jobs } from "@/components/ApplicantDashboardUI/applicantJobData";
 import {
   Card,
@@ -8,61 +9,56 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MapPin } from "lucide-react";
+import { MapPin, DollarSign, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
 import companyLogo from "../../../../../public/assests/company.png";
-
-import { DollarSign, User } from "lucide-react";
-import ApplicantionStatus from "./components/ApplicantionStatus";
 import ApplicantStepsBar from "./components/ApplicantStepsBar";
-import ApplicantProgress from "@/components/ApplicantDashboardUI/ApplicantProgress";
+import ApplicantionStatus from "./components/ApplicantionStatus";
+import { useSearchParams } from "next/navigation";
 
 const MyApplications = () => {
-  const searchParams = useSearchParams();
-
-  const activeTab = searchParams.get("tab") || "Applied";
-  console.log(activeTab);
-  const [selectedStatus, setSelectedStatus] = useState(activeTab);
+  const [selectedStatus, setSelectedStatus] = useState("Applied");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
-  const myApplied = jobs.filter(
-    (applied) =>
-      applied.status == "Applied" ||
-      applied.status == "Shortlisted" ||
-      applied.status == "Rejected"
-  );
-  console.log(myApplied);
-  const myShortlisted = jobs.filter(
-    (shortlisted) => shortlisted.status === "Shortlisted"
-  );
-  const myRejected = jobs.filter((rejected) => rejected.status === "Rejected");
 
-  // const filteredApplications = jobs.filter((app) => {
-  //   if (selectedStatus === "Applied") {
-  //     return app.isApplied;
-  //   } else {
-  //     return app.isApplied && app.applicantStatus === selectedStatus;
-  //   }
-  // });
+  const searchParams = useSearchParams();
+  const statusFromQuery = searchParams.get("tab");
 
-  // const totalPages = Math.ceil(filteredApplications.length / itemsPerPage);
+  useEffect(() => {
+    if (statusFromQuery) {
+      setSelectedStatus(statusFromQuery);
+    }
+  }, [statusFromQuery]);
 
-  // const currentApplications = filteredApplications.slice(
-  //   (currentPage - 1) * itemsPerPage,
-  //   currentPage * itemsPerPage
-  // );
+  const filteredJobs =
+  selectedStatus === "Applied"
+    ? jobs.filter((job) => job.isApplied)
+    : jobs.filter((job) => job.isApplied && job.status === selectedStatus);
 
-  // const handlePageChange = (page) => {
-  //   setCurrentPage(page);
-  // };
+  const totalPages = Math.ceil(filteredJobs.length / itemsPerPage);
+
+  // Pagination Logic
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentPaginatedJobs = filteredJobs.slice(startIndex, endIndex);
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   return (
     <div>
       <h1 className="text-xl font-semibold mb-6">My Applications</h1>
-      <Tabs value={selectedStatus} onValueChange={setSelectedStatus}>
+      <Tabs
+        value={selectedStatus}
+        onValueChange={(value) => {
+          setSelectedStatus(value);
+          setCurrentPage(1);
+        }}
+      >
         <TabsList className="mb-6">
           <TabsTrigger
             value="Applied"
@@ -86,7 +82,7 @@ const MyApplications = () => {
           </TabsTrigger>
           <TabsTrigger
             value="Rejected"
-            className={` h-7 md:h-9 pr-2 pl-3 md:px-6 py-1 md:py-2 text-xs md:text-sm font-medium rounded-r-full transition-all duration-300 cursor-pointer ${
+            className={`h-7 md:h-9 pr-2 pl-3 md:px-6 py-1 md:py-2 text-xs md:text-sm font-medium rounded-r-full transition-all duration-300 cursor-pointer ${
               selectedStatus === "Rejected"
                 ? "!text-white dark:!text-red-900 shadow-md !bg-gray-800 dark:!bg-red-300 rounded-l-none"
                 : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
@@ -97,20 +93,35 @@ const MyApplications = () => {
         </TabsList>
 
         <TabsContent value="Applied">
-          <ApplicationCards applications={myApplied} />
+          <ApplicationCards
+            applications={currentPaginatedJobs}
+            handlePageChange={handlePageChange}
+            currentPage={currentPage}
+            totalPages={totalPages}
+          />
         </TabsContent>
         <TabsContent value="Shortlisted">
-          <ApplicationCards applications={myShortlisted} />
+          <ApplicationCards
+            applications={currentPaginatedJobs}
+            handlePageChange={handlePageChange}
+            currentPage={currentPage}
+            totalPages={totalPages}
+          />
         </TabsContent>
         <TabsContent value="Rejected">
-          <ApplicationCards applications={myRejected} />
+          <ApplicationCards
+            applications={currentPaginatedJobs}
+            handlePageChange={handlePageChange}
+            currentPage={currentPage}
+            totalPages={totalPages}
+          />
         </TabsContent>
       </Tabs>
     </div>
   );
 };
 
-const ApplicationCards = ({ applications }) => {
+const ApplicationCards = ({ applications, handlePageChange, currentPage, totalPages }) => {
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -119,7 +130,7 @@ const ApplicationCards = ({ applications }) => {
             <Card className="flex flex-col justify-between w-full shadow hover:border hover:border-black duration-300 bg-white rounded cursor-pointer">
               {/* Header with Company Logo and Job Title */}
               <Link href={`/my-applications/${app.id}`}>
-                <CardHeader className="flex items-center space-x-4 bg-gray-50 p-4 rounded-t-md">
+                <CardHeader className="flex items-center space-x-4 bg-gray-50 p-5 rounded-t-md">
                   <Image
                     src={companyLogo}
                     width={50}
@@ -138,7 +149,7 @@ const ApplicationCards = ({ applications }) => {
                 </CardHeader>
 
                 {/* Content with Job Application Details */}
-                <CardContent className="p-4 flex flex-col flex-grow">
+                <CardContent className="p-5 flex flex-col flex-grow">
                   <p className="text-sm text-gray-600 leading-relaxed line-clamp-4">
                     {app.description.slice(0, 100)}...
                   </p>
@@ -186,17 +197,49 @@ const ApplicationCards = ({ applications }) => {
 
               {/* Footer with Apply Button */}
               <hr className="border-gray-200" />
-              <CardFooter className="flex justify-between items-center bg-gray-50 p-4 rounded-b-md mt-auto">
-               <div className="w-full md:w-[60%]">
-                  <ApplicantStepsBar/>
-                  {/* <ApplicantProgress/> */}
-                </div> 
-               <ApplicantionStatus viewStatus={app.status} />
+              <CardFooter className="flex justify-between items-center bg-gray-50 p-5 rounded-b-md mt-auto">
+                <div className="w-full md:w-[60%]">
+                  <ApplicantStepsBar />
+                </div>
+                <ApplicantionStatus viewStatus={app.status} />
               </CardFooter>
             </Card>
           </div>
         ))}
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center mt-6 gap-2">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-3 py-1 rounded-md bg-gray-200 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          {Array.from({ length: totalPages }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handlePageChange(index + 1)}
+              className={`px-3 py-1 rounded-md ${
+                currentPage === index + 1
+                  ? "bg-emerald-500 text-white"
+                  : "bg-gray-200 text-gray-700"
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-3 py-1 rounded-md bg-gray-200 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };
