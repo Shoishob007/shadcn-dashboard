@@ -17,7 +17,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { List, Grid } from "lucide-react";
+import { List, Grid2x2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 const socialMediaIcons = {
@@ -34,7 +34,7 @@ const steps = [
 ];
 
 const calculateTotalExperience = (experiences) => {
-  if (!experiences) return "N/A";
+  if (!experiences) return "No Experience!";
 
   const totalMonths = experiences.reduce((acc, exp) => {
     const start = new Date(exp.startDate);
@@ -62,7 +62,7 @@ const DemoApplicants = () => {
   const [currentJobInfo, setCurrentJobInfo] = useState(null);
   const [applicants, setApplicants] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [viewMode, setViewMode] = useState("list");
+  const [viewMode, setViewMode] = useState("card");
 
   const isListView = viewMode === "list";
 
@@ -174,7 +174,7 @@ const DemoApplicants = () => {
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <List className="h-4 w-4" />
+                        <List className="h-5 w-5" />
                       </motion.button>
                     </Button>
                   </TooltipTrigger>
@@ -202,7 +202,7 @@ const DemoApplicants = () => {
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <Grid className="h-4 w-4" />
+                        <Grid2x2 className="h-5 w-5" />
                       </motion.button>
                     </Button>
                   </TooltipTrigger>
@@ -215,13 +215,15 @@ const DemoApplicants = () => {
           </div>
           {currentPaginatedApplicants.length > 0 ? (
             isListView ? (
-              <ApplicantsTable
-                currentPaginatedApplicants={currentPaginatedApplicants}
+              <JobApplicantsCards
+                currentPaginatedApplicants={applicants}
                 calculateTotalExperience={calculateTotalExperience}
+                handleViewDetails={handleViewDetails}
+                socialMediaIcons={socialMediaIcons}
               />
             ) : (
               <JobApplicantsCards
-                currentPaginatedApplicants={currentPaginatedApplicants}
+                currentPaginatedApplicants={applicants}
                 calculateTotalExperience={calculateTotalExperience}
                 handleViewDetails={handleViewDetails}
                 socialMediaIcons={socialMediaIcons}

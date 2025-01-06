@@ -30,6 +30,10 @@ export const documents = {
                     name: "Shoishob Al-Baki",
                     status: "shortlisted",
                     steps: "aptitude test",
+                    schedule: {
+                        date: new Date("2025-01-14"),
+                        time: "14:30",
+                    },
                     CVScore: 50,
                     certifications: [
                         {
@@ -207,6 +211,10 @@ export const documents = {
                     name: "Summa Amin",
                     status: "shortlisted",
                     steps: "technical test",
+                    schedule: {
+                        date: new Date("2025-01-20"),
+                        time: "10:30",
+                    },
                     CVScore: 50,
                     certifications: [
                         {
@@ -384,6 +392,10 @@ export const documents = {
                     name: "Ashfaq Tanzim",
                     status: "shortlisted",
                     steps: "interview",
+                    schedule: {
+                        date: new Date("2025-01-12"),
+                        time: "14:30",
+                    },
                     CVScore: 50,
                     certifications: [
                         {

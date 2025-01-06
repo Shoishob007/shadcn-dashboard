@@ -132,8 +132,8 @@ export const applicantsData = [
     ],
 
     interviewSchedule: new Date("2024-11-14"),
-    schedule : {
-      date:  new Date("2025-01-14"),
+    schedule: {
+      date: new Date("2025-01-14"),
       time: "14:30",
     },
 
@@ -288,8 +288,8 @@ export const applicantsData = [
     CV: 'https://morth.nic.in/sites/default/files/dd12-13_0.pdf',
     CVScore: 50,
     interviewSchedule: new Date("2024-11-10"),
-    schedule : {
-      date:  new Date("2025-01-20"),
+    schedule: {
+      date: new Date("2025-01-20"),
       time: "10:30",
     },
     skills: [
@@ -550,8 +550,8 @@ export const applicantsData = [
     CVScore: 60,
     deadline: new Date("2024-10-01"),
     interviewSchedule: new Date("2024-12-12"),
-    schedule : {
-      date:  new Date("2025-01-12"),
+    schedule: {
+      date: new Date("2025-01-12"),
       time: "14:30",
     },
     skills: [

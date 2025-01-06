@@ -7,7 +7,6 @@ import CreateJobForm from "../../demoJobFormCreate/page";
 
 const JobInfoCard = ({ applicants, job, isEditing, setIsEditing }) => {
   if (!job) return null;
-  console.log(applicants.length);
 
   function capitalizeText(text) {
     return text.charAt(0).toUpperCase() + text.slice(1);
