@@ -8,10 +8,8 @@ import {
   LogOut,
   Menu,
   Ticket,
-  User,
   UserCog,
   UserRound,
-  UserRoundPen,
   Wrench,
   X,
 } from "lucide-react";
@@ -95,10 +93,14 @@ const VerticalNavbar = () => {
               </li>
               <li>
                 <Link
-                  href="/profile-settings"
+                  href={`${
+                    currentRole === "organization"
+                      ? "/profile-settings"
+                      : "/profile"
+                  }`}
                   className={cn("hover:underline")}
                 >
-                  Settings
+                  {currentRole === "organization" ? "Settings" : "Profile"}
                 </Link>
               </li>
               <li>
@@ -110,9 +112,14 @@ const VerticalNavbar = () => {
                     Post Job
                   </Link>
                 ) : (
-                  <Link href="/contact" className={cn("hover:underline")}>
-                    Contact Us
-                  </Link>
+                  <>
+                    <Link
+                      href="/my-Applications"
+                      className={cn("hover:underline")}
+                    >
+                      View Applications
+                    </Link>
+                  </>
                 )}
               </li>
             </>
@@ -139,7 +146,10 @@ const VerticalNavbar = () => {
         </div>
 
         <div className="w-full flex items-center">
-          <ThemeToggle className="w-4 h-4 sm:w-6 sm:h-5 p-0 m-0" strokeWidth={3} />
+          <ThemeToggle
+            className="w-4 h-4 sm:w-6 sm:h-5 p-0 m-0"
+            strokeWidth={3}
+          />
         </div>
 
         {/* Notification dropdown */}
@@ -193,7 +203,7 @@ const VerticalNavbar = () => {
                 <Link href="/demoBillings/pricing">Try Enterprize</Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2">
-                <LogOut className="h-4 w-4 text-gray-800 dark:text-gray-300 rotate-180"/>
+                <LogOut className="h-4 w-4 text-gray-800 dark:text-gray-300 rotate-180" />
                 <Button
                   className="h-5 p-0 shadow-none border-none hover:!bg-transparent text-black dark:text-gray-300 font-normal"
                   variant="outline"
