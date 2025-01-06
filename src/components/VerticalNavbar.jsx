@@ -114,7 +114,7 @@ const VerticalNavbar = () => {
                 ) : (
                   <>
                     <Link
-                      href="/my-Applications"
+                      href="/my-applications"
                       className={cn("hover:underline")}
                     >
                       View Applications
@@ -188,7 +188,7 @@ const VerticalNavbar = () => {
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="mr-6">
-              <DropdownMenuLabel >User Profile</DropdownMenuLabel>
+              <DropdownMenuLabel>User Profile</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="flex items-center gap-2">
                 <UserCog className="h-4 w-4 text-gray-800 dark:text-gray-300" />
@@ -204,26 +204,26 @@ const VerticalNavbar = () => {
                     : "View Profile"}
                 </Link>
               </DropdownMenuItem>
-              {
-                currentRole === 'organization' && <DropdownMenuItem className="flex items-center gap-2">
-                <KeyRound className="h-4 w-4 text-gray-800 dark:text-gray-300" />
-                <Link
-                  href={`${
-                    currentRole === "organization"
-                      ? "/profile-settings/password"
-                      : null
-                  }`}
-                >
-                  Change password
-                </Link>
-              </DropdownMenuItem>
-              }
-              {
-                currentRole === 'organization' && <DropdownMenuItem className="flex items-center gap-2">
-                <Ticket className="h-4 w-4 text-gray-800 dark:text-gray-300" />
-                <Link href="/demoBillings/pricing">Try Enterprize</Link>
-              </DropdownMenuItem>
-              }
+              {currentRole === "organization" && (
+                <DropdownMenuItem className="flex items-center gap-2">
+                  <KeyRound className="h-4 w-4 text-gray-800 dark:text-gray-300" />
+                  <Link
+                    href={`${
+                      currentRole === "organization"
+                        ? "/profile-settings/password"
+                        : null
+                    }`}
+                  >
+                    Change password
+                  </Link>
+                </DropdownMenuItem>
+              )}
+              {currentRole === "organization" && (
+                <DropdownMenuItem className="flex items-center gap-2">
+                  <Ticket className="h-4 w-4 text-gray-800 dark:text-gray-300" />
+                  <Link href="/demoBillings/pricing">Try Enterprize</Link>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem className="flex items-center gap-2">
                 <LogOut className="h-4 w-4 text-gray-800 dark:text-gray-300 rotate-180" />
                 <Button
