@@ -135,11 +135,6 @@ export const SidebarLinks = () => {
       icon: BriefcaseBusiness,
       variant: "ghost",
       submenu: [
-        // {
-        //   title: "Jobs Dashboard",
-        //   href: "/jobs",
-        //   icon: Circle,
-        // },
         {
           title: "Create Job",
           href: "/demoJobFormCreate",
@@ -150,16 +145,6 @@ export const SidebarLinks = () => {
           href: "/demoJobList",
           icon: Circle,
         },
-        // {
-        //   title: "View Open Jobs",
-        //   href: "/jobs/view/open",
-        //   icon: Circle,
-        // },
-        // {
-        //   title: "View Closed Jobs",
-        //   href: "/jobs/view/closed",
-        //   icon: Circle,
-        // },
       ],
     },
     {
@@ -169,23 +154,8 @@ export const SidebarLinks = () => {
       variant: "ghost",
       // submenu: [
       //   {
-      //     title: "Applicants Dashboard",
+      //     title: "Applicants Status",
       //     href: "/applicants",
-      //     icon: Circle,
-      //   },
-      //   {
-      //     title: "View All Applicants",
-      //     href: "/demoAppList",
-      //     icon: Circle,
-      //   },
-      //   {
-      //     title: "Shortlisted Applicants",
-      //     href: "/applicants/view/shortlisted",
-      //     icon: Circle,
-      //   },
-      //   {
-      //     title: "Hired Applicants",
-      //     href: "/applicants/view/hired",
       //     icon: Circle,
       //   },
       // ],
