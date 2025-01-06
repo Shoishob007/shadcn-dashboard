@@ -8,7 +8,7 @@ const ApplicantDashboardPage = ({ currentRole, session }) => {
     <>
       <div className="flex items-center gap-2">
         <span className="text-2xl">Welcome!</span>{" "}
-        <h1 className="font-medium text-2xl">{session?.user?.name}</h1>{" "}
+        <h1 className="font-medium text-2xl">{session?.user?.name || 'Emam Jion'}</h1>{" "}
         <Badge>{currentRole}</Badge>
       </div>
       <section className="mt-6">
