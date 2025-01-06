@@ -5,9 +5,9 @@ import { CalendarDays, SquarePen, Users, BriefcaseBusiness, Clock, UserCog } fro
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import CreateJobForm from "../../demoJobFormCreate/page";
 
-const JobInfoCard = ({ job, isEditing, setIsEditing }) => {
+const JobInfoCard = ({ applicants, job, isEditing, setIsEditing }) => {
   if (!job) return null;
-  console.log(job);
+  console.log(applicants.length);
 
   function capitalizeText(text) {
     return text.charAt(0).toUpperCase() + text.slice(1);
@@ -101,7 +101,7 @@ const JobInfoCard = ({ job, isEditing, setIsEditing }) => {
             </div>
             <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
               <Users size={16} />
-              <span>{job.applicantCount} applications</span>
+              <span>{applicants.length} applications</span>
             </div>
           </div>
         </div>
