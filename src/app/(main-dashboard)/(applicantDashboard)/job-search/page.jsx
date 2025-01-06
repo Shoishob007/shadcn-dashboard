@@ -14,39 +14,56 @@ import JobSearchCard from "./components/JobSearchCard";
 import SearchBar from "./components/SearchBar";
 
 const JobSearch = () => {
-  const itemsPerPage = 6; // Items per page
+  const itemsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({
     location: "",
     employmentType: "",
     jobCategory: "",
+    sortBy: "newest",
   });
 
-  const filteredJobs = jobs.filter((job) => {
-    return (
-      (filters.location ? job.location.includes(filters.location) : true) &&
-      (filters.employmentType
-        ? job.employeeType.includes(filters.employmentType)
-        : true) &&
-      (filters.jobCategory
-        ? job.jobCategory.includes(filters.jobCategory)
-        : true)
-    );
-  });
+  const sortJobs = (jobs) => {
+    switch (filters.sortBy) {
+      case "oldest":
+        return jobs.sort((a, b) => new Date(a.postedDate) - new Date(b.postedDate));
+      case "random":
+        return jobs.sort(() => Math.random() - 0.5);
+      case "newest":
+      default:
+        return jobs.sort((a, b) => new Date(b.postedDate) - new Date(a.postedDate));
+    }
+  };
+
+  const filteredJobs = sortJobs(
+    jobs.filter((job) => {
+      return (
+        (filters.location ? job.location.includes(filters.location) : true) &&
+        (filters.employmentType
+          ? job.employeeType.includes(filters.employmentType)
+          : true) &&
+        (filters.jobCategory
+          ? job.jobCategory.includes(filters.jobCategory)
+          : true)
+      );
+    })
+  );
 
   const totalPages = Math.ceil(filteredJobs.length / itemsPerPage);
 
-  // Function to handle page change
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
     }
   };
 
-  // Pagination Logic
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentPaginatedJobs = filteredJobs.slice(startIndex, endIndex);
+
+  const handleSortChange = (value) => {
+    setFilters({ ...filters, sortBy: value });
+  };
 
   return (
     <div className="overflow-hidden">
@@ -59,7 +76,7 @@ const JobSearch = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <Select>
+          <Select onValueChange={handleSortChange}>
             <SelectTrigger className="w-[180px] bg-white">
               <SelectValue placeholder="Sort By (Default)" />
             </SelectTrigger>
