@@ -14,7 +14,7 @@ const ApplicantionStatus = ({ viewStatus }) => {
     <>
       <Dialog className=''>
         <DialogTrigger>
-          <Button size="sm">View Status</Button>
+          <Button >View Status</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>

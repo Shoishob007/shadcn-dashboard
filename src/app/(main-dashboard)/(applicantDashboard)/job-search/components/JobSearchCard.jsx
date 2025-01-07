@@ -16,7 +16,7 @@ const JobSearchCard = ({ job }) => {
     <Link href={`/job-search/${job.id}`} className="">
       <Card className="w-full hover:border hover:border-black duration-300 bg-white  rounded cursor-pointer">
         {/* Header with Company Logo and Name */}
-        <CardHeader className="flex items-center space-x-4 bg-gray-50 p-5 rounded-t-md">
+        <CardHeader className="flex items-center space-x-4 bg-gray-50 dark:bg-gray-800 p-5 rounded-t-md">
           <Image
             src={companyLogo}
             width={50}
@@ -25,10 +25,10 @@ const JobSearchCard = ({ job }) => {
             className="rounded-full border border-gray-300"
           />
           <div>
-            <CardTitle className="text-xl font-semibold text-gray-800">
+            <CardTitle className="text-xl font-semibold text-gray-800 dark:text-gray-200">
               {job.title || "Untitled Job"}
             </CardTitle>
-            <p className="text-sm text-center text-gray-500">
+            <p className="text-sm text-center text-gray-500 dark:text-gray-300">
               {job.orgName || "Unknown Company"}
             </p>
           </div>
@@ -36,7 +36,7 @@ const JobSearchCard = ({ job }) => {
 
         {/* Content with Job Details */}
         <CardContent className="p-5 flex flex-col justify-between ">
-          <p className="text-sm dark:text-gray-300 text-gray-600 leading-relaxed line-clamp-4">
+          <p className="text-sm dark:text-gray-200 text-gray-600 leading-relaxed line-clamp-4">
             {job.description}
           </p>
           <ul className="mt-3 text-sm text-gray-600 space-y-2">
@@ -67,11 +67,11 @@ const JobSearchCard = ({ job }) => {
 
         {/* Footer with Border and Apply Button */}
         <hr className="border-gray-200" />
-        <CardFooter className="flex justify-between items-center bg-gray-50 p-5 rounded-b-md mt-auto">
-          <p className="text-sm text-gray-500">
+        <CardFooter className="flex justify-between items-center bg-gray-50 dark:bg-gray-800 p-5 rounded-b-md mt-auto">
+          <p className="text-sm text-gray-500 dark:text-gray-200">
             Posted: {job.published || "Unknown"}
           </p>
-          <Button variant="outline">View Details</Button>
+          <Button>View Details</Button>
         </CardFooter>
       </Card>
     </Link>

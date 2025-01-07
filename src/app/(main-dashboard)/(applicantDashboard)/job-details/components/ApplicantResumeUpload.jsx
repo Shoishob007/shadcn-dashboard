@@ -1,4 +1,5 @@
 "use client";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
@@ -16,11 +17,11 @@ export default function ApplicantResumeUpload({ register }) {
 
   return (
     <div className="flex flex-col items-start w-full max-w-lg mx-auto">
-      <Label htmlFor="resume-upload" className="block mb-1.5 text-[12px]">
+      <Label htmlFor="resume-upload" className="block mb-1.5 text-[12px] dark:text-gray-200">
         Upload Resume
       </Label>
       <div className="flex items-center w-full border border-gray-300 rounded-lg">
-        <input
+        <Input
           type="file"
           id="resume-upload"
           accept=".pdf, .doc, .docx"
@@ -36,7 +37,7 @@ export default function ApplicantResumeUpload({ register }) {
         >
           Choose File
         </label>
-        <span className="flex-grow text-sm text-gray-500 px-4 py-2">
+        <span className="flex-grow text-sm text-gray-500 dark:text-gray-200 px-4 py-2">
           {fileName}
         </span>
       </div>

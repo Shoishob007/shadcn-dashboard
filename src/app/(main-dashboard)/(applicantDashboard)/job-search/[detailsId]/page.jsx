@@ -30,15 +30,11 @@ const JobDetailsPage = ({ params }) => {
             <p className="text-gray-700 dark:text-gray-300">
               {jobData.jobRole}
             </p>
-            <p className="text-gray-500 dark:text-gray-400">
+            <p className="text-gray-700 dark:text-gray-300">
               {jobData.location}
             </p>
           </div>
         </header>
-        {/* <button className="flex gap-2 items-center border py-2.5 px-3 rounded-sm text-white font-medium bg-[#78AEB3] dark:bg-[#78AEB3]">
-          <span className="text-sm">Apply Now</span>{" "}
-          <SendHorizontal className="dark:text-white" size={16} />
-        </button> */}
       </div>
       <div className="px-6 sm:px-10 py-3">
         <section className="mb-4 text-xs sm:text-sm">
