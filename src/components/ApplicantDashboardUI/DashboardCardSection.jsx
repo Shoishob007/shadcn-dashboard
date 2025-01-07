@@ -16,19 +16,19 @@ export default function DashboardCardSection() {
   return (
     <div>
       <div>
-        <div className="flex gap-4">
+        <div className="grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 lg:grid-cols-3 mb-4">
           <div
             onClick={() => handleCardClick("Applied")}
-            className="flex-1 cursor-pointer"
+            className="md:flex-1 cursor-pointer"
           >
-            <div className="flex items-center justify-between p-5 bg-white border border-gray-200 rounded shadow-sm hover:border hover:border-black transition-shadow duration-300 w-full">
+            <div className="flex items-center justify-between p-5 bg-white border border-gray-200 dark:border-none dark:hover:scale-105 dark:duration-500 dark:transition-all rounded shadow-sm hover:border hover:border-black transition-shadow duration-300 w-full dark:bg-gray-800">
               <div className="w-full flex flex-col gap-5">
                 <section className="flex items-center justify-between ">
                   <h3 className="text-sm dark:text-gray-200">
                     Applied Job
                   </h3>
                   <div className="text-gray-500">
-                    <Briefcase className="h-6 w-6 text-gray-400" />
+                    <Briefcase className="h-6 w-6 text-gray-400 dark:text-gray-200" />
                   </div>
                 </section>
                 <section className="text-2xl font-semibold dark:text-gray-200">
@@ -39,16 +39,16 @@ export default function DashboardCardSection() {
           </div>
           <div
             onClick={() => handleCardClick("Shortlisted")}
-            className="flex-1 cursor-pointer"
+            className=" md:flex-1 cursor-pointer"
           >
-            <div className="flex items-center justify-between p-5 bg-white border border-gray-200 rounded shadow-sm hover:border hover:border-black transition-shadow duration-300 w-full">
+            <div className="flex items-center justify-between p-5 bg-white border border-gray-200 dark:border-none dark:hover:scale-105 dark:duration-500 dark:transition-all rounded shadow-sm hover:border hover:border-black transition-shadow duration-300 w-full dark:bg-gray-800">
               <div className="w-full flex flex-col gap-5">
                 <section className="flex items-center justify-between ">
                   <h3 className="text-sm dark:text-gray-200">
                     Shortlisted
                   </h3>
                   <div className="text-gray-500">
-                    <Heart className="h-6 w-6 text-gray-400" />
+                    <Heart className="h-6 w-6 text-gray-400 dark:text-gray-200" />
                   </div>
                 </section>
                 <section className="text-2xl font-semibold dark:text-gray-200">
@@ -61,14 +61,14 @@ export default function DashboardCardSection() {
             onClick={() => handleCardClick("Rejected")}
             className="flex-1 cursor-pointer"
           >
-            <div className="flex items-center justify-between p-5 bg-white border border-gray-200 rounded shadow-sm hover:border hover:border-black transition-shadow duration-300 w-full">
+            <div className="flex items-center justify-between p-5 bg-white border border-gray-200 dark:border-none dark:hover:scale-105 dark:duration-500 dark:transition-all  rounded shadow-sm hover:border hover:border-black transition-shadow duration-300 w-full dark:bg-gray-800">
               <div className="w-full flex flex-col gap-5">
                 <section className="flex items-center justify-between ">
                   <h3 className="text-sm dark:text-gray-200">
                     Rejected
                   </h3>
                   <div className="text-gray-500">
-                    <CircleX className="h-6 w-6 text-gray-400" />
+                    <CircleX className="h-6 w-6 text-gray-400 dark:text-gray-200" />
                   </div>
                 </section>
                 <section className="text-2xl font-semibold dark:text-gray-200">

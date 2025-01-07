@@ -9,7 +9,6 @@ import hiringPic from "../../../../../public/assests/hiring.jpg";
 const JobsPage = () => {
   return (
     <section className="w-full md:w-[1024px] my-12 mx-auto bg-white dark:bg-gray-800 rounded-lg">
-      {/* first section */}
       <div className="px-4 sm:px-6 py-4">
         <div className="flex items-center gap-4">
           {/* image section */}
