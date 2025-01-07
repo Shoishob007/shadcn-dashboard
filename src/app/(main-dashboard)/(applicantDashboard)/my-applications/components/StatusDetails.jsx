@@ -74,13 +74,14 @@ export default function StatusDetails() {
             
             <div className="flex justify-between pt-4 border-t dark:border-gray-700">
               <Button
-                variant="outline"
+                size="sm"
                 onClick={handlePrevious}
                 disabled={currentStep === 1}
               >
                 Previous Step
               </Button>
               <Button
+                size="sm"
                 onClick={handleNext}
                 disabled={currentStep === steps.length}
               >

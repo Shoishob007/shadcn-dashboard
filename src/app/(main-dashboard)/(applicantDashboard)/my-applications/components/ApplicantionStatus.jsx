@@ -14,12 +14,12 @@ const ApplicantionStatus = ({ viewStatus }) => {
     <>
       <Dialog className=''>
         <DialogTrigger>
-          <Button variant="outline">View Status</Button>
+          <Button size="sm">View Status</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Application Status Update</DialogTitle>
-            <DialogDescription className="text-xs mt-10">
+            <DialogDescription className="text-xs mt-10 dark:text-gray-400">
               Thank you for applying! We&apos;ll notify you of any updates. For
               any questions, contact dev.hirehub@domain.com.
             </DialogDescription>

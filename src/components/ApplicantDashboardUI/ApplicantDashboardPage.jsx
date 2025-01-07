@@ -13,7 +13,6 @@ const ApplicantDashboardPage = ({ currentRole, session }) => {
       </div>
       <section className="mt-6">
         <DashboardCardSection />
-        {/* <LatestJobApplied /> */}
         <RecentApplied/>
         <FeaturedJobs />
       </section>

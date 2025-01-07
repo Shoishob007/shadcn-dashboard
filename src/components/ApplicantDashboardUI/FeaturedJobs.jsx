@@ -16,7 +16,7 @@ const FeaturedJobs = () => {
         </div>
         <div className="mt-3 flex items-center justify-end">
           <Link href={"/job-search"}>
-            <Button>See All Jobs</Button>
+            <Button size="sm">See All Jobs</Button>
           </Link>
         </div>
       </div>

@@ -10,7 +10,7 @@ export const ApplicationStepper = ({ steps, currentStep }) => {
         >
           {/* Step Indicator */}
           <div
-            className={`w-10 h-10 flex items-center justify-center rounded-full text-white font-bold ${
+            className={`w-10 h-10 flex items-center justify-center rounded-full text-white dark:text-gray-800 font-bold ${
               step.status === "completed"
                 ? "bg-green-500"
                 : step.status === "current"
@@ -28,8 +28,8 @@ export const ApplicationStepper = ({ steps, currentStep }) => {
                 step.status === "completed"
                   ? "text-green-600"
                   : step.status === "current"
-                  ? "text-blue-600"
-                  : "text-gray-500"
+                  ? "text-blue-600 "
+                  : "text-gray-500 dark:text-gray-200"
               }`}
             >
               {step.label}
@@ -40,7 +40,7 @@ export const ApplicationStepper = ({ steps, currentStep }) => {
                   ? "text-green-500"
                   : step.status === "current"
                   ? "text-blue-500"
-                  : "text-gray-400"
+                  : "text-gray-400 dark:text-gray-400"
               }`}
             >
               {step.description}
