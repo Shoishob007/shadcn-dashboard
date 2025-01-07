@@ -87,13 +87,13 @@ const MyPackage = () => {
               {
                 title: "Organization Login and Registration",
                 description:
-                  "You'll get a robust login and registration system for your organization.",
+                  "You will get a robust login and registration system for your organization.",
                 icon: "🔐",
               },
               {
                 title: "Dynamic Dashboard with Report",
                 description:
-                  "You'll have the privilege to access a dynamic dashboard along with the report.",
+                  "You will have the privilege to access a dynamic dashboard along with the report.",
                 icon: "📊",
               },
               {

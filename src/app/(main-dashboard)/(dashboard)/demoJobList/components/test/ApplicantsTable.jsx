@@ -150,8 +150,8 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
                   <div className="flex items-center gap-3">
                     <Avatar className="h-10 w-10">
                       <AvatarImage
-                        src={applicant.applicant?.pictureUrl}
-                        alt={applicant.name}
+                        src={applicant?.applicant?.pictureUrl}
+                        alt={applicant?.name}
                       />
                       <AvatarFallback>
                         {applicant.name.charAt(0)}
@@ -179,9 +179,9 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
 
                 {/* Education */}
                 <td className="px-2 py-2">
-                  {applicant.education.length > 0 ? (
+                  {applicant?.education?.length > 0 ? (
                     <ul className="list-disc list-inside space-y-1 text-xs">
-                      {applicant.education.slice(-2).map((edu, index) => (
+                      {applicant?.education?.slice(-2).map((edu, index) => (
                         <li key={index}>
                           <span className="font-semibold">{edu.degree}</span>{" "}
                           from {edu.institution}
@@ -195,9 +195,9 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
 
                 {/* Certifications */}
                 <td className="px-2 py-2">
-                  {applicant.certifications.length > 0 ? (
+                  {applicant?.certifications?.length > 0 ? (
                     <ul className="list-disc list-inside space-y-1 text-xs">
-                      {applicant.certifications.slice(-2).map((cert, index) => (
+                      {applicant?.certifications?.slice(-2).map((cert, index) => (
                         <li key={index}>
                           <span className="font-semibold">{cert.name}</span> by{" "}
                           <span>{cert.issuingOrganization}</span>
@@ -224,38 +224,38 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
                         <TooltipTrigger asChild>
                           <div
                             className={`text-[10px] px-1 py-1 rounded-md font-medium cursor-pointer capitalize ${
-                              applicant.status === "shortlisted"
+                              applicant?.status === "shortlisted"
                                 ? "bg-yellow-100 dark:bg-yellow-200 text-yellow-600 border border-yellow-500"
-                                : applicant.status === "hired"
+                                : applicant?.status === "hired"
                                 ? "bg-emerald-100 dark:bg-emerald-200 text-emerald-600 border border-emerald-500"
                                 : "bg-red-100 dark:bg-red-200 text-red-600 border border-red-500"
                             }`}
                             onClick={() => {
-                              if (applicant.status === "shortlisted") {
+                              if (applicant?.status === "shortlisted") {
                                 toggleDropdown(applicant.id);
                               }
                             }}
                           >
-                            {applicant.schedule?.date
-                              ? `${applicant.step}: ${new Date(
-                                  applicant.schedule.date
+                            {applicant?.schedule?.date
+                              ? `${applicant?.step}: ${new Date(
+                                  applicant?.schedule.date
                                 ).toLocaleDateString()} at ${
-                                  applicant.schedule.time
+                                  applicant?.schedule.time
                                 }`
-                              : applicant.status === "shortlisted"
-                              ? `${applicant.step || "Step not set"}`
-                              : `${applicant.status}`}
+                              : applicant?.status === "shortlisted"
+                              ? `${applicant?.step || "Step not set"}`
+                              : `${applicant?.status}`}
                           </div>
                         </TooltipTrigger>
                         <TooltipContent>
-                          {applicant.status === "shortlisted" ? (
-                            openDropdowns[applicant.id] ? (
+                          {applicant?.status === "shortlisted" ? (
+                            openDropdowns[applicant?.id] ? (
                               <p>Click to close</p>
                             ) : (
                               <p>Click to change schedule</p>
                             )
                           ) : (
-                            <p>This applicant is {applicant.status}</p>
+                            <p>This applicant is {applicant?.status}</p>
                           )}
                         </TooltipContent>
                       </Tooltip>
@@ -264,9 +264,9 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
 
                   {/* Step Selector (Dropdown) */}
                   {openDropdowns[applicant.id] &&
-                    applicant.status === "shortlisted" && (
+                    applicant?.status === "shortlisted" && (
                       <StepSelector
-                        selectedStep={applicant.steps || applicant.step}
+                        selectedStep={applicant?.steps || applicant?.step}
                         onStepChange={(newStep) =>
                           handleStepChange(applicant.id, newStep)
                         }
@@ -300,7 +300,7 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
                           onClick={() => {
                             if (applicant.CV) {
                               window.open(
-                                applicant.CV,
+                                applicant?.CV,
                                 "_blank",
                                 "noopener,noreferrer"
                               );
