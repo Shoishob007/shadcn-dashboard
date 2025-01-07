@@ -12,7 +12,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { StepSelector } from "../../../demoAppList/demoAppDetails/components/StepSelector";
 import { ScheduleModal } from "../../../demoAppList/demoAppDetails/components/ScheduleModal";
 import Link from "next/link";
-import { Button } from "react-aria-components";
 
 const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
   const [openDropdowns, setOpenDropdowns] = useState({});
@@ -129,9 +128,9 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
 
   return (
     <>
-      <div className="overflow-x-auto shadow-md rounded-lg bg-white border border-gray-200">
-        <table className="w-full text-sm text-left text-gray-700 dark:text-gray-300">
-          <thead className="bg-gray-800 dark:bg-gray-300 text-gray-200 dark:text-gray-700 border border-b-gray-500">
+      <div className="overflow-x-auto shadow-md rounded-lg bg-white border border-gray-200 dark:border-gray-500">
+        <table className="w-full text-sm text-left text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+          <thead className="bg-gray-800 dark:bg-gray-300 text-gray-200 dark:text-gray-800 border border-b-gray-500">
             <tr className="text-center">
               <th className="pl-3 pr-2 py-3">Applicant</th>
               <th className="px-2 py-3">Education</th>
@@ -159,10 +158,10 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col">
-                      <span className="font-semibold text-base text-gray-800">
+                      <span className="font-semibold text-base text-gray-800 dark:text-gray-300">
                         {applicant.name}
                       </span>
-                      <span className="text-xs text-gray-600">
+                      <span className="text-xs text-gray-600 dark:text-gray-400">
                         {applicant?.experiences?.slice(-2).map((exp, index) => (
                           <span key={index}>
                             <span className="font-semibold">
@@ -226,10 +225,10 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
                           <div
                             className={`text-[10px] px-1 py-1 rounded-md font-medium cursor-pointer capitalize ${
                               applicant.status === "shortlisted"
-                                ? "bg-yellow-100 text-yellow-600 border border-yellow-500"
+                                ? "bg-yellow-100 dark:bg-yellow-200 text-yellow-600 border border-yellow-500"
                                 : applicant.status === "hired"
-                                ? "bg-green-100 text-green-600 border border-green-500"
-                                : "bg-red-100 text-red-600 border border-red-500"
+                                ? "bg-emerald-100 dark:bg-emerald-200 text-emerald-600 border border-emerald-500"
+                                : "bg-red-100 dark:bg-red-200 text-red-600 border border-red-500"
                             }`}
                             onClick={() => {
                               if (applicant.status === "shortlisted") {

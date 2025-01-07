@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/tooltip";
 import { List, Grid2x2 } from "lucide-react";
 import { motion } from "framer-motion";
-// import ApplicantsTable from "../components/statusTable";
 import ApplicantsTable from "../components/test/ApplicantsTable";
 
 const socialMediaIcons = {
@@ -222,12 +221,6 @@ const DemoApplicants = () => {
                 handleViewDetails={handleViewDetails}
               />
             ) : (
-              // <ApplicantsTable
-              // currentPaginatedApplicants={applicants}
-              // calculateTotalExperience={calculateTotalExperience}
-              //   handleViewDetails={handleViewDetails}
-              // />
-
               <JobApplicantsCards
                 currentPaginatedApplicants={applicants}
                 calculateTotalExperience={calculateTotalExperience}

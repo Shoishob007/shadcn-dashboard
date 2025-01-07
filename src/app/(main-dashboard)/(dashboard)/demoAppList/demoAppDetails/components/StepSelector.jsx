@@ -17,7 +17,7 @@ export function StepSelector({ selectedStep, onStepChange }) {
         <Button
           variant="default"
           size="xs"
-          className="border border-blue-600 bg-blue-100 text-blue-600 hover:bg-blue-200 shadow-none dark:border-gray-600 dark:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-200"
+          className="border border-blue-600 bg-blue-100 dark:bg-blue-200 text-blue-600 hover:bg-blue-200 shadow-none dark:border-gray-600 dark:text-gray-600 dark:hover:bg-blue-300"
         >
           {"Change Schedule"}
         </Button>
@@ -33,7 +33,7 @@ export function StepSelector({ selectedStep, onStepChange }) {
               className={cn(
                 "!text-xs flex justify-between items-center",
                 disabled && "opacity-50 cursor-not-allowed",
-                isSelected && "bg-blue-50"
+                isSelected && "bg-blue-50 dark:bg-gray-800"
               )}
               disabled={disabled}
               onClick={() => !disabled && onStepChange(step)}
