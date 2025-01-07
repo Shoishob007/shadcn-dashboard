@@ -24,7 +24,7 @@ const PricingTabs = () => {
         </TabsList>
 
         {/* Tabs content */}
-        <div className="mt-6 w-full">
+        <div className="w-full">
           <TabsContent value="my_package">
             <MyPackage />
           </TabsContent>
