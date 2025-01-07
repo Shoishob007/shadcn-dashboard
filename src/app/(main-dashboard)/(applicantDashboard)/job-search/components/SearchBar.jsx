@@ -24,7 +24,7 @@ export default function SearchBar() {
 
   return (
     <div className="space-y-2">
-      <div className="relative bg-white">
+      <div className="relative bg-white dark:bg-gray-800">
         <Input
           id="input-27"
           className="peer pe-9 ps-9"

@@ -77,7 +77,7 @@ const JobSearch = () => {
 
         <div className="flex items-center gap-2">
           <Select onValueChange={handleSortChange}>
-            <SelectTrigger className="w-[180px] bg-white">
+            <SelectTrigger className="w-[180px] bg-white dark:bg-gray-800">
               <SelectValue placeholder="Sort By (Default)" />
             </SelectTrigger>
             <SelectContent>

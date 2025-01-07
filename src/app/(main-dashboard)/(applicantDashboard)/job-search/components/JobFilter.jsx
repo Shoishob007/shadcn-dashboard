@@ -126,7 +126,7 @@ const JobFilter = () => {
                         <Select
                             onValueChange={(value) => handleSelectChange("category", value)}
                         >
-                            <SelectTrigger className="w-full bg-white">
+                            <SelectTrigger className="w-full bg-white dark:bg-gray-800">
                                 <SelectValue placeholder="Categories" />
                             </SelectTrigger>
                             <SelectContent>
@@ -145,7 +145,7 @@ const JobFilter = () => {
                         <Select
                             onValueChange={(value) => handleSelectChange("location", value)}
                         >
-                            <SelectTrigger className="w-full bg-white">
+                            <SelectTrigger className="w-full bg-white dark:bg-gray-800">
                                 <SelectValue placeholder="Location" />
                             </SelectTrigger>
                             <SelectContent>

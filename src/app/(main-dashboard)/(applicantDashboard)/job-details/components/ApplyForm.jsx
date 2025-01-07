@@ -14,8 +14,9 @@ import {
 import { Label } from "@/components/ui/label";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { SendHorizontal } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -50,27 +51,23 @@ const ApplyForm = ({ setAppliedStatus, appliedStatus }) => {
     router.push("/");
   };
 
+  const pathname = usePathname();
+  const jobDetailsPageFixed = pathname.includes('/job-details');
+
   return (
     <div className="mt-[30px] flex items-center justify-end ">
-      <Dialog onOpenChange={setIsOpen} open={isOpen} className=''>
+      <Dialog onOpenChange={setIsOpen} open={isOpen} className="">
         <DialogTrigger>
-          <div className="fixed bottom-8 right-40">
+          <div className={jobDetailsPageFixed ? "fixed bottom-8 right-40" : "fixed bottom-8 right-14"}>
             {hasApplied ? (
-              <button
-                disabled={hasApplied}
-                className="flex items-center gap-1 px-3 text-sm py-3 rounded bg-[#00ca99] hover:bg-[#212121] duration-300 text-white font-medium outline-none border-none"
-              >
-                Applied
-              </button>
+              <Button disabled={hasApplied}>Applied</Button>
             ) : (
-              <div className="max-w-5xl">
-                <button className=" flex items-center gap-1 text-sm px-3 py-3 rounded bg-[#212121] hover:bg-[#212121] duration-300 text-white font-medium outline-none border-none">
-                  Apply Now{" "}
-                  <span>
-                    <SendHorizontal size={16} />
-                  </span>
-                </button>
-              </div>
+              <>
+                <Button>
+                  Apply Now
+                  <SendHorizontal size={16} />
+                </Button>
+              </>
             )}
           </div>
         </DialogTrigger>
@@ -82,12 +79,14 @@ const ApplyForm = ({ setAppliedStatus, appliedStatus }) => {
               <DialogDescription>
                 <div className="p-6 space-y-5">
                   <div>
-                    <Label htmlFor="name" className="block mb-1.5 text-[12px]">
+                    <Label
+                      htmlFor="name"
+                      className="block mb-1.5 text-[12px] dark:text-gray-200"
+                    >
                       Name
                     </Label>
-                    <input
+                    <Input
                       type="text"
-                      className="w-full bg-[#f5f5f5] border border-[##f5f5f5] px-4 py-2 rounded-lg"
                       placeholder="Name"
                       {...register("name", { required: true })}
                     />
@@ -99,12 +98,14 @@ const ApplyForm = ({ setAppliedStatus, appliedStatus }) => {
                   </div>
 
                   <div>
-                    <Label htmlFor="email" className="block mb-1.5 text-[12px]">
+                    <Label
+                      htmlFor="email"
+                      className="block mb-1.5 text-[12px] dark:text-gray-200"
+                    >
                       Email
                     </Label>
-                    <input
+                    <Input
                       type="email"
-                      className="w-full bg-[#f5f5f5] border border-[#f5f5f5] px-4 py-2 rounded-lg"
                       placeholder="Email"
                       {...register("email", { required: true })}
                     />
@@ -118,17 +119,17 @@ const ApplyForm = ({ setAppliedStatus, appliedStatus }) => {
                   <div>
                     <Label
                       htmlFor="contact"
-                      className="block mb-1.5 text-[12px]"
+                      className="block mb-1.5 text-[12px] dark:text-gray-200"
                     >
                       Contact Number
                     </Label>
                     <PhoneInput
-                      country="bd" // Set default country to Bangladesh
-                      value={getValues("contact")} // Use react-hook-form value
-                      onChange={(value) => setValue("contact", value)} // Update form state
+                      country="bd"
+                      value={getValues("contact")}
+                      onChange={(value) => setValue("contact", value)}
                       inputProps={{
                         name: "contact",
-                        required: true, // Optional: Mark as required if needed
+                        required: true,
                       }}
                       containerStyle={{
                         width: "100%",
@@ -139,7 +140,7 @@ const ApplyForm = ({ setAppliedStatus, appliedStatus }) => {
                         width: "100%",
                       }}
                       buttonStyle={{
-                        width: "45px", // Increase the width of the flag area
+                        width: "45px",
                       }}
                     />
                     {errors.contact && (
@@ -154,14 +155,9 @@ const ApplyForm = ({ setAppliedStatus, appliedStatus }) => {
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
-              <Button
-                type="submit"
-                className="mt-2 text-sm flex items-center gap-1 px-3 py-3 rounded bg-[#212121] hover:bg-[#151515] duration-300 text-white font-medium outline-none border-none"
-              >
-                Apply Now{" "}
-                <span>
-                  <SendHorizontal size={16} />
-                </span>
+              <Button type="submit">
+                Apply Now
+                <SendHorizontal size={16} />
               </Button>
             </DialogFooter>
           </form>

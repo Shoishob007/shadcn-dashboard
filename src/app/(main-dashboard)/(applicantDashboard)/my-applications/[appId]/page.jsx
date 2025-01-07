@@ -32,10 +32,6 @@ const JobDetailsPage = ({ params }) => {
             </p>
           </div>
         </header>
-        {/* <button className="flex gap-2 items-center border py-2.5 px-3 rounded-sm text-white font-medium bg-[#78AEB3] dark:bg-[#78AEB3]">
-          <span className="text-sm">Apply Now</span>{" "}
-          <SendHorizontal className="dark:text-white" size={16} />
-        </button> */}
       </div>
       <div className="px-6 sm:px-10 py-3">
         <section className="mb-4 text-xs sm:text-sm">
@@ -97,7 +93,7 @@ const JobDetailsPage = ({ params }) => {
         </section>
         <section className="flex items-center justify-end">
           {jobData.isApplied ? (
-            <Button className='px-4' disabled>Applied</Button>
+            <Button  disabled>Applied</Button>
           ) : (
             <ApplyForm />
           )}
