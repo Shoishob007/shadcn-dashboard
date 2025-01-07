@@ -175,7 +175,7 @@ const DemoApplicants = () => {
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <Grid2x2 className="h-5 w-5" />
+                        <Grid2x2 className="h-6 w-6" />
                       </motion.button>
                     </Button>
                   </TooltipTrigger>
@@ -202,7 +202,7 @@ const DemoApplicants = () => {
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <List className="h-5 w-5" />
+                        <List className="h-6 w-6" />
                       </motion.button>
                     </Button>
                   </TooltipTrigger>

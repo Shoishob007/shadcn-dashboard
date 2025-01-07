@@ -44,7 +44,7 @@ const JobCards = ({
             <>
               <Card
                 key={document.id}
-                className="flex flex-col dark:border dark:border-gray-400 relative mx-auto md:flex-row items-center justify-between py-6 md:p-6 px-2 rounded-lg transition-shadow gap-6 md:gap-4 max-w-5xl"
+                className="flex flex-col dark:border dark:border-gray-500 relative mx-auto md:flex-row items-center justify-between py-6 md:p-6 px-2 rounded-lg transition-shadow gap-6 md:gap-4 max-w-5xl"
               >
                 {/* Dropdown Menu */}
                 <div className="absolute top-2 right-2">
@@ -150,7 +150,7 @@ const JobCards = ({
                               {capitalizeText(document.jobRole)}
                             </div>
                           </Badge>
-                          <Badge
+                          {/* <Badge
                             variant="secondary"
                             className="dark:bg-gray-900"
                           >
@@ -158,7 +158,7 @@ const JobCards = ({
                               <UserCog className="h-4 w-4" />
                               {capitalizeText(document.jobDesignation)}
                             </div>
-                          </Badge>
+                          </Badge> */}
                         </div>
                       </div>
                       <div className="flex gap-2 md:gap-3 lg:gap-5">
@@ -233,12 +233,12 @@ const JobCards = ({
                             {capitalizeText(document.jobRole)}
                           </div>
                         </Badge>
-                        <Badge variant="secondary" className="dark:bg-gray-900">
+                        {/* <Badge variant="secondary" className="dark:bg-gray-900">
                           <div className="flex items-center gap-2">
                             <UserCog className="h-4 w-4" />
                             {capitalizeText(document.jobDesignation)}
                           </div>
-                        </Badge>
+                        </Badge> */}
                       </div>
                       {/* Action Buttons */}
                       <div className="flex space-y-2 md:space-y-0 md:space-x-1 flex-col md:flex-row text-xs md:text-md">
