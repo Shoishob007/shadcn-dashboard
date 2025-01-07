@@ -7,18 +7,25 @@ export function cn(...inputs) {
 
 
 export const steps = [
-    "Screening Test",
-    "Aptitude Test",
-    "Technical Test",
-    "Interview",
-];
-
-export const getStepIndex = (step) => {
-    return steps.indexOf(step);
-};
-
-export const isStepDisabled = (currentStep, targetStep) => {
-    const currentIndex = getStepIndex(currentStep);
-    const targetIndex = getStepIndex(targetStep);
-    return targetIndex < currentIndex || targetIndex > currentIndex + 1;
-};
+    "screening test",
+    "aptitude test", 
+    "technical test",
+    "hr interview",
+    "technical interview",
+    "final interview"
+  ];
+  
+  export const getStepIndex = (step) => {
+    return steps.indexOf(step?.toLowerCase());
+  };
+  
+  export const isStepDisabled = (currentStep, stepToCheck) => {
+    const currentIndex = getStepIndex(currentStep?.toLowerCase());
+    const checkIndex = getStepIndex(stepToCheck?.toLowerCase());
+    
+    if (!currentStep || currentIndex === -1) {
+      return checkIndex !== 0;
+    }
+  
+    return checkIndex !== currentIndex && checkIndex !== currentIndex + 1;
+  };

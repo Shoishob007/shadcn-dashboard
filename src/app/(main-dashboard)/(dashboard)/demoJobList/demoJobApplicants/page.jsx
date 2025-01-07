@@ -9,7 +9,6 @@ import { documents as jobDocuments } from "../components/jobData";
 import OurPagination from "@/components/Pagination";
 import ToggleGroupComponent from "../components/ToggleGroup";
 import JobApplicantsCards from "../components/jobApplicantsCards";
-import ApplicantsTable from "../components/statusTable";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -19,6 +18,8 @@ import {
 } from "@/components/ui/tooltip";
 import { List, Grid2x2 } from "lucide-react";
 import { motion } from "framer-motion";
+// import ApplicantsTable from "../components/statusTable";
+import ApplicantsTable from "../components/test/ApplicantsTable";
 
 const socialMediaIcons = {
   linkedin: FaLinkedin,
@@ -157,33 +158,6 @@ const DemoApplicants = () => {
             />
             {/* Floating Action Button */}
             <div className="mr-2">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className="p-0 bg-transparent hover:bg-transparent"
-                    >
-                      <motion.button
-                        onClick={() => setViewMode("list")}
-                        className={`p-2 duration-300 ${
-                          isListView
-                            ? "bg-gray-900 text-white dark:bg-gray-300 dark:text-gray-800"
-                            : "bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-300"
-                        }`}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <List className="h-5 w-5" />
-                      </motion.button>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>List View</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-
               {/* Card View Icon */}
               <TooltipProvider>
                 <Tooltip>
@@ -211,17 +185,49 @@ const DemoApplicants = () => {
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
+
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="p-0 bg-transparent hover:bg-transparent"
+                    >
+                      <motion.button
+                        onClick={() => setViewMode("list")}
+                        className={`p-2 duration-300 ${
+                          isListView
+                            ? "bg-gray-900 text-white dark:bg-gray-300 dark:text-gray-800"
+                            : "bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                        }`}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <List className="h-5 w-5" />
+                      </motion.button>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>List View</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
           {currentPaginatedApplicants.length > 0 ? (
             isListView ? (
-              <JobApplicantsCards
-                currentPaginatedApplicants={applicants}
+              <ApplicantsTable
+                applicants={applicants}
                 calculateTotalExperience={calculateTotalExperience}
                 handleViewDetails={handleViewDetails}
-                socialMediaIcons={socialMediaIcons}
               />
             ) : (
+              // <ApplicantsTable
+              // currentPaginatedApplicants={applicants}
+              // calculateTotalExperience={calculateTotalExperience}
+              //   handleViewDetails={handleViewDetails}
+              // />
+
               <JobApplicantsCards
                 currentPaginatedApplicants={applicants}
                 calculateTotalExperience={calculateTotalExperience}

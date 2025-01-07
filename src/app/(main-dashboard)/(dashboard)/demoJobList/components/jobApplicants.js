@@ -35,6 +35,7 @@ export const documents = {
                         time: "14:30",
                     },
                     CVScore: 50,
+                    CV: 'https://morth.nic.in/sites/default/files/dd12-13_0.pdf',
                     certifications: [
                         {
                             name: "Certified Full-Stack Developer",
@@ -123,6 +124,7 @@ export const documents = {
                     name: "Ataullah",
                     status: "hired",
                     CVScore: 50,
+                    CV: 'https://morth.nic.in/sites/default/files/dd12-13_0.pdf',
                     certifications: [
                         {
                             name: "Certified Full-Stack Developer",
@@ -216,6 +218,7 @@ export const documents = {
                         time: "10:30",
                     },
                     CVScore: 50,
+                    CV: 'https://morth.nic.in/sites/default/files/dd12-13_0.pdf',
                     certifications: [
                         {
                             name: "Certified Full-Stack Developer",
@@ -304,6 +307,7 @@ export const documents = {
                     name: "Shejuti",
                     status: "applied",
                     CVScore: 50,
+                    CV: 'https://morth.nic.in/sites/default/files/dd12-13_0.pdf',
                     certifications: [
                         {
                             name: "Certified Full-Stack Developer",
@@ -397,6 +401,7 @@ export const documents = {
                         time: "14:30",
                     },
                     CVScore: 50,
+                    CV: 'https://morth.nic.in/sites/default/files/dd12-13_0.pdf',
                     certifications: [
                         {
                             name: "Certified Full-Stack Developer",
