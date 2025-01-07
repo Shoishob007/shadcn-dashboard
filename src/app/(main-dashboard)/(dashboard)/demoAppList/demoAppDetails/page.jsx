@@ -172,7 +172,7 @@ const ApplicantDetails = () => {
               {/* Social Links */}
             </div>
           </div>
-          <div className="flex flex-col items-center gap-2 mt-4 sm:mt-0">
+          <div className="flex flex-col items-center gap-2 mt-4 sm:mt-0 capitalize">
             <div>
               <Button
                 variant="default"
