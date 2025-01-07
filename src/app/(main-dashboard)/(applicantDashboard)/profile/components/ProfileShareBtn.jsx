@@ -44,10 +44,10 @@ const ProfileShareBtn = ({ profileInfo }) => {
                       height={40}
                     />
                     <div>
-                      <h1 className="text-sm text-[#383838] font-semibold">
+                      <h1 className="text-sm text-[#383838] dark:text-gray-300 font-semibold">
                         {info.name}
                       </h1>
-                      <span className="mt-1 text-[#727272] text-[12px]">
+                      <span className="mt-1 text-[#727272] dark:text-gray-300 text-[12px]">
                         {info.email}
                       </span>
                     </div>
@@ -56,11 +56,11 @@ const ProfileShareBtn = ({ profileInfo }) => {
               })}
             </div>
             <div className="mt-[30px]">
-              <h1 className="text-[#727272] text-[12px] text-left">
+              <h1 className="text-[#727272] dark:text-gray-300 text-[12px] text-left">
                 Share by Link
               </h1>
-              <div className="mt-2.5 flex items-center justify-between border border-gray-300 rounded-md p-2 bg-gray-50">
-                <span className="text-sm text-gray-800 truncate">
+              <div className="mt-2.5 flex items-center justify-between border border-gray-300 rounded-md p-2 bg-gray-50 dark:bg-transparent">
+                <span className="text-sm text-gray-800 dark:text-gray-300 truncate">
                   {linkToShare}
                 </span>
                 <Button onClick={handleCopy} variant="outline">

@@ -11,7 +11,7 @@ const WorkExperience = () => {
         </Button>
       </div>
       <div>
-        <p className="text-[#727272] text-xs">
+        <p className="text-[#727272] dark:text-gray-300 text-xs">
           Highlight your work experience to showcase your skills and build a
           strong foundation for future opportunities!
         </p>

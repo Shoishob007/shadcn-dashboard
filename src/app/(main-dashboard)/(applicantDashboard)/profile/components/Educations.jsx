@@ -22,27 +22,27 @@ const Educations = ({ profileInfo }) => {
                     </div>
                     <div>
                       <h2 className="mb-1">{education.instituteName}</h2>
-                      <div className="flex items-center gap-2 text-[12px] text-[#383838]">
+                      <div className="flex items-center gap-2 text-[12px] text-[#383838] dark:text-gray-200">
                         <div className="flex gap-1 items-center">
                           <span>
                             <GraduationCap
                               size={16}
-                              className="text-[#383838]"
+                              className="text-[#383838] dark:text-gray-200"
                             />
                           </span>
-                          <span>{education.degreeLevel.title}</span>
+                          <span className="dark:text-gray-200">{education.degreeLevel.title}</span>
                         </div>
-                        <div className="bg-gray-400 h-1 w-1 rounded-full"></div>
+                        <div className="bg-gray-400 dark:bg-gray-200 h-1 w-1 rounded-full"></div>
                         <div>
                           <span>{education.fieldOfStudy.title}</span>
                         </div>
-                        <div className="bg-gray-400 h-1 w-1 rounded-full"></div>
+                        <div className="bg-gray-400 dark:bg-gray-200 h-1 w-1 rounded-full"></div>
                         <div className="flex gap-1">
                           <div className="flex items-center gap-1">
                             <span>
                               <CalendarDays
                                 size={16}
-                                className="text-[#383838]"
+                                className="text-[#383838] dark:text-gray-200"
                               />
                             </span>
                             <span>

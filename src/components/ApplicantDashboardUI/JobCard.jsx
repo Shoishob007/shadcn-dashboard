@@ -67,7 +67,7 @@ const JobCard = ({ job }) => {
         <hr className="border-gray-200" />
         <CardFooter className="flex justify-between items-center bg-gray-50 dark:bg-gray-800 p-5 rounded-b-md mt-auto">
           <p className="text-sm text-gray-500 dark:text-gray-200">Posted: {job.published}</p>
-          <Button size="sm">View Details</Button>
+          <Button>View Details</Button>
         </CardFooter>
       </Card>
     </Link>

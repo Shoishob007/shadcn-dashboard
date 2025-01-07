@@ -17,7 +17,7 @@ const Skills = ({ profileInfo }) => {
               {item.skills.map((skill) => {
                 return (
                   <div className="" key={skill.id}>
-                    <span className="border border-[#383838] px-3 py-1.5 text-sm text-[#383838] rounded-[30px]">
+                    <span className="border border-[#383838] dark:border-gray-300 px-3 py-1.5 text-sm text-[#383838] dark:text-gray-300 rounded-[30px]">
                       {skill.title}
                     </span>
                   </div>

@@ -32,19 +32,19 @@ const ProfileAbout = () => {
         <div>
           <p
             style={isParagraphOpen ? null : paragraphStyle}
-            className="text-xs text-[#383838]"
+            className="text-xs text-[#383838] dark:text-gray-300"
             ref={ref}
           >
-            I'm Emam Khalid Jion, a self-employed MERN Stack Developer with a
+            I&apos;m Emam Khalid Jion, a self-employed MERN Stack Developer with a
             passion for crafting dynamic, scalable, and user-friendly web
-            applications. Over the past two years, I've honed my skills in
+            applications. Over the past two years, I&apos;ve honed my skills in
             React.js, Next.js, and modern web technologies, focusing on creating
             seamless front-end designs and robust back-end solutions. I love
             tackling challenges and constantly learning new things to keep up
             with the ever-evolving tech world. From building e-commerce
             platforms to service-based and food-ordering websites like Bitewave,
             my projects reflect my dedication to quality and innovation. Coding
-            isn't just my profession—it's my passion, and I'm always excited to
+            isn&apos;t just my profession—it&apos;s my passion, and I&apons;m always excited to
             take on new opportunities that allow me to grow and contribute to
             impactful projects.
           </p>
