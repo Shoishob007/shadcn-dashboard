@@ -11,7 +11,7 @@ const Resume = () => {
         </Button>
       </div>
       <div>
-        <p className="text-[#727272] text-xs">
+        <p className="text-[#727272] dark:text-gray-300 text-xs">
           Add your resume to present your qualifications and make a lasting
           impression on potential employers!
         </p>

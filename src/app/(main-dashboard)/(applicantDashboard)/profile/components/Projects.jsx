@@ -11,7 +11,7 @@ const Projects = () => {
         </Button>
       </div>
       <div>
-        <p className="text-[#727272] text-xs">
+        <p className="text-[#727272] dark:text-gray-300 text-xs">
           Showcase your projects to the world and unlock the doors to your
           professional success!
         </p>

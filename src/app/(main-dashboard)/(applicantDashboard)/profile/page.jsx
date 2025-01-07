@@ -36,19 +36,19 @@ const ApplicantProfile = () => {
     <div>
       {/* Profile Headaer part */}
       <ProfileHeader profileInfo={profileInfo} />
-      <div className="bg-white shadow-sm p-6 rounded-[12px] mt-3">
+      <div className="bg-white dark:bg-gray-800 shadow-sm p-6 rounded-[12px] mt-3">
         <ProfileAbout profileInfo={profileInfo} />
-        <Separator className="my-6" />
+        <Separator className="my-6 dark:bg-gray-200" />
         <Resume />
-        <Separator className="my-6" />
+        <Separator className="my-6 dark:bg-gray-200" />
         <Skills profileInfo={profileInfo} />
-        <Separator className="my-6" />
+        <Separator className="my-6 dark:bg-gray-200" />
         <WorkExperience />
-        <Separator className="my-6" />
+        <Separator className="my-6 dark:bg-gray-200" />
         <Educations profileInfo={profileInfo} />
-        <Separator className="my-6" />
+        <Separator className="my-6 dark:bg-gray-200" />
         <Projects />
-        <Separator className="my-6" />
+        <Separator className="my-6 dark:bg-gray-200" />
         <SocialLinks />
       </div>
     </div>

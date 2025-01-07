@@ -130,7 +130,7 @@ const ApplicationCards = ({ applications, handlePageChange, currentPage, totalPa
             <Card className="flex flex-col justify-between w-full shadow hover:border hover:border-black duration-300 bg-white rounded cursor-pointer">
               {/* Header with Company Logo and Job Title */}
               <Link href={`/my-applications/${app.id}`}>
-                <CardHeader className="flex items-center space-x-4 bg-gray-50 p-5 rounded-t-md">
+                <CardHeader className="flex items-center space-x-4 bg-gray-50 dark:bg-gray-800 p-5 rounded-t-md">
                   <Image
                     src={companyLogo}
                     width={50}
@@ -139,10 +139,10 @@ const ApplicationCards = ({ applications, handlePageChange, currentPage, totalPa
                     className="rounded-full border border-gray-300"
                   />
                   <div>
-                    <CardTitle className="text-xl font-semibold text-gray-800">
+                    <CardTitle className="text-xl font-semibold text-gray-800 dark:text-gray-200">
                       {app.title}
                     </CardTitle>
-                    <p className="text-sm text-center text-gray-500">
+                    <p className="text-sm text-center text-gray-500 dark:text-gray-300">
                       {app.orgName}
                     </p>
                   </div>
@@ -150,28 +150,28 @@ const ApplicationCards = ({ applications, handlePageChange, currentPage, totalPa
 
                 {/* Content with Job Application Details */}
                 <CardContent className="p-5 flex flex-col flex-grow">
-                  <p className="text-sm text-gray-600 leading-relaxed line-clamp-4">
+                  <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-4">
                     {app.description.slice(0, 100)}...
                   </p>
                   <ul className="mt-3 text-sm text-gray-600 space-y-2">
                     <li className="flex items-center space-x-2">
-                      <MapPin className="w-4 h-4 text-gray-500" />
-                      <span>Location: {app.location}</span>
+                      <MapPin className="w-4 h-4 text-gray-500 dark:text-gray-300" />
+                      <span className="dark:text-gray-300">Location: {app.location}</span>
                     </li>
                     <li className="flex items-center space-x-2">
-                      <DollarSign className="w-4 h-4 text-gray-500" />
-                      <span>Salary: ${app.salary} per month </span>
+                      <DollarSign className="w-4 h-4 text-gray-500 dark:text-gray-300" />
+                      <span className="dark:text-gray-300">Salary: ${app.salary} per month </span>
                     </li>
                     <li className="flex items-center space-x-2">
-                      <User className="w-4 h-4 text-gray-500" />
-                      <span>
+                      <User className="w-4 h-4 text-gray-500 dark:text-gray-300" />
+                      <span className="dark:text-gray-300">
                         Experience: {app.yearOfExperience} Years of Experience
                       </span>
                     </li>
                   </ul>
 
                   {/* Application Status */}
-                  <div className="mt-4 text-sm text-gray-700">
+                  <div className="mt-4 text-sm text-gray-700 dark:text-gray-300">
                     <p>
                       Status:
                       <span
@@ -188,7 +188,7 @@ const ApplicationCards = ({ applications, handlePageChange, currentPage, totalPa
                         {app.status}
                       </span>
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 dark:text-gray-300">
                       Applied on: {app.published}
                     </p>
                   </div>
@@ -197,7 +197,7 @@ const ApplicationCards = ({ applications, handlePageChange, currentPage, totalPa
 
               {/* Footer with Apply Button */}
               <hr className="border-gray-200" />
-              <CardFooter className="flex justify-between items-center bg-gray-50 p-5 rounded-b-md mt-auto">
+              <CardFooter className="flex justify-between items-center bg-gray-50 dark:bg-gray-800 p-5 rounded-b-md mt-auto">
                 <div className="w-full md:w-[60%]">
                   <ApplicantStepsBar />
                 </div>

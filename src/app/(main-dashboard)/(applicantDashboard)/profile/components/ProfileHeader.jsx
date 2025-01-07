@@ -23,7 +23,7 @@ const ProfileHeader = ({ profileInfo }) => {
           </Button>
         </div>
       </div>
-      <div className="bg-white shadow-sm p-6 rounded-b-[12px]">
+      <div className="bg-white dark:bg-gray-800 shadow-sm p-6 rounded-b-[12px]">
         {profileInfo.map((info) => (
           <div key={info.id} className="flex justify-between">
             <div className="flex gap-5">
@@ -37,8 +37,8 @@ const ProfileHeader = ({ profileInfo }) => {
                 />
               </div>
               <div>
-                <h1 className="text-2xl font-semibold">{info.name}</h1>
-                <span className="text-sm text-[#727272]">{info.email}</span>
+                <h1 className="text-2xl font-semibold dark:text-gray-200">{info.name}</h1>
+                <span className="text-sm text-[#727272] dark:text-gray-300">{info.email}</span>
                 <div className="flex flex-col gap-1.5 mt-3">
                   <div className="flex space-x-2.5 text-sm">
                     <span className="h-7 w-7 shadow rounded-lg border border-[#e2e2e2] flex items-center justify-center">
