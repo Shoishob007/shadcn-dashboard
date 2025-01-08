@@ -69,7 +69,7 @@ const MyPackage = () => {
             <Button
               variant="default"
               size="sm"
-              className="hover:scale-105 transition-all duration-300"
+              className="mt-2 hover:scale-105 transition-all duration-300"
               onClick={handleNavigateToPackages}
             >
               View All Packages {" > "}
