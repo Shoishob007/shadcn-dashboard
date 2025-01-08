@@ -126,6 +126,20 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
     }
   };
 
+  const handleRejectApplicant = (applicantId) => {
+    const updatedApplicants = applicantsState.map((applicant) =>
+      applicant.id === applicantId
+        ? { ...applicant, status: "rejected", step: "" }
+        : applicant
+    );
+    setApplicantsState(updatedApplicants);
+  
+    if (onUpdateApplicant) {
+      onUpdateApplicant(updatedApplicants.find((a) => a.id === applicantId));
+    }
+  };
+  
+
   return (
     <>
       <div className="overflow-x-auto shadow-md rounded-lg bg-white border border-gray-200 dark:border-gray-500">
@@ -197,12 +211,14 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
                 <td className="px-2 py-2">
                   {applicant?.certifications?.length > 0 ? (
                     <ul className="list-disc list-inside space-y-1 text-xs">
-                      {applicant?.certifications?.slice(-2).map((cert, index) => (
-                        <li key={index}>
-                          <span className="font-semibold">{cert.name}</span> by{" "}
-                          <span>{cert.issuingOrganization}</span>
-                        </li>
-                      ))}
+                      {applicant?.certifications
+                        ?.slice(-2)
+                        .map((cert, index) => (
+                          <li key={index}>
+                            <span className="font-semibold">{cert.name}</span>{" "}
+                            by <span>{cert.issuingOrganization}</span>
+                          </li>
+                        ))}
                     </ul>
                   ) : (
                     "N/A"
@@ -211,12 +227,17 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
 
                 {/* Status */}
                 <td className="px-2 py-3 text-center">
-                  {applicant.status === "applied" ? (
+                  {applicant.status === "rejected" ? (
+                    <div className="text-[10px] px-1 py-1 rounded-md font-medium capitalize bg-red-100 dark:bg-red-200 text-red-600 border border-red-500">
+                      Rejected
+                    </div>
+                  ) : applicant.status === "applied" ? (
                     <StepSelector
                       selectedStep={applicant.step}
                       onStepChange={(newStep) =>
                         handleStepChange(applicant.id, newStep)
                       }
+                      onReject={() => handleRejectApplicant(applicant.id)}
                     />
                   ) : (
                     <TooltipProvider>
@@ -261,7 +282,6 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
                       </Tooltip>
                     </TooltipProvider>
                   )}
-
                   {/* Step Selector (Dropdown) */}
                   {openDropdowns[applicant.id] &&
                     applicant?.status === "shortlisted" && (
@@ -270,6 +290,7 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
                         onStepChange={(newStep) =>
                           handleStepChange(applicant.id, newStep)
                         }
+                        onReject={() => handleRejectApplicant(applicant.id)}
                       />
                     )}
                 </td>

@@ -15,7 +15,7 @@ import { useState } from "react";
 
 const BillingTable = () => {
   const [selectedService, setSelectedService] = useState("All");
-  const [selectedStatus, setSelectedStatus] = useState("All");
+  // const [selectedStatus, setSelectedStatus] = useState("All");
   const [orderDate, setOrderDate] = useState("");
 
   const services = ["All", "Free Package", "Standard Package"]

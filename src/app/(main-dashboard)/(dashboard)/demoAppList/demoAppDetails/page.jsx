@@ -33,7 +33,7 @@ const ApplicantDetails = () => {
   const applicant = applicantsData.find(
     (app) => app.id === parseInt(applicantId)
   );
-  console.log(applicant);
+  const [status, setStatus] = useState(applicant?.status);
   const [selectedStep, setSelectedStep] = useState(applicant?.steps || "");
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -56,6 +56,13 @@ const ApplicantDetails = () => {
     applicant.steps = step;
     setSchedule({ date: null, time: "" });
     setIsScheduleModalOpen(true);
+  };
+
+  const handleReject = () => {
+    setStatus("rejected");
+    setSelectedStep("");
+    applicant.status = "rejected";
+    console.log(`${applicant.applicantName} has been rejected.`);
   };
 
   const handleSchedule = (date, time) => {
@@ -87,8 +94,6 @@ const ApplicantDetails = () => {
     certifications,
     extracurricularActivity,
   } = applicant;
-
-  console.log(CV)
 
   return (
     <>
@@ -175,9 +180,9 @@ const ApplicantDetails = () => {
           <div className="flex flex-col items-center gap-2 mt-4 sm:mt-0 capitalize">
             <div>
               <Button
-                variant="default"
+                variant="outline"
                 size="xs"
-                className="border border-red-600 bg-red-100 text-red-600 hover:bg-red-200 shadow-none dark:border-gray-600 dark:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-200"
+                className="border shadow-none bg-gray-100 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-100 dark:text-gray-700 dark:hover:bg-gray-300"
                 onClick={() => {
                   if (CV) {
                     window.open(CV, "_blank", "noopener,noreferrer");
@@ -194,14 +199,15 @@ const ApplicantDetails = () => {
               <StepSelector
                 selectedStep={selectedStep}
                 onStepChange={handleStepChange}
+                onReject={handleReject}
               />
             ) : applicant.status === "shortlisted" ? (
-              <div className="flex gap-2 items-center">
+              <div className="flex flex-col gap-2 items-center">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div
-                        className="text-[10px] bg-yellow-100 text-yellow-600 border border-yellow-500 font-medium dark:border-gray-600 dark:bg-gray-100 dark:text-gray-700 dark:hover:bg-gray-200 p-1.5 rounded-md cursor-pointer"
+                        className="text-[10px] bg-yellow-100 text-yellow-600 border border-yellow-500 font-medium dark:border-yellow-600 dark:bg-yellow-100 dark:text-yellow-700 dark:hover:bg-yellow-200 p-1.5 rounded-md cursor-pointer"
                         onClick={toggleDropdown}
                       >
                         {schedule.date
@@ -225,6 +231,7 @@ const ApplicantDetails = () => {
                   <StepSelector
                     selectedStep={selectedStep}
                     onStepChange={handleStepChange}
+                    onReject={handleReject}
                   />
                 )}
               </div>
@@ -234,8 +241,8 @@ const ApplicantDetails = () => {
                 size="xs"
                 className={`border ${
                   applicant.status === "hired"
-                    ? "bg-emerald-100 text-emerald-600 border-emerald-600 dark:border-gray-600 dark:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-200 disabled:opacity-50"
-                    : "bg-red-100 text-red-600"
+                    ? "bg-emerald-100 text-emerald-600 border-emerald-600 dark:border-emerald-600 dark:bg-emerald-100 dark:text-emerald-600 dark:hover:bg-emerald-200 disabled:opacity-50"
+                    : "bg-red-100 text-red-600 disabled:opacity-50"
                 }`}
                 disabled
               >
