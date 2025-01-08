@@ -188,7 +188,7 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
           <CardFooter className="flex justify-between">
             <Button
               variant="ghost"
-              className="px-2 py-1 border border-gray-400"
+              className="px-2 py-1 border border-gray-400 hover:bg-gray-200"
               onClick={handleDiscardEditing}
             >
               Cancel

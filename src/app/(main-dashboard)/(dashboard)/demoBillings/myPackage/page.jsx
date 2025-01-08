@@ -1,52 +1,47 @@
-"use client";
-
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { plansData } from "../components/subscriptionData";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 const MyPackage = () => {
   const { toast } = useToast();
   const router = useRouter();
-  const currentPlan = {
-    title: "Standard",
-    price: "2850",
-    features: {
-      "Organization Login": true,
-      "Organization Registration with mail": true,
-      "Dynamic Dashboard with Report": true,
-      "Meeting link create & Share": true,
-      "Calendar / Event / Schedule": true,
-      "CV parsing and scoring": true,
-      "Customizable Pipeline": true,
-      "API Integration": false,
-      "Parameter wise Dynamic CV Scoring": false,
-    },
-    description:
-      "This package suits perfect for growing organizations needing advanced tools. It offers useful features very handy for rapid growth of your organization.",
+
+  // Determining the best plan's features by sorting by price
+  const determineBestPlan = (plans) => {
+    plans.sort((a, b) => b.price - a.price);
+
+    return plans[0].features;
   };
 
-  const availableFeatures = Object.entries(currentPlan.features).filter(
-    ([, available]) => available
-  );
-  const unavailableFeatures = Object.entries(currentPlan.features).filter(
-    ([, available]) => !available
-  );
-
-  const handleCancel = () => {
-    console.log("Clicked");
-  };
+  const [activePlans, setActivePlans] = useState(plansData.docs[0].plans);
+  const multiplePlans = plansData.docs[0].plans;
+  const bestPlanFeatures = determineBestPlan(multiplePlans);
 
   const handleNavigateToPackages = () => {
     router.push("/demoBillings/pricing");
+  };
+
+  const handleRenewPlan = (plan) => {
+    router.push(`/demoBillings/pricing/payment?amount=${plan.price}`);
+  };
+
+  const handleCancelPlan = (plan) => {
+    toast({
+      title: `${plan.title} Subscription Cancelled`,
+      description: `You have cancelled your ${plan.title} subscription`,
+      variant: "ourDestructive",
+    });
+
+    setActivePlans((prevPlans) => prevPlans.filter((p) => p.id !== plan.id));
   };
 
   return (
@@ -54,15 +49,22 @@ const MyPackage = () => {
       <Card className="grid grid-cols-1 sm:grid-cols-3 gap-2 shadow-none border-none">
         {/* Left Section */}
         <div className="col-span-1 flex flex-col justify-center space-y-2 p-4">
-          <p className="text-emerald-500 text-sm font-semibold capitalize">
-            Current Package
+          <p className="text-emerald-600 text-base font-semibold capitalize">
+            Current Packages
           </p>
-          <CardTitle className="text-base sm:text-2xl font-semibold text-gray-800 dark:text-gray-100 leading-tight">
-            {currentPlan.title} Package
-          </CardTitle>
-          <CardDescription className="text-gray-600 dark:text-gray-400 text-xs">
-            {currentPlan.description}
-          </CardDescription>
+          <ol className="list-decimal ml-4 space-y-2">
+            {activePlans.map((plan) => (
+              <li key={plan.id}>
+                <CardTitle className="text-base sm:text-xl font-semibold text-gray-800 dark:text-gray-100 leading-tight">
+                  {plan.title} Package
+                </CardTitle>
+                <CardDescription className="text-gray-600 dark:text-gray-400 text-xs">
+                  {plan.description}
+                </CardDescription>
+              </li>
+            ))}
+          </ol>
+
           <div className="flex flex-col justify-start space-y-2">
             <Button
               variant="default"
@@ -83,46 +85,9 @@ const MyPackage = () => {
 
           {/* Features Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              {
-                title: "Organization Login and Registration",
-                description:
-                  "You will get a robust login and registration system for your organization.",
-                icon: "🔐",
-              },
-              {
-                title: "Dynamic Dashboard with Report",
-                description:
-                  "You will have the privilege to access a dynamic dashboard along with the report.",
-                icon: "📊",
-              },
-              {
-                title: "Easy Meeting",
-                description:
-                  "You will find everything to create meeting links and share them as needed.",
-                icon: "🤝",
-              },
-              {
-                title: "Calendar / Event / Schedule",
-                description:
-                  "You can easily manage events and schedules with the integrated calendar.",
-                icon: "📆",
-              },
-              {
-                title: "CV parsing and scoring",
-                description:
-                  "You can parse and score CVs with ease using the built-in services.",
-                icon: "📄",
-              },
-              {
-                title: "Customizable Pipeline",
-                description:
-                  "Current package offers a customizable hiring pipeline according to company needs.",
-                icon: "🔧",
-              },
-            ].map((feature, index) => (
+            {bestPlanFeatures.map((feature) => (
               <div
-                key={index}
+                key={feature.title}
                 className="flex flex-col items-start space-y-1 p-3 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm"
               >
                 <div className="flex items-center space-x-2">
@@ -140,29 +105,41 @@ const MyPackage = () => {
         </div>
       </Card>
       <div className="flex items-center justify-end space-x-1 w-full p-2">
-        <Button
-          size="sm"
-          onClick={() =>
-            router.push(
-              `/demoBillings/pricing/payment?amount=${currentPlan.price}`
-            )
-          }
-        >
-          Renew Subscription
-        </Button>
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={() =>
-            toast({
-              title: "Subscription Cancelled",
-              description: "You have cancelled your current subscription",
-              variant: "ourDestructive",
-            })
-          }
-        >
-          Cancel Subscription
-        </Button>
+        {/* Renew Dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size="sm">Renew Subscription</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-48">
+            {multiplePlans.map((plan) => (
+              <DropdownMenuItem
+                key={plan.id}
+                onClick={() => handleRenewPlan(plan)}
+              >
+                {plan.title}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        {/* Cancel Dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="destructive" size="sm">
+              Cancel Subscription
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-48">
+            {multiplePlans.map((plan) => (
+              <DropdownMenuItem
+                key={plan.id}
+                onClick={() => handleCancelPlan(plan)}
+              >
+                {plan.title}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
