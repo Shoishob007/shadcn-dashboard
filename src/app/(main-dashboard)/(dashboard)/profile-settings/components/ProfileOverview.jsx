@@ -27,7 +27,6 @@ export default function ProfileOverview() {
     loading,
   } = useProfileStore();
 
-  console.log(formData);
 
   const [isEditing, setIsEditing] = useState(false);
 
