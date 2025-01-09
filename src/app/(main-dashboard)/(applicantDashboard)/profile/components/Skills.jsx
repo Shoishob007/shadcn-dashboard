@@ -1,14 +1,29 @@
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const Skills = ({ profileInfo }) => {
   return (
     <section>
       <div className="flex justify-between mb-[14px]">
         <h1>Skills</h1>
-        <Button variant="outline" className="rounded-full">
-          <Pencil size={16} />
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="outline" className="rounded-full">
+                <Pencil size={16} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Edit</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
       <div>
         {profileInfo.map((item) => {
