@@ -377,6 +377,7 @@
   @apply pt-2;
 }
 
+
 /* Dark Mode Styling */
 .dark .e-schedule {
   background-color: #1f2937;
@@ -942,4 +943,23 @@
   border-left: 4px solid #3b82f6;
   background-color: #4b5563;
   color: #e5e7eb;
+}
+
+.dark .e-more-popup-wrapper{
+  @apply bg-gray-800 border border-gray-500
+}
+
+.dark .e-more-popup-wrapper .e-more-event-popup .e-more-event-header .e-header-day, .dark .e-more-popup-wrapper .e-more-event-popup .e-more-event-header .e-header-date{
+  @apply text-gray-200
+}
+
+.dark .e-more-popup-wrapper .e-more-event-popup .e-more-event-header .e-more-event-close{
+  @apply bg-gray-800 text-gray-200
+}
+
+.dark .e-schedule .e-month-view .e-selected-cell .e-more-indicator{
+  @apply text-gray-200
+}
+.dark .e-schedule .e-schedule-table{
+  @apply border border-gray-400
 }

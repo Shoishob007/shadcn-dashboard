@@ -40,7 +40,6 @@ const ApplicantsTable = ({
     setApplicantsState(updatedApplicants);
   }, [applicants]);
 
-  // If you need to fetch steps from an API:
   /*
   useEffect(() => {
     const fetchShortlistedSteps = async () => {

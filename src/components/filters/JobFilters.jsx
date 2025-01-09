@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { SearchBar } from "./SearchBar.jsx";
 import { RangeFilter } from "./RangeFilters";
 import { Button } from "@/components/ui/button";
 import { Plus, RotateCcw } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import CreateJobForm from "@/app/(main-dashboard)/(dashboard)/demoJobFormCreate/page.jsx";
 
 const statusOptions = [
   { label: "Any Status", value: "all" },
@@ -33,10 +40,11 @@ export const JobFilters = ({
   jobs,
   filters,
   onFilterChange,
-  jobRoles,
   onReset,
   handleCreateJob,
 }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   return (
     <div className="flex mx-auto max-w-5xl items-center">
       <div className="w-full space-y-2 dark:bg-gray-900 rounded-lg">
@@ -72,19 +80,6 @@ export const JobFilters = ({
                 onChange={(value) => onFilterChange("status", value)}
                 className="min-w-24 max-w-40"
               />
-              {/* <RangeFilter
-                placeholder="Job Role"
-                options={[
-                  { value: "all", label: "Any Job Roles" },
-                  ...jobRoles.map((role) => ({
-                    value: role,
-                    label: role,
-                  })),
-                ]}
-                value={filters.jobRole}
-                onChange={(value) => onFilterChange("jobRole", value)}
-                className="min-w-24 max-w-40"
-              /> */}
               <RangeFilter
                 placeholder="Experience"
                 options={experienceOptions}
@@ -116,11 +111,25 @@ export const JobFilters = ({
         </div>
       </div>
       <div>
-        <Button onClick={handleCreateJob} className="p-2">
+        <Button onClick={() => setIsDialogOpen(true)} className="p-2">
           <Plus className="h-3 w-3" />
           <span className="text-xs hidden md:block">Post New Job</span>
         </Button>
       </div>
+
+      {/* Dialog for Create Job Form */}
+      <Dialog
+        open={isDialogOpen}
+        onOpenChange={(isOpen) => setIsDialogOpen(isOpen)}
+        className=""
+      >
+        <DialogContent className="flex flex-col h-[calc(100vh-20px)] max-w-3xl p-8">
+          <CreateJobForm isDialogOpen={isDialogOpen}
+            onClose={() => setIsDialogOpen(false)}
+            className="flex-1"
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

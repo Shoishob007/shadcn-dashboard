@@ -25,7 +25,7 @@ import { useState } from "react";
 
 const tabs = ["Basic Info", "Employment", "Requirements", "Location"];
 
-const CreateJobForm = ({ onClose, jobId, initialData }) => {
+const CreateJobForm = ({ onClose, jobId, initialData, isDialogOpen=false }) => {
   //   const { data: session } = useSession();
   const { toast } = useToast();
   const [isEditMode, setIsEditMode] = useState(Boolean(jobId));
@@ -78,7 +78,7 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
       } else {
         toast({
           title: "Success",
-          description: "Job updated successfully!",
+          description: "Job created successfully!",
           variant: "ourSuccess",
         });
         console.log(data);
@@ -127,13 +127,13 @@ const CreateJobForm = ({ onClose, jobId, initialData }) => {
   };
 
   return (
-    <Card className="w-full max-w-5xl mx-auto p-6">
+    <Card className={`w-full max-w-5xl mx-auto p-6 ${isDialogOpen ? " overflow-y-auto" : ""}`}>
       <CardHeader className="text-center p-4">
         <CardTitle className="text-lg sm:text-2xl font-semibold">
           {isEditMode ? "Edit Your Job" : "Create New Job"}
         </CardTitle>
         <CardDescription className="text-xs sm:text-sm">
-          Fill in the job details across all sections below
+          Fill the job details across all sections below to create a job
         </CardDescription>
       </CardHeader>
 
