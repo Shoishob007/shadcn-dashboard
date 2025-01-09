@@ -13,7 +13,13 @@ import { StepSelector } from "../../../demoAppList/demoAppDetails/components/Ste
 import { ScheduleModal } from "../../../demoAppList/demoAppDetails/components/ScheduleModal";
 import Link from "next/link";
 
-const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
+const ApplicantsTable = ({
+  applicants,
+  onUpdateApplicant,
+  viewCount,
+  setViewCount,
+  maxViews,
+}) => {
   const [openDropdowns, setOpenDropdowns] = useState({});
   const [scheduleModal, setScheduleModal] = useState({
     isOpen: false,
@@ -133,12 +139,11 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
         : applicant
     );
     setApplicantsState(updatedApplicants);
-  
+
     if (onUpdateApplicant) {
       onUpdateApplicant(updatedApplicants.find((a) => a.id === applicantId));
     }
   };
-  
 
   return (
     <>
@@ -301,8 +306,26 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Link
-                          href={`/demoAppList/demoAppDetails?id=${applicant.id}`}
-                          className="text-blue-500 hover:text-blue-700 inline-block"
+                          href={
+                            viewCount < maxViews
+                              ? `/demoAppList/demoAppDetails?id=${applicant.id}`
+                              : "#"
+                          }
+                          className={`text-blue-500 hover:text-blue-700 inline-block ${
+                            viewCount >= maxViews
+                              ? "pointer-events-none text-gray-400"
+                              : ""
+                          }`}
+                          onClick={(e) => {
+                            if (viewCount >= maxViews) {
+                              e.preventDefault();
+                              alert(
+                                "View limit reached. Upgrade your subscription to continue."
+                              );
+                            } else {
+                              setViewCount((prev) => prev + 1);
+                            }
+                          }}
                         >
                           <Eye className="w-5 h-5" />
                         </Link>
@@ -317,16 +340,27 @@ const ApplicantsTable = ({ applicants, onUpdateApplicant }) => {
                     <Tooltip>
                       <TooltipTrigger asChild className="ml-2">
                         <span
-                          className="cursor-pointer text-red-400 hover:text-red-500 inline-block"
+                          className={`cursor-pointer text-red-400 hover:text-red-500 inline-block ${
+                            viewCount >= maxViews
+                              ? "pointer-events-none text-gray-400"
+                              : ""
+                          }`}
                           onClick={() => {
-                            if (applicant.CV) {
-                              window.open(
-                                applicant?.CV,
-                                "_blank",
-                                "noopener,noreferrer"
+                            if (viewCount >= maxViews) {
+                              alert(
+                                "View limit reached. Upgrade your subscription to continue."
                               );
                             } else {
-                              alert("No CV available to download");
+                              setViewCount((prev) => prev + 1);
+                              if (applicant.CV) {
+                                window.open(
+                                  applicant?.CV,
+                                  "_blank",
+                                  "noopener,noreferrer"
+                                );
+                              } else {
+                                alert("No CV available to download");
+                              }
                             }
                           }}
                         >
