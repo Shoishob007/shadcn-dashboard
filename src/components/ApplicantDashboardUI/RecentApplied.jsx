@@ -27,7 +27,7 @@ const RecentApplied = () => {
             className="flex flex-col justify-between w-full shadow hover:border hover:border-black duration-300 bg-white rounded cursor-pointer dark:bg-gray-800"
           >
             <Link href={`/my-applications/${app.id}`}>
-              <CardHeader className="flex items-center space-x-4 bg-gray-50 dark:bg-gray-800 p-5 rounded-t-md">
+              <CardHeader className="flex items-center space-x-4 p-5 rounded-t-md"> {/* bg-gray-50 dark:bg-gray-800 */}
                 <Image
                   src={companyLogo}
                   width={50}
@@ -69,20 +69,20 @@ const RecentApplied = () => {
                   <p>
                     Status:
                     <span
-                      className={`font-semibold ml-1 ${
+                      className={`text-xs font-medium ml-1 rounded p-1 ${
                         app.status === "Applied"
-                          ? "text-blue-500"
+                          ? "text-blue-500 bg-blue-100 border border-blue-200"
                           : app.status === "Shortlisted"
-                          ? "text-yellow-500"
+                          ? "text-yellow-500 bg-yellow-100 border border-yellow-200"
                           : app.status === "Hired"
-                          ? "text-green-500"
-                          : "text-red-500"
+                          ? "text-green-500 bg-green-100 border border-green-200"
+                          : "text-red-500 bg-red-100 border border-red-200"
                       }`}
                     >
                       {app.status}
                     </span>
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-200">
+                  <p className="mt-2 text-sm text-gray-500 dark:text-gray-200">
                     Applied on: {app.published}
                   </p>
                 </div>
@@ -90,7 +90,7 @@ const RecentApplied = () => {
             </Link>
 
             <hr className="border-gray-200" />
-            <CardFooter className="flex justify-between items-center bg-gray-50 dark:bg-gray-800 p-5 rounded-b-md mt-auto">
+            <CardFooter className="flex justify-between items-center  p-5 rounded-b-md mt-auto"> {/* bg-gray-50 dark:bg-gray-800 */}
               <div className="w-[60%]">
                 {/* <ApplicantStepsBar/> */}
                 {/* <ApplicantProgress/> */}

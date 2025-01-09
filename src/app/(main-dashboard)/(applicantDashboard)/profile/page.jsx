@@ -1,15 +1,15 @@
 "use client";
-import { Separator } from "@/components/ui/separator";
+// import { Separator } from "@/components/ui/separator";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import Educations from "./components/Educations";
-import ProfileAbout from "./components/ProfileAbout";
+// import Educations from "./components/Educations";
+// import ProfileAbout from "./components/ProfileAbout";
 import ProfileHeader from "./components/ProfileHeader";
-import Projects from "./components/Projects";
-import Resume from "./components/Resume";
-import Skills from "./components/Skills";
-import SocialLinks from "./components/SocialLinks";
-import WorkExperience from "./components/WorkExperience";
+// import Projects from "./components/Projects";
+// import Resume from "./components/Resume";
+// import Skills from "./components/Skills";
+// import SocialLinks from "./components/SocialLinks";
+// import WorkExperience from "./components/WorkExperience";
 
 const ApplicantProfile = () => {
   const [profileInfo, setProfileInfo] = useState([]);
@@ -36,6 +36,12 @@ const ApplicantProfile = () => {
     <div>
       {/* Profile Headaer part */}
       <ProfileHeader profileInfo={profileInfo} />
+
+      <div className=" mt-3">
+        <h1>Here I will added tab section</h1>
+      </div>
+
+      {/*  
       <div className="bg-white dark:bg-gray-800 shadow-sm p-6 rounded-[12px] mt-3">
         <ProfileAbout profileInfo={profileInfo} />
         <Separator className="my-6 dark:bg-gray-200" />
@@ -51,6 +57,7 @@ const ApplicantProfile = () => {
         <Separator className="my-6 dark:bg-gray-200" />
         <SocialLinks />
       </div>
+      */}
     </div>
   );
 };
