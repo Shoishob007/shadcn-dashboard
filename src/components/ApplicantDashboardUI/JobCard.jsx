@@ -16,7 +16,8 @@ const JobCard = ({ job }) => {
     <Link href={`/job-detail/${job.id}`} className="">
       <Card className="w-full shadow hover:border hover:border-black duration-300 bg-white dark:bg-gray-800 rounded cursor-pointer">
         {/* Header with Company Logo and Name */}
-        <CardHeader className="flex items-center space-x-4 bg-gray-50 dark:bg-gray-800 p-5 rounded-t-md">
+        
+        <CardHeader className="flex items-center space-x-4  p-5 rounded-t-md"> {/* bg-gray-50 dark:bg-gray-800 */}
           <Image
             src={logo}
             width={50}
@@ -63,11 +64,16 @@ const JobCard = ({ job }) => {
           </ul>
         </CardContent>
 
-        {/* Footer with Border and Apply Button */}
+        {/* Footer with Border and Apply Button 
         <hr className="border-gray-200" />
         <CardFooter className="flex justify-between items-center bg-gray-50 dark:bg-gray-800 p-5 rounded-b-md mt-auto">
           <p className="text-sm text-gray-500 dark:text-gray-200">Posted: {job.published}</p>
           <Button>View Details</Button>
+        </CardFooter>
+        */}
+        <hr className="border-gray-200" />
+        <CardFooter className='p-5 flex justify-center items-center'>
+          <p className="text-sm text-gray-500  dark:text-gray-200">Posted: {job.published}</p>
         </CardFooter>
       </Card>
     </Link>

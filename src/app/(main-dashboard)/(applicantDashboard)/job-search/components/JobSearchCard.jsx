@@ -71,7 +71,7 @@ const JobSearchCard = ({ job }) => {
           <p className="text-sm text-gray-500 dark:text-gray-200">
             Posted: {job.published || "Unknown"}
           </p>
-          <Button>View Details</Button>
+          <Button size='sm'>View Details</Button>
         </CardFooter>
       </Card>
     </Link>
