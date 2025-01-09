@@ -15,10 +15,10 @@ const PricingTabs = () => {
           <TabsTrigger className="data-[state=active]:!border-b-2 data-[state=active]:!border-b-gray-900 data-[state=active]:!text-gray-900 dark:data-[state=active]:!border-b-gray-200 dark:data-[state=active]:!text-gray-200" value="my_package">
             Current Package
           </TabsTrigger>
-          <TabsTrigger className="ml-8" value="billing-table">
+          <TabsTrigger className="ml-8 data-[state=active]:!border-b-2 data-[state=active]:!border-b-gray-900 data-[state=active]:!text-gray-900 dark:data-[state=active]:!border-b-gray-200 dark:data-[state=active]:!text-gray-200" value="billing-table">
             Purchase History
           </TabsTrigger>
-          <TabsTrigger className="ml-8" value="payment-method">
+          <TabsTrigger className="ml-8 data-[state=active]:!border-b-2 data-[state=active]:!border-b-gray-900 data-[state=active]:!text-gray-900 dark:data-[state=active]:!border-b-gray-200 dark:data-[state=active]:!text-gray-200" value="payment-method">
             Payment Method
           </TabsTrigger>
         </TabsList>

@@ -31,6 +31,7 @@ const steps = [
   "screening test",
   "aptitude test",
   "technical test",
+  "hr interview",
   "interview",
 ];
 

@@ -15,7 +15,6 @@ import { useState } from "react";
 
 const BillingTable = () => {
   const [selectedService, setSelectedService] = useState("All");
-  // const [selectedStatus, setSelectedStatus] = useState("All");
   const [orderDate, setOrderDate] = useState("");
 
   const services = ["All", "Free Package", "Standard Package"]
@@ -26,7 +25,7 @@ const BillingTable = () => {
       quotation: "20240609-28",
       date: "2024-06-09",
       service: "Free Package",
-      amount: "1000 BDT",
+      amount: "0 BDT",
       invoice: "14175 EDT",
     },
     {
@@ -60,7 +59,7 @@ const BillingTable = () => {
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="w-full sm:w-1/4 flex items-center justify-between hover:bg-white"
+              className="w-full sm:w-1/4 flex items-center justify-between hover:bg-white dark:border-gray-500"
             >
               {selectedService === "All"
                 ? "Filter by Service"
@@ -98,8 +97,8 @@ const BillingTable = () => {
       </div>
 
       {/* Table */}
-      <Table className="w-full">
-        <thead className="bg-gray-300 dark:bg-gray-700">
+      <Table className="w-full text-sm text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+        <thead className="bg-gray-800 dark:bg-gray-300 text-gray-200 dark:text-gray-800">
           <tr>
             <th className="p-2">SL</th>
             <th>Quotation No.</th>
@@ -112,7 +111,7 @@ const BillingTable = () => {
         <tbody className="bg-white dark:bg-gray-800">
           {filteredData.length > 0 ? (
             filteredData.map((item, idx) => (
-              <tr key={item.id} className="border-b text-sm">
+              <tr key={item.id} className="border-b text-sm hover:bg-gray-50 dark:hover:bg-gray-900">
                 <td className="p-2 text-center">{idx + 1}</td>
                 <td className="text-center">{item.quotation}</td>
                 <td className="text-center">{item.date}</td>

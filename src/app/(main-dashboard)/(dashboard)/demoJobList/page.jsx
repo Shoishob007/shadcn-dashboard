@@ -97,7 +97,7 @@ const JobList = ({ showFilters = true }) => {
       // Implement API call
     } else {
       console.log("Reason provided:", deleteDialog.reason);
-      // Implement logic to move job to junk box
+      // have to implement logic to move job to junk box
     }
     setDeleteDialog({ isOpen: false, job: null, password: "", reason: "" });
   };
@@ -180,7 +180,7 @@ const JobList = ({ showFilters = true }) => {
                 <Input
                   type="password"
                   placeholder="Enter password"
-                  value={deleteDialog.password}
+                  value={deleteDialog?.password}
                   onChange={(e) =>
                     setDeleteDialog((prev) => ({
                       ...prev,
@@ -191,7 +191,7 @@ const JobList = ({ showFilters = true }) => {
                 />
                 <Button
                   onClick={handleConfirmDelete}
-                  disabled={!deleteDialog.password.trim()}
+                  disabled={!deleteDialog?.password?.trim()}
                   className="mt-4"
                 >
                   Delete
@@ -215,7 +215,7 @@ const JobList = ({ showFilters = true }) => {
                 />
                 <Button
                   onClick={handleConfirmDelete}
-                  disabled={!deleteDialog.reason.trim()}
+                  disabled={!deleteDialog?.reason?.trim()}
                   className="mt-4"
                 >
                   Move to Junk Box
