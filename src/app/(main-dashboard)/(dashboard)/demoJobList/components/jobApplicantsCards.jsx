@@ -8,6 +8,9 @@ const JobApplicantsCards = ({
   calculateTotalExperience,
   handleViewDetails,
   socialMediaIcons,
+  viewCount,
+  setViewCount,
+  maxViews,
 }) => {
   return (
     <>
@@ -108,8 +111,20 @@ const JobApplicantsCards = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="w-full border dark:border-gray-500 transition-colors"
-                  onClick={() => handleViewDetails(applicant.id)}
+                  className={`w-full border dark:border-gray-500 transition-colors ${
+                    viewCount >= maxViews ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={() => {
+                    if (viewCount >= maxViews) {
+                      alert(
+                        "View limit reached. Upgrade your subscription to continue."
+                      );
+                    } else {
+                      setViewCount((prev) => prev + 1);
+                      handleViewDetails(applicant.id);
+                    }
+                  }}
+                  disabled={viewCount >= maxViews}
                 >
                   View Details
                 </Button>

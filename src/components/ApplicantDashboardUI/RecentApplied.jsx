@@ -65,7 +65,7 @@ const RecentApplied = () => {
                     </span>
                   </li>
                 </ul>
-                <div className="mt-4 text-sm text-gray-700 dark:text-gray-200 dark:text-gray-200">
+                <div className="mt-4 text-sm text-gray-700 dark:text-gray-200">
                   <p>
                     Status:
                     <span
