@@ -1,7 +1,7 @@
 "use client";
 
 import { Slider } from "@/components/ui/slider";
-import { cn } from "@/lib/utils"; // Ensure the cn utility is correctly defined
+import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"; // Import Tooltip components
 import { useState } from "react";
 
@@ -15,7 +15,6 @@ export default function ApplicantStepsBar() {
   return (
     <TooltipProvider>
       <div className="">
-        {/* Steps Progress Bar */}
         <div className="relative top-3 w-full h-3 bg-gray-300 rounded-full">
           <div
             className="absolute top-0 left-0 h-full bg-gradient-to-r from-green-200 to-green-500 rounded-full"
@@ -23,13 +22,12 @@ export default function ApplicantStepsBar() {
           ></div>
         </div>
 
-        {/* Step Indicators along the progress bar */}
         <div className="relative flex justify-between items-center text-xs font-medium text-muted-foreground">
           {ticks.map((_, i) => (
             <Tooltip key={i}>
               <TooltipTrigger asChild>
                 <div className="flex flex-col items-center justify-center gap-1">
-                  {/* Step bar indicator */}
+                
                   <div
                     className={cn(
                       "w-1 h-3 ",
