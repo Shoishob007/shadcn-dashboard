@@ -38,7 +38,6 @@ const MyApplications = () => {
 
   const totalPages = Math.ceil(filteredJobs.length / itemsPerPage);
 
-  // Pagination Logic
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentPaginatedJobs = filteredJobs.slice(startIndex, endIndex);
@@ -148,7 +147,6 @@ const ApplicationCards = ({ applications, handlePageChange, currentPage, totalPa
                   </div>
                 </CardHeader>
 
-                {/* Content with Job Application Details */}
                 <CardContent className="p-5 flex flex-col flex-grow">
                   <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-4">
                     {app.description.slice(0, 100)}...
@@ -195,7 +193,6 @@ const ApplicationCards = ({ applications, handlePageChange, currentPage, totalPa
                 </CardContent>
               </Link>
 
-              {/* Footer with Apply Button */}
               <hr className="border-gray-200" />
               <CardFooter className="flex justify-between items-center bg-gray-50 dark:bg-gray-800 p-5 rounded-b-md mt-auto">
                 <div className="w-full md:w-[60%]">
@@ -208,7 +205,6 @@ const ApplicationCards = ({ applications, handlePageChange, currentPage, totalPa
         ))}
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center mt-6 gap-2">
           <button
