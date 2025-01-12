@@ -12,6 +12,13 @@ import JobApplicantsCards from "../components/jobApplicantsCards";
 import ApplicantsTable from "../components/test/ApplicantsTable";
 import { orgSettings } from "../../demoAppList/components/org-settings";
 import GridListTooltip from "@/components/GridListTooltip";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const socialMediaIcons = {
   linkedin: FaLinkedin,
@@ -133,63 +140,86 @@ const DemoApplicants = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <JobInfoCard
-        applicants={applicants}
-        job={currentJobInfo}
-        isEditing={isEditing}
-        setIsEditing={setIsEditing}
-      />
+    <>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/demoJobList">Job List</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/demoJobApplicants">
+              Job Applicants
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
-      {!isEditing && (
-        <div className="flex-1">
-          <div className="flex items-center justify-between mb-4">
-            <ToggleGroupComponent
-              steps={steps}
-              selectedStep={selectedStep}
-              selectedStatus={selectedStatus}
-              setSelectedStep={setSelectedStep}
-              setSelectedStatus={setSelectedStatus}
-            />
-            {/* Floating Action Button */}
-            <div className="mr-2">
-              {/* Card View Icon */}
-              <GridListTooltip setViewMode={setViewMode} isListView={isListView}/>
+      <div className="space-y-6">
+        <JobInfoCard
+          applicants={applicants}
+          job={currentJobInfo}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+        />
+
+        {!isEditing && (
+          <div className="flex-1">
+            <div className="flex items-center justify-between mb-4">
+              <ToggleGroupComponent
+                steps={steps}
+                selectedStep={selectedStep}
+                selectedStatus={selectedStatus}
+                setSelectedStep={setSelectedStep}
+                setSelectedStatus={setSelectedStatus}
+              />
+              {/* Floating Action Button */}
+              <div className="mr-2">
+                {/* Card View Icon */}
+                <GridListTooltip
+                  setViewMode={setViewMode}
+                  isListView={isListView}
+                />
+              </div>
             </div>
-          </div>
-          {currentPaginatedApplicants.length > 0 ? (
-            isListView ? (
-              <ApplicantsTable
-                applicants={applicants}
-                calculateTotalExperience={calculateTotalExperience}
-                handleViewDetails={handleViewDetails}
-                viewCount={viewCount}
-                setViewCount={setViewCount}
-                maxViews={maxViews}
-              />
+            {currentPaginatedApplicants.length > 0 ? (
+              isListView ? (
+                <ApplicantsTable
+                  applicants={applicants}
+                  calculateTotalExperience={calculateTotalExperience}
+                  handleViewDetails={handleViewDetails}
+                  viewCount={viewCount}
+                  setViewCount={setViewCount}
+                  maxViews={maxViews}
+                />
+              ) : (
+                <JobApplicantsCards
+                  currentPaginatedApplicants={applicants}
+                  calculateTotalExperience={calculateTotalExperience}
+                  handleViewDetails={handleViewDetails}
+                  socialMediaIcons={socialMediaIcons}
+                  viewCount={viewCount}
+                  setViewCount={setViewCount}
+                  maxViews={maxViews}
+                />
+              )
             ) : (
-              <JobApplicantsCards
-                currentPaginatedApplicants={applicants}
-                calculateTotalExperience={calculateTotalExperience}
-                handleViewDetails={handleViewDetails}
-                socialMediaIcons={socialMediaIcons}
-                viewCount={viewCount}
-                setViewCount={setViewCount}
-                maxViews={maxViews}
-              />
-            )
-          ) : (
-            <p className="text-center text-gray-500">No applicants found!</p>
-          )}
-        </div>
-      )}
+              <p className="text-center text-gray-500">No applicants found!</p>
+            )}
+          </div>
+        )}
 
-      <OurPagination
-        totalPages={totalPaginationPages}
-        currentPage={currentPaginationPage}
-        onPageChange={(page) => setCurrentPaginationPage(page)}
-      />
-    </div>
+        <OurPagination
+          totalPages={totalPaginationPages}
+          currentPage={currentPaginationPage}
+          onPageChange={(page) => setCurrentPaginationPage(page)}
+        />
+      </div>
+    </>
   );
 };
 
