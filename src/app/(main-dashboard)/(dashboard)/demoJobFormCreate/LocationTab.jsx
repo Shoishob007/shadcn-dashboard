@@ -36,7 +36,7 @@ export function LocationTab({ form }) {
       <div className="grid grid-cols-1 gap-4">
         <FormField
           control={form.control}
-          name="location"
+          name="address"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Office Address</FormLabel>

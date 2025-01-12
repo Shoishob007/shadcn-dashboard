@@ -377,6 +377,11 @@
   @apply pt-2;
 }
 
+.e-calendar .e-header span, .e-bigger.e-small .e-calendar .e-header span {
+  border: 1px solid;
+  color: chocolate;
+}
+
 
 /* Dark Mode Styling */
 .dark .e-schedule {

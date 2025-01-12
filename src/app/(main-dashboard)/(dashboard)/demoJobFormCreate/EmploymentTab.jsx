@@ -84,7 +84,7 @@ export function EmploymentTab({ form }) {
           name="salary"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Salary Range</FormLabel>
+              <FormLabel>Salary</FormLabel>
               <FormControl className="dark:border-gray-400 ">
                 <Input {...field} placeholder="e.g. 80,000 - 100,000 BDT" />
               </FormControl>
