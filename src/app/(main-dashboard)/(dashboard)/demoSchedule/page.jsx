@@ -13,6 +13,13 @@ import { useTheme } from "next-themes";
 
 import { applicantsData } from "../demoAppList/components/applicantsData";
 import { registerLicense } from "@syncfusion/ej2-base";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 registerLicense(
   "Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf0x3TXxbf1x1ZFREal5WTnVZUiweQnxTdEFiW35XcHRXQWRdWEV2Vg=="
@@ -61,21 +68,34 @@ const Scheduler = () => {
   }
 
   return (
-    <div className="rounded-lg dark:bg-gray-800 p-4 border-none dark:border dark:border-gray-400">
-      <ScheduleComponent
-        currentView="Month"
-        eventSettings={{
-          dataSource: events,
-        }}
-        cssClass={theme === "dark" ? "dark" : "light"}
-      >
-        <ViewsDirective>
-          <ViewDirective option="Day" />
-          <ViewDirective option="Month" />
-        </ViewsDirective>
-        <Inject services={[Day, Month]} />
-      </ScheduleComponent>
-    </div>
+    <>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/demoSchedule">Event Schedule</BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="rounded-lg dark:bg-gray-800 border-none dark:border dark:border-gray-400">
+        <ScheduleComponent
+          currentView="Month"
+          eventSettings={{
+            dataSource: events,
+          }}
+          cssClass={theme === "dark" ? "dark" : "light"}
+        >
+          <ViewsDirective>
+            <ViewDirective option="Day" />
+            <ViewDirective option="Month" />
+          </ViewsDirective>
+          <Inject services={[Day, Month]} />
+        </ScheduleComponent>
+      </div>
+    </>
   );
 };
 

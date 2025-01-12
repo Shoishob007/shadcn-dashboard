@@ -14,6 +14,12 @@ import ApplicantsList from "./(main-dashboard)/(dashboard)/demoAppList/page";
 import { documents as jobApplicants } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobApplicants";
 import { documents as jobData } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobData";
 import JobList from "./(main-dashboard)/(dashboard)/demoJobList/page";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+} from "@/components/ui/breadcrumb";
 
 const allApplicants = jobApplicants.docs.flatMap((doc) =>
   doc.applicants.map((applicant) => ({
@@ -64,19 +70,25 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full">
-
       {currentRole === "applicant" ? (
         <ApplicantDashboardPage currentRole={currentRole} session={session} />
       ) : (
         <div>
-          <div className="mb-6 flex justify-between">
-            <div className="flex items-center gap-2">
+          <div className="mb-6 flex justify-between items-center">
+            {/* <div className="flex items-center gap-2">
               <span className="text-lg md:text-2xl">Welcome!</span>{" "}
               <h1 className="font-medium text-lg md:text-2xl">
                 {session?.user?.name}
               </h1>{" "}
               <Badge>{currentRole}</Badge>
-            </div>
+            </div> */}
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
             <div
               onClick={handleClick}
               className="hidden group text-gray-600 dark:text-gray-200 hover:text-white px-10 py-2 sm:flex flex-col items-center bg-white bg-gradient-to-tr from-white to-white dark:from-gray-800 dark:to-gray-800 rounded-md border-[1px] border-red-700 hover:from-rose-500 hover:to-orange-500 dark:hover:from-rose-600 dark:hover:to-orange-600 cursor-pointer"

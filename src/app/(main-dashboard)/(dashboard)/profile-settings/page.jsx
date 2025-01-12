@@ -7,6 +7,13 @@ import PageTitle from "@/components/PageTitle.jsx";
 import { usePathname } from "next/navigation";
 import FormatTitle from "@/components/TitleFormatter.js";
 import { useSession } from "next-auth/react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const ProfileDemo = () => {
   const pathname = usePathname();
@@ -14,7 +21,19 @@ const ProfileDemo = () => {
 
   return (
     <div>
-      <PageTitle title={pageTitle} className={"pb-4 ml-2"} />
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/profile-settings">
+              Profile Settings
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <section className="bg-white dark:bg-gray-900 p-6 shadow-md rounded-md">
         {/* Profile Header */}
         <ProfileHeader />

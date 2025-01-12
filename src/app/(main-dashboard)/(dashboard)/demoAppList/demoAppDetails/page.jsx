@@ -26,6 +26,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const ApplicantDetails = () => {
   const searchParams = useSearchParams();
@@ -97,6 +104,25 @@ const ApplicantDetails = () => {
 
   return (
     <>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/demoAppList">Applicants List</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              href={`/demoAppList/demoAppDetails?id=${applicantId}`}
+            >
+              {applicantName}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <Card className="w-full max-w-5xl mx-auto p-5 rounded-lg bg-white dark:bg-gray-800 grid grid-col-1 sm:grid-cols-3 gap-4 sm:gap-0 md:gap-4 overflow-hidden">
         {/* Left Section */}
         <div className="col-span-2 sm:col-span-1 bg-gray-50 dark:bg-gray-700 flex flex-col items-center justify-between py-6 rounded-lg">
@@ -329,9 +355,7 @@ const ApplicantDetails = () => {
             <div className="">
               <div className="flex items-center gap-2 border w-fit px-2 py-0.5 bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-200 border-black rounded-md">
                 <NotebookPen size={16} />{" "}
-                <h3 className="text-sm font-semibold">
-                  Academic Activities
-                </h3>
+                <h3 className="text-sm font-semibold">Academic Activities</h3>
               </div>
               {academicActivity &&
                 academicActivity.map((activity, index) => (

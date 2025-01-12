@@ -16,6 +16,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import JobCards from "./components/jobCards";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const getJobRoles = () => {
   const jobRoles = new Set();
@@ -127,105 +134,122 @@ const JobList = ({ showFilters = true }) => {
   }
 
   return (
-    <div className="space-y-3">
-      {showFilters && (
-        <JobFilters
-          jobs={documents.docs}
-          filters={filters}
-          onFilterChange={handleFilterChange}
-          jobRoles={jobRoles}
-          onReset={handleReset}
-          handleCreateJob={handleCreateJob}
-        />
-      )}
-
-      {filteredJobs.length > 0 ? (
-        <>
-          <JobCards
-            jobs={filteredJobs}
-            handleViewApplicantList={handleViewApplicantList}
-            handleViewJobDetails={handleViewJobDetails}
-            handleEditJob={handleEditJob}
-            handleDeleteJob={handleDeleteJob}
-            handleShareJob={handleShareJob}
+    <>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/demoJobList">Job List</BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="space-y-3">
+        {showFilters && (
+          <JobFilters
+            jobs={documents.docs}
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            jobRoles={jobRoles}
+            onReset={handleReset}
+            handleCreateJob={handleCreateJob}
           />
-          {/* Button to see all jobs */}
-          {!showFilters && (
-            <Button
-              onClick={() => router.push("/demoJobList")}
-              className="!mt-4 float-right"
-              size="sm"
-            >
-              See All Jobs
-            </Button>
-          )}
-        </>
-      ) : (
-        <p className="text-center text-gray-500">No jobs match your filters.</p>
-      )}
+        )}
 
-      {/* Delete Dialog */}
-      <Dialog
-        open={deleteDialog.isOpen}
-        onOpenChange={(isOpen) => setDeleteDialog({ ...deleteDialog, isOpen })}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Delete Job</DialogTitle>
-            {!deleteDialog.job?.published ? (
-              <>
-                <DialogDescription>
-                  Please enter your password to confirm deletion:
-                </DialogDescription>
-                <Input
-                  type="password"
-                  placeholder="Enter password"
-                  value={deleteDialog?.password}
-                  onChange={(e) =>
-                    setDeleteDialog((prev) => ({
-                      ...prev,
-                      password: e.target.value,
-                    }))
-                  }
-                  className="mt-2"
-                />
-                <Button
-                  onClick={handleConfirmDelete}
-                  disabled={!deleteDialog?.password?.trim()}
-                  className="mt-4"
-                >
-                  Delete
-                </Button>
-              </>
-            ) : (
-              <>
-                <DialogDescription>
-                  Please explain why you&apos;re deleting this job:
-                </DialogDescription>
-                <Input
-                  placeholder="Enter reason"
-                  value={deleteDialog.reason}
-                  onChange={(e) =>
-                    setDeleteDialog((prev) => ({
-                      ...prev,
-                      reason: e.target.value,
-                    }))
-                  }
-                  className="mt-2"
-                />
-                <Button
-                  onClick={handleConfirmDelete}
-                  disabled={!deleteDialog?.reason?.trim()}
-                  className="mt-4"
-                >
-                  Move to Junk Box
-                </Button>
-              </>
+        {filteredJobs.length > 0 ? (
+          <>
+            <JobCards
+              jobs={filteredJobs}
+              handleViewApplicantList={handleViewApplicantList}
+              handleViewJobDetails={handleViewJobDetails}
+              handleEditJob={handleEditJob}
+              handleDeleteJob={handleDeleteJob}
+              handleShareJob={handleShareJob}
+            />
+            {/* Button to see all jobs */}
+            {!showFilters && (
+              <Button
+                onClick={() => router.push("/demoJobList")}
+                className="!mt-4 float-right"
+                size="sm"
+              >
+                See All Jobs
+              </Button>
             )}
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    </div>
+          </>
+        ) : (
+          <p className="text-center text-gray-500">
+            No jobs match your filters.
+          </p>
+        )}
+
+        {/* Delete Dialog */}
+        <Dialog
+          open={deleteDialog.isOpen}
+          onOpenChange={(isOpen) =>
+            setDeleteDialog({ ...deleteDialog, isOpen })
+          }
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delete Job</DialogTitle>
+              {!deleteDialog.job?.published ? (
+                <>
+                  <DialogDescription>
+                    Please enter your password to confirm deletion:
+                  </DialogDescription>
+                  <Input
+                    type="password"
+                    placeholder="Enter password"
+                    value={deleteDialog?.password}
+                    onChange={(e) =>
+                      setDeleteDialog((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
+                    }
+                    className="mt-2"
+                  />
+                  <Button
+                    onClick={handleConfirmDelete}
+                    disabled={!deleteDialog?.password?.trim()}
+                    className="mt-4"
+                  >
+                    Delete
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <DialogDescription>
+                    Please explain why you&apos;re deleting this job:
+                  </DialogDescription>
+                  <Input
+                    placeholder="Enter reason"
+                    value={deleteDialog.reason}
+                    onChange={(e) =>
+                      setDeleteDialog((prev) => ({
+                        ...prev,
+                        reason: e.target.value,
+                      }))
+                    }
+                    className="mt-2"
+                  />
+                  <Button
+                    onClick={handleConfirmDelete}
+                    disabled={!deleteDialog?.reason?.trim()}
+                    className="mt-4"
+                  >
+                    Move to Junk Box
+                  </Button>
+                </>
+              )}
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </>
   );
 };
 

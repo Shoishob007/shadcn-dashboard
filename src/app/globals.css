@@ -203,6 +203,22 @@
 }
 
 
+.react-tel-input .flag-dropdown .country-list{
+  @apply dark:bg-gray-800 dark:text-gray-300
+}
+
+.react-tel-input .flag-dropdown .country-list > li{
+  @apply dark:hover:bg-gray-300 dark:hover:text-gray-800
+}
+
+.react-tel-input .country-list .country.highlight{
+  @apply dark:bg-gray-300 dark:text-gray-800
+}
+.react-tel-input .flag-dropdown.open, .react-tel-input .flag-dropdown.open .selected-flag{
+  @apply dark:bg-gray-800 dark:text-gray-300
+}
+
+
 
 .quill {
   border-radius: 5px;
@@ -264,6 +280,13 @@
 }
 
 
+.ql-toolbar.ql-snow {
+  @apply border-gray-300/20 dark:border-gray-400/80 shadow-sm
+}
+
+.ql-container.ql-snow {
+  @apply border-gray-300/20 dark:border-gray-400/80 shadow-sm
+}
 
 /* React Scheduler CSS */
 

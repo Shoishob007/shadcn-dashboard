@@ -93,8 +93,8 @@ export function StepsList({ availableSteps, selectedSteps, onStepsChange }) {
           >
             <div className="space-y-2">
               {selectedSteps.length === 0 ? (
-                <div className="flex flex-col h-full items-center justify-center text-center text-gray-700 dark:text-gray-400 bg-secondary dark:bg-gray-800 px-4 py-4 sm:py-8 rounded-md dark:border dark:border-gray-500">
-                  <FileWarning className="h-6 sm:h-10 w-6 sm:w-10 mb-2" />
+                <div className="flex flex-col h-full items-center justify-center text-center text-gray-700 dark:text-gray-400 bg-secondary dark:bg-gray-800 px-4 py-4 sm:py-12 rounded-md dark:border dark:border-gray-500">
+                  <FileWarning className="h-6 sm:h-12 w-6 sm:w-12 mb-2" />
                   <p className="text-xs sm:text-sm ">
                     No steps added yet. Add steps from the box and they will be
                     displayed here!

@@ -13,7 +13,6 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { SlidersHorizontal, SlidersVertical } from "lucide-react";
 
 export function EmploymentTab({ form }) {
   return (

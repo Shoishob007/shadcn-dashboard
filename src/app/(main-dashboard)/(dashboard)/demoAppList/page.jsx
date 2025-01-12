@@ -13,6 +13,13 @@ import ToggleGroupComponent from "../demoJobList/components/ToggleGroup";
 import ApplicantsTable from "../demoJobList/components/test/ApplicantsTable";
 import JobApplicantsCards from "../demoJobList/components/jobApplicantsCards";
 import GridListTooltip from "@/components/GridListTooltip";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const socialMediaIcons = {
   linkedin: FaLinkedin,
@@ -189,80 +196,93 @@ const ApplicantsList = ({ limitToThree = false }) => {
   );
 
   return (
-    <div className="space-y-6">
-      <div className="flex-1">
-        {!limitToThree && (
-          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-1 justify-between mb-4">
-            <ToggleGroupComponent
-              steps={steps}
-              selectedStep={selectedStep}
-              selectedStatus={selectedStatus}
-              setSelectedStep={setSelectedStep}
-              setSelectedStatus={setSelectedStatus}
-            />
-
-            <div className="flex items-center gap-4">
-              <AppFilters
-                applicants={jobApplicants.docs?.applicants}
-                filters={filters}
-                jobTitles={jobTitles}
-                onFilterChange={handleFilterChange}
-                onReset={handleReset}
+    <>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/demoAppList">Applicants List</BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="space-y-6">
+        <div className="flex-1">
+          {!limitToThree && (
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-1 justify-between mb-4">
+              <ToggleGroupComponent
+                steps={steps}
+                selectedStep={selectedStep}
+                selectedStatus={selectedStatus}
+                setSelectedStep={setSelectedStep}
+                setSelectedStatus={setSelectedStatus}
               />
-              <div className="mr-2 flex items-center shadow-md">
-                {/* Card View Icon */}
-                <GridListTooltip
-                  setViewMode={setViewMode}
-                  isListView={isListView}
+
+              <div className="flex items-center gap-4">
+                <AppFilters
+                  applicants={jobApplicants.docs?.applicants}
+                  filters={filters}
+                  jobTitles={jobTitles}
+                  onFilterChange={handleFilterChange}
+                  onReset={handleReset}
                 />
+                <div className="mr-2 flex items-center shadow-md">
+                  {/* Card View Icon */}
+                  <GridListTooltip
+                    setViewMode={setViewMode}
+                    isListView={isListView}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        )}
-        {currentPaginatedApplicants.length > 0 ? (
-          isListView ? (
-            <ApplicantsTable
-              applicants={currentPaginatedApplicants}
-              calculateTotalExperience={calculateTotalExperience}
-              handleViewDetails={handleViewDetails}
-              viewCount={viewCount}
-              setViewCount={setViewCount}
-              maxViews={maxViews}
-            />
+          )}
+          {currentPaginatedApplicants.length > 0 ? (
+            isListView ? (
+              <ApplicantsTable
+                applicants={currentPaginatedApplicants}
+                calculateTotalExperience={calculateTotalExperience}
+                handleViewDetails={handleViewDetails}
+                viewCount={viewCount}
+                setViewCount={setViewCount}
+                maxViews={maxViews}
+              />
+            ) : (
+              <JobApplicantsCards
+                currentPaginatedApplicants={currentPaginatedApplicants}
+                calculateTotalExperience={calculateTotalExperience}
+                handleViewDetails={handleViewDetails}
+                socialMediaIcons={socialMediaIcons}
+                viewCount={viewCount}
+                setViewCount={setViewCount}
+                maxViews={maxViews}
+              />
+            )
           ) : (
-            <JobApplicantsCards
-              currentPaginatedApplicants={currentPaginatedApplicants}
-              calculateTotalExperience={calculateTotalExperience}
-              handleViewDetails={handleViewDetails}
-              socialMediaIcons={socialMediaIcons}
-              viewCount={viewCount}
-              setViewCount={setViewCount}
-              maxViews={maxViews}
-            />
-          )
-        ) : (
-          <p className="text-center text-gray-500">No applicants found!</p>
+            <p className="text-center text-gray-500">No applicants found!</p>
+          )}
+        </div>
+
+        {!limitToThree && (
+          <OurPagination
+            totalPages={totalPaginationPages}
+            currentPage={currentPaginationPage}
+            onPageChange={(page) => setCurrentPaginationPage(page)}
+          />
+        )}
+
+        {limitToThree && (
+          <Button
+            onClick={() => router.push("/demoAppList")}
+            className="!mt-4 float-right"
+            size="sm"
+          >
+            See All Applicants
+          </Button>
         )}
       </div>
-
-      {!limitToThree && (
-        <OurPagination
-          totalPages={totalPaginationPages}
-          currentPage={currentPaginationPage}
-          onPageChange={(page) => setCurrentPaginationPage(page)}
-        />
-      )}
-
-      {limitToThree && (
-        <Button
-          onClick={() => router.push("/demoAppList")}
-          className="!mt-4 float-right"
-          size="sm"
-        >
-          See All Applicants
-        </Button>
-      )}
-    </div>
+    </>
   );
 };
 
