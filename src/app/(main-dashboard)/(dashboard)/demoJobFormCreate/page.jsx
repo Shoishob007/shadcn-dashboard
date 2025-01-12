@@ -17,20 +17,30 @@ import { RequirementsTab } from "./RequirementsTab";
 import { LocationTab } from "./LocationTab";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { jobSchema } from "../schemas/jobFormSchema";
+import {
+  basicInfoSchema,
+  employmentSchema,
+  jobSchema,
+  locationSchema,
+  requirementsSchema,
+} from "../schemas/jobFormSchema";
 import { Briefcase, GraduationCap, MapPin, ScrollText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 const tabs = ["Basic Info", "Employment", "Requirements", "Location"];
 
-const CreateJobForm = ({ onClose, jobId, initialData, isDialogOpen=false }) => {
-  //   const { data: session } = useSession();
+const CreateJobForm = ({
+  onClose,
+  jobId,
+  initialData,
+  isDialogOpen = false,
+}) => {
   const { toast } = useToast();
   const [isEditMode, setIsEditMode] = useState(Boolean(jobId));
 
   const form = useForm({
+    resolver: zodResolver(jobSchema),
     defaultValues: {
       jobStatus: initialData?.jobStatus ?? true,
       description: initialData?.description || "",
@@ -42,29 +52,74 @@ const CreateJobForm = ({ onClose, jobId, initialData, isDialogOpen=false }) => {
         initialData?.publishDate ?? new Date().toISOString().split("T")[0],
       skills: initialData?.skills ?? [],
       fieldOfStudy: initialData?.fieldOfStudy ?? [],
-      degreeLevel: initialData?.degreeLevel ?? "",
+      degreeLevel: initialData?.degreeLevel ?? [],
       ...(initialData || {
         jobStatus: true,
       }),
     },
   });
 
-  const { reset } = form;
+  const { reset, clearErrors } = form;
   const [currentTab, setCurrentTab] = useState(0);
 
   const nextTab = () =>
     setCurrentTab((prev) => (prev < tabs.length - 1 ? prev + 1 : prev));
   const prevTab = () => setCurrentTab((prev) => (prev > 0 ? prev - 1 : prev));
 
+  const validateCurrentTab = () => {
+    let schema;
+    switch (currentTab) {
+      case 0:
+        schema = basicInfoSchema;
+        break;
+      case 1:
+        schema = employmentSchema;
+        break;
+      case 2:
+        schema = requirementsSchema;
+        break;
+      case 3:
+        schema = locationSchema;
+        break;
+      default:
+        return true;
+    }
+
+    const fieldsToClear = Object.keys(schema.shape);
+    fieldsToClear.forEach((field) => clearErrors(field));
+  
+    const result = schema.safeParse(form.getValues());
+    if (!result.success) {
+      result.error.errors.forEach((error) => {
+        form.setError(error.path[0], { message: error.message });
+        console.log(result.error.errors);
+      });
+      return false;
+    }
+  
+    return true;
+  };
+
   const handleNext = async (e) => {
     e.preventDefault();
 
-    if (currentTab < tabs.length - 1) {
-      nextTab();
+    if (validateCurrentTab()) {
+      if (currentTab < tabs.length - 1) {
+        nextTab();
+      }
     }
   };
 
   const onSubmit = async (data) => {
+    const result = jobSchema.safeParse(data);
+
+    if (!result.success) {
+      result.error.errors.forEach((error) => {
+        form.setError(error.path[0], { message: error.message });
+      });
+      console.log(result.error.errors);
+      return;
+    }
     if (currentTab === tabs.length - 1) {
       if (isEditMode) {
         toast({
@@ -127,7 +182,11 @@ const CreateJobForm = ({ onClose, jobId, initialData, isDialogOpen=false }) => {
   };
 
   return (
-    <Card className={`w-full max-w-5xl mx-auto p-6 ${isDialogOpen ? " overflow-y-auto" : ""}`}>
+    <Card
+      className={`w-full max-w-5xl mx-auto p-6 ${
+        isDialogOpen ? " overflow-y-auto" : ""
+      }`}
+    >
       <CardHeader className="text-center p-4">
         <CardTitle className="text-lg sm:text-2xl font-semibold">
           {isEditMode ? "Edit Your Job" : "Create New Job"}

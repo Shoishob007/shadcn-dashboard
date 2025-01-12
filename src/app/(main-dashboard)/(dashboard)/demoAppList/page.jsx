@@ -7,19 +7,12 @@ import { documents as jobData } from "../demoJobList/components/jobData";
 import { orgSettings } from "./components/org-settings";
 import { FaFacebook, FaGoogle, FaLinkedin } from "react-icons/fa";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Grid2x2, List } from "lucide-react";
 import OurPagination from "@/components/Pagination";
 import { AppFilters } from "@/components/filters/JobFilters";
 import ToggleGroupComponent from "../demoJobList/components/ToggleGroup";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { motion } from "framer-motion";
 import ApplicantsTable from "../demoJobList/components/test/ApplicantsTable";
 import JobApplicantsCards from "../demoJobList/components/jobApplicantsCards";
+import GridListTooltip from "@/components/GridListTooltip";
 
 const socialMediaIcons = {
   linkedin: FaLinkedin,
@@ -218,59 +211,10 @@ const ApplicantsList = ({ limitToThree = false }) => {
               />
               <div className="mr-2 flex items-center shadow-md">
                 {/* Card View Icon */}
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className="p-0 bg-transparent hover:bg-transparent"
-                      >
-                        <motion.button
-                          onClick={() => setViewMode("card")}
-                          className={`p-1 md:p-2 duration-300 ${
-                            !isListView
-                              ? "bg-gray-900 text-white dark:bg-gray-300 dark:text-gray-800"
-                              : "bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-300"
-                          }`}
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <Grid2x2 className="h-6 w-6" />
-                        </motion.button>
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Card View</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className="p-0 bg-transparent hover:bg-transparent"
-                      >
-                        <motion.button
-                          onClick={() => setViewMode("list")}
-                          className={`p-1 md:p-2 duration-300 ${
-                            isListView
-                              ? "bg-gray-900 text-white dark:bg-gray-300 dark:text-gray-800"
-                              : "bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-300"
-                          }`}
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <List className="h-6 w-6" />
-                        </motion.button>
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>List View</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <GridListTooltip
+                  setViewMode={setViewMode}
+                  isListView={isListView}
+                />
               </div>
             </div>
           </div>
