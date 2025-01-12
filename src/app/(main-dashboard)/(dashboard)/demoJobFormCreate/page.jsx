@@ -177,7 +177,7 @@ const CreateJobForm = ({
 
   const handleDiscardEditing = () => {
     setIsEditMode(false);
-    onClose();
+    onClose?.();
     reset();
   };
 

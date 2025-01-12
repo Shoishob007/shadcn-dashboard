@@ -8,7 +8,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import dynamic from "next/dynamic";
-// import "react-quill-new/dist/quill.snow.css";
+import "react-quill-new/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import { StepsList } from "./components/List";
 import { stepsData } from "./components/stepsData";
@@ -173,7 +173,7 @@ export function BasicInfoTab({ form }) {
                 onChange={handleResponsibilitiesChange}
                 modules={modules}
                 theme="snow"
-                className="dark:bg-gray-800 dark:text-gray-400"
+                className="dark:bg-gray-800 dark:text-gray-400 react-quill"
                 placeholder="Detailed Job Responsibilities..."
               />
             </FormControl>

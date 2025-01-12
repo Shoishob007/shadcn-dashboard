@@ -2,6 +2,7 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
+import CountUp from "react-countup";
 
 export default function Card({ label, icon: Icon, amount, discription }) {
   return (
@@ -11,7 +12,8 @@ export default function Card({ label, icon: Icon, amount, discription }) {
         <Icon className="h-6 w-6 text-gray-400" />
       </section>
       <section className="flex flex-col gap-1">
-        <h2 className="text-2xl font-semibold dark:text-gray-200">{amount}</h2>
+        <h2 className="text-2xl font-semibold dark:text-gray-200">                  <CountUp start={0} end={amount} duration={2} delay={1} />
+        </h2>
         {/* <p className="text-xs text-gray-500 dark:text-gray-200">
           {discription}
         </p> */}
