@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import PricingDialogue from "./pricingDialogue";
 
 const JobApplicantsCards = ({
   currentPaginatedApplicants,
@@ -12,6 +13,8 @@ const JobApplicantsCards = ({
   setViewCount,
   maxViews,
 }) => {
+  const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
+
   return (
     <>
       <div className="applicantsListGrid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -112,19 +115,16 @@ const JobApplicantsCards = ({
                   variant="ghost"
                   size="sm"
                   className={`w-full border dark:border-gray-500 transition-colors ${
-                    viewCount >= maxViews ? "opacity-50 cursor-not-allowed" : ""
+                    viewCount >= maxViews ? "cursor-pointer" : ""
                   }`}
                   onClick={() => {
                     if (viewCount >= maxViews) {
-                      alert(
-                        "View limit reached. Upgrade your subscription to continue."
-                      );
+                      setIsPricingDialogOpen(true);
                     } else {
                       setViewCount((prev) => prev + 1);
                       handleViewDetails(applicant.id);
                     }
                   }}
-                  disabled={viewCount >= maxViews}
                 >
                   View Details
                 </Button>
@@ -133,6 +133,11 @@ const JobApplicantsCards = ({
           );
         })}
       </div>
+
+      {/* Rendering the Modal */}
+      {isPricingDialogOpen && (
+        <PricingDialogue onClose={() => setIsPricingDialogOpen(false)} />
+      )}
     </>
   );
 };

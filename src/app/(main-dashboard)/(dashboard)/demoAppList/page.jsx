@@ -75,7 +75,9 @@ const ApplicantsList = ({ limitToThree = false }) => {
   const [selectedStatus, setSelectedStatus] = useState("applied");
   const [selectedStep, setSelectedStep] = useState("");
   const [currentJob, setCurrentJob] = useState(null);
-  const [viewCount, setViewCount] = useState(2);
+  const [viewCount, setViewCount] = useState(
+    orgSettings.docs[0]?.numberOfCvViewed
+  );
   const maxViews = orgSettings.docs[0]?.subscriptionId === 1 ? 3 : Infinity;
 
   const [filters, setFilters] = useState({

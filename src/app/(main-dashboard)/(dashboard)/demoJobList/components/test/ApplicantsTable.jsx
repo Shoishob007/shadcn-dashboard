@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { StepSelector } from "../../../demoAppList/demoAppDetails/components/StepSelector";
 import { ScheduleModal } from "../../../demoAppList/demoAppDetails/components/ScheduleModal";
 import Link from "next/link";
+import PricingDialogue from "../pricingDialogue";
 
 const ApplicantsTable = ({
   applicants,
@@ -27,6 +28,7 @@ const ApplicantsTable = ({
     step: "",
   });
   const [applicantsState, setApplicantsState] = useState(applicants);
+  const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
 
   useEffect(() => {
     const updatedApplicants = applicants.map((applicant) => ({
@@ -311,16 +313,11 @@ const ApplicantsTable = ({
                               : "#"
                           }
                           className={`text-blue-500 hover:text-blue-700 inline-block ${
-                            viewCount >= maxViews
-                              ? "pointer-events-none text-gray-400"
-                              : ""
-                          }`}
+                            viewCount >= maxViews ? "cursor-pointer" : ""}`}
                           onClick={(e) => {
                             if (viewCount >= maxViews) {
                               e.preventDefault();
-                              alert(
-                                "View limit reached. Upgrade your subscription to continue."
-                              );
+                              setIsPricingDialogOpen(true);
                             } else {
                               setViewCount((prev) => prev + 1);
                             }
@@ -340,15 +337,11 @@ const ApplicantsTable = ({
                       <TooltipTrigger asChild className="ml-2">
                         <span
                           className={`cursor-pointer text-red-400 hover:text-red-500 inline-block ${
-                            viewCount >= maxViews
-                              ? "pointer-events-none text-gray-400"
-                              : ""
+                            viewCount >= maxViews ? "cursor-pointer" : ""
                           }`}
                           onClick={() => {
                             if (viewCount >= maxViews) {
-                              alert(
-                                "View limit reached. Upgrade your subscription to continue."
-                              );
+                              setIsPricingDialogOpen(true);
                             } else {
                               setViewCount((prev) => prev + 1);
                               if (applicant.CV) {
@@ -387,6 +380,10 @@ const ApplicantsTable = ({
         step={scheduleModal.step}
         onSchedule={handleSchedule}
       />
+
+      {isPricingDialogOpen && (
+        <PricingDialogue onClose={() => setIsPricingDialogOpen(false)} />
+      )}
     </>
   );
 };

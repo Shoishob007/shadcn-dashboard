@@ -7,14 +7,14 @@ export const plans = [
       "This package suits perfect for start-up organizations needing hiring tools. It offers few useful features very handy for keep records your organization.",
     features: [
       {
-        title: "Organization Login",
-        description: "You will get a robust login system for your organization.",
+        title: "Organization Login and Registration with mail",
+        description: "You will get a robust login and registration system for your organization.",
         icon: "🔐",
       },
       {
-        title: "Organization Registration with mail",
-        description: "Easily register your organization with email support.",
-        icon: "📧",
+        title: "Organization Dashboard",
+        description: "Browse all the applicants and jobs and see the metrics in one place.",
+        icon: "📊",
       },
     ],
   },
@@ -27,14 +27,14 @@ export const plans = [
       "This package suits perfect for growing organizations needing advanced tools. It offers useful features very handy for rapid growth of your organization.",
     features: [
       {
-        title: "Organization Login",
-        description: "You will get a robust login system for your organization.",
+        title: "Organization Login and Registration with mail",
+        description: "You will get a robust login and registration system for your organization.",
         icon: "🔐",
       },
       {
-        title: "Organization Registration with mail",
-        description: "Easily register your organization with email support.",
-        icon: "📧",
+        title: "Organization Dashboard",
+        description: "Browse all the applicants and jobs and see the metrics in one place.",
+        icon: "📊",
       },
       {
         title: "Dynamic Dashboard with Report",
@@ -67,14 +67,14 @@ export const plans = [
       "This package suits perfect for every organization needing advanced tools for extensive experience. It offers all the useful features very handy for rapid growth of your organization.",
     features: [
       {
-        title: "Organization Login",
-        description: "You will get a robust login system for your organization.",
+        title: "Organization Login and Registration with mail",
+        description: "You will get a robust login and registration system for your organization.",
         icon: "🔐",
       },
       {
-        title: "Organization Registration with mail",
-        description: "Easily register your organization with email support.",
-        icon: "📧",
+        title: "Organization Dashboard",
+        description: "Browse all the applicants and jobs and see the metrics in one place.",
+        icon: "📊",
       },
       {
         title: "Dynamic Dashboard with Report",

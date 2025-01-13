@@ -18,7 +18,7 @@ export const orgSettings = {
             beginning: "2024-10-26T12:00:00.000Z",
             ending: "2025-10-03T12:00:00.000Z",
             numberOfJobPosted: 2,
-            numberOfCvViewed: 2,
+            numberOfCvViewed: 3,
             updatedAt: "2024-10-29T10:41:44.608Z",
             createdAt: "2024-10-29T10:41:44.608Z"
         }

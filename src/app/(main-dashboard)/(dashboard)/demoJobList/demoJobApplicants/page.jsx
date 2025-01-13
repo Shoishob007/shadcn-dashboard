@@ -63,7 +63,7 @@ const DemoApplicants = () => {
   const [applicants, setApplicants] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [viewMode, setViewMode] = useState("card");
-  const [viewCount, setViewCount] = useState(2);
+  const [viewCount, setViewCount] = useState(orgSettings.docs[0]?.numberOfCvViewed);
   const maxViews = orgSettings.docs[0]?.subscriptionId === 1 ? 3 : Infinity;
 
   const isListView = viewMode === "list";
