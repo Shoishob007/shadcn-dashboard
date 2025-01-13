@@ -1,17 +1,23 @@
 /** @format */
 "use client";
 
-import SideNavbar from "@/components/SideNavbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
-import VerticalNavbar from "@/components/VerticalNavbar";
 import useLayoutStore from "@/stores/useLayoutStore";
 import { useWindowWidth } from "@react-hook/window-size";
 import { SessionProvider } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import dynamic from 'next/dynamic';
 import { cn } from "../lib/utils";
 import "./globals.css";
+
+const SideNavbar = dynamic(() => import('@/components/SideNavbar'), {
+  ssr: false,
+});
+const VerticalNavbar = dynamic(() => import('@/components/VerticalNavbar'), {
+  ssr: false,
+});
 
 export default function RootLayout({ children, session }) {
   const pathName = usePathname();

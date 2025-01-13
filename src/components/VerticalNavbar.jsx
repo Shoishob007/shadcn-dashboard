@@ -52,14 +52,6 @@ const VerticalNavbar = () => {
 
   const { currentRole, setRole } = useRoleStore();
 
-  if (status === "loading") {
-    return (
-      <div className="flex flex-col-reverse items-center justify-center h-40">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
   return (
     <nav
       className={`bg-white dark:bg-gray-800 ml-4 my-2 mr-4 py-4 px-2 sm:px-8 rounded-lg text-gray-500 dark:text-gray-200 shadow-md text-sm flex items-center

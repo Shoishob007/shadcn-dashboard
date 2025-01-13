@@ -9,30 +9,27 @@ import useLayoutStore from "@/stores/useLayoutStore";
 import useRoleStore from "@/stores/roleStore/useRoleStore";
 import { SidebarLinks } from "./SidebarLinks";
 import { LogOut } from "lucide-react";
-import { Button } from "./ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useRouter } from "next/navigation";
+import StaticSidebar from "./StaticSidebar";
 
 export default function SideNavbar() {
-  const { status, data: session } = useSession();
   const { isCollapsed } = useLayoutStore();
   const { currentRole } = useRoleStore();
   const { applicantLinks, organizationLinks } = SidebarLinks();
 
-  if (status === "loading") {
-    return (
-      <div className="flex flex-col-reverse items-center justify-center h-40">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  // if (status === "loading") {
+  //   return (
+  //     <div className="flex flex-col-reverse items-center justify-center h-40">
+  //       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+  //     </div>
+  //   );
+  // }
 
-  // Determine which links to display based on the current role
   const filteredLinks =
     currentRole === "applicant"
       ? applicantLinks.filter((link) => link.label !== "Get Started")
@@ -46,19 +43,7 @@ export default function SideNavbar() {
       )}
     >
       {/* Top section with logo */}
-      <div className="items-center text-center sm:mx-auto mb-4">
-        <Link href={"/"}>
-          <Image
-            src="/assests/Hirehub_Logo.png"
-            alt="Logo"
-            width={120}
-            height={120}
-            className={`rounded-lg items-center text-center inline ${
-              isCollapsed ? "p-2" : "p-0"
-            }`}
-          />
-        </Link>
-      </div>
+      <StaticSidebar />
 
       {/* Sidebar links */}
       <div className="flex-grow overflow-y-auto mb-4">
