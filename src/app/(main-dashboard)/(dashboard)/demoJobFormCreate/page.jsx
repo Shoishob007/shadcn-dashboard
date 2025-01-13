@@ -34,6 +34,8 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { orgSettings } from "../demoAppList/components/org-settings";
+import PricingDialogue from "../demoJobList/components/pricingDialogue";
 
 const tabs = ["Basic Info", "Employment", "Requirements", "Location"];
 
@@ -68,6 +70,11 @@ const CreateJobForm = ({
 
   const { reset, clearErrors } = form;
   const [currentTab, setCurrentTab] = useState(0);
+  const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
+  const [postCount, setPostCount] = useState(
+    orgSettings.docs[0]?.numberOfJobPosted
+  );
+  const maxPost = orgSettings.docs[0]?.subscriptionId === 1 ? 3 : Infinity;
 
   const nextTab = () =>
     setCurrentTab((prev) => (prev < tabs.length - 1 ? prev + 1 : prev));
@@ -118,6 +125,10 @@ const CreateJobForm = ({
   };
 
   const onSubmit = async (data) => {
+    if (isPricingDialogOpen) {
+      return;
+    }
+
     const result = jobSchema.safeParse(data);
 
     if (!result.success) {
@@ -136,6 +147,7 @@ const CreateJobForm = ({
         });
         console.log(data);
         reset();
+        reset({ skills: [], fieldOfStudy: [], degreeLevel: [] });
         onClose?.();
       } else {
         toast({
@@ -145,6 +157,8 @@ const CreateJobForm = ({
         });
         console.log(data);
         reset();
+        reset({ skills: [], fieldOfStudy: [], degreeLevel: [] });
+
       }
 
       //   try {
@@ -186,21 +200,26 @@ const CreateJobForm = ({
     setIsEditMode(false);
     onClose?.();
     reset();
+    reset({ skills: [], fieldOfStudy: [], degreeLevel: [] });
   };
 
   return (
     <>
-      <Breadcrumb className="mb-4">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/demoJobFormCreate">Job Form</BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      {!isDialogOpen && (
+        <Breadcrumb className="mb-4">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/demoJobFormCreate">
+                Job Form
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      )}
       <Card
         className={`w-full max-w-5xl mx-auto p-6 ${
           isDialogOpen ? " overflow-y-auto" : ""
@@ -286,9 +305,23 @@ const CreateJobForm = ({
                   >
                     Next
                   </Button>
-                ) : (
+                ) : isEditMode ? (
                   <Button className="px-3 py-1" type="submit">
-                    {isEditMode ? "Update" : "Create"}
+                    Update
+                  </Button>
+                ) : (
+                  <Button
+                    className="px-3 py-1"
+                    type="submit"
+                    onClick={() => {
+                      if (postCount >= maxPost) {
+                        setIsPricingDialogOpen(true);
+                      } else {
+                        setPostCount((prev) => prev + 1);
+                      }
+                    }}
+                  >
+                    Create
                   </Button>
                 )}
               </div>
@@ -296,6 +329,10 @@ const CreateJobForm = ({
           </form>
         </Form>
       </Card>
+      {/* Rendering the Modal */}
+      {isPricingDialogOpen && (
+        <PricingDialogue onClose={() => setIsPricingDialogOpen(false)} />
+      )}
     </>
   );
 };

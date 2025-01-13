@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ImagePlus } from "lucide-react";
 import { useId, useState } from "react";
 import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
+import Image from "next/image";
 
 export default function Component() {
   const id = useId();
@@ -160,7 +161,7 @@ function ProfileBg({
       <div
         className="relative flex h-full w-full items-center justify-center overflow-hidden bg-muted">
         {currentImage && (
-          <img
+          <Image
             className="h-full w-full object-cover"
             src={currentImage}
             alt={previewUrl ? "Preview of uploaded image" : "Default profile background"}
@@ -209,7 +210,7 @@ function Avatar({
       <div
         className="relative flex size-20 items-center justify-center overflow-hidden rounded-full border-4 border-background bg-muted shadow-sm shadow-black/10">
         {currentImage && (
-          <img
+          <Image
             src={currentImage}
             className="h-full w-full object-cover"
             width={80}

@@ -101,7 +101,7 @@ const JobList = ({ showFilters = true }) => {
   const handleConfirmDelete = () => {
     if (!deleteDialog.job.published) {
       console.log("Password provided:", deleteDialog.password);
-      // Implement API call
+      // API call
     } else {
       console.log("Reason provided:", deleteDialog.reason);
       // have to implement logic to move job to junk box
