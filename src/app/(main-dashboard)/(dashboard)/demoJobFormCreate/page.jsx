@@ -51,17 +51,19 @@ const CreateJobForm = ({
   const form = useForm({
     resolver: zodResolver(jobSchema),
     defaultValues: {
-      jobStatus: initialData?.jobStatus ?? true,
-      description: initialData?.description || "",
-      responsibilities: initialData?.responsibilities || [],
-      employeeBenefits: initialData?.employeeBenefits || [],
-      requirements: initialData?.requirements || [],
-      contactInfo: initialData?.contactInfo || "",
-      publishDate:
-        initialData?.publishDate ?? new Date().toISOString().split("T")[0],
-      skills: initialData?.skills ?? [],
-      fieldOfStudy: initialData?.fieldOfStudy ?? [],
-      degreeLevel: initialData?.degreeLevel ?? [],
+      // jobStatus: initialData?.jobStatus ?? true,
+      // description: initialData?.description || "",
+      // responsibilities: initialData?.responsibilities || [],
+      // employeeBenefits: initialData?.employeeBenefits || [],
+      // requirements: initialData?.requirements || [],
+      // contactInfo: initialData?.contactInfo || "",
+      // publishDate:
+      //   initialData?.publishDate ?? new Date().toISOString().split("T")[0],
+      //   address: initialData?.address || "",
+      //   email: initialData?.email || "",
+      // skills: initialData?.skills ?? [],
+      // fieldOfStudy: initialData?.fieldOfStudy ?? [],
+      // degreeLevel: initialData?.degreeLevel ?? [],
       ...(initialData || {
         jobStatus: true,
       }),
@@ -128,9 +130,9 @@ const CreateJobForm = ({
     if (isPricingDialogOpen) {
       return;
     }
-
+  
     const result = jobSchema.safeParse(data);
-
+  
     if (!result.success) {
       result.error.errors.forEach((error) => {
         form.setError(error.path[0], { message: error.message });
@@ -138,6 +140,7 @@ const CreateJobForm = ({
       console.log(result.error.errors);
       return;
     }
+  
     if (currentTab === tabs.length - 1) {
       if (isEditMode) {
         toast({
@@ -146,8 +149,7 @@ const CreateJobForm = ({
           variant: "ourSuccess",
         });
         console.log(data);
-        reset();
-        reset({ skills: [], fieldOfStudy: [], degreeLevel: [] });
+        handleFormReset();
         onClose?.();
       } else {
         toast({
@@ -156,56 +158,32 @@ const CreateJobForm = ({
           variant: "ourSuccess",
         });
         console.log(data);
-        reset();
-        reset({ skills: [], fieldOfStudy: [], degreeLevel: [] });
-
+        handleFormReset();
       }
-
-      //   try {
-      //     const requestData = {
-      //       organization: session?.organizationId,
-      //       ...data,
-      //     };
-      //     const response = await fetch(
-      //       `${process.env.NEXT_PUBLIC_API_URL}/api/jobs`,
-      //       {
-      //         method: "POST",
-      //         headers: {
-      //           "Content-Type": "application/json",
-      //           Authorization: `Bearer ${session?.access_token}`,
-      //         },
-      //         body: JSON.stringify(requestData),
-      //       }
-      //     );
-      //     if (!response.ok) {
-      //       throw new Error(`Error: ${response.statusText}`);
-      //     }
-      //     toast({
-      //       title: "Success",
-      //       description: "Job created successfully!",
-      //       variant: "ourSuccess",
-      //     });
-      //     onClose();
-      //   } catch (error) {
-      //     toast({
-      //       title: "Error",
-      //       description: "Failed to create job. Please try again.",
-      //       variant: "ourDestructive",
-      //     });
-      //   }
     }
   };
-
+  
+  const handleFormReset = () => {
+    reset();
+    form.reset({
+      skills: [],
+      degreeLevel: [],
+      fieldOfStudy: [],
+      requirements: [],
+      address: "",
+      email: "",
+    });
+  };
+  
   const handleDiscardEditing = () => {
     setIsEditMode(false);
     onClose?.();
-    reset();
-    reset({ skills: [], fieldOfStudy: [], degreeLevel: [] });
+    handleFormReset();
   };
 
   return (
     <>
-      {!isDialogOpen && (
+      {(!isDialogOpen && !isEditMode ) && (
         <Breadcrumb className="mb-4">
           <BreadcrumbList>
             <BreadcrumbItem>

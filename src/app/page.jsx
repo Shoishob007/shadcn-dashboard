@@ -3,7 +3,6 @@
 import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/demoAppList/components/applicantsData";
 import ApplicantDashboardPage from "@/components/ApplicantDashboardUI/ApplicantDashboardPage";
 import Card, { CardContent } from "@/components/Card";
-import { Badge } from "@/components/ui/badge";
 import useRoleStore from "@/stores/roleStore/useRoleStore";
 import { Briefcase, CalendarDays, Users } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -60,7 +59,6 @@ export default function Home() {
   const router = useRouter();
   const { currentRole, setRole } = useRoleStore();
   const { data: session } = useSession();
-  console.log("dashboard session", session);
   const [showFilters, setShowFilters] = useState(false);
   const [limitToThree, setLimitToThree] = useState(true);
 

@@ -16,4 +16,4 @@ export const useDegreeLevelStore = create((set) => ({
       set({ degreeTags: Array.isArray(degrees) ? degrees : [] });
     },
     resetDegrees: () => set({ degreeTags: [] }),
-}));
+  }));

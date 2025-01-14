@@ -59,11 +59,8 @@ export const jobSchema = z.object({
             message: "Date must be in the future",
         })
     ),
-    skills: z.array(z.string()).min(1, "At least one skill is required"),
-    degreeLevel: z.array(z.string()).min(1, "At least one degree is required"),
-    fieldOfStudy: z.array(z.string()).optional(),
     address: z.string().optional(),
     email: z.string().email("Invalid email"),
-    phone: z.string().min(1, "Phone number is required"),
+    phone: z.string().optional(),
     contactInfo: z.string().optional(),
 });

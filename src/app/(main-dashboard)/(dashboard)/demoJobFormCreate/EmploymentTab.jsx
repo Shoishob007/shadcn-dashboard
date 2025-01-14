@@ -81,6 +81,7 @@ export function EmploymentTab({ form }) {
         <FormField
           control={form.control}
           name="salary"
+          type="text"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Salary</FormLabel>
