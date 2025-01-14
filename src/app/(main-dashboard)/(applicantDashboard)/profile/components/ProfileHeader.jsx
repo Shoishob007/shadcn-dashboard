@@ -23,7 +23,7 @@ const ProfileHeader = ({ profileInfo }) => {
           </Button>
         </div>
       </div>
-      <div className="bg-white dark:bg-gray-800 shadow-sm p-6 rounded-b-[12px]">
+      <div className="p-6">
         {profileInfo.map((info) => (
           <div key={info.id} className="flex justify-between">
             <div className="flex gap-5">

@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 // import Educations from "./components/Educations";
 // import ProfileAbout from "./components/ProfileAbout";
 import ProfileHeader from "./components/ProfileHeader";
+import ProfileTabs from "./components/ProfileTabs";
+import { Separator } from "@/components/ui/separator";
 // import Projects from "./components/Projects";
 // import Resume from "./components/Resume";
 // import Skills from "./components/Skills";
@@ -33,12 +35,14 @@ const ApplicantProfile = () => {
     setProfileImage(session?.user?.image || "");
   }, [session]);
   return (
-    <div>
+    <div className="bg-white dark:bg-gray-800">
       {/* Profile Headaer part */}
       <ProfileHeader profileInfo={profileInfo} />
 
-      <div className=" mt-3">
-        <h1>Here I will added tab section</h1>
+      <Separator className="my-5 dark:bg-gray-200" />
+
+      <div className="  shadow-sm p-6">
+        <ProfileTabs />
       </div>
 
       {/*  
