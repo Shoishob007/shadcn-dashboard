@@ -1,4 +1,9 @@
-import { Badge } from "@/components/ui/badge";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+} from "@/components/ui/breadcrumb";
 import DashboardCardSection from "./DashboardCardSection";
 import FeaturedJobs from "./FeaturedJobs";
 import RecentApplied from "./RecentApplied";
@@ -7,13 +12,17 @@ const ApplicantDashboardPage = ({ currentRole, session }) => {
   return (
     <>
       <div className="flex items-center gap-2">
-        <span className="text-2xl">Welcome!</span>{" "}
-        <h1 className="font-medium text-2xl">{session?.user?.name || 'Emam Jion'}</h1>{" "}
-        <Badge>{currentRole}</Badge>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
       </div>
       <section className="mt-6">
         <DashboardCardSection />
-        <RecentApplied/>
+        <RecentApplied />
         <FeaturedJobs />
       </section>
     </>

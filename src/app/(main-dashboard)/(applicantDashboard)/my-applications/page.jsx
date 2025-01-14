@@ -1,6 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
 import { jobs } from "@/components/ApplicantDashboardUI/applicantJobData";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import {
   Card,
   CardContent,
@@ -9,13 +15,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MapPin, DollarSign, User } from "lucide-react";
+import { DollarSign, MapPin, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import companyLogo from "../../../../../public/assests/company.png";
 import ApplicantStepsBar from "./components/ApplicantStepsBar";
 import ApplicantionStatus from "./components/ApplicantionStatus";
-import { useSearchParams } from "next/navigation";
 
 const MyApplications = () => {
   const [selectedStatus, setSelectedStatus] = useState("Applied");
@@ -32,9 +39,9 @@ const MyApplications = () => {
   }, [statusFromQuery]);
 
   const filteredJobs =
-  selectedStatus === "Applied"
-    ? jobs.filter((job) => job.isApplied)
-    : jobs.filter((job) => job.isApplied && job.status === selectedStatus);
+    selectedStatus === "Applied"
+      ? jobs.filter((job) => job.isApplied)
+      : jobs.filter((job) => job.isApplied && job.status === selectedStatus);
 
   const totalPages = Math.ceil(filteredJobs.length / itemsPerPage);
 
@@ -50,7 +57,17 @@ const MyApplications = () => {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold mb-6">My Applications</h1>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/profile">My Applications</BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <Tabs
         value={selectedStatus}
         onValueChange={(value) => {
@@ -120,7 +137,12 @@ const MyApplications = () => {
   );
 };
 
-const ApplicationCards = ({ applications, handlePageChange, currentPage, totalPages }) => {
+const ApplicationCards = ({
+  applications,
+  handlePageChange,
+  currentPage,
+  totalPages,
+}) => {
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -154,11 +176,15 @@ const ApplicationCards = ({ applications, handlePageChange, currentPage, totalPa
                   <ul className="mt-3 text-sm text-gray-600 space-y-2">
                     <li className="flex items-center space-x-2">
                       <MapPin className="w-4 h-4 text-gray-500 dark:text-gray-300" />
-                      <span className="dark:text-gray-300">Location: {app.location}</span>
+                      <span className="dark:text-gray-300">
+                        Location: {app.location}
+                      </span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <DollarSign className="w-4 h-4 text-gray-500 dark:text-gray-300" />
-                      <span className="dark:text-gray-300">Salary: ${app.salary} per month </span>
+                      <span className="dark:text-gray-300">
+                        Salary: ${app.salary} per month{" "}
+                      </span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <User className="w-4 h-4 text-gray-500 dark:text-gray-300" />

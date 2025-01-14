@@ -4,9 +4,16 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 // import Educations from "./components/Educations";
 // import ProfileAbout from "./components/ProfileAbout";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
 import ProfileHeader from "./components/ProfileHeader";
 import ProfileTabs from "./components/ProfileTabs";
-import { Separator } from "@/components/ui/separator";
 // import Projects from "./components/Projects";
 // import Resume from "./components/Resume";
 // import Skills from "./components/Skills";
@@ -35,17 +42,29 @@ const ApplicantProfile = () => {
     setProfileImage(session?.user?.image || "");
   }, [session]);
   return (
-    <div className="bg-white dark:bg-gray-800">
-      {/* Profile Headaer part */}
-      <ProfileHeader profileInfo={profileInfo} />
+    <>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/profile">My Profile</BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="bg-white dark:bg-gray-800">
+        {/* Profile Headaer part */}
+        <ProfileHeader profileInfo={profileInfo} />
 
-      <Separator className="my-5 dark:bg-gray-200" />
+        <Separator className="my-5 dark:bg-gray-200" />
 
-      <div className="  shadow-sm p-6">
-        <ProfileTabs />
-      </div>
+        <div className="  shadow-sm p-6">
+          <ProfileTabs />
+        </div>
 
-      {/*  
+        {/*  
       <div className="bg-white dark:bg-gray-800 shadow-sm p-6 rounded-[12px] mt-3">
         <ProfileAbout profileInfo={profileInfo} />
         <Separator className="my-6 dark:bg-gray-200" />
@@ -62,7 +81,8 @@ const ApplicantProfile = () => {
         <SocialLinks />
       </div>
       */}
-    </div>
+      </div>
+    </>
   );
 };
 

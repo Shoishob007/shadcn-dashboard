@@ -1,6 +1,13 @@
 "use client";
 import { jobs } from "@/components/ApplicantDashboardUI/applicantJobData";
 import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import {
   Select,
   SelectContent,
   SelectGroup,
@@ -26,12 +33,16 @@ const JobSearch = () => {
   const sortJobs = (jobs) => {
     switch (filters.sortBy) {
       case "oldest":
-        return jobs.sort((a, b) => new Date(a.postedDate) - new Date(b.postedDate));
+        return jobs.sort(
+          (a, b) => new Date(a.postedDate) - new Date(b.postedDate)
+        );
       case "random":
         return jobs.sort(() => Math.random() - 0.5);
       case "newest":
       default:
-        return jobs.sort((a, b) => new Date(b.postedDate) - new Date(a.postedDate));
+        return jobs.sort(
+          (a, b) => new Date(b.postedDate) - new Date(a.postedDate)
+        );
     }
   };
 
@@ -66,76 +77,87 @@ const JobSearch = () => {
   };
 
   return (
-    <div className="overflow-hidden">
-      <h1 className="text-xl font-semibold">Job Search</h1>
+    <>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/profile">Jobs</BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="overflow-hidden">
+        {/* Filter Section */}
+        <div className="flex justify-between gap-4 mt-6 px-1">
+          <div className="w-full">
+            <SearchBar />
+          </div>
 
-      {/* Filter Section */}
-      <div className="flex justify-between gap-4 mt-6 px-1">
-        <div className="w-full">
-          <SearchBar />
+          <div className="flex items-center gap-2">
+            <Select onValueChange={handleSortChange}>
+              <SelectTrigger className="w-[180px] bg-white dark:bg-gray-800">
+                <SelectValue placeholder="Sort By (Default)" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="newest">Newest</SelectItem>
+                  <SelectItem value="oldest">Oldest</SelectItem>
+                  <SelectItem value="random">Random</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <JobFilter />
+          </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Select onValueChange={handleSortChange}>
-            <SelectTrigger className="w-[180px] bg-white dark:bg-gray-800">
-              <SelectValue placeholder="Sort By (Default)" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="newest">Newest</SelectItem>
-                <SelectItem value="oldest">Oldest</SelectItem>
-                <SelectItem value="random">Random</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <JobFilter />
+        {/* Job Listings */}
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {currentPaginatedJobs.length === 0 ? (
+            <p>No jobs found based on your filters.</p>
+          ) : (
+            currentPaginatedJobs.map((job) => (
+              <JobSearchCard key={job.id} job={job} />
+            ))
+          )}
         </div>
-      </div>
 
-      {/* Job Listings */}
-      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {currentPaginatedJobs.length === 0 ? (
-          <p>No jobs found based on your filters.</p>
-        ) : (
-          currentPaginatedJobs.map((job) => (
-            <JobSearchCard key={job.id} job={job} />
-          ))
+        {/* Pagination Controls */}
+        {filteredJobs.length > itemsPerPage && (
+          <div className="flex justify-center items-center mt-6 gap-2">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageChange(index + 1)}
+                className={`px-3 py-1 rounded-md ${
+                  currentPage === index + 1
+                    ? "bg-emerald-500 text-white"
+                    : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          </div>
         )}
       </div>
-
-      {/* Pagination Controls */}
-      {filteredJobs.length > itemsPerPage && (
-        <div className="flex justify-center items-center mt-6 gap-2">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Previous
-          </button>
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => handlePageChange(index + 1)}
-              className={`px-3 py-1 rounded-md ${
-                currentPage === index + 1
-                  ? "bg-emerald-500 text-white"
-                  : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
-              }`}
-            >
-              {index + 1}
-            </button>
-          ))}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Next
-          </button>
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 
