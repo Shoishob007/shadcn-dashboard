@@ -22,15 +22,16 @@ import { X } from "lucide-react";
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 export function RequirementsTab({ form }) {
-  const { skillTags, addSkill, removeSkill, initializeSkills } =
+  const { skillTags, addSkill, removeSkill, initializeSkills, resetSkills } =
     useSkillsStore();
-  const { degreeTags, addDegree, removeDegree, initializeDegrees } =
+  const { degreeTags, addDegree, removeDegree, initializeDegrees, resetDegrees } =
     useDegreeLevelStore();
   const {
     fieldOfStudyTags,
     addFieldOfStudy,
     removeFieldOfStudy,
     initializeFieldOfStudy,
+    resetStudyFields
   } = useStudyFieldStore();
 
   const [skillInputValue, setSkillInputValue] = useState("");
@@ -49,6 +50,14 @@ export function RequirementsTab({ form }) {
       ["clean"],
     ],
   };
+    // Reset stores when component unmounts
+    useEffect(() => {
+      return () => {
+        resetSkills();
+        resetDegrees();
+        resetStudyFields();
+      };
+    }, [resetSkills, resetDegrees, resetStudyFields]);
 
   // Initializing store values from form default values
   useEffect(() => {
@@ -59,7 +68,7 @@ export function RequirementsTab({ form }) {
     }
 
     if (defaultValues?.degreeLevel?.length > 0) {
-      initializeDegrees([defaultValues.degreeLevel]);
+      initializeDegrees(defaultValues.degreeLevel);
     }
 
     if (defaultValues?.fieldOfStudy?.length > 0) {
@@ -68,11 +77,16 @@ export function RequirementsTab({ form }) {
 
     const requirements = form.getValues("requirements") || [];
 
+    console.log("Degree Levels:", form.getValues("degreeLevel"));
+
+
     if (Array.isArray(requirements)) {
       const content = requirements.map((item) => `<p>${item}</p>`).join("");
       setRequirementsContent(content);
     }
   }, [form, initializeSkills, initializeDegrees, initializeFieldOfStudy]);
+  console.log(degreeTags)
+
 
   const handleRequirementsChange = (content) => {
     setRequirementsContent(content);
@@ -282,20 +296,20 @@ export function RequirementsTab({ form }) {
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
               {degreeTags.map((degree, index) => (
-                <div
-                  key={index}
-                  className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
-                >
-                  {degree}
-                  <button
-                    type="button"
-                    className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground"
-                    onClick={() => removeDegree(degree)}
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              ))}
+                  <div
+                    key={index}
+                    className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
+                    >
+                    {degree}
+                    <button
+                      type="button"
+                      className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground"
+                      onClick={() => removeDegree(degree)}
+                    >
+                    <X className="h-4 w-4"/>
+                    </button>
+                  </div>
+                ))}
             </div>
           </div>
         )}

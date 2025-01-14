@@ -51,12 +51,11 @@ const JobDetailsPage = () => {
         jobId={jobId}
         initialData={currentJobInfo}
         isEditing={isEditing}
-        onClose={() => setIsEditing(false)}
+        setIsEditing={setIsEditing}
       />
     );
   }
 
-  // const jobData = currentJobInfo
   const job = currentJobInfo;
   // console.log(job);
 
