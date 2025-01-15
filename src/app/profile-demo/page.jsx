@@ -1,12 +1,30 @@
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import ProfileHeader from "./components/ProfileHeader";
 import ProfileTabs from "./components/ProfileTabs";
 
 const ProfileDemo = () => {
   return (
-    <div>
-      <h1 className="text-xl font-semibold">My Profile!!</h1>
-      <section className="mt-6 bg-white p-4 shadow-lg rounded-md">
+    <>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/profile-demo">My Profile</BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+      <section className=" bg-white p-4 shadow-lg rounded-md">
         {/* Profile Header */}
         <ProfileHeader />
         <section className="my-8">
@@ -16,7 +34,7 @@ const ProfileDemo = () => {
           <ProfileTabs />
         </section>
       </section>
-    </div>
+    </>
   );
 };
 
