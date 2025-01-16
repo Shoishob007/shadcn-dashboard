@@ -15,11 +15,14 @@ import { Separator } from "@/components/ui/separator";
 import ProfileHeader from "./components/ProfileHeader";
 import ProfileTabs from "./components/ProfileTabs";
 import { House } from "lucide-react";
-// import Projects from "./components/Projects";
-// import Resume from "./components/Resume";
-// import Skills from "./components/Skills";
-// import SocialLinks from "./components/SocialLinks";
-// import WorkExperience from "./components/WorkExperience";
+import ProfileAbout from "./components/ProfileAbout";
+import Resume from "./components/Resume";
+import Skills from "./components/Skills";
+import WorkExperience from "./components/WorkExperience";
+import Educations from "./components/Educations";
+import Projects from "./components/Projects";
+import SocialLinks from "./components/SocialLinks";
+
 
 const ApplicantProfile = () => {
   const [profileInfo, setProfileInfo] = useState([]);
@@ -61,13 +64,13 @@ const ApplicantProfile = () => {
         {/* Profile Headaer part */}
         <ProfileHeader profileInfo={profileInfo} />
 
-        <Separator className="my-5 dark:bg-gray-200" />
+        {/* <Separator className="my-5 dark:bg-gray-200" />
 
         <div className="  shadow-sm p-6">
           <ProfileTabs />
-        </div>
+        </div> */}
 
-        {/*  
+         
       <div className="bg-white dark:bg-gray-800 shadow-sm p-6 rounded-[12px] mt-3">
         <ProfileAbout profileInfo={profileInfo} />
         <Separator className="my-6 dark:bg-gray-200" />
@@ -83,7 +86,7 @@ const ApplicantProfile = () => {
         <Separator className="my-6 dark:bg-gray-200" />
         <SocialLinks />
       </div>
-      */}
+     
       </div>
     </>
   );
