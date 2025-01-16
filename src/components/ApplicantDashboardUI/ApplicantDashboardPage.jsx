@@ -4,6 +4,7 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
 } from "@/components/ui/breadcrumb";
+import { House } from "lucide-react";
 import DashboardCardSection from "./DashboardCardSection";
 import FeaturedJobs from "./FeaturedJobs";
 import RecentApplied from "./RecentApplied";
@@ -15,7 +16,7 @@ const ApplicantDashboardPage = ({ currentRole, session }) => {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+              <BreadcrumbLink href="/"><House className="h-4 w-4" /></BreadcrumbLink>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
