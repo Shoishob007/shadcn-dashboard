@@ -2,7 +2,7 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { SquarePen, Users } from "lucide-react";
+import { House, SquarePen, Users } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { documents as jobDocuments } from "../components/jobData";
 import CreateJobForm from "../../demoJobFormCreate/page";
@@ -64,7 +64,9 @@ const JobDetailsPage = () => {
       <Breadcrumb className="mb-4">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href="/">
+              <House className="h-4 w-4" />
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

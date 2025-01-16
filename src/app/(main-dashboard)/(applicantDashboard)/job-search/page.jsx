@@ -19,6 +19,7 @@ import { useState } from "react";
 import JobFilter from "./components/JobFilter";
 import JobSearchCard from "./components/JobSearchCard";
 import SearchBar from "./components/SearchBar";
+import { House } from "lucide-react";
 
 const JobSearch = () => {
   const itemsPerPage = 6;
@@ -81,7 +82,9 @@ const JobSearch = () => {
       <Breadcrumb className="mb-4">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href="/">
+              <House className="h-4 w-4" />
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

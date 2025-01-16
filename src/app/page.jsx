@@ -4,7 +4,7 @@ import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/demoAppList/c
 import ApplicantDashboardPage from "@/components/ApplicantDashboardUI/ApplicantDashboardPage";
 import Card, { CardContent } from "@/components/Card";
 import useRoleStore from "@/stores/roleStore/useRoleStore";
-import { Briefcase, CalendarDays, Users } from "lucide-react";
+import { Briefcase, CalendarDays, House, Users } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -83,7 +83,7 @@ export default function Home() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+                  <BreadcrumbLink href="/"><House className="h-4 w-4" /></BreadcrumbLink>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
