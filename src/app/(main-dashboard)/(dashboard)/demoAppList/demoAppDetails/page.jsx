@@ -17,6 +17,7 @@ import {
   Settings,
   SquareActivity,
   File,
+  House,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StepSelector } from "./components/StepSelector";
@@ -107,7 +108,9 @@ const ApplicantDetails = () => {
       <Breadcrumb className="mb-4">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href="/">
+              <House className="h-4 w-4" />
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

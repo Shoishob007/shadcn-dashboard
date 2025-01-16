@@ -16,6 +16,16 @@ export const plans = [
         description: "Browse all the applicants and jobs and see the metrics in one place.",
         icon: "📊",
       },
+      {
+        title: "Social Media Share",
+        description: "Share all of your job posts along the social media",
+        icon: "📱",
+      },
+      {
+        title: "User Role Management",
+        description: "Share all of your job posts along the social media",
+        icon: "🧑‍💼",
+      },
     ],
   },
   {
@@ -41,6 +51,22 @@ export const plans = [
         description:
           "Access a dynamic dashboard with comprehensive reporting capabilities.",
         icon: "📊",
+      },
+      {
+        title: "Unlimited Applicants and CV viewing",
+        description:
+          "Post job as much as you want, and view the applicants in details",
+        icon: "📋",
+      },
+      {
+        title: "Social Media Share",
+        description: "Share all of your job posts along the social media",
+        icon: "📱",
+      },
+      {
+        title: "User Role Management",
+        description: "Share all of your job posts along the social media",
+        icon: "🧑‍💼",
       },
       {
         title: "Meeting link create & Share",
@@ -77,10 +103,26 @@ export const plans = [
         icon: "📊",
       },
       {
+        title: "Social Media Share",
+        description: "Share all of your job posts along the social media",
+        icon: "📱",
+      },
+      {
+        title: "User Role Management",
+        description: "Share all of your job posts along the social media",
+        icon: "🧑‍💼",
+      },
+      {
         title: "Dynamic Dashboard with Report",
         description:
           "Access a dynamic dashboard with comprehensive reporting capabilities.",
         icon: "📊",
+      },
+      {
+        title: "Unlimited Applicants and CV viewing",
+        description:
+          "Post job as much as you want, and view the applicants in details",
+        icon: "📋",
       },
       {
         title: "Meeting link create & Share",

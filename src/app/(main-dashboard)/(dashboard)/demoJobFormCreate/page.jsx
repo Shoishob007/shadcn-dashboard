@@ -24,7 +24,7 @@ import {
   locationSchema,
   requirementsSchema,
 } from "../schemas/jobFormSchema";
-import { Briefcase, GraduationCap, MapPin, ScrollText } from "lucide-react";
+import { Briefcase, GraduationCap, House, MapPin, ScrollText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import {
@@ -183,11 +183,13 @@ const CreateJobForm = ({
 
   return (
     <>
-      {(!isDialogOpen && !isEditMode ) && (
+      {!isDialogOpen && !isEditMode && (
         <Breadcrumb className="mb-4">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+              <BreadcrumbLink href="/">
+                <House className="h-4 w-4" />
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>

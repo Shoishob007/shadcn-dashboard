@@ -15,7 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DollarSign, MapPin, User } from "lucide-react";
+import { DollarSign, House, MapPin, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -60,7 +60,9 @@ const MyApplications = () => {
       <Breadcrumb className="mb-4">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href="/">
+              <House className="h-4 w-4" />
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

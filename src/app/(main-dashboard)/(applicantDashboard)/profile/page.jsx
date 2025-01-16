@@ -14,6 +14,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import ProfileHeader from "./components/ProfileHeader";
 import ProfileTabs from "./components/ProfileTabs";
+import { House } from "lucide-react";
 import ProfileAbout from "./components/ProfileAbout";
 import Resume from "./components/Resume";
 import Skills from "./components/Skills";
@@ -21,11 +22,7 @@ import WorkExperience from "./components/WorkExperience";
 import Educations from "./components/Educations";
 import Projects from "./components/Projects";
 import SocialLinks from "./components/SocialLinks";
-// import Projects from "./components/Projects";
-// import Resume from "./components/Resume";
-// import Skills from "./components/Skills";
-// import SocialLinks from "./components/SocialLinks";
-// import WorkExperience from "./components/WorkExperience";
+
 
 const ApplicantProfile = () => {
   const [profileInfo, setProfileInfo] = useState([]);
@@ -53,7 +50,9 @@ const ApplicantProfile = () => {
       <Breadcrumb className="mb-4">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href="/">
+              <House className="h-4 w-4" />
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

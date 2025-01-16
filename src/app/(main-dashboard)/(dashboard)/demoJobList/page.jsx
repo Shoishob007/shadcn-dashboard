@@ -23,6 +23,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { House } from "lucide-react";
 
 const getJobRoles = () => {
   const jobRoles = new Set();
@@ -139,7 +140,9 @@ const JobList = ({ showFilters = true }) => {
         <Breadcrumb className="mb-4">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+              <BreadcrumbLink href="/">
+                <House className="h-4 w-4" />
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
