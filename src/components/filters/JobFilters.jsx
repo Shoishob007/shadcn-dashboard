@@ -6,8 +6,6 @@ import { Plus, RotateCcw } from "lucide-react";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
 import CreateJobForm from "@/app/(main-dashboard)/(dashboard)/demoJobFormCreate/page.jsx";
 
@@ -41,7 +39,6 @@ export const JobFilters = ({
   filters,
   onFilterChange,
   onReset,
-  handleCreateJob,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -133,6 +130,8 @@ export const JobFilters = ({
     </div>
   );
 };
+
+
 export const AppFilters = ({
   applicants,
   filters,

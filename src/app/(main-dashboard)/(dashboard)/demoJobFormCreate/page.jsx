@@ -24,7 +24,13 @@ import {
   locationSchema,
   requirementsSchema,
 } from "../schemas/jobFormSchema";
-import { Briefcase, GraduationCap, House, MapPin, ScrollText } from "lucide-react";
+import {
+  Briefcase,
+  GraduationCap,
+  House,
+  MapPin,
+  ScrollText,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import {
@@ -127,12 +133,13 @@ const CreateJobForm = ({
   };
 
   const onSubmit = async (data) => {
+    console.log("right after submission :: ", data)
     if (isPricingDialogOpen) {
       return;
     }
-  
+
     const result = jobSchema.safeParse(data);
-  
+
     if (!result.success) {
       result.error.errors.forEach((error) => {
         form.setError(error.path[0], { message: error.message });
@@ -140,7 +147,7 @@ const CreateJobForm = ({
       console.log(result.error.errors);
       return;
     }
-  
+
     if (currentTab === tabs.length - 1) {
       if (isEditMode) {
         toast({
@@ -162,7 +169,7 @@ const CreateJobForm = ({
       }
     }
   };
-  
+
   const handleFormReset = () => {
     reset();
     form.reset({
@@ -174,7 +181,7 @@ const CreateJobForm = ({
       email: "",
     });
   };
-  
+
   const handleDiscardEditing = () => {
     setIsEditMode(false);
     onClose?.();
@@ -201,9 +208,7 @@ const CreateJobForm = ({
         </Breadcrumb>
       )}
       <Card
-        className={`w-full max-w-5xl mx-auto p-6 ${
-          isDialogOpen ? " overflow-y-auto" : ""
-        }`}
+        className={`w-full max-w-5xl mx-auto p-6 overflow-y-auto `}
       >
         <CardHeader className="text-center p-4">
           <CardTitle className="text-lg sm:text-2xl font-semibold">

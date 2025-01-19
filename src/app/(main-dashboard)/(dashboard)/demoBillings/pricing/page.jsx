@@ -9,19 +9,18 @@ import { useEffect, useState } from "react";
 const enterprisePlan = plans.find((plan) => plan.title === "Enterprise");
 const allFeatures = enterprisePlan.features.map((feature) => feature.title);
 
-
 const PricingCards = () => {
   const router = useRouter();
 
-    const [currentPlan, setCurrentPlan] = useState(null);
-    const currentSubscriptionId = orgSettings.docs[0]?.subscriptionId;
-  
-     useEffect(() => {
-       const current = plans.find((plan) => plan.id === currentSubscriptionId);
-       setCurrentPlan(current);
-     }, [currentSubscriptionId]);
+  const [currentPlan, setCurrentPlan] = useState(null);
+  const currentSubscriptionId = orgSettings.docs[0]?.subscriptionId;
 
-     if (!currentPlan) return null;
+  useEffect(() => {
+    const current = plans.find((plan) => plan.id === currentSubscriptionId);
+    setCurrentPlan(current);
+  }, [currentSubscriptionId]);
+
+  if (!currentPlan) return null;
 
   return (
     <div className="flex flex-wrap justify-center gap-6 p-4">
@@ -90,7 +89,7 @@ const PricingCards = () => {
               }
               className={`w-full py-2 text-white rounded-md font-normal text-sm ${
                 plan.recommended
-                  ? "bg-blue-500 dark:bg-blue-600 hover:bg-blue-500 hover:dark:bg-blue-400"
+                  ? "bg-blue-500 dark:bg-blue-600 hover:bg-blue-500 hover:dark:bg-blue-500"
                   : "bg-gray-700 dark:border-gray-800 hover:bg-gray-800 dark:hover:bg-gray-600"
               }`}
             >

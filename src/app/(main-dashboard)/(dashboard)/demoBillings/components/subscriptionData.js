@@ -79,9 +79,10 @@ export const plans = [
         icon: "📆",
       },
       {
-        title: "CV parsing and scoring",
-        description: "Automatically parse and score CVs for efficient hiring.",
-        icon: "📄",
+        title: "Customizable Pipeline",
+        description:
+          "Fully customize your hiring pipeline according to your company needs.",
+        icon: "🔧",
       },
     ],
   },
@@ -135,15 +136,15 @@ export const plans = [
         icon: "📆",
       },
       {
-        title: "CV parsing and scoring",
-        description: "Automatically parse and score CVs for efficient hiring.",
-        icon: "📄",
-      },
-      {
         title: "Customizable Pipeline",
         description:
           "Fully customize your hiring pipeline according to your company needs.",
         icon: "🔧",
+      },
+      {
+        title: "CV parsing and scoring",
+        description: "Automatically parse and score CVs for efficient hiring.",
+        icon: "📄",
       },
       {
         title: "API Integration",
@@ -166,20 +167,28 @@ export const plansData = {
           id: "6721e56c3842fc1a98bb445f",
           title: "Free",
           description:
-          "This package suits perfect for start-up organizations needing hiring tools. It offers few useful features very handy for keep records your organization.",          duration: 0,
+            "This package suits perfect for start-up organizations needing hiring tools. It offers few useful features very handy for keep records your organization.", duration: 0,
           price: 0,
           features: [
             {
-              id: "6721e56c3842fc1a98bb4461",
-              title: "Organization Login",
-              description: "You will get a robust login system for your organization.",
+              title: "Organization Login and Registration with mail",
+              description: "You will get a robust login and registration system for your organization.",
               icon: "🔐",
             },
             {
-              id: "6721e56c3842fc1a98bb4462",
-              title: "Organization Registration with mail",
-              description: "Easily register your organization with email support.",
-              icon: "📧",
+              title: "Organization Dashboard",
+              description: "Browse all the applicants and jobs and see the metrics in one place.",
+              icon: "📊",
+            },
+            {
+              title: "Social Media Share",
+              description: "Share all of your job posts along the social media",
+              icon: "📱",
+            },
+            {
+              title: "User Role Management",
+              description: "Share all of your job posts along the social media",
+              icon: "🧑‍💼",
             },
           ],
         },
@@ -187,54 +196,64 @@ export const plansData = {
           id: "6721e56c3842fc1a98bb4469",
           title: "Enterprise",
           description:
-      "This package suits perfect for every organization needing advanced tools for extensive experience. It offers all the useful features very handy for rapid growth of your organization.",
+            "This package suits perfect for every organization needing advanced tools for extensive experience. It offers all the useful features very handy for rapid growth of your organization.",
           duration: 12,
           price: 5900,
           features: [
             {
-              id: "6721e56c3842fc1a98bb4470",
-              title: "Organization Login",
-              description: "You will get a robust login system for your organization.",
+              title: "Organization Login and Registration with mail",
+              description: "You will get a robust login and registration system for your organization.",
               icon: "🔐",
             },
             {
-              id: "6721e56c3842fc1a98bb4471",
-              title: "Organization Registration with mail",
-              description: "Easily register your organization with email support.",
-              icon: "📧",
-            },
-            {
-              id: "6721e56c3842fc1a98bb4472",
-              title: "Dynamic Dashboard with Report",
-              description: "Access a dynamic dashboard with comprehensive reporting capabilities.",
+              title: "Organization Dashboard",
+              description: "Browse all the applicants and jobs and see the metrics in one place.",
               icon: "📊",
             },
             {
-              id: "6721e56c3842fc1a98bb4473",
+              title: "Social Media Share",
+              description: "Share all of your job posts along the social media",
+              icon: "📱",
+            },
+            {
+              title: "User Role Management",
+              description: "Share all of your job posts along the social media",
+              icon: "🧑‍💼",
+            },
+            {
+              title: "Dynamic Dashboard with Report",
+              description:
+                "Access a dynamic dashboard with comprehensive reporting capabilities.",
+              icon: "📊",
+            },
+            {
+              title: "Unlimited Applicants and CV viewing",
+              description:
+                "Post job as much as you want, and view the applicants in details",
+              icon: "📋",
+            },
+            {
               title: "Meeting link create & Share",
               description: "Easily create and share meeting links.",
               icon: "🤝",
             },
             {
-              id: "6721e56c3842fc1a98bb4474",
               title: "Calendar / Event / Schedule",
               description: "Manage events and schedules using an integrated calendar.",
               icon: "📆",
             },
             {
-              id: "6721e56c3842fc1a98bb4475",
               title: "CV parsing and scoring",
               description: "Automatically parse and score CVs for efficient hiring.",
               icon: "📄",
             },
             {
-              id: "6721e56c3842fc1a98bb4476",
               title: "Customizable Pipeline",
-              description: "Fully customize your hiring pipeline according to your company needs.",
+              description:
+                "Fully customize your hiring pipeline according to your company needs.",
               icon: "🔧",
             },
             {
-              id: "6721e56c3842fc1a98bb4477",
               title: "API Integration",
               description: "Integrate your system seamlessly with external APIs.",
               icon: "🔗",

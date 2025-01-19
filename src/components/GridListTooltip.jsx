@@ -21,7 +21,7 @@ const GridListTooltip = ({isListView, setViewMode}) => {
             >
               <motion.button
                 onClick={() => setViewMode("card")}
-                className={`p-2 duration-300 ${
+                className={`p-1 sm:p-2 duration-300 ${
                   !isListView
                     ? "bg-gray-900 text-white dark:bg-gray-300 dark:text-gray-800"
                     : "bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-300"
@@ -29,7 +29,7 @@ const GridListTooltip = ({isListView, setViewMode}) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Grid2x2 className="h-6 w-6" />
+                <Grid2x2 className="h-3 sm:h-6 w-3 sm:w-6" />
               </motion.button>
             </Button>
           </TooltipTrigger>
@@ -48,7 +48,7 @@ const GridListTooltip = ({isListView, setViewMode}) => {
             >
               <motion.button
                 onClick={() => setViewMode("list")}
-                className={`p-2 duration-300 ${
+                className={`p-1 sm:p-2 duration-300 ${
                   isListView
                     ? "bg-gray-900 text-white dark:bg-gray-300 dark:text-gray-800"
                     : "bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-300"
@@ -56,7 +56,7 @@ const GridListTooltip = ({isListView, setViewMode}) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <List className="h-6 w-6" />
+                <List className="h-3 sm:h-6 w-3 sm:w-6" />
               </motion.button>
             </Button>
           </TooltipTrigger>

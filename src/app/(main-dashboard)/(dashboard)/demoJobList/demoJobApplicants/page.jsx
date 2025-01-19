@@ -181,7 +181,7 @@ const DemoApplicants = () => {
                 setSelectedStatus={setSelectedStatus}
               />
               {/* Floating Action Button */}
-              <div className="mr-2">
+              <div className="mr-2 flex items-center shadow-md">
                 {/* Card View Icon */}
                 <GridListTooltip
                   setViewMode={setViewMode}

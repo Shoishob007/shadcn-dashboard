@@ -14,6 +14,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const JobDetailsPage = () => {
   const router = useRouter();
@@ -21,6 +22,7 @@ const JobDetailsPage = () => {
   const jobId = searchParams.get("jobId");
   const [currentJobInfo, setCurrentJobInfo] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     if (jobId) {
@@ -45,16 +47,10 @@ const JobDetailsPage = () => {
     router.push(`/demoJobList/demoJobApplicants?jobId=${jobId}`);
   };
 
-  if (isEditing) {
-    return (
-      <CreateJobForm
-        jobId={jobId}
-        initialData={currentJobInfo}
-        isEditing={isEditing}
-        setIsEditing={setIsEditing}
-      />
-    );
-  }
+  const handleEdit = () => {
+    setIsEditing(true);
+    setIsDialogOpen(true);
+  };
 
   const job = currentJobInfo;
   // console.log(job);
@@ -99,7 +95,7 @@ const JobDetailsPage = () => {
           <div className="flex flex-col gap-2">
             <div
               className="flex gap-2 items-center border p-1 rounded-sm dark:border-gray-300 cursor-pointer w-fit"
-              onClick={() => setIsEditing(true)}
+              onClick={handleEdit}
             >
               <SquarePen className="dark:text-gray-300" size={16} />{" "}
               <span className="text-xs sm:text-sm font-medium">Edit Job</span>
@@ -185,6 +181,22 @@ const JobDetailsPage = () => {
           </section>
         </div>
       </div>
+
+      {/* Dialog for Editing */}
+      <Dialog
+        open={isDialogOpen}
+        onOpenChange={(isOpen) => setIsDialogOpen(isOpen)}
+      >
+        <DialogContent className="flex flex-col h-[calc(100vh-20px)] max-w-3xl p-8 overflow-y-auto">
+          <CreateJobForm
+            jobId={job.id}
+            initialData={job}
+            isEditing={true}
+            onClose={() => setIsDialogOpen(false)}
+            className="flex-1"
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
