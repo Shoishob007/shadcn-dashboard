@@ -1,7 +1,10 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChangePassword from "./ChangePassword";
+import Educations from "./Educations";
+import Experiences from "./Experiences";
 import ProfileOverview from "./ProfileOverview";
 import Projects from "./Projects";
+import Resume from "./Resume";
 import Skills from "./Skills";
 
 const ProfileTabs = () => {
@@ -39,13 +42,13 @@ const ProfileTabs = () => {
             <ProfileOverview />
           </TabsContent>
           <TabsContent value="resume">
-            <h1>Resume</h1>
+            <Resume/>
           </TabsContent>
           <TabsContent value="educations">
-            <h1>Educations</h1>
+            <Educations/>
           </TabsContent>
           <TabsContent value="experiences">
-            <h1>Experiences</h1>
+            <Experiences/>
           </TabsContent>
           <TabsContent value="skills">
             <Skills />
