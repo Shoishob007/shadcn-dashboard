@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { Button } from "@/components/ui/button";
 import {
@@ -57,24 +57,14 @@ const CreateJobForm = ({
   const form = useForm({
     resolver: zodResolver(jobSchema),
     defaultValues: {
-      // jobStatus: initialData?.jobStatus ?? true,
-      // description: initialData?.description || "",
-      // responsibilities: initialData?.responsibilities || [],
-      // employeeBenefits: initialData?.employeeBenefits || [],
-      // requirements: initialData?.requirements || [],
-      // contactInfo: initialData?.contactInfo || "",
-      // publishDate:
-      //   initialData?.publishDate ?? new Date().toISOString().split("T")[0],
-      //   address: initialData?.address || "",
-      //   email: initialData?.email || "",
-      // skills: initialData?.skills ?? [],
-      // fieldOfStudy: initialData?.fieldOfStudy ?? [],
-      // degreeLevel: initialData?.degreeLevel ?? [],
+      steps: initialData?.steps || [],
       ...(initialData || {
         jobStatus: true,
       }),
     },
   });
+
+  console.log(initialData)
 
   const { reset, clearErrors } = form;
   const [currentTab, setCurrentTab] = useState(0);
@@ -133,12 +123,14 @@ const CreateJobForm = ({
   };
 
   const onSubmit = async (data) => {
-    console.log("right after submission :: ", data)
+    console.log("right after submission :: ", data);
     if (isPricingDialogOpen) {
       return;
     }
 
     const result = jobSchema.safeParse(data);
+
+    console.log("Result :: ", result)
 
     if (!result.success) {
       result.error.errors.forEach((error) => {
@@ -179,6 +171,7 @@ const CreateJobForm = ({
       requirements: [],
       address: "",
       email: "",
+      steps: [],
     });
   };
 
@@ -207,9 +200,7 @@ const CreateJobForm = ({
           </BreadcrumbList>
         </Breadcrumb>
       )}
-      <Card
-        className={`w-full max-w-5xl mx-auto p-6 overflow-y-auto `}
-      >
+      <Card className={`w-full max-w-5xl mx-auto p-6 overflow-y-auto `}>
         <CardHeader className="text-center p-4">
           <CardTitle className="text-lg sm:text-2xl font-semibold">
             {isEditMode ? "Edit Your Job" : "Create New Job"}
@@ -224,7 +215,6 @@ const CreateJobForm = ({
             <CardContent>
               <Tabs value={tabs[currentTab]} className="space-y-4">
                 <TabsList className="grid grid-cols-4 gap-4 bg-gray-200 dark:bg-gray-900 px-1 py-0">
-                  {/* Displaying only icons on small screens */}
                   {tabs.map((tab, index) => (
                     <TabsTrigger
                       key={tab}
@@ -314,7 +304,6 @@ const CreateJobForm = ({
           </form>
         </Form>
       </Card>
-      {/* Rendering the Modal */}
       {isPricingDialogOpen && (
         <PricingDialogue onClose={() => setIsPricingDialogOpen(false)} />
       )}
