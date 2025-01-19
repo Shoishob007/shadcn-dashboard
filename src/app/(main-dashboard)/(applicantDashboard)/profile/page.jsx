@@ -27,7 +27,6 @@ const ApplicantProfile = () => {
     const getProfileData = async () => {
       const res = await fetch("./applicant-profile.json");
       const data = await res.json();
-      //   console.log(data.docs);
       setProfileInfo(data.docs);
     };
     getProfileData();

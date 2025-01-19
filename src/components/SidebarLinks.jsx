@@ -32,7 +32,7 @@ export const SidebarLinks = () => {
     },
     {
       title: "Profile",
-      href: "/profile",
+      href: "/profile-demo",
       icon: UsersRound,
       variant: "ghost",
     },
