@@ -17,7 +17,6 @@ import { orgSettings } from "@/app/(main-dashboard)/(dashboard)/demoAppList/comp
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 export function BasicInfoTab({ form }) {
-  const [selectedSteps, setSelectedSteps] = useState([]);
   const [responsibilitiesContent, setResponsibilitiesContent] = useState("");
   const [benefitsContent, setBenefitsContent] = useState("");
   const currentSubscriptionId = orgSettings.docs[0]?.subscriptionId;
@@ -30,10 +29,13 @@ export function BasicInfoTab({ form }) {
       ["clean"],
     ],
   };
+
   useEffect(() => {
-    form.getValues("steps", selectedSteps);
+     const steps = form.getValues("steps") || [];
     const responsibilities = form.getValues("responsibilities") || [];
     const employeeBenefits = form.getValues("employeeBenefits") || [];
+
+    console.log(steps);
 
     if (Array.isArray(responsibilities)) {
       const content = responsibilities.map((item) => `<p>${item}</p>`).join("");
@@ -44,7 +46,7 @@ export function BasicInfoTab({ form }) {
       const content = employeeBenefits.map((item) => `<p>${item}</p>`).join("");
       setBenefitsContent(content);
     }
-  }, [form, selectedSteps]);
+  }, [form]);
 
   const handleResponsibilitiesChange = (content) => {
     setResponsibilitiesContent(content);
@@ -98,7 +100,7 @@ export function BasicInfoTab({ form }) {
               <Textarea
                 {...field}
                 placeholder="Detailed Job Overview..."
-                className="min-h-[70px] sm:min-h-[100px] dark:border-gray-400 "
+                className="min-h-[70px] sm:min-h-[100px] dark:border-gray-400"
               />
             </FormControl>
             <FormMessage />
@@ -123,6 +125,7 @@ export function BasicInfoTab({ form }) {
           </FormItem>
         )}
       />
+
       <FormField
         control={form.control}
         name="designation"
@@ -141,7 +144,6 @@ export function BasicInfoTab({ form }) {
         )}
       />
 
-      {/* Employee Benefits */}
       <FormField
         control={form.control}
         name="employeeBenefits"
@@ -163,7 +165,6 @@ export function BasicInfoTab({ form }) {
         )}
       />
 
-      {/* Job Responsibilities */}
       <FormField
         control={form.control}
         name="responsibilities"
@@ -186,14 +187,23 @@ export function BasicInfoTab({ form }) {
       />
 
       {currentSubscriptionId !== 1 && (
-        <div className="space-y-2">
-          <FormLabel>Recruiting Steps</FormLabel>
-          <StepsList
-            availableSteps={stepsData}
-            selectedSteps={selectedSteps}
-            onStepsChange={setSelectedSteps}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="steps"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Recruiting Steps</FormLabel>
+              <FormControl>
+                <StepsList
+                  availableSteps={stepsData}
+                  selectedSteps={field.value || []}
+                  onStepsChange={(steps) => form.setValue("steps", steps)}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       )}
     </div>
   );

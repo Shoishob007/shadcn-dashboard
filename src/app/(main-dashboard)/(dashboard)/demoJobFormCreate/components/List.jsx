@@ -63,6 +63,8 @@ export function StepsList({ availableSteps, selectedSteps, onStepsChange }) {
     };
 
     onStepsChange([...selectedSteps, newStep]);
+
+    console.log(selectedSteps)
   };
 
   const handleAddCustomStep = () => {
