@@ -31,7 +31,7 @@ const ChangePassword = () => {
             </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-4 mt-6">
             <div className="space-y-2">
               <Label className="text-base" htmlFor="currentPassword">Current Password</Label>
               <Input
