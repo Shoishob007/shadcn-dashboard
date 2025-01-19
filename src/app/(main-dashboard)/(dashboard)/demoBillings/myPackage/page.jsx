@@ -48,7 +48,7 @@ const MyPackage = () => {
     <div className="mx-auto max-w-5xl flex flex-col items-center bg-white dark:bg-gray-800">
       <Card className="grid grid-cols-1 sm:grid-cols-3 gap-2 shadow-none border-none">
         {/* Left Section */}
-        <div className="col-span-1 flex flex-col justify-center space-y-2 p-4">
+        <div className="col-span-1 flex flex-col space-y-2 p-4">
           <p className="text-emerald-600 text-base font-semibold capitalize">
             Current Packages
           </p>
@@ -84,11 +84,11 @@ const MyPackage = () => {
           </h2>
 
           {/* Features Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {bestPlanFeatures.map((feature) => (
               <div
                 key={feature.title}
-                className="flex flex-col items-start space-y-1 p-3 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm"
+                className="flex flex-col items-start space-y-1 px-3 py-2 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm"
               >
                 <div className="flex items-center space-x-2">
                   <div className="text-lg">{feature.icon}</div>

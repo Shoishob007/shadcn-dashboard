@@ -12,6 +12,7 @@ import "react-quill-new/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import { StepsList } from "./components/List";
 import { stepsData } from "./components/stepsData";
+import { orgSettings } from "@/app/(main-dashboard)/(dashboard)/demoAppList/components/org-settings";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
@@ -19,6 +20,7 @@ export function BasicInfoTab({ form }) {
   const [selectedSteps, setSelectedSteps] = useState([]);
   const [responsibilitiesContent, setResponsibilitiesContent] = useState("");
   const [benefitsContent, setBenefitsContent] = useState("");
+  const currentSubscriptionId = orgSettings.docs[0]?.subscriptionId;
 
   const modules = {
     toolbar: [
@@ -29,6 +31,7 @@ export function BasicInfoTab({ form }) {
     ],
   };
   useEffect(() => {
+    form.getValues("steps", selectedSteps);
     const responsibilities = form.getValues("responsibilities") || [];
     const employeeBenefits = form.getValues("employeeBenefits") || [];
 
@@ -41,7 +44,7 @@ export function BasicInfoTab({ form }) {
       const content = employeeBenefits.map((item) => `<p>${item}</p>`).join("");
       setBenefitsContent(content);
     }
-  }, [form]);
+  }, [form, selectedSteps]);
 
   const handleResponsibilitiesChange = (content) => {
     setResponsibilitiesContent(content);
@@ -182,14 +185,16 @@ export function BasicInfoTab({ form }) {
         )}
       />
 
-      <div className="space-y-2">
-        <FormLabel>Recruiting Steps</FormLabel>
-        <StepsList
-          availableSteps={stepsData}
-          selectedSteps={selectedSteps}
-          onStepsChange={setSelectedSteps}
-        />
-      </div>
+      {currentSubscriptionId !== 1 && (
+        <div className="space-y-2">
+          <FormLabel>Recruiting Steps</FormLabel>
+          <StepsList
+            availableSteps={stepsData}
+            selectedSteps={selectedSteps}
+            onStepsChange={setSelectedSteps}
+          />
+        </div>
+      )}
     </div>
   );
 }

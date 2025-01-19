@@ -14,7 +14,7 @@ export const orgSettings = {
                 _verified: true,
                 loginAttempts: 0
             },
-            subscriptionId: 1,
+            subscriptionId: 2,
             beginning: "2024-10-26T12:00:00.000Z",
             ending: "2025-10-03T12:00:00.000Z",
             numberOfJobPosted: 1,

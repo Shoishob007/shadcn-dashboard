@@ -23,7 +23,7 @@ import {
 import { House } from "lucide-react";
 
 registerLicense(
-  "Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf0x3TXxbf1x1ZFREal5WTnVZUiweQnxTdEFiW35XcHRXQWRdWEV2Vg=="
+  "Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCfEx3TXxbf1x1ZFREalxQTnVYUiweQnxTdEBjWH5XcHRVR2RcWEN3Xw=="
 );
 
 const Scheduler = () => {
