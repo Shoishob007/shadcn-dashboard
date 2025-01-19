@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Check, CloudUpload, FileText } from "lucide-react";
 import { useState } from "react";
 
-export default function ResumeUploader() {
+export default function ResumeUpload() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileURL, setFileURL] = useState("");
 
@@ -27,14 +27,8 @@ export default function ResumeUploader() {
   };
 
   return (
-    <div className=" p-6 bg-white">
-      <h2 className="text-xl font-semibold text-gray-800 mb-1">Resume</h2>
-      <p className="text-sm text-gray-500 mb-8">
-        Transform your resume into a powerful showcase that highlights your
-        skills and captures employer&apos;s attention.
-      </p>
-
-      {/* Upload Box */}
+    <div className=" bg-white">
+    {/* Upload Box */}
       <label
         htmlFor="file-upload"
         className="block w-full cursor-pointer border-2 border-dashed border-gray-300 rounded-xl p-6 text-center bg-gray-50 hover:bg-gray-100 hover:border-gray-600 transition"
