@@ -1,4 +1,3 @@
-// JobList.js
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -23,7 +22,8 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { House } from "lucide-react";
+import { House, Plus } from "lucide-react";
+import { FilterSheet } from "@/components/filters/FilterSheet";
 
 const getJobRoles = () => {
   const jobRoles = new Set();
@@ -137,32 +137,39 @@ const JobList = ({ showFilters = true }) => {
   return (
     <>
       {showFilters && (
-        <Breadcrumb className="mb-4">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">
-                <House className="h-4 w-4" />
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/demoJobList">Job List</BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <div className="flex justify-between items-center mb-4">
+          <Breadcrumb className="items-center">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">
+                  <House className="h-4 w-4" />
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/demoJobList">Job List</BreadcrumbLink>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+          <div className="flex justify-end gap-2 items-center">
+            <FilterSheet
+              jobs={documents.docs}
+              filters={filters}
+              onFilterChange={handleFilterChange}
+              onReset={handleReset}
+            />
+            <Button
+              onClick={handleCreateJob}
+              className="p-2 bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-gray-300"
+            >
+              <Plus className="h-3 w-3" />
+              <span className="text-xs hidden md:block">Post New Job</span>
+            </Button>
+          </div>
+        </div>
       )}
-      <div className="space-y-3">
-        {showFilters && (
-          <JobFilters
-            jobs={documents.docs}
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            jobRoles={jobRoles}
-            onReset={handleReset}
-            handleCreateJob={handleCreateJob}
-          />
-        )}
 
+      <div className="space-y-3">
         {filteredJobs.length > 0 ? (
           <>
             <JobCards

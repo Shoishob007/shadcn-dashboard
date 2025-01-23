@@ -21,7 +21,7 @@ const GridListTooltip = ({isListView, setViewMode}) => {
             >
               <motion.button
                 onClick={() => setViewMode("card")}
-                className={`p-1 sm:p-2 duration-300 ${
+                className={`p-1.5 sm:p-2 duration-300 ${
                   !isListView
                     ? "bg-gray-900 text-white dark:bg-gray-300 dark:text-gray-800"
                     : "bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-300"
@@ -48,7 +48,7 @@ const GridListTooltip = ({isListView, setViewMode}) => {
             >
               <motion.button
                 onClick={() => setViewMode("list")}
-                className={`p-1 sm:p-2 duration-300 ${
+                className={`p-1.5 sm:p-2 duration-300 ${
                   isListView
                     ? "bg-gray-900 text-white dark:bg-gray-300 dark:text-gray-800"
                     : "bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-300"
