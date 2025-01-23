@@ -14,7 +14,7 @@ const JobCard = ({job}) => {
         <CardHeader>
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 font-medium bg-gray-200 rounded-full flex items-center justify-center">
-            <span>{title.slice(0,1)}</span>
+            <span>{orgName.slice(0,1)}</span>
           </div>
           <div>
               <h1 className="text-[15px] font-medium">{orgName}</h1>
