@@ -127,7 +127,6 @@ const JobSearch = () => {
           )}
         </div>
 
-        {/* Pagination Controls */}
         {filteredJobs.length > itemsPerPage && (
           <div className="flex justify-center items-center mt-6 gap-2">
             <button
@@ -143,7 +142,7 @@ const JobSearch = () => {
                 onClick={() => handlePageChange(index + 1)}
                 className={`px-3 py-1 rounded-md ${
                   currentPage === index + 1
-                    ? "bg-emerald-500 text-white"
+                    ? "bg-black text-white"
                     : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
                 }`}
               >
