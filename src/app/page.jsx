@@ -3,6 +3,12 @@
 import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/demoAppList/components/applicantsData";
 import ApplicantDashboardPage from "@/components/ApplicantDashboardUI/ApplicantDashboardPage";
 import Card, { CardContent } from "@/components/Card";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+} from "@/components/ui/breadcrumb";
 import useRoleStore from "@/stores/roleStore/useRoleStore";
 import { Briefcase, CalendarDays, House, Users } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -13,12 +19,6 @@ import ApplicantsList from "./(main-dashboard)/(dashboard)/demoAppList/page";
 import { documents as jobApplicants } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobApplicants";
 import { documents as jobData } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobData";
 import JobList from "./(main-dashboard)/(dashboard)/demoJobList/page";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-} from "@/components/ui/breadcrumb";
 
 const allApplicants = jobApplicants.docs.flatMap((doc) =>
   doc.applicants.map((applicant) => ({
@@ -73,13 +73,6 @@ export default function Home() {
       ) : (
         <div>
           <div className="mb-6 flex justify-between items-center">
-            {/* <div className="flex items-center gap-2">
-              <span className="text-lg md:text-2xl">Welcome!</span>{" "}
-              <h1 className="font-medium text-lg md:text-2xl">
-                {session?.user?.name}
-              </h1>{" "}
-              <Badge>{currentRole}</Badge>
-            </div> */}
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
