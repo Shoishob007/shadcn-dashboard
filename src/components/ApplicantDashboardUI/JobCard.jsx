@@ -3,77 +3,41 @@ import {
   Card,
   CardContent,
   CardFooter,
-  CardHeader,
-  CardTitle,
+  CardHeader
 } from "@/components/ui/card";
-import { Clock, Code, DollarSign, MapPin, User } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
-import logo from "../../../public/assests/company.png";
+import SkillsDisplay from "./SkillsDisplay";
 
 const JobCard = ({ job }) => {
+  const { id, orgName, location, title, employeeType, skills, salary } = job
   return (
     <Link href={`/job-detail/${job.id}`} className="">
-      <Card className="w-full shadow hover:border hover:border-black duration-300 bg-white dark:bg-gray-800 rounded cursor-pointer">
-        {/* Header with Company Logo and Name */}
-        
-        <CardHeader className="flex items-center space-x-4  p-5 rounded-t-md"> {/* bg-gray-50 dark:bg-gray-800 */}
-          <Image
-            src={logo}
-            width={50}
-            height={50}
-            alt="logo"
-            className="rounded-full border border-gray-300"
-          />
+      <Card className="w-full hover:border hover:border-black duration-300 cursor-pointer">
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 font-medium bg-gray-200 rounded-full flex items-center justify-center">
+            <span>{orgName.slice(0,1)}</span>
+          </div>
           <div>
-            <CardTitle className="text-xl font-semibold text-gray-800 dark:text-gray-200">
-              {job.title}
-            </CardTitle>
-            <p className="text-sm text-center text-gray-500 dark:text-gray-400">{job.orgName}</p>
+              <h1 className="text-[15px] font-medium">{orgName}</h1>
+              <p className="text-xs">{location}</p>
+          </div>
           </div>
         </CardHeader>
-
-        {/* Content with Job Details */}
-        <CardContent className="p-5 flex flex-col justify-between">
-          <p className="text-sm text-gray-600 dark:text-gray-200 leading-relaxed line-clamp-4">
-            {job.description.slice(0, 150)}...
-          </p>
-          <ul className="mt-3 text-sm text-gray-600 dark:text-gray-200 space-y-2">
-            <li className="flex items-center space-x-2">
-              <MapPin className="w-4 h-4 text-gray-500 dark:text-gray-200" />
-              <span>Location: {job.location}</span>
-            </li>
-            <li className="flex items-center space-x-2">
-              <DollarSign className="w-4 h-4 text-gray-500 dark:text-gray-200" />
-              <span>Salary: ${job.salary}/month</span>
-            </li>
-            <li className="flex items-center space-x-2">
-              <Clock className="w-4 h-4 text-gray-500 dark:text-gray-200" />
-              <span>Employment Type: {job.employeeType}</span>
-            </li>
-            <li className="flex items-center space-x-2">
-              <User className="w-4 h-4 text-gray-500 dark:text-gray-200" />
-              <span>
-                Experience: {job.yearOfExperience} years of experience
-              </span>
-            </li>
-            <li className="flex items-center space-x-2">
-              <Code className="w-4 h-4 text-gray-500 dark:text-gray-200" />
-              <span>Skills: {job.skills.map((skill, i) => (<span key={i}>{skill},</span>))}</span>
-            </li>
-          </ul>
+        <CardContent>
+          <div>
+            <h1 className="text-[17px] font-semibold">{title}</h1>
+            <span className={`text-xs font-semibold capitalize ${employeeType === 'full-time' ? 'text-[#20c997]' : employeeType === 'contractual' ? 'text-[#ffc107]' : employeeType === 'part-time' ? 'text-[#6610f2]' : 'text-black'}`}>{employeeType}</span>
+            <div className="mt-2">
+              <SkillsDisplay skills={skills} />
+            </div>
+          </div>
         </CardContent>
-
-        {/* Footer with Border and Apply Button 
-        <hr className="border-gray-200" />
-        <CardFooter className="flex justify-between items-center bg-gray-50 dark:bg-gray-800 p-5 rounded-b-md mt-auto">
-          <p className="text-sm text-gray-500 dark:text-gray-200">Posted: {job.published}</p>
-          <Button>View Details</Button>
-        </CardFooter>
-        */}
-        <hr className="border-gray-200" />
-        <CardFooter className='p-5 flex justify-center items-center'>
-          <p className="text-sm text-gray-500  dark:text-gray-200">Posted: {job.published}</p>
+        <CardFooter className="flex justify-between">
+          <div>
+            <div><span className="font-bold">${salary}</span><span className="text-sm">/month</span></div>
+          </div>
+            <Button variant='outline' size='sm'>View Details</Button>
         </CardFooter>
       </Card>
     </Link>
