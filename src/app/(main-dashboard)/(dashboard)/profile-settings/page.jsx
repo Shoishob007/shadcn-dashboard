@@ -3,10 +3,7 @@
 import { Separator } from "@/components/ui/separator";
 import ProfileHeader from "./components/ProfileHeader.jsx";
 import ProfileTabs from "./components/ProfileTabs.jsx";
-import PageTitle from "@/components/PageTitle.jsx";
 import { usePathname } from "next/navigation";
-import FormatTitle from "@/components/TitleFormatter.js";
-import { useSession } from "next-auth/react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,8 +14,6 @@ import {
 import { House } from "lucide-react";
 
 const ProfileDemo = () => {
-  const pathname = usePathname();
-  const pageTitle = FormatTitle(pathname);
 
   return (
     <div>
