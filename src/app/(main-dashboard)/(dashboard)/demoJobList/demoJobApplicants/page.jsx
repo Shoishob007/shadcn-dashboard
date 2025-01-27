@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { FaFacebook, FaGoogle, FaLinkedin } from "react-icons/fa";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -64,11 +65,12 @@ const DemoApplicants = () => {
   const [applicants, setApplicants] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [viewMode, setViewMode] = useState("card");
-  const [viewCount, setViewCount] = useState(orgSettings.docs[0]?.numberOfCvViewed);
+  const [viewCount, setViewCount] = useState(
+    orgSettings.docs[0]?.numberOfCvViewed
+  );
   const maxViews = orgSettings.docs[0]?.subscriptionId === 1 ? 3 : Infinity;
 
   const isListView = viewMode === "list";
-  console.log(viewCount, setViewCount, maxViews);
 
   useEffect(() => {
     if (jobId) {
@@ -89,7 +91,7 @@ const DemoApplicants = () => {
     }
   }, [jobId]);
 
-  // Filtering logic
+  // Updated Filtering Logic
   const filteredApplicants = applicants.filter((applicant) => {
     const applicantStatus = applicant.status || "applied";
 
@@ -98,19 +100,18 @@ const DemoApplicants = () => {
         applicantStatus === "applied" ||
         applicantStatus === "shortlisted" ||
         applicantStatus === "hired" ||
-        applicantStatus === "rejected" ||
-        !applicant.status
+        applicantStatus === "rejected" || !applicantStatus
       );
     }
 
-    if (selectedStatus === "shortlisted" && selectedStep === "all") {
-      return applicantStatus === "shortlisted";
-    }
-
-    if (selectedStatus === "shortlisted" && selectedStep !== "all") {
-      return (
-        applicantStatus === "shortlisted" && applicant.steps === selectedStep
-      );
+    if (selectedStatus === "shortlisted") {
+      if (selectedStep === "all") {
+        return applicantStatus === "shortlisted";
+      } else {
+        return (
+          applicantStatus === "shortlisted" && applicant.steps === selectedStep
+        );
+      }
     }
 
     return selectedStatus === applicantStatus;
@@ -121,13 +122,13 @@ const DemoApplicants = () => {
   };
 
   useEffect(() => {
-    const applicants = filteredApplicants;
-    setFilteredApplicantsList(applicants);
-  }, [selectedStatus, selectedStep]);
+    console.log("Filtered Applicants:", filteredApplicants);
+    setFilteredApplicantsList(filteredApplicants);
+  }, [selectedStatus, selectedStep, applicants]);
 
   const startIndex = (currentPaginationPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentPaginatedApplicants = filteredApplicants.slice(
+  const currentPaginatedApplicants = filteredApplicantsList.slice(
     startIndex,
     endIndex
   );
@@ -180,9 +181,7 @@ const DemoApplicants = () => {
                 setSelectedStep={setSelectedStep}
                 setSelectedStatus={setSelectedStatus}
               />
-              {/* Floating Action Button */}
               <div className="mr-2 flex items-center shadow-md">
-                {/* Card View Icon */}
                 <GridListTooltip
                   setViewMode={setViewMode}
                   isListView={isListView}
@@ -192,7 +191,7 @@ const DemoApplicants = () => {
             {currentPaginatedApplicants.length > 0 ? (
               isListView ? (
                 <ApplicantsTable
-                  applicants={applicants}
+                  applicants={currentPaginatedApplicants}
                   calculateTotalExperience={calculateTotalExperience}
                   handleViewDetails={handleViewDetails}
                   viewCount={viewCount}
@@ -201,7 +200,7 @@ const DemoApplicants = () => {
                 />
               ) : (
                 <JobApplicantsCards
-                  currentPaginatedApplicants={applicants}
+                  currentPaginatedApplicants={currentPaginatedApplicants}
                   calculateTotalExperience={calculateTotalExperience}
                   handleViewDetails={handleViewDetails}
                   socialMediaIcons={socialMediaIcons}
@@ -226,4 +225,4 @@ const DemoApplicants = () => {
   );
 };
 
-export default DemoApplicants;
+export default DemoApplicants
