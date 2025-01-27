@@ -1,13 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { SearchBar } from "./SearchBar.jsx";
 import { RangeFilter } from "./RangeFilters";
 import { Button } from "@/components/ui/button";
-import { Plus, RotateCcw } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
-import CreateJobForm from "@/app/(main-dashboard)/(dashboard)/demoJobFormCreate/page.jsx";
+import { RotateCcw } from "lucide-react";
 
 const statusOptions = [
   { label: "Any Status", value: "all" },
@@ -34,103 +29,65 @@ const sortOptions = [
   { label: "Oldest First", value: "oldest" },
 ];
 
-export const JobFilters = ({
-  jobs,
-  filters,
-  onFilterChange,
-  onReset,
-}) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
+export const JobFilters = ({ jobs, filters, onFilterChange, onReset }) => {
   return (
-    <div className="flex mx-auto max-w-5xl items-center">
-      <div className="w-full space-y-2 dark:bg-gray-900 rounded-lg">
+    <div className="w-full max-w-4xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <div className="space-y-4">
         <div className="flex flex-col gap-4">
-          {/* Search bar and Range Filters */}
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
-            <div className="flex items-center gap-4">
-              <SearchBar
-                jobs={jobs}
-                placeholder="Search by title, location, organization..."
-                value={filters.searchQuery}
-                onSearch={(value) => onFilterChange("searchQuery", value)}
-              />
-              <div className="block md:hidden">
-                {/* Reset button */}
-                <Button
-                  variant="outline"
-                  onClick={onReset}
-                  className="flex items-center gap-2 p-2 dark:border-gray-500 dark:hover:bg-gray-900 h-7 md:h-9"
-                >
-                  <RotateCcw className="w-2 h-2" />
-                  <span className=" text-[10px] md:text-xs">Reset</span>
-                </Button>
-              </div>
-            </div>
-
-            <div className="flex gap-0 md:gap-4">
-              {/* Range Filters */}
+          <SearchBar
+            jobs={jobs}
+            placeholder="Search by title, location, organization..."
+            value={filters.searchQuery}
+            onSearch={(value) => onFilterChange("searchQuery", value)}
+          />
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                By Status
+              </label>
               <RangeFilter
                 placeholder="Status"
                 options={statusOptions}
                 value={filters.status}
                 onChange={(value) => onFilterChange("status", value)}
-                className="min-w-24 max-w-40"
               />
+            </div>
+            <div className="flex flex-col">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                By Experience
+              </label>
               <RangeFilter
                 placeholder="Experience"
                 options={experienceOptions}
                 value={filters.experienceRange}
                 onChange={(value) => onFilterChange("experienceRange", value)}
-                className="min-w-24 max-w-40"
               />
+            </div>
+            <div className="flex flex-col">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                By Time
+              </label>
               <RangeFilter
                 placeholder="Sort By"
                 options={sortOptions}
                 value={filters.sortBy}
                 onChange={(value) => onFilterChange("sortBy", value)}
-                className="min-w-24 max-w-40"
               />
             </div>
-
-            <div className="hidden md:block">
-              {/* Reset button */}
-              <Button
-                variant="outline"
-                onClick={onReset}
-                className="flex items-center gap-2 px-3 py-2 dark:border-gray-500 dark:hover:bg-gray-900 h-7 md:h-9"
-              >
-                <RotateCcw className="h-3 w-3" />
-                <span className="text-xs hidden md:block">Reset</span>
-              </Button>
-            </div>
           </div>
+          <Button
+            variant="outline"
+            onClick={onReset}
+            className="flex items-center gap-2 dark:border-gray-500"
+          >
+            <RotateCcw className="h-4 w-4" />
+            <span>Reset Filters</span>
+          </Button>
         </div>
       </div>
-      <div>
-        <Button onClick={() => setIsDialogOpen(true)} className="p-2">
-          <Plus className="h-3 w-3" />
-          <span className="text-xs hidden md:block">Post New Job</span>
-        </Button>
-      </div>
-
-      {/* Dialog for Create Job Form */}
-      <Dialog
-        open={isDialogOpen}
-        onOpenChange={(isOpen) => setIsDialogOpen(isOpen)}
-        className=""
-      >
-        <DialogContent className="flex flex-col h-[calc(100vh-20px)] max-w-3xl p-8">
-          <CreateJobForm isDialogOpen={isDialogOpen}
-            onClose={() => setIsDialogOpen(false)}
-            className="flex-1"
-          />
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
-
 
 export const AppFilters = ({
   applicants,
@@ -140,62 +97,50 @@ export const AppFilters = ({
   onReset,
 }) => {
   return (
-    <div className="flex mx-auto max-w-4xl items-center">
-      <div className="w-full space-y-2 dark:bg-gray-900 rounded-lg">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex flex-row items-center gap-2 md:gap-4">
-            {/* Job title filter */}
-            <div className="flex gap-0 md:gap-4">
-              <RangeFilter
-                placeholder="Select Job"
-                options={[
-                  { value: "all", label: "Any job titles" },
-                  ...jobTitles.map((title) => ({
-                    value: title,
-                    label: title,
-                  })),
-                ]}
-                value={filters.selectedTitle}
-                onChange={(value) => onFilterChange("selectedTitle", value)}
-                className="px-4 py-2 border rounded-md"
-              />
-            </div>
+    <div className="w-full max-w-4xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <div className="space-y-6">
+        {/* Search Bar */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Search
+          </label>
+          <SearchBar
+            applicants={applicants}
+            placeholder="Search by name, location, organization..."
+            value={filters.searchQuery}
+            onSearch={(value) => onFilterChange("searchQuery", value)}
+          />
+        </div>
 
-            {/* Search bar Filters */}
-            <div className="flex items-center gap-2">
-              <SearchBar
-                applicants={applicants}
-                placeholder="Search by name, location, organization..."
-                value={filters.searchQuery}
-                onSearch={(value) => onFilterChange("searchQuery", value)}
-              />
-              <div className="block md:hidden">
-                {/* Reset button */}
-                <Button
-                  variant="outline"
-                  onClick={onReset}
-                  className="flex items-center gap-2 p-2 dark:border-gray-500 dark:hover:bg-gray-900 h-7 md:h-9"
-                >
-                  <RotateCcw className="w-2 h-2" />
-                  <span className=" text-[10px] hidden md:block md:text-xs">
-                    Reset
-                  </span>
-                </Button>
-              </div>
-            </div>
-
-            <div className="hidden md:block">
-              {/* Reset button */}
-              <Button
-                variant="outline"
-                onClick={onReset}
-                className="flex items-center gap-2 px-3 py-2 dark:border-gray-500 dark:hover:bg-gray-900 h-7 md:h-9"
-              >
-                <RotateCcw className="h-3 w-3" />
-                <span className="text-xs hidden md:block">Reset</span>
-              </Button>
-            </div>
+        <div className="flex flex-col gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              By Job Title
+            </label>
+            <RangeFilter
+              placeholder="Select Job Title"
+              options={[
+                { value: "all", label: "All Job Titles" },
+                ...jobTitles.map((title) => ({
+                  value: title,
+                  label: title,
+                })),
+              ]}
+              value={filters.selectedTitle}
+              onChange={(value) => onFilterChange("selectedTitle", value)}
+              className="w-full"
+            />
           </div>
+
+          {/* Reset Button */}
+          <Button
+            variant="outline"
+            onClick={onReset}
+            className="flex items-center gap-2 dark:border-gray-500"
+          >
+            <RotateCcw className="h-4 w-4" />
+            <span className="text-sm">Reset Filters</span>
+          </Button>
         </div>
       </div>
     </div>

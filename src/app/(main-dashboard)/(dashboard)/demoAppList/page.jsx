@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-"use client";
+"use client"
+
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { documents as jobApplicants } from "../demoJobList/components/jobApplicants";
@@ -8,7 +9,6 @@ import { orgSettings } from "./components/org-settings";
 import { FaFacebook, FaGoogle, FaLinkedin } from "react-icons/fa";
 import { useRouter, useSearchParams } from "next/navigation";
 import OurPagination from "@/components/Pagination";
-import { AppFilters } from "@/components/filters/JobFilters";
 import ToggleGroupComponent from "../demoJobList/components/ToggleGroup";
 import ApplicantsTable from "../demoJobList/components/test/ApplicantsTable";
 import JobApplicantsCards from "../demoJobList/components/jobApplicantsCards";
@@ -21,6 +21,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { House } from "lucide-react";
+import { ApplicantFilterSheet } from "@/components/filters/ApplicantFilterSheet";
 
 const socialMediaIcons = {
   linkedin: FaLinkedin,
@@ -50,7 +51,6 @@ const calculateTotalExperience = (experiences) => {
   return `${years} years ${months} months`;
 };
 
-// unique job titles by matching IDs
 const getJobTitles = () => {
   const jobTitles = new Set();
   jobApplicants.docs.forEach((applicantDoc) => {
@@ -64,7 +64,6 @@ const getJobTitles = () => {
 };
 
 const jobTitles = getJobTitles();
-// console.log(jobTitles);
 
 const ApplicantsList = ({ limitToThree = false }) => {
   const router = useRouter();
@@ -86,7 +85,6 @@ const ApplicantsList = ({ limitToThree = false }) => {
     selectedTitle: "all",
   });
   const [viewMode, setViewMode] = useState("card");
-  console.log(viewCount, setViewCount, maxViews);
 
   const isListView = viewMode === "list";
 
@@ -120,12 +118,10 @@ const ApplicantsList = ({ limitToThree = false }) => {
     }))
   );
 
-  // Filter logic
   const filteredApplicants = allApplicants.filter((applicant) => {
     const applicantStatus = applicant.status || "applied";
     const searchQuery = filters.searchQuery.toLowerCase();
 
-    // Status filter
     const statusMatch =
       selectedStatus === "applied"
         ? applicantStatus === "applied" ||
@@ -139,7 +135,6 @@ const ApplicantsList = ({ limitToThree = false }) => {
         ? applicantStatus === "shortlisted" && applicant.steps === selectedStep
         : selectedStatus === applicantStatus;
 
-    // Job title filter
     const jobTitleMatch =
       filters.selectedTitle === "all" ||
       !filters.selectedTitle ||
@@ -154,7 +149,6 @@ const ApplicantsList = ({ limitToThree = false }) => {
         );
       })();
 
-    // Search filter
     const searchMatch =
       !searchQuery ||
       applicant.name.toLowerCase().includes(searchQuery) ||
@@ -220,7 +214,7 @@ const ApplicantsList = ({ limitToThree = false }) => {
       <div className="space-y-6">
         <div className="flex-1">
           {!limitToThree && (
-            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-1 justify-between mb-4">
+            <div className="flex items-center gap-4 sm:gap-1 justify-between mb-4">
               <ToggleGroupComponent
                 steps={steps}
                 selectedStep={selectedStep}
@@ -229,8 +223,8 @@ const ApplicantsList = ({ limitToThree = false }) => {
                 setSelectedStatus={setSelectedStatus}
               />
 
-              <div className="flex items-center gap-4">
-                <AppFilters
+              <div className="flex items-center gap-2">
+                <ApplicantFilterSheet
                   applicants={jobApplicants.docs?.applicants}
                   filters={filters}
                   jobTitles={jobTitles}
@@ -238,7 +232,6 @@ const ApplicantsList = ({ limitToThree = false }) => {
                   onReset={handleReset}
                 />
                 <div className="mr-2 flex items-center shadow-md">
-                  {/* Card View Icon */}
                   <GridListTooltip
                     setViewMode={setViewMode}
                     isListView={isListView}
