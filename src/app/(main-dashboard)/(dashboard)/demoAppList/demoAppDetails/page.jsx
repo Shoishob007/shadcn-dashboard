@@ -128,7 +128,7 @@ const ApplicantDetails = () => {
       </Breadcrumb>
       <Card className="w-full max-w-5xl mx-auto p-5 rounded-lg bg-white dark:bg-gray-800 grid grid-col-1 sm:grid-cols-3 gap-4 sm:gap-0 md:gap-4 overflow-hidden">
         {/* Left Section */}
-        <div className="col-span-2 sm:col-span-1 bg-gray-50 dark:bg-gray-700 flex flex-col items-center justify-between py-6 rounded-lg">
+        <div className="col-span-2 sm:col-span-1 bg-gray-50 dark:bg-gray-700 flex flex-col items-center justify-between py-4 rounded-lg">
           <div className="flex flex-col items-center">
             <div className="flex items-start sm:items-center gap-4">
               <div>

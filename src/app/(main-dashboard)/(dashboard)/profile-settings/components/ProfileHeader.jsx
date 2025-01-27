@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Camera } from "lucide-react";
 import { uploadCoverImage, uploadLogoImage } from "./imageUpload.js";
 import { useRouter } from "next/navigation";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"; // Import Avatar components
 
 const ProfileSetting = () => {
   const router = useRouter();
@@ -19,22 +20,22 @@ const ProfileSetting = () => {
 
   const accessToken = session?.access_token;
   const organizationId = session?.organizationId;
-  // console.log("Current token : ", accessToken);
-
 
   useEffect(() => {
     const fetchUserCoverPhoto = async () => {
       if (accessToken && session) {
         try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${organizationId}`, {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${organizationId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
 
           if (response.ok) {
             const userData = await response.json();
-            // console.log("Response for cover photo: ", userData.img.url)
             const fullImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${userData.img.url}`;
             setCoverPhoto(fullImageUrl || "");
             setLoadingCoverPhoto(false);
@@ -57,9 +58,7 @@ const ProfileSetting = () => {
   }, [session, organizationId, accessToken]);
 
   const handleCoverChange = async (e) => {
-    console.log("handleCoverChange called");
     const file = e.target?.files?.[0];
-    console.log("File selected:", file);
     if (file) {
       const newCoverPhoto = await uploadCoverImage(
         file,
@@ -67,7 +66,6 @@ const ProfileSetting = () => {
         organizationId
       );
       if (newCoverPhoto) {
-        // console.log("New cover photo set:", newCoverPhoto);
         setCoverPhoto(newCoverPhoto);
         setLoadingCoverPhoto(false);
       } else {
@@ -80,7 +78,6 @@ const ProfileSetting = () => {
 
   const handleLogoChange = async (e) => {
     const file = e.target.files[0];
-    console.log("File selected ::", file);
     if (file) {
       const success = await uploadLogoImage(
         file,
@@ -89,7 +86,6 @@ const ProfileSetting = () => {
         organizationId,
         async (updatedSession) => {
           setProfileImage(updatedSession.user.image);
-          // console.log("Logo updated successfully");
         }
       );
       if (!success) {
@@ -119,13 +115,13 @@ const ProfileSetting = () => {
   return (
     <>
       <div className="flex flex-col gap-4 justify-center h-full bg-white dark:bg-gray-800 rounded-lg">
-        <div className="relative w-full max-w-screen-2xl m-0 p-2">
+        <div className="relative w-full max-w-screen-2xl border m-0 p-2">
           <div className="flex flex-col">
             {loadingCoverPhoto ? (
               <Skeleton className="w-full h-48 md:h-64 lg:h-72" />
             ) : (
               <Image
-                src={coverPhoto || ""}
+                src={coverPhoto || "/default-cover.jpg"}
                 alt="cover photo"
                 width={1200}
                 height={360}
@@ -155,13 +151,12 @@ const ProfileSetting = () => {
 
           {/* Profile Logo */}
           <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 md:left-16 md:translate-x-0 flex flex-col items-center">
-            <Image
-              src={profileImage}
-              alt="Profile logo"
-              width={100}
-              height={100}
-              className="rounded-full border-2 border-white aspect-square object-cover"
-            />
+            <Avatar className="w-24 h-24 border-2">
+              <AvatarImage src={profileImage} alt="Profile logo" />
+              <AvatarFallback>
+                {session?.user?.name?.charAt(0) || "U"}
+              </AvatarFallback>
+            </Avatar>
             <label htmlFor="logo-upload" className="absolute bottom-0 right-0">
               <Camera
                 className="w-8 h-8 text-white bg-gray-700 p-2 rounded-full cursor-pointer"
@@ -200,14 +195,6 @@ const ProfileSetting = () => {
               <p className="text-xs">Get 3x more facilities</p>
             </div>
           </div>
-          {/* <div className="grid grid-cols-1 md:grid-cols-3 text-gray-600 dark:text-gray-200 p-4">
-            <div className="col-span-1">
-              <SettingsNav currentPath={pathname} />
-            </div>
-            <div className="col-span-2 p-2">
-              <SettingsContainer currentPath={pathname} />
-            </div>
-          </div> */}
         </div>
       </div>
     </>
