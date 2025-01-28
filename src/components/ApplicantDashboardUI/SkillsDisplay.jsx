@@ -1,5 +1,13 @@
+"use client";
+
+import { useState } from "react";
+
 const SkillsDisplay = ({ skills }) => {
-  return (
+  const [viewSkills, setViewSkills] = useState();
+
+//   const showSkills = skills.length > 3 ? 
+  const remainingSkills = skills.length - 3;
+    return (
     <div className="flex items-center gap-2">
       {skills.map((skill, index) => (
         <span
