@@ -94,7 +94,7 @@ const JobSearch = () => {
       </Breadcrumb>
       <div className="overflow-hidden">
         {/* Filter Section */}
-        <div className="flex justify-between gap-4 mt-6 px-1">
+        <div className="flex justify-between gap-4 px-1">
           <div className="w-full">
             <SearchBar />
           </div>
@@ -117,7 +117,7 @@ const JobSearch = () => {
         </div>
 
         {/* Job Listings */}
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {currentPaginatedJobs.length === 0 ? (
             <p>No jobs found based on your filters.</p>
           ) : (

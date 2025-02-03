@@ -3,13 +3,12 @@
 import { useState } from "react";
 
 const SkillsDisplay = ({ skills }) => {
-  const [viewSkills, setViewSkills] = useState();
+  const visibleSkills = skills.slice(0, 2);
+  const remainingSkillsCount = skills.length - 2;
 
-//   const showSkills = skills.length > 3 ? 
-  const remainingSkills = skills.length - 3;
-    return (
+  return (
     <div className="flex items-center gap-2">
-      {skills.map((skill, index) => (
+      {visibleSkills.map((skill, index) => (
         <span
           key={index}
           className="border p-1 border-black rounded-md text-[12px]"
@@ -17,6 +16,11 @@ const SkillsDisplay = ({ skills }) => {
           {skill}
         </span>
       ))}
+      {remainingSkillsCount > 0 && (
+        <span className="border py-1 px-2 border-black rounded-md text-[12px] font-semibold">
+          +{remainingSkillsCount}
+        </span>
+      )}
     </div>
   );
 };
