@@ -3,7 +3,7 @@ import { create } from "zustand";
 
 const useRegisterStore = create((set) => ({
   formData: {
-    name: "",
+    // name: "",
     email: "",
     password: "",
     role: "org",
@@ -18,7 +18,7 @@ const useRegisterStore = create((set) => ({
   resetFormData: () =>
     set({
       formData: {
-        name: "",
+        // name: "",
         email: "",
         password: "",
         role: "org",
@@ -27,12 +27,12 @@ const useRegisterStore = create((set) => ({
     }),
 
   registerUser: async (data) => {
-    const { name, email, password, role } = data;
+    const { email, password, role } = data;
     const provider = "credentials";
 
     try {
       const payload = {
-        name,
+        // name,
         provider,
         email,
         password,

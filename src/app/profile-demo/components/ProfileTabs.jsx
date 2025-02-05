@@ -7,7 +7,7 @@ import Projects from "./Projects";
 import Resume from "./Resume";
 import Skills from "./Skills";
 
-const ProfileTabs = () => {
+const ProfileTabs = ({profileData}) => {
   return (
     <div>
       <Tabs defaultValue="overview" className="">
@@ -39,7 +39,7 @@ const ProfileTabs = () => {
         {/* Tabs content */}
         <div className="mt-6 w-full">
           <TabsContent value="overview">
-            <ProfileOverview />
+            <ProfileOverview profileData={profileData} />
           </TabsContent>
           <TabsContent value="resume">
             <Resume/>
