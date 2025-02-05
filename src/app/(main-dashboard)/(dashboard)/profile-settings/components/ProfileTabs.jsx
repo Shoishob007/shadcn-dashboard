@@ -2,7 +2,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProfileOverview from "./ProfileOverview.jsx";
 import Socials from "./Socials.jsx";
 import Password from "./Password.jsx";
-import Branches from "./Branches.jsx";
 import User from "./User.jsx";
 import Delete from "./Delete.jsx";
 import { useSession } from "next-auth/react";
@@ -14,33 +13,34 @@ const ProfileTabs = () => {
   const organizationId = session?.organizationId;
   const [imageId, setImageId] = useState(null); 
 
-  useEffect(() => {
-    const fetchImageId = async () => {
-      if (accessToken && organizationId) {
-        try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${organizationId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            }
-          );
+  // useEffect(() => {
+  //   const fetchImageId = async () => {
+  //     if (accessToken && organizationId) {
+  //       try {
+  //         const response = await fetch(
+  //           `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${organizationId}`,
+  //           {
+  //             headers: {
+  //               Authorization: `Bearer ${accessToken}`,
+  //             },
+  //           }
+  //         );
 
-          if (response.ok) {
-            const data = await response.json();
-            setImageId(data.img?.id || null);
-          } else {
-            console.error("Failed to fetch organization data.");
-          }
-        } catch (error) {
-          console.error("Error fetching organization data:", error);
-        }
-      }
-    };
+  //         if (response.ok) {
+  //           const data = await response.json();
+  //           console.log("Response ::", data)
+  //           setImageId(data?.img?.id || null);
+  //         } else {
+  //           console.error("Failed to fetch organization data.");
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching organization data:", error);
+  //       }
+  //     }
+  //   };
 
-    fetchImageId();
-  }, [session, accessToken, organizationId]);
+  //   fetchImageId();
+  // }, [session, accessToken, organizationId]);
 
 
   return (

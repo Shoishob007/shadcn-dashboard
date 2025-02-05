@@ -28,7 +28,7 @@ export default function RegisterForm() {
     resolver: zodResolver(registerSchema),
   });
   const router = useRouter();
-  const { formData, setFormData, registerUser, submitted, resetFormData } =
+  const { setFormData, registerUser, submitted, resetFormData } =
     useRegisterStore();
 
   const onSubmit = async (data) => {

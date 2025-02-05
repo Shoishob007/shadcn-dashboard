@@ -3,7 +3,6 @@ import { create } from "zustand";
 
 const useRegisterStore = create((set) => ({
   formData: {
-    // name: "",
     email: "",
     password: "",
     role: "org",
@@ -18,7 +17,6 @@ const useRegisterStore = create((set) => ({
   resetFormData: () =>
     set({
       formData: {
-        // name: "",
         email: "",
         password: "",
         role: "org",
@@ -32,12 +30,14 @@ const useRegisterStore = create((set) => ({
 
     try {
       const payload = {
-        // name,
         provider,
         email,
         password,
         role,
       };
+
+      console.log("Payload :: ", JSON.stringify(payload))
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/users`,
         {

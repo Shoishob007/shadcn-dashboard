@@ -3,6 +3,7 @@ import { toast } from "@/hooks/use-toast";
 
 const useProfileStore = create((set, get) => ({
     profileDetails: null,
+    industryTypes: [],
     formData: {
         orgName: "",
         orgEmail: "",
@@ -13,16 +14,54 @@ const useProfileStore = create((set, get) => ({
         orgPhone: "",
         orgEstablishedYear: 2024,
         orgWebsiteUrl: "",
+        industryType: [],
     },
     loading: false,
     error: null,
 
     setFormData: (newData) =>
         set((state) => ({
-            formData: { ...state.formData, ...newData },
+            formData: {
+                ...state.formData,
+                ...newData,
+                industryType: Array.isArray(newData?.industryType)
+                    ? newData.industryType
+                    : state.formData.industryType || [],
+            },
         })),
 
+    fetchIndustryTypes: async (accessToken) => {
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/api/industry-types`,
+                {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch industry types");
+            }
+
+            const data = await response.json();
+            set({ industryTypes: Array.isArray(data?.docs) ? data.docs : [] });
+
+        } catch (error) {
+            console.error("Error fetching industry types:", error);
+            toast({
+                title: "Error fetching industry types.",
+                description: error.message,
+                variant: "ourDestructive",
+            });
+        }
+    },
+
     fetchProfile: async (accessToken, orgID) => {
+        console.log("triggered")
         set({ loading: true, error: null });
         try {
             const response = await fetch(
@@ -31,6 +70,7 @@ const useProfileStore = create((set, get) => ({
                     method: "GET",
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
+                        "Content-Type": "application/json",
                     },
                 }
             );
@@ -40,10 +80,15 @@ const useProfileStore = create((set, get) => ({
             }
 
             const profile = await response.json();
-            // console.log(profile)
             set({
                 profileDetails: profile,
-                formData: { ...get().formData, ...profile },
+                formData: {
+                    ...get().formData,
+                    ...profile,
+                    industryType: Array.isArray(profile?.industryType)
+                        ? profile.industryType
+                        : [],
+                },
             });
         } catch (error) {
             console.error("Error fetching profile:", error);
@@ -60,20 +105,16 @@ const useProfileStore = create((set, get) => ({
 
     saveProfile: async (token, orgID) => {
         set({ loading: true, error: null });
-
-        console.log("Image id::", get().formData)
-
         try {
             const transformedFormData = {
                 ...get().formData,
                 img: get().formData?.img?.id,
-                socialLinks: get().formData.socialLinks?.map((link) => ({
-                    socialMediaUrl: link.socialMediaUrl,
-                    socialMedia: link.socialMedia?.id,
+                industryType: get().formData?.industryType?.map(industry => industry.id),
+                socialLinks: get().formData?.socialLinks?.map((link) => ({
+                    socialMediaUrl: link?.socialMediaUrl,
+                    socialMedia: link?.socialMedia?.id,
                 })),
             };
-
-            console.log("Transformed Data ::", transformedFormData)
 
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${orgID}`,
@@ -87,21 +128,28 @@ const useProfileStore = create((set, get) => ({
                 }
             );
 
-
-
             if (!response.ok) {
                 throw new Error("Failed to update organization profile");
             }
 
             const updatedProfile = await response.json();
-            set({
-                profileDetails: updatedProfile,
-                formData: { ...get().formData, ...updatedProfile },
-            });
+            const processedProfile = {
+                ...updatedProfile.doc,
+                industryType: Array.isArray(updatedProfile.doc?.industryType)
+                    ? updatedProfile.doc.industryType
+                    : [],
+            };
 
+            set({
+                profileDetails: processedProfile,
+                formData: {
+                    ...get().formData,
+                    ...processedProfile,
+                },
+            });
             toast({
                 title: "Success!",
-                description:"Profile updated successfully.",
+                description: "Profile updated successfully.",
                 variant: "ourSuccess",
             });
         } catch (error) {
@@ -117,5 +165,6 @@ const useProfileStore = create((set, get) => ({
         }
     },
 }));
+
 
 export default useProfileStore;

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -9,306 +9,150 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Form } from "@/components/ui/form";
-import { BasicInfoTab } from "./BasicInfoTab";
-import { EmploymentTab } from "./EmploymentTab";
-import { RequirementsTab } from "./RequirementsTab";
-import { LocationTab } from "./LocationTab";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import {
-  basicInfoSchema,
-  employmentSchema,
-  jobSchema,
-  locationSchema,
-  requirementsSchema,
-} from "../schemas/jobFormSchema";
-import {
-  Briefcase,
-  GraduationCap,
-  House,
-  MapPin,
-  ScrollText,
-} from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { ScrollText, AlertCircle } from "lucide-react";
 import { useState } from "react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { orgSettings } from "../demoAppList/components/org-settings";
-import PricingDialogue from "../demoJobList/components/pricingDialogue";
+import CreateJobForm from "./components/CreateJobForm";
+import { useSession } from "next-auth/react";
+import { useToast } from "@/hooks/use-toast";
 
-const tabs = ["Basic Info", "Employment", "Requirements", "Location"];
-
-const CreateJobForm = ({
-  onClose,
-  jobId,
-  initialData,
-  isDialogOpen = false,
-}) => {
+export default function CreateJobCard() {
+  const { data: session } = useSession();
   const { toast } = useToast();
-  const [isEditMode, setIsEditMode] = useState(Boolean(jobId));
+  const [showForm, setShowForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [jobId, setJobId] = useState(null);
 
-  const form = useForm({
-    resolver: zodResolver(jobSchema),
-    defaultValues: {
-      steps: initialData?.steps || [],
-      ...(initialData || {
-        jobStatus: true,
-      }),
-    },
-  });
+  const organizationId = session?.organizationId;
+  const accessToken = session?.access_token;
 
-  console.log(initialData)
-
-  const { reset, clearErrors } = form;
-  const [currentTab, setCurrentTab] = useState(0);
-  const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
-  const [postCount, setPostCount] = useState(
-    orgSettings.docs[0]?.numberOfJobPosted
-  );
-  const maxPost = orgSettings.docs[0]?.subscriptionId === 1 ? 3 : Infinity;
-
-  const nextTab = () =>
-    setCurrentTab((prev) => (prev < tabs.length - 1 ? prev + 1 : prev));
-  const prevTab = () => setCurrentTab((prev) => (prev > 0 ? prev - 1 : prev));
-
-  const validateCurrentTab = () => {
-    let schema;
-    switch (currentTab) {
-      case 0:
-        schema = basicInfoSchema;
-        break;
-      case 1:
-        schema = employmentSchema;
-        break;
-      case 2:
-        schema = requirementsSchema;
-        break;
-      case 3:
-        schema = locationSchema;
-        break;
-      default:
-        return true;
-    }
-
-    const fieldsToClear = Object.keys(schema.shape);
-    fieldsToClear.forEach((field) => clearErrors(field));
-
-    const result = schema.safeParse(form.getValues());
-    if (!result.success) {
-      result.error.errors.forEach((error) => {
-        form.setError(error.path[0], { message: error.message });
-        console.log(result.error.errors);
+  const handleCreateJob = async () => {
+    if (!organizationId || !accessToken) {
+      toast({
+        title: "Error",
+        description: "You must be logged in to create a job",
+        variant: "destructive",
       });
-      return false;
+      return;
     }
 
-    return true;
-  };
+    setIsLoading(true);
+    try {
+      console.log(JSON.stringify({ organization: organizationId }));
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/jobs`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ organization: organizationId }),
+        }
+      );
 
-  const handleNext = async (e) => {
-    e.preventDefault();
-
-    if (validateCurrentTab()) {
-      if (currentTab < tabs.length - 1) {
-        nextTab();
+      if (!response.ok) {
+        throw new Error("Failed to create job");
       }
-    }
-  };
 
-  const onSubmit = async (data) => {
-    console.log("right after submission :: ", data);
-    if (isPricingDialogOpen) {
-      return;
-    }
+      const data = await response.json();
+      //   console.log("Data i got :", data)
+      setJobId(data.doc.id);
+      setShowForm(true);
 
-    const result = jobSchema.safeParse(data);
+      const jobDetailsResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/job-details`
+      );
+      const jobDetailsData = await jobDetailsResponse.json();
 
-    console.log("Result :: ", result)
+      console.log("Job Details Data::", jobDetailsData);
 
-    if (!result.success) {
-      result.error.errors.forEach((error) => {
-        form.setError(error.path[0], { message: error.message });
-      });
-      console.log(result.error.errors);
-      return;
-    }
+      console.log("Job Details Docs::", jobDetailsData.docs);
 
-    if (currentTab === tabs.length - 1) {
-      if (isEditMode) {
-        toast({
-          title: "Success",
-          description: "Job updated successfully!",
-          variant: "ourSuccess",
-        });
-        console.log(data);
-        handleFormReset();
-        onClose?.();
+      const matchedJob = jobDetailsData.docs.find(
+        (document) => document.job.id === jobId,
+      );
+
+      if (matchedJob) {
+        console.log("Matched job id:", matchedJob.id);
+        console.log("Matched job :", matchedJob);
       } else {
-        toast({
-          title: "Success",
-          description: "Job created successfully!",
-          variant: "ourSuccess",
-        });
-        console.log(data);
-        handleFormReset();
+        console.log("No matching job found.");
       }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to create job",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
-  };
-
-  const handleFormReset = () => {
-    reset();
-    form.reset({
-      skills: [],
-      degreeLevel: [],
-      fieldOfStudy: [],
-      requirements: [],
-      address: "",
-      email: "",
-      steps: [],
-    });
-  };
-
-  const handleDiscardEditing = () => {
-    setIsEditMode(false);
-    onClose?.();
-    handleFormReset();
   };
 
   return (
     <>
-      {!isDialogOpen && !isEditMode && (
-        <Breadcrumb className="mb-4">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">
-                <House className="h-4 w-4" />
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/demoJobFormCreate">
-                Job Form
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      )}
-      <Card className={`w-full max-w-5xl mx-auto p-6 overflow-y-auto `}>
-        <CardHeader className="text-center p-4">
-          <CardTitle className="text-lg sm:text-2xl font-semibold">
-            {isEditMode ? "Edit Your Job" : "Create New Job"}
-          </CardTitle>
-          <CardDescription className="text-xs sm:text-sm">
-            Fill the job details across all sections below to create a job
+      <Card className="w-full max-w-3xl mx-auto">
+        <CardHeader className="space-y-1">
+          <div className="flex items-center justify-center gap-2 text-center">
+            <ScrollText className="w-5 h-5 text-primary text-center" />
+            <CardTitle className="text-2xl">Create a New Job</CardTitle>
+          </div>
+          <CardDescription className="text-center">
+            Ready to find your next team member? Follow these steps to create an
+            effective job posting.
           </CardDescription>
         </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="space-y-3">
+            <div className="space-y-2">
+              <h3 className="font-semibold">Before you begin:</h3>
+              <ul className="list-disc list-inside space-y-1 text-sm">
+                <li>Prepare a clear job title and detailed description</li>
+                <li>Define required skills and qualifications</li>
+                <li>Determine salary range and employment type</li>
+                <li>Have location requirements ready</li>
+              </ul>
+            </div>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardContent>
-              <Tabs value={tabs[currentTab]} className="space-y-4">
-                <TabsList className="grid grid-cols-4 gap-4 bg-gray-200 dark:bg-gray-900 px-1 py-0">
-                  {tabs.map((tab, index) => (
-                    <TabsTrigger
-                      key={tab}
-                      value={tab}
-                      onClick={() => setCurrentTab(index)}
-                      className="sm:flex py-1 items-center data-[state=active]:border-b-2 data-[state=active]:bg-gray-900 data-[state=active]:text-gray-200 dark:data-[state=active]:bg-gray-200 dark:data-[state=active]:text-gray-900 rounded-sm"
-                    >
-                      {index === 0 && (
-                        <ScrollText className="w-4 h-4 mr-2 shrink-0" />
-                      )}
-                      {index === 1 && (
-                        <Briefcase className="w-4 h-4 mr-2 shrink-0" />
-                      )}
-                      {index === 2 && (
-                        <GraduationCap className="w-4 h-4 mr-2 shrink-0" />
-                      )}
-                      {index === 3 && (
-                        <MapPin className="w-4 h-4 mr-2 shrink-0" />
-                      )}
-                      <span className="hidden sm:inline">{tab}</span>
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-
-                <TabsContent value="Basic Info">
-                  <BasicInfoTab form={form} />
-                </TabsContent>
-
-                <TabsContent value="Employment">
-                  <EmploymentTab form={form} />
-                </TabsContent>
-
-                <TabsContent value="Requirements">
-                  <RequirementsTab form={form} />
-                </TabsContent>
-
-                <TabsContent value="Location">
-                  <LocationTab form={form} />
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-
-            <CardFooter className="flex justify-between">
-              <Button
-                variant="ghost"
-                className="px-2 py-1 border border-gray-400 hover:bg-gray-200"
-                onClick={handleDiscardEditing}
-              >
-                Cancel
-              </Button>
-
-              <div className="flex items-center gap-2">
-                {currentTab > 0 && (
-                  <Button type="button" className="px-3 py-1" onClick={prevTab}>
-                    Prev
-                  </Button>
-                )}
-                {currentTab < tabs.length - 1 ? (
-                  <Button
-                    type="button"
-                    className="px-3 py-1"
-                    onClick={handleNext}
-                  >
-                    Next
-                  </Button>
-                ) : isEditMode ? (
-                  <Button className="px-3 py-1" type="submit">
-                    Update
-                  </Button>
-                ) : (
-                  <Button
-                    className="px-3 py-1"
-                    type="submit"
-                    onClick={() => {
-                      if (postCount >= maxPost) {
-                        setIsPricingDialogOpen(true);
-                      } else {
-                        setPostCount((prev) => prev + 1);
-                      }
-                    }}
-                  >
-                    Create
-                  </Button>
-                )}
+            <div className="bg-amber-50 dark:bg-amber-950 p-4 rounded-lg">
+              <div className="flex items-start gap-2">
+                <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5" />
+                <div className="space-y-1">
+                  <h4 className="font-medium text-amber-800 dark:text-amber-300">
+                    Important Notes
+                  </h4>
+                  <ul className="text-sm text-amber-700 dark:text-amber-400 list-disc list-inside space-y-1">
+                    <li>Job postings cannot be edited after 24 hours</li>
+                    <li>Free plan users can post up to 3 jobs per month</li>
+                    <li>All fields marked with * are required</li>
+                  </ul>
+                </div>
               </div>
-            </CardFooter>
-          </form>
-        </Form>
+            </div>
+          </div>
+        </CardContent>
+        <CardFooter className="justify-center">
+          <Button
+            className="w-fit text-center items-center"
+            size="lg"
+            onClick={handleCreateJob}
+            disabled={isLoading}
+          >
+            {isLoading ? "Creating..." : "Start Creating Your Job Post"}
+          </Button>
+        </CardFooter>
       </Card>
-      {isPricingDialogOpen && (
-        <PricingDialogue onClose={() => setIsPricingDialogOpen(false)} />
-      )}
+
+      <Dialog open={showForm} onOpenChange={setShowForm}>
+        <DialogContent className="max-w-5xl h-[90vh] p-0">
+          <DialogTitle className="sr-only">Create New Job</DialogTitle>
+          <CreateJobForm
+            isDialogOpen={true}
+            onClose={() => setShowForm(false)}
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
-};
-
-export default CreateJobForm;
+}

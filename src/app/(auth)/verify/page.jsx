@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -10,6 +9,7 @@ export default function VerifyPage() {
   const { toast } = useToast();
   const searchParams = useSearchParams();
   const token = useMemo(() => searchParams.get("token"), [searchParams]);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     if (!token) {
@@ -20,6 +20,9 @@ export default function VerifyPage() {
       });
       return;
     }
+
+    if (loading) return;
+    setLoading(true);
 
     try {
       const response = await fetch(
@@ -37,9 +40,17 @@ export default function VerifyPage() {
         throw new Error(errorData.message || "Verification failed.");
       }
 
+      const data = await response.json();
+
+      await signIn("credentials", {
+        email: data.user.email,
+        token: data.token,
+        redirect: false,
+      });
+
       toast({
         title: "Success",
-        description: "Verification success!",
+        description: "Verification successful! You are now logged in.",
         variant: "ourSuccess",
       });
 
@@ -50,8 +61,11 @@ export default function VerifyPage() {
         description: error.message,
         variant: "ourDestructive",
       });
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
     <main className="flex justify-center items-center h-screen dark:text-gray-200">
       {token ? (
@@ -66,8 +80,9 @@ export default function VerifyPage() {
             onClick={handleSubmit}
             variant="default"
             className="text-center mx-auto items-center"
+            disabled={loading}
           >
-            Verify Email
+            {loading ? "Verifying..." : "Verify Email"}
           </Button>
         </div>
       ) : (

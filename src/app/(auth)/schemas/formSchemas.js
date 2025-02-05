@@ -9,6 +9,9 @@ export const loginSchema = z.object({
 });
 
 export const registerSchema = z.object({
+    email: z.string().email('Invalid email format'),
+    password: z.string().min(6, 'Password must be at least 6 characters long').regex(passwordValidation, { message: "Password must contain at-least a number or special character" }),
+    role: z.enum(['org', 'applicant'], 'Role is required'),
   email: z.string().email("Invalid email format"),
   password: z
     .string()

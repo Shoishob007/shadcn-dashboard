@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Combobox } from "@/components/ui/combo-box";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,8 +27,9 @@ export default function ProfileOverview() {
     fetchProfile,
     saveProfile,
     loading,
+    industryTypes,
+    fetchIndustryTypes,
   } = useProfileStore();
-
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -36,8 +39,14 @@ export default function ProfileOverview() {
   useEffect(() => {
     if (accessToken && organizationId) {
       fetchProfile(accessToken, organizationId);
+      fetchIndustryTypes(accessToken);
     }
   }, [accessToken, organizationId]);
+
+  useEffect(() => {
+    console.log("formData:", formData);
+    console.log("industryTypes:", industryTypes);
+  }, [formData, industryTypes]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,14 +55,42 @@ export default function ProfileOverview() {
       setIsEditing(false);
     }
   };
+
   const handleCancelEdit = () => {
     setIsEditing(false);
     setFormData(profileDetails);
   };
 
+  const handleIndustryTypeChange = (selectedIndustries) => {
+    setFormData({
+      ...formData,
+      industryType: selectedIndustries ?? [],
+    });
+  };
+
+  const removeIndustryType = (industryId) => {
+    setFormData({
+      ...formData,
+      industryType: (formData.industryType || []).filter(
+        (id) => id !== industryId
+      ),
+    });
+  };
+
   if (loading && !profileDetails) {
     return <div>Loading profile details...</div>;
   }
+
+ const industryOptions = (industryTypes || []).map((industry) => ({
+   label: industry.title || "",
+   value: industry.id || "",
+ }));
+
+const selectedIndustries =
+  formData.industryType && Array.isArray(formData.industryType)
+    ? formData.industryType
+    : [];
+
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg dark:text-gray-200">
@@ -103,7 +140,10 @@ export default function ProfileOverview() {
               <Input
                 id="orgName"
                 value={formData.orgName}
-                onChange={(e) => setFormData({ orgName: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, orgName: e.target.value })
+                }
+                placeholder="Enter organization name"
               />
             ) : (
               formData.orgName || "Not provided"
@@ -117,7 +157,10 @@ export default function ProfileOverview() {
                 id="orgEmail"
                 type="email"
                 value={formData.orgEmail}
-                onChange={(e) => setFormData({ orgEmail: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, orgEmail: e.target.value })
+                }
+                placeholder="Enter organization email"
               />
             ) : (
               formData.orgEmail || "Not provided"
@@ -130,7 +173,10 @@ export default function ProfileOverview() {
               <Input
                 id="orgAddress"
                 value={formData.orgAddress}
-                onChange={(e) => setFormData({ orgAddress: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, orgAddress: e.target.value })
+                }
+                placeholder="Enter address"
               />
             ) : (
               formData.orgAddress || "Not provided"
@@ -143,7 +189,10 @@ export default function ProfileOverview() {
               <Input
                 id="orgWebsiteUrl"
                 value={formData.orgWebsiteUrl}
-                onChange={(e) => setFormData({ orgWebsiteUrl: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, orgWebsiteUrl: e.target.value })
+                }
+                placeholder="Enter website URL"
               />
             ) : (
               formData.orgWebsiteUrl || "Not provided"
@@ -156,7 +205,10 @@ export default function ProfileOverview() {
               <Input
                 id="orgPhone"
                 value={formData.orgPhone}
-                onChange={(e) => setFormData({ orgPhone: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, orgPhone: e.target.value })
+                }
+                placeholder="Enter organization phone"
               />
             ) : (
               formData.orgPhone || "Not provided"
@@ -173,16 +225,53 @@ export default function ProfileOverview() {
               <Input
                 id="orgEstablishedYear"
                 type="number"
-                value={formData.orgEstablishedYear || "Not Provided"}
+                value={formData.orgEstablishedYear || ""}
                 onChange={(e) =>
                   setFormData({
-                    orgEstablishedYear:
-                      parseInt(e.target.value) || "Not Provided",
+                    ...formData,
+                    orgEstablishedYear: parseInt(e.target.value) || null,
                   })
                 }
+                placeholder="Put your established year"
               />
             ) : (
               formData.orgEstablishedYear || "Not provided"
+            )}
+          </Field>
+
+          <Field
+            label="Industry Type"
+            id="industryType"
+            isEditing={isEditing}
+            mdColSpan
+          >
+            {isEditing ? (
+              <Combobox
+                options={industryOptions}
+                value={formData.industryType || []}
+                onChange={handleIndustryTypeChange}
+                placeholder="Select industries..."
+                multiple={true}
+              />
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {selectedIndustries.map((industry) => (
+                  <Badge
+                    key={industry.id}
+                    variant="secondary"
+                    className="flex items-center gap-1"
+                  >
+                    {industry.title}
+                    {isEditing && (
+                      <X
+                        className="h-3 w-3 cursor-pointer"
+                        onClick={() => removeIndustryType(industry.id)}
+                      />
+                    )}
+                  </Badge>
+                ))}
+                {!selectedIndustries.length && "Not provided"}
+              </div>
             )}
           </Field>
 
@@ -198,7 +287,10 @@ export default function ProfileOverview() {
                 id="orgTagline"
                 className="text-xs sm:text-sm"
                 value={formData.orgTagline}
-                onChange={(e) => setFormData({ orgTagline: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, orgTagline: e.target.value })
+                }
+                placeholder="Enter organization tagline"
               />
             ) : (
               formData.orgTagline || "Not provided"
@@ -216,8 +308,11 @@ export default function ProfileOverview() {
               <Textarea
                 id="orgMission"
                 value={formData.orgMission}
-                onChange={(e) => setFormData({ orgMission: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, orgMission: e.target.value })
+                }
                 rows={4}
+                placeholder="Enter organization mission"
               />
             ) : (
               formData.orgMission || "Not provided"
@@ -230,8 +325,11 @@ export default function ProfileOverview() {
               <Textarea
                 id="orgVision"
                 value={formData.orgVision}
-                onChange={(e) => setFormData({ orgVision: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, orgVision: e.target.value })
+                }
                 rows={4}
+                placeholder="Enter organization vision"
               />
             ) : (
               formData.orgVision || "Not provided"

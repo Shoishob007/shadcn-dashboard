@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { House, SquarePen, Users } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { documents as jobDocuments } from "../components/jobData";
-import CreateJobForm from "../../demoJobFormCreate/page";
+import CreateJobForm from "../../demoJobFormCreate/components/CreateJobForm";
 import { useRouter } from "next/navigation";
 import {
   Breadcrumb,
