@@ -20,20 +20,39 @@ import Skills from "./components/Skills";
 import SocialLinks from "./components/SocialLinks";
 import WorkExperience from "./components/WorkExperience";
 
-
 const ApplicantProfile = () => {
   const [profileInfo, setProfileInfo] = useState([]);
-  useEffect(() => {
-    const getProfileData = async () => {
-      const res = await fetch("./applicant-profile.json");
-      const data = await res.json();
+
+useEffect(() => {
+  const getProfileData = async () => {
+    try {
+      const response = await fetch(`https://hhapi.nakhlah.xyz/api/applicants`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Profile data: ", data);
       setProfileInfo(data.docs);
-    };
-    getProfileData();
-  }, []);
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+  };
+
+  getProfileData();
+}, []);
+
+
 
   const { data: session } = useSession();
-  console.log("current session::", session);
+  console.log(session);
+  //   console.log("current session::", session);
   const [profileImage, setProfileImage] = useState(session?.user?.image || "");
   console.log("profile image", profileImage);
   const [coverImage, setCoverImage] = useState("");
@@ -66,21 +85,21 @@ const ApplicantProfile = () => {
           <ProfileTabs />
         </div> */}
 
-      <div className="bg-white dark:bg-gray-800 shadow-sm p-6 rounded-[12px] mt-3">
-        <ProfileAbout profileInfo={profileInfo} />
-        <Separator className="my-6 dark:bg-gray-200" />
-        <Resume />
-        <Separator className="my-6 dark:bg-gray-200" />
-        <Skills profileInfo={profileInfo} />
-        <Separator className="my-6 dark:bg-gray-200" />
-        <WorkExperience />
-        <Separator className="my-6 dark:bg-gray-200" />
-        <Educations profileInfo={profileInfo} />
-        <Separator className="my-6 dark:bg-gray-200" />
-        <Projects />
-        <Separator className="my-6 dark:bg-gray-200" />
-        <SocialLinks />
-      </div>
+        <div className="bg-white dark:bg-gray-800 shadow-sm p-6 rounded-[12px] mt-3">
+          <ProfileAbout profileInfo={profileInfo} />
+          <Separator className="my-6 dark:bg-gray-200" />
+          <Resume />
+          <Separator className="my-6 dark:bg-gray-200" />
+          <Skills profileInfo={profileInfo} />
+          <Separator className="my-6 dark:bg-gray-200" />
+          <WorkExperience />
+          <Separator className="my-6 dark:bg-gray-200" />
+          <Educations profileInfo={profileInfo} />
+          <Separator className="my-6 dark:bg-gray-200" />
+          <Projects />
+          <Separator className="my-6 dark:bg-gray-200" />
+          <SocialLinks />
+        </div>
       </div>
     </>
   );

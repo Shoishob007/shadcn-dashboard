@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { useMemo } from "react";
 
 export default function VerifyPage() {
   const router = useRouter();
@@ -23,7 +23,7 @@ export default function VerifyPage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/users/verify-email/${token}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-email/${token}`,
         {
           method: "GET",
           headers: {

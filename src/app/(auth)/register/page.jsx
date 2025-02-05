@@ -63,7 +63,7 @@ export default function RegisterForm() {
             <CardContent>
               <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
                 <div className="grid gap-3">
-                  <div className="grid gap-2">
+                  {/* <div className="grid gap-2">
                     <Label htmlFor="provider">Full Name</Label>
                     <Input
                       id="name"
@@ -76,7 +76,7 @@ export default function RegisterForm() {
                         {errors.name.message}
                       </span>
                     )}
-                  </div>
+                  </div> */}
                   <div className="grid gap-2">
                     <Label htmlFor="email">Email</Label>
                     <Input
