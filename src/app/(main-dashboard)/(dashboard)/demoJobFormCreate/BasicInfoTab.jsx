@@ -19,6 +19,8 @@ const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 export function BasicInfoTab({ form }) {
   const [responsibilitiesContent, setResponsibilitiesContent] = useState("");
   const [benefitsContent, setBenefitsContent] = useState("");
+    const [stepsData, setStepsData] = useState([]);
+    const [stepsIds, setStepsIds] = useState([]);
   const currentSubscriptionId = orgSettings.docs[0]?.subscriptionId;
 
   const modules = {
@@ -31,11 +33,30 @@ export function BasicInfoTab({ form }) {
   };
 
   useEffect(() => {
-     const steps = form.getValues("steps") || [];
+    const fetchHiringStages = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages`
+        );
+        const data = await response.json();
+        const steps = data.docs.map((step) => ({
+          id: step.id,
+          title: step.title,
+        }));
+        setStepsData(steps);
+
+        console.log("steps ::", data);
+      } catch (error) {
+        console.error("Error fetching hiring stages:", error);
+      }
+    };
+
+    fetchHiringStages();
+  }, []);
+
+  useEffect(() => {
     const responsibilities = form.getValues("responsibilities") || [];
     const employeeBenefits = form.getValues("employeeBenefits") || [];
-
-    console.log(steps);
 
     if (Array.isArray(responsibilities)) {
       const content = responsibilities.map((item) => `<p>${item}</p>`).join("");
@@ -68,6 +89,13 @@ export function BasicInfoTab({ form }) {
       .filter(Boolean);
 
     form.setValue("employeeBenefits", items);
+  };
+
+  const handleStepsChange = (steps) => {
+    const selectedIds = steps.map((step) => step.id);
+    setStepsIds(selectedIds);
+
+    form.setValue("steps", steps);
   };
 
   return (
@@ -197,7 +225,7 @@ export function BasicInfoTab({ form }) {
                 <StepsList
                   availableSteps={stepsData}
                   selectedSteps={field.value || []}
-                  onStepsChange={(steps) => form.setValue("steps", steps)}
+                  onStepsChange={handleStepsChange}
                 />
               </FormControl>
               <FormMessage />

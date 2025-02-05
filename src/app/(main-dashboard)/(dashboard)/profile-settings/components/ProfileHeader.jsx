@@ -1,15 +1,12 @@
 "use client";
-import PageTitle from "@/components/PageTitle";
 import { Skeleton } from "@/components/ui/skeleton";
-import FormatTitle from "@/components/TitleFormatter";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Camera } from "lucide-react";
 import { uploadCoverImage, uploadLogoImage } from "./imageUpload.js";
 import { useRouter } from "next/navigation";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"; // Import Avatar components
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const ProfileSetting = () => {
   const router = useRouter();
@@ -21,41 +18,41 @@ const ProfileSetting = () => {
   const accessToken = session?.access_token;
   const organizationId = session?.organizationId;
 
-  useEffect(() => {
-    const fetchUserCoverPhoto = async () => {
-      if (accessToken && session) {
-        try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${organizationId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            }
-          );
+  // useEffect(() => {
+  //   const fetchUserCoverPhoto = async () => {
+  //     if (accessToken && session) {
+  //       try {
+  //         const response = await fetch(
+  //           `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${organizationId}`,
+  //           {
+  //             headers: {
+  //               Authorization: `Bearer ${accessToken}`,
+  //             },
+  //           }
+  //         );
 
-          if (response.ok) {
-            const userData = await response.json();
-            const fullImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${userData.img.url}`;
-            setCoverPhoto(fullImageUrl || "");
-            setLoadingCoverPhoto(false);
-          } else {
-            console.error("Failed to fetch user cover photo.");
-            setLoadingCoverPhoto(false);
-          }
-        } catch (error) {
-          console.error("Error fetching user cover photo:", error);
-          setLoadingCoverPhoto(false);
-        }
-      }
-    };
+  //         if (response.ok) {
+  //           const userData = await response.json();
+  //           const fullImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${userData?.img?.url}`;
+  //           setCoverPhoto(fullImageUrl || "");
+  //           setLoadingCoverPhoto(false);
+  //         } else {
+  //           console.error("Failed to fetch user cover photo.");
+  //           setLoadingCoverPhoto(false);
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching user cover photo:", error);
+  //         setLoadingCoverPhoto(false);
+  //       }
+  //     }
+  //   };
 
-    fetchUserCoverPhoto();
-  }, [accessToken, session, organizationId]);
+  //   fetchUserCoverPhoto();
+  // }, [accessToken, session, organizationId]);
 
-  useEffect(() => {
-    setProfileImage(session?.user?.image || "");
-  }, [session, organizationId, accessToken]);
+  // useEffect(() => {
+  //   setProfileImage(session?.user?.image || "");
+  // }, [session, organizationId, accessToken]);
 
   const handleCoverChange = async (e) => {
     const file = e.target?.files?.[0];
@@ -85,7 +82,7 @@ const ProfileSetting = () => {
         session,
         organizationId,
         async (updatedSession) => {
-          setProfileImage(updatedSession.user.image);
+          setProfileImage(updatedSession?.user?.image);
         }
       );
       if (!success) {

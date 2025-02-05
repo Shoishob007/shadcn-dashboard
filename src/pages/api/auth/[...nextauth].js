@@ -18,15 +18,13 @@ export const authOptions = {
                         "https://www.googleapis.com/auth/userinfo.email",
                         "https://www.googleapis.com/auth/userinfo.profile",
                         "https://www.googleapis.com/auth/calendar.readonly",
-                        "https://www.googleapis.com/auth/calendar.events"
+                        "https://www.googleapis.com/auth/calendar.events",
                     ].join(" "),
                     prompt: "consent",
                     access_type: "offline",
-                    response_type: "code"
-                }
-
+                    response_type: "code",
+                },
             },
-
         }),
         GitHubProvider({
             clientId: process.env.GITHUB_ID,
@@ -37,7 +35,6 @@ export const authOptions = {
                     access_type: "offline",
                 },
             },
-
         }),
         LinkedInProvider({
             clientId: process.env.LINKEDIN_ID,
@@ -53,44 +50,49 @@ export const authOptions = {
                 email: profile.email,
                 image: profile.picture,
             }),
-            wellKnown: "https://www.linkedin.com/oauth/.well-known/openid-configuration",
+            wellKnown:
+                "https://www.linkedin.com/oauth/.well-known/openid-configuration",
             authorization: {
                 params: {
-                    scope: 'openid profile email'
+                    scope: "openid profile email",
                 },
             },
         }),
         CredentialsProvider({
-            name: 'credentials',
+            name: "credentials",
             credentials: {
                 email: { label: "Email", type: "text" },
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
                 try {
-                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/login`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            email: credentials.email,
-                            password: credentials.password
-                        }),
-                    });
-
+                    const res = await fetch(
+                        `${process.env.NEXT_PUBLIC_API_URL}/api/users/login`,
+                        {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                email: credentials.email,
+                                password: credentials.password,
+                            }),
+                        }
+                    );
 
                     const user = await res.json();
-                    console.log("User Authorized :", user)
+                    // console.log("User Authorized :", user);
 
                     if (res.ok && user) {
-
                         if (user.user.role == "org") {
-                            const orgResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/organizations`, {
-                                method: 'GET',
-                                headers: {
-                                    'Authorization': `Bearer ${user.token}`,
-                                    'Content-Type': 'application/json',
-                                },
-                            });
+                            const orgResponse = await fetch(
+                                `${process.env.NEXT_PUBLIC_API_URL}/api/organizations`,
+                                {
+                                    method: "GET",
+                                    headers: {
+                                        Authorization: `Bearer ${user.token}`,
+                                        "Content-Type": "application/json",
+                                    },
+                                }
+                            );
 
                             if (orgResponse.ok) {
                                 const orgData = await orgResponse.json();
@@ -100,7 +102,6 @@ export const authOptions = {
                                 const organizationId = organization?.id;
                                 // console.log("Organization ID:", organizationId);
                                 // console.log("Organization :", orgData.docs[0]);
-
 
                                 return {
                                     id: user.user.id,
@@ -115,26 +116,27 @@ export const authOptions = {
                                     organizationId,
                                 };
                             }
-                        }
-
-                        else if (user.user.role == "applicant") {
+                        } else if (user.user.role == "applicant") {
                             {
-                                const applicantResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/applicants`, {
-                                    method: 'GET',
-                                    headers: {
-                                        'Authorization': `Bearer ${user.token}`,
-                                        'Content-Type': 'application/json',
-                                    },
-                                });
+                                const applicantResponse = await fetch(
+                                    `${process.env.NEXT_PUBLIC_API_URL}/api/applicants`,
+                                    {
+                                        method: "GET",
+                                        headers: {
+                                            Authorization: `Bearer ${user.token}`,
+                                            "Content-Type": "application/json",
+                                        },
+                                    }
+                                );
 
-                                if (orgResponse.ok) {
+                                if (applicantResponse.ok) {
                                     const applicantData = await applicantResponse.json();
                                     // console.log("Organization ID:", organizationId);
                                     // console.log("Organization :", orgData.docs[0]);
                                     const applicant = applicantData.docs.find(
                                         (doc) => doc.applicant.id === user.user.id
                                     );
-
+                                    console.log("applicant: ", applicant);
 
                                     return {
                                         id: user.user.id,
@@ -149,29 +151,28 @@ export const authOptions = {
                                     };
                                 }
                             }
-                        }
-
-                        else {
-                            console.error("Failed to fetch organization data:", orgResponse.statusText);
+                        } else {
+                            console.error(
+                                "Failed to fetch organization data:",
+                                orgResponse.statusText
+                            );
                         }
                         return null;
                     } else {
-                        throw new Error('User not found');
+                        throw new Error("User not found");
                     }
-
                 } catch (error) {
-                    console.error('Authorization error:', error);
+                    console.error("Authorization error:", error);
                     return null;
                 }
-
             },
         }),
     ],
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
-        signIn: '/login',
-        error: '/auth/error',
-        verifyRequest: '/verify-request',
+        signIn: "/login",
+        error: "/auth/error",
+        verifyRequest: "/verify-request",
     },
     callbacks: {
         async jwt({ token, user, account, trigger, session }) {
@@ -194,35 +195,35 @@ export const authOptions = {
             }
 
             return token;
+        },
+
+        async session({ session, token, trigger }) {
+            if (trigger === "update" && token?.image) {
+                session.user.image = token.image;
+            }
+
+            if (token) {
+                session.user.id = token.id;
+                session.user.email = token.email;
+                session.user.image = token.image;
+                session.access_token = token.access_token;
+                session.organizationId = token.organizationId;
+
+                console.log("Current Server Session :", session);
+            }
+            return session;
+        },
+
+        async redirect({ baseUrl }) {
+            return baseUrl;
+        },
     },
-
-    async session({ session, token, trigger }) {
-      if (trigger === "update" && token?.image) {
-        session.user.image = token.image;
-      }
-
-      if (token) {
-        session.user.id = token.id;
-        session.user.email = token.email;
-        session.user.image = token.image;
-        session.access_token = token.access_token;
-        session.organizationId = token.organizationId;
-
-        // console.log("Current Server Session :", session);
-      }
-      return session;
+    pages: {
+        signIn: "/login",
+        error: "/auth/error",
+        verifyRequest: "/verify-request",
     },
-
-    async redirect({ baseUrl }) {
-      return baseUrl;
-    },
-  },
-  pages: {
-    signIn: "/login",
-    error: "/auth/error",
-    verifyRequest: "/verify-request",
-  },
-  secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default (req, res) => NextAuth(req, res, authOptions);

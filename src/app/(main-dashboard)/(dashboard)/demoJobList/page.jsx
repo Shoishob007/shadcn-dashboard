@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { JobFilters } from "@/components/filters/JobFilters";
 import { documents } from "./components/jobData";
 import { filterJobs } from "../../../utils/filters";
-import CreateJobForm from "../demoJobFormCreate/page";
+import CreateJobForm from "../demoJobFormCreate/components/CreateJobForm";
 import {
   Dialog,
   DialogContent,

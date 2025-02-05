@@ -10,7 +10,7 @@ import {
   UserCog,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import CreateJobForm from "../../demoJobFormCreate/page";
+import CreateJobForm from "../../demoJobFormCreate/components/CreateJobForm";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 
