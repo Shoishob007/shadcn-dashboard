@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   FormField,
   FormItem,
@@ -11,13 +12,12 @@ import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import { StepsList } from "./components/List";
-import { stepsData } from "./components/stepsData";
 import { orgSettings } from "@/app/(main-dashboard)/(dashboard)/demoAppList/components/org-settings";
 import { X } from "lucide-react";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
-export function BasicInfoTab({ form, jobRoles = [], designations = [] }) {
+export function BasicInfoTab({ form, jobRoles = [], designations = [], callback }) {
   const [responsibilitiesContent, setResponsibilitiesContent] = useState("");
   const [benefitsContent, setBenefitsContent] = useState("");
   const [stepsData, setStepsData] = useState([]);
@@ -30,7 +30,7 @@ export function BasicInfoTab({ form, jobRoles = [], designations = [] }) {
   const [selectedJobRoles, setSelectedJobRoles] = useState([]);
 
   // Designation state
-  const [designation, setDesignation] = useState("");
+  const [selectedDesignation, setSelectedDesignation] = useState("");
   const [designationInputValue, setDesignationInputValue] = useState("");
   const [designationSuggestions, setDesignationSuggestions] = useState([]);
 
@@ -64,6 +64,36 @@ export function BasicInfoTab({ form, jobRoles = [], designations = [] }) {
 
     fetchHiringStages();
   }, []);
+
+  useEffect(() => {
+    const formValues = form.getValues();
+
+    // Initialize job roles
+    if (formValues.jobRole?.length > 0) {
+      const initialJobRoles = formValues.jobRole
+        .map((roleId) => {
+          const role = jobRoles.find((r) => r.id === roleId);
+          return role ? { id: role.id, title: role.title } : null;
+        })
+        .filter(Boolean);
+      setSelectedJobRoles(initialJobRoles);
+    }
+
+    // Initialize designation
+    if (formValues.designation) {
+      const designation = designations.find(
+        (d) => d.id === formValues.designation
+      );
+      if (designation) {
+        setSelectedDesignation({
+          id: designation.id,
+          title: designation.title,
+        });
+        setDesignationInputValue(designation.title);
+      }
+    }
+
+  }, [form, jobRoles, designations]);
 
   useEffect(() => {
     const responsibilities = form.getValues("responsibilities") || [];
@@ -106,8 +136,10 @@ export function BasicInfoTab({ form, jobRoles = [], designations = [] }) {
 
     if (value) {
       const filtered = designations
-        .filter((designation) =>
-          designation.title.toLowerCase().includes(value.toLowerCase())
+        .filter(
+          (designation) =>
+            designation.title.toLowerCase().includes(value.toLowerCase()) &&
+            !selectedDesignation.includes(role.title)
         )
         .slice(0, 5);
       console.log("Filtered Designations:", filtered);
@@ -117,29 +149,34 @@ export function BasicInfoTab({ form, jobRoles = [], designations = [] }) {
     }
   };
 
-  const handleJobRoleSelect = (role) => {
-    if (!selectedJobRoles.includes(role.title)) {
-      setSelectedJobRoles([...selectedJobRoles, role.title]);
-      form.setValue("jobRole", [...selectedJobRoles, role.title]);
-    }
-    setJobRoleInputValue("");
-    setJobRoleSuggestions([]);
-  };
-
-  const handleDesignationSelect = (designation) => {
-    setDesignation(designation.title);
-    form.setValue("designation", designation.title);
-    setDesignationInputValue(designation.title);
-    setDesignationSuggestions([]);
-  };
-
-  const removeJobRole = (roleToRemove) => {
-    const updatedRoles = selectedJobRoles.filter(
-      (role) => role !== roleToRemove
+const handleJobRoleSelect = (role) => {
+  if (!selectedJobRoles.some((r) => r.id === role.id)) {
+    const newRole = { id: role.id, title: role.title };
+    setSelectedJobRoles([...selectedJobRoles, newRole]);
+    form.setValue(
+      "jobRole",
+      [...selectedJobRoles, newRole].map((r) => r.id)
     );
-    setSelectedJobRoles(updatedRoles);
-    form.setValue("jobRole", updatedRoles);
-  };
+  }
+  setJobRoleInputValue("");
+  setJobRoleSuggestions([]);
+};
+
+const handleDesignationSelect = (designation) => {
+  setSelectedDesignation({ id: designation.id, title: designation.title });
+  form.setValue("designation", designation.id);
+  setDesignationInputValue(designation.title);
+  setDesignationSuggestions([]);
+};
+
+const removeJobRole = (roleId) => {
+  const updatedRoles = selectedJobRoles.filter((role) => role.id !== roleId);
+  setSelectedJobRoles(updatedRoles);
+  form.setValue(
+    "jobRole",
+    updatedRoles.map((r) => r.id)
+  );
+};
 
   const handleResponsibilitiesChange = (content) => {
     setResponsibilitiesContent(content);
@@ -166,30 +203,18 @@ export function BasicInfoTab({ form, jobRoles = [], designations = [] }) {
   const handleStepsChange = (steps) => {
     const selectedIds = steps.map((step) => step.id);
     setStepsIds(selectedIds);
-
     form.setValue("steps", steps);
   };
 
+useEffect(() => {
+  callback({
+    steps: stepsIds,
+  });
+}, [stepsIds]);
+
+
   return (
     <div className="space-y-4">
-      <FormField
-        control={form.control}
-        name="title"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Job Title</FormLabel>
-            <FormControl>
-              <Input
-                {...field}
-                placeholder="e.g. Demo Job Title"
-                className="dark:border-gray-400"
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
       <FormField
         control={form.control}
         name="description"
@@ -215,16 +240,16 @@ export function BasicInfoTab({ form, jobRoles = [], designations = [] }) {
           <FormItem>
             <FormLabel>Job Role</FormLabel>
             <div className="flex flex-wrap gap-2 mb-2">
-              {selectedJobRoles.map((role, index) => (
+              {selectedJobRoles.map((role) => (
                 <div
-                  key={index}
+                  key={role.id}
                   className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
                 >
-                  {role}
+                  {role.title}
                   <button
                     type="button"
                     className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
-                    onClick={() => removeJobRole(role)}
+                    onClick={() => removeJobRole(role.id)}
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -345,7 +370,7 @@ export function BasicInfoTab({ form, jobRoles = [], designations = [] }) {
               <FormControl>
                 <StepsList
                   availableSteps={stepsData}
-                  selectedSteps={field.value || []}
+                  selectedSteps={form.getValues("steps") || []}
                   onStepsChange={handleStepsChange}
                 />
               </FormControl>

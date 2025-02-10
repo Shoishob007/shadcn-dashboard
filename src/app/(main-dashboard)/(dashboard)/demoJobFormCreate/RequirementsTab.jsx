@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import {
   FormField,
@@ -16,24 +17,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import { useFormContext } from "react-hook-form";
-import { useJobForm } from "./context/JobFormContext";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
-export function RequirementsTab({ form }) {
+export function RequirementsTab({ callback }) {
   const formContext = useFormContext();
   const [skillInputValue, setSkillInputValue] = useState("");
   const [skillSuggestions, setSkillSuggestions] = useState([]);
-  const [selectedSkills, setSelectedSkills] = useState([]);
-
   const [degreeInputValue, setDegreeInputValue] = useState("");
   const [degreeSuggestions, setDegreeSuggestions] = useState([]);
-  const [selectedDegrees, setSelectedDegrees] = useState([]);
-
   const [studyInputValue, setStudyInputValue] = useState("");
   const [studySuggestions, setStudySuggestions] = useState([]);
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [selectedDegrees, setSelectedDegrees] = useState([]);
   const [selectedFieldsOfStudy, setSelectedFieldsOfStudy] = useState([]);
-
   const [requirementsContent, setRequirementsContent] = useState("");
 
   const modules = {
@@ -45,6 +42,7 @@ export function RequirementsTab({ form }) {
     ],
   };
 
+  // Initialize from form default values
   useEffect(() => {
     const defaultValues = formContext.getValues();
 
@@ -56,7 +54,6 @@ export function RequirementsTab({ form }) {
         })
         .filter(Boolean);
       setSelectedSkills(skills);
-      console.log("skills :: ", skills);
     }
 
     if (defaultValues?.degreeLevel?.length > 0) {
@@ -67,7 +64,6 @@ export function RequirementsTab({ form }) {
         })
         .filter(Boolean);
       setSelectedDegrees(degrees);
-      console.log("Degrees :: ", degrees);
     }
 
     if (defaultValues?.fieldOfStudy?.length > 0) {
@@ -87,20 +83,14 @@ export function RequirementsTab({ form }) {
     }
   }, [formContext]);
 
+  // Updating callback with selected values whenever they change
   useEffect(() => {
-    const skillIds = selectedSkills.map((skill) => skill.id);
-    formContext.setValue("skills", skillIds);
-  }, [selectedSkills, formContext]);
-
-  useEffect(() => {
-    const degreeIds = selectedDegrees.map((degree) => degree.id);
-    formContext.setValue("degreeLevel", degreeIds);
-  }, [selectedDegrees, formContext]);
-
-  useEffect(() => {
-    const fieldIds = selectedFieldsOfStudy.map((field) => field.id);
-    formContext.setValue("fieldOfStudy", fieldIds);
-  }, [selectedFieldsOfStudy, formContext]);
+    callback({
+      skills: selectedSkills.map((skill) => skill.id),
+      degreeLevel: selectedDegrees.map((degree) => degree.id),
+      fieldOfStudy: selectedFieldsOfStudy.map((field) => field.id),
+    });
+  }, [selectedSkills, selectedDegrees, selectedFieldsOfStudy]);
 
   const handleRequirementsChange = (content) => {
     setRequirementsContent(content);
@@ -197,10 +187,6 @@ export function RequirementsTab({ form }) {
 
   return (
     <div className="space-y-4">
-      <input type="hidden" {...formContext.register("skills")} />
-      <input type="hidden" {...formContext.register("degreeLevel")} />
-      <input type="hidden" {...formContext.register("fieldOfStudy")} />
-
       <FormField
         control={formContext.control}
         name="requirements"
@@ -249,7 +235,6 @@ export function RequirementsTab({ form }) {
             </div>
             <div className="relative mt-2">
               <Input
-                {...field}
                 type="text"
                 value={skillInputValue}
                 onChange={handleSkillInputChange}
@@ -303,7 +288,6 @@ export function RequirementsTab({ form }) {
               </div>
               <div className="relative mt-2">
                 <Input
-                  {...field}
                   type="text"
                   value={degreeInputValue}
                   onChange={handleDegreeInputChange}
@@ -357,7 +341,6 @@ export function RequirementsTab({ form }) {
               </div>
               <div className="relative mt-2">
                 <Input
-                  {...field}
                   type="text"
                   value={studyInputValue}
                   onChange={handleStudyFieldInputChange}

@@ -25,24 +25,21 @@ export function EmploymentTab({ form, jobTypes, employeeTypes }) {
             <FormItem>
               <FormLabel>Employment Type</FormLabel>
               <FormControl>
-                <div className="flex items-center border dark:border-gray-400 rounded-md">
-                  {/* <SlidersHorizontal className="mx-3 text-gray-400 w-4" /> */}
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value || ""}
-                  >
-                    <SelectTrigger className="!border-l-0">
-                      <SelectValue placeholder="Select Category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {employeeTypes?.map((type) => (
-                        <SelectItem key={type.id} value={type.id}>
-                          {type.title}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value || ""}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Employment Type" />
+                  </SelectTrigger>
+                  <SelectContent area-label="employeeType">
+                    {employeeTypes?.map((type) => (
+                      <SelectItem key={type.id} value={type.id}>
+                        {type.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -56,23 +53,21 @@ export function EmploymentTab({ form, jobTypes, employeeTypes }) {
             <FormItem>
               <FormLabel>Job Type</FormLabel>
               <FormControl>
-                <div className="flex items-center border dark:border-gray-400 rounded-md">
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value || ""}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Job Type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {jobTypes?.map((type) => (
-                        <SelectItem key={type.id} value={type.id}>
-                          {type.title}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value || ""}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Job Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {jobTypes?.map((type) => (
+                      <SelectItem key={type.id} value={type.id}>
+                        {type.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>

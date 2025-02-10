@@ -128,7 +128,7 @@ export function StepsList({ availableSteps, selectedSteps, onStepsChange }) {
 
       <div className="w-fit h-fit bg-secondary mx-auto sm:mx-0 dark:bg-gray-800 border dark:border-gray-500 p-4 rounded-lg">
         <h3 className="text-sm font-medium sm:mb-3 text-center dark:underline dark:underline-offset-4">
-          Available Steps
+          Available Stages
         </h3>
         <div className="space-y-2 flex flex-col">
           {availableSteps.map((step) => (

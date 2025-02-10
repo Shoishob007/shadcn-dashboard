@@ -1,16 +1,17 @@
 import { z } from 'zod';
 
 export const basicInfoSchema = z.object({
-    title: z.string().min(3, "Job title is required and must be at least 3 characters"),
     description: z.string().min(10, "Description must be at least 10 characters"),
     jobRole: z.array(z.string()).min(1, "Job role is required"),
     designation: z.string().optional(),
     responsibilities: z.array(z.string()).min(1, "At least one responsibility is required"),
     employeeBenefits: z.array(z.string()),
+    hiringStages: z.array(z.string()).optional(),
 });
 
 export const employmentSchema = z.object({
     jobType: z.string().min(1, "Job type is required"),
+    employeeType: z.string().min(1, "Employee type is required"),
     salary: z.string().min(1, "Salary is required"),
     deadline: z.preprocess(
         (arg) => {
@@ -26,9 +27,10 @@ export const employmentSchema = z.object({
 });
 
 export const requirementsSchema = z.object({
-    skills: z.array(z.string()).min(1, "At least one skill is required"),
-    degreeLevel: z.array(z.string()).min(1, "At least one degree is required"),
-    fieldOfStudy: z.array(z.string()).optional(),
+        requirements: z.array(z.string()).optional(),
+        skills: z.array(z.string()).optional(),
+        degreeLevel: z.array(z.string()).optional(),
+        fieldOfStudy: z.array(z.string()).optional(),
 });
 
 export const locationSchema = z.object({
@@ -39,14 +41,19 @@ export const locationSchema = z.object({
 });
 
 export const jobSchema = z.object({
-    title: z.string().min(3, "Job title is required and must be at least 3 characters"),
+    title: z.string().optional(),
     description: z.string().min(10, "Description must be at least 10 characters"),
     jobRole: z.array(z.string()).min(1, "Job role is required"),
     designation: z.string().optional(),
     responsibilities: z.array(z.string()).min(1, "At least one responsibility is required"),
     employeeBenefits: z.array(z.string()),
-    requirements: z.array(z.string()).min(1, "At least one requirement is required"),
+    requirements: z.array(z.string()).optional(),
+    skills: z.array(z.string()).optional(),
+    degreeLevel: z.array(z.string()).optional(),
+    fieldOfStudy: z.array(z.string()).optional(),    
     jobType: z.string().min(1, "Job type is required"),
+    employeeType: z.string().min(1, "Employee type is required"),
+
     salary: z.string().min(1, "Salary is required"),
     deadline: z.preprocess(
         (arg) => {
@@ -63,4 +70,5 @@ export const jobSchema = z.object({
     email: z.string().email("Invalid email"),
     phone: z.string().optional(),
     contactInfo: z.string().optional(),
+    hiringStages: z.array(z.string()).optional(),
 });
