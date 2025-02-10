@@ -25,7 +25,7 @@ const useRegisterStore = create((set) => ({
     }),
 
   registerUser: async (data) => {
-    const { name, email, password, role } = data;
+    const { email, password, role } = data;
     const provider = "credentials";
 
     try {

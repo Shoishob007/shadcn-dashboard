@@ -2,7 +2,14 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
 import profileImg from "../../../../public/assests/profile-pic.jpg";
 
-const ProfileHeader = () => {
+const ProfileHeader = ({ profileData = {} }) => {
+  console.log("profile Basic Details: ", profileData);
+
+  const email = profileData?.applicant?.email || "Not Available";
+  const phone = profileData?.applicant?.phone || "123 456 789";
+  const address =
+    profileData?.applicant?.address || "420 City Path, AU 123-456";
+
   return (
     <div>
       <div className="flex gap-4">
@@ -21,19 +28,19 @@ const ProfileHeader = () => {
               <span>
                 <Mail size={15} />
               </span>
-              <span>demo@example.com</span>
+              <span>{email}</span>
             </div>
             <div className="flex items-center gap-1 text-sm">
               <span>
                 <Phone size={15} />
               </span>
-              <span>123 456 789</span>
+              <span>{phone}</span>
             </div>
             <div className="flex items-center gap-1 text-sm">
               <span>
                 <MapPin size={15} />
               </span>
-              <span>420 City Path, AU 123-456</span>
+              <span>{address}</span>
             </div>
           </div>
           <div className="mt-3">
