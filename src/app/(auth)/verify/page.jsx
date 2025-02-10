@@ -26,6 +26,7 @@ export default function VerifyPage() {
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-email/${token}`,
         {
           method: "GET",
+          mode: 'cors',
           headers: {
             "Content-Type": "application/json",
           },
