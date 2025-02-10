@@ -9,15 +9,29 @@ import {
 import Link from "next/link";
 
 const JobSearchCard = ({ job }) => {
-  const { orgName, title, location, skills, employeeType, salary, img } = job;
+  console.log("Job: ", job);
+  console.log("Job id: ", job.job.title);
+  const {
+    id = "unknown",
+    orgName = "Unknown Company",
+    title = `${job.job.title ? job.job.title : "Job Title Not Available"}`,
+    location = "Location Not Specified",
+    skills = [],
+    employeeType = "other",
+    salary = "0",
+    img = "", 
+  } = job || {};
+
+  const formattedEmployeeType =
+    typeof employeeType === "string" ? employeeType.replace("-", " ") : "Other"; // Prevents null errors
 
   return (
-    <Link href={`/job-search/${job.id}`} className="">
+    <Link href={`/job-search/${id}`} className="">
       <Card className="w-full hover:border hover:border-black duration-300 cursor-pointer">
         <CardHeader>
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 font-medium bg-gray-200 rounded-full flex items-center justify-center">
-              <span>{orgName.slice(0, 1)}</span>
+              <span>{orgName.charAt(0)}</span>
             </div>
             <div>
               <h1 className="text-[15px] font-medium">{orgName}</h1>
@@ -30,19 +44,23 @@ const JobSearchCard = ({ job }) => {
             <h1 className="text-[17px] font-semibold">{title}</h1>
             <span
               className={`text-xs font-semibold capitalize ${
-                employeeType === "full-time"
+                formattedEmployeeType === "full time"
                   ? "text-[#20c997]"
-                  : employeeType === "contractual"
+                  : formattedEmployeeType === "contractual"
                   ? "text-[#ffc107]"
-                  : employeeType === "part-time"
+                  : formattedEmployeeType === "part time"
                   ? "text-[#6610f2]"
-                  : "text-black"
+                  : "text-gray-500"
               }`}
             >
-              {employeeType}
+              {formattedEmployeeType}
             </span>
             <div className="flex items-center gap-1 flex-wrap mt-2 text-sm">
-              <SkillsDisplay skills={skills} />
+              {skills.length > 0 ? (
+                <SkillsDisplay skills={skills} />
+              ) : (
+                <span className="text-gray-500">No skills listed</span>
+              )}
             </div>
           </div>
         </CardContent>

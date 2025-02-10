@@ -35,7 +35,16 @@ const ApplyForm = ({ setAppliedStatus, appliedStatus }) => {
   } = useForm();
   const router = useRouter();
 
-  const onSubmit = (data) => {
+  const onSubmit = async(data) => {
+    
+    try {
+        const response = await fetch()
+    } catch (error) {
+        
+    }
+    
+    
+    
     console.log("Uploaded File:", data.resume[0]);
     console.log(data);
     reset();
@@ -52,13 +61,19 @@ const ApplyForm = ({ setAppliedStatus, appliedStatus }) => {
   };
 
   const pathname = usePathname();
-  const jobDetailsPageFixed = pathname.includes('/job-details');
+  const jobDetailsPageFixed = pathname.includes("/job-details");
 
   return (
     <div className="mt-[30px] flex items-center justify-end ">
       <Dialog onOpenChange={setIsOpen} open={isOpen} className="">
         <DialogTrigger>
-          <div className={jobDetailsPageFixed ? "fixed bottom-8 right-40" : "fixed bottom-8 right-14"}>
+          <div
+            className={
+              jobDetailsPageFixed
+                ? "fixed bottom-20 right-40"
+                : "fixed bottom-20 right-14"
+            }
+          >
             {hasApplied ? (
               <Button disabled={hasApplied}>Applied</Button>
             ) : (
