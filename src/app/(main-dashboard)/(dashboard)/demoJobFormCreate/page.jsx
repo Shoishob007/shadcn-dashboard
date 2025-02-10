@@ -5,29 +5,36 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { ScrollText, AlertCircle } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateJobForm from "./components/CreateJobForm";
 import { useSession } from "next-auth/react";
 import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
+import qs from "qs";
+// import useIndustryTypeStore from "@/stores/authStore/useIndustryTypeStore";
 
 export default function CreateJobCard() {
   const { data: session } = useSession();
   const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [jobId, setJobId] = useState(null);
-
-  const organizationId = session?.organizationId;
+  const [docId, setDocId] = useState(null);
   const accessToken = session?.access_token;
 
-  const handleCreateJob = async () => {
-    if (!organizationId || !accessToken) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    if (!accessToken) {
       toast({
         title: "Error",
         description: "You must be logged in to create a job",
@@ -38,7 +45,7 @@ export default function CreateJobCard() {
 
     setIsLoading(true);
     try {
-      console.log(JSON.stringify({ organization: organizationId }));
+      // First request: Create Job
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/jobs`,
         {
@@ -47,7 +54,7 @@ export default function CreateJobCard() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-          body: JSON.stringify({ organization: organizationId }),
+          body: JSON.stringify({ title: data.title }),
         }
       );
 
@@ -55,29 +62,44 @@ export default function CreateJobCard() {
         throw new Error("Failed to create job");
       }
 
-      const data = await response.json();
-      //   console.log("Data i got :", data)
-      setJobId(data.doc.id);
-      setShowForm(true);
+      const responseData = await response.json();
+      const newJobId = responseData.doc.id;
 
-      const jobDetailsResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/job-details`
-      );
-      const jobDetailsData = await jobDetailsResponse.json();
-
-      console.log("Job Details Data::", jobDetailsData);
-
-      console.log("Job Details Docs::", jobDetailsData.docs);
-
-      const matchedJob = jobDetailsData.docs.find(
-        (document) => document.job.id === jobId,
+      const query = qs.stringify(
+        {
+          where: {
+            "job.id": {
+              equals: newJobId,
+            },
+          },
+        },
+        { encode: false }
       );
 
-      if (matchedJob) {
-        console.log("Matched job id:", matchedJob.id);
-        console.log("Matched job :", matchedJob);
-      } else {
-        console.log("No matching job found.");
+      let attempts = 0;
+      let jobDetailsData = null;
+
+      // console.log("Query :: ", query)
+
+      while (attempts < 3) {
+        const jobDetailsResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/job-details?${query}`
+        );
+
+        jobDetailsData = await jobDetailsResponse.json();
+
+        if (jobDetailsData.docs.length > 0) {
+          setShowForm(true);
+          setDocId(jobDetailsData.docs[0].id);
+          break;
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        attempts++;
+      }
+
+      if (!jobDetailsData || jobDetailsData.docs.length === 0) {
+        console.log("Final Attempt: No matching job found.");
       }
     } catch (error) {
       toast({
@@ -131,17 +153,35 @@ export default function CreateJobCard() {
               </div>
             </div>
           </div>
+
+          {/* Form for Job Title */}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div>
+              <label htmlFor="title" className="block text-sm font-medium mb-1">
+                Job Title *
+              </label>
+              <Input
+                id="title"
+                {...register("title", { required: "Job title is required" })}
+                placeholder="Enter job title"
+                className="w-full"
+              />
+              {errors.title && (
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.title.message}
+                </p>
+              )}
+            </div>
+            <Button
+              type="submit"
+              className="w-full"
+              size="lg"
+              disabled={isLoading}
+            >
+              {isLoading ? "Creating..." : "Start Creating Your Job Post"}
+            </Button>
+          </form>
         </CardContent>
-        <CardFooter className="justify-center">
-          <Button
-            className="w-fit text-center items-center"
-            size="lg"
-            onClick={handleCreateJob}
-            disabled={isLoading}
-          >
-            {isLoading ? "Creating..." : "Start Creating Your Job Post"}
-          </Button>
-        </CardFooter>
       </Card>
 
       <Dialog open={showForm} onOpenChange={setShowForm}>
@@ -150,6 +190,7 @@ export default function CreateJobCard() {
           <CreateJobForm
             isDialogOpen={true}
             onClose={() => setShowForm(false)}
+            jobId={docId}
           />
         </DialogContent>
       </Dialog>

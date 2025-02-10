@@ -4,16 +4,16 @@ export const useStudyFieldStore = create((set) => ({
   fieldOfStudyTags: [],
   addFieldOfStudy: (studyField) =>
     set((state) => ({
-      fieldOfStudyTags: state.fieldOfStudyTags.includes(studyField)
+      fieldOfStudyTags: state.fieldOfStudyTags.some((s) => s.id === studyField.id)
         ? state.fieldOfStudyTags
         : [...state.fieldOfStudyTags, studyField],
     })),
-    removeFieldOfStudy: (studyField) =>
+  removeFieldOfStudy: (studyFieldId) =>
     set((state) => ({
-      fieldOfStudyTags: state.fieldOfStudyTags.filter((s) => s !== studyField),
+      fieldOfStudyTags: state.fieldOfStudyTags.filter((s) => s.id !== studyFieldId),
     })),
-    initializeFieldOfStudy: (studyFields = []) => {
-      set({ fieldOfStudyTags: Array.isArray(studyFields) ? studyFields : [] });
-    },
-    resetStudyFields: () => set({ fieldOfStudyTags: [] }),
+  initializeFieldOfStudy: (studyFields = []) => {
+    set({ fieldOfStudyTags: Array.isArray(studyFields) ? studyFields : [] });
+  },
+  resetStudyFields: () => set({ fieldOfStudyTags: [] }),
 }));

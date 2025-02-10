@@ -134,7 +134,7 @@ export function StepsList({ availableSteps, selectedSteps, onStepsChange }) {
           {availableSteps.map((step) => (
             <div
               key={step.id}
-              className="flex items-center gap-0 sm:justify-between dark:bg-gray-800 rounded-md"
+              className="flex items-center gap-0 justify-between dark:bg-gray-800 rounded-md"
             >
               <span className="text-xs sm:text-sm p-1 sm:p-2">
                 {step.title}

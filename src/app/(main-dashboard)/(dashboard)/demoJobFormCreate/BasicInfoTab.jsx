@@ -13,15 +13,26 @@ import { useEffect, useState } from "react";
 import { StepsList } from "./components/List";
 import { stepsData } from "./components/stepsData";
 import { orgSettings } from "@/app/(main-dashboard)/(dashboard)/demoAppList/components/org-settings";
+import { X } from "lucide-react";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
-export function BasicInfoTab({ form }) {
+export function BasicInfoTab({ form, jobRoles = [], designations = [] }) {
   const [responsibilitiesContent, setResponsibilitiesContent] = useState("");
   const [benefitsContent, setBenefitsContent] = useState("");
-    const [stepsData, setStepsData] = useState([]);
-    const [stepsIds, setStepsIds] = useState([]);
+  const [stepsData, setStepsData] = useState([]);
+  const [stepsIds, setStepsIds] = useState([]);
   const currentSubscriptionId = orgSettings.docs[0]?.subscriptionId;
+
+  // Job Role state
+  const [jobRoleInputValue, setJobRoleInputValue] = useState("");
+  const [jobRoleSuggestions, setJobRoleSuggestions] = useState([]);
+  const [selectedJobRoles, setSelectedJobRoles] = useState([]);
+
+  // Designation state
+  const [designation, setDesignation] = useState("");
+  const [designationInputValue, setDesignationInputValue] = useState("");
+  const [designationSuggestions, setDesignationSuggestions] = useState([]);
 
   const modules = {
     toolbar: [
@@ -68,6 +79,67 @@ export function BasicInfoTab({ form }) {
       setBenefitsContent(content);
     }
   }, [form]);
+
+  const handleJobRoleInputChange = (e) => {
+    const value = e.target.value;
+    setJobRoleInputValue(value);
+
+    if (value) {
+      const filtered = jobRoles
+        .filter(
+          (role) =>
+            role.title.toLowerCase().includes(value.toLowerCase()) &&
+            !selectedJobRoles.includes(role.title)
+        )
+        .slice(0, 5);
+      console.log("Filtered roles:", filtered);
+
+      setJobRoleSuggestions(filtered);
+    } else {
+      setJobRoleSuggestions([]);
+    }
+  };
+
+  const handleDesignationInputChange = (e) => {
+    const value = e.target.value;
+    setDesignationInputValue(value);
+
+    if (value) {
+      const filtered = designations
+        .filter((designation) =>
+          designation.title.toLowerCase().includes(value.toLowerCase())
+        )
+        .slice(0, 5);
+      console.log("Filtered Designations:", filtered);
+      setDesignationSuggestions(filtered);
+    } else {
+      setDesignationSuggestions([]);
+    }
+  };
+
+  const handleJobRoleSelect = (role) => {
+    if (!selectedJobRoles.includes(role.title)) {
+      setSelectedJobRoles([...selectedJobRoles, role.title]);
+      form.setValue("jobRole", [...selectedJobRoles, role.title]);
+    }
+    setJobRoleInputValue("");
+    setJobRoleSuggestions([]);
+  };
+
+  const handleDesignationSelect = (designation) => {
+    setDesignation(designation.title);
+    form.setValue("designation", designation.title);
+    setDesignationInputValue(designation.title);
+    setDesignationSuggestions([]);
+  };
+
+  const removeJobRole = (roleToRemove) => {
+    const updatedRoles = selectedJobRoles.filter(
+      (role) => role !== roleToRemove
+    );
+    setSelectedJobRoles(updatedRoles);
+    form.setValue("jobRole", updatedRoles);
+  };
 
   const handleResponsibilitiesChange = (content) => {
     setResponsibilitiesContent(content);
@@ -142,13 +214,46 @@ export function BasicInfoTab({ form }) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>Job Role</FormLabel>
-            <FormControl>
-              <Input
-                {...field}
-                placeholder="e.g. Backend Developer"
-                className="dark:border-gray-400"
-              />
-            </FormControl>
+            <div className="flex flex-wrap gap-2 mb-2">
+              {selectedJobRoles.map((role, index) => (
+                <div
+                  key={index}
+                  className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
+                >
+                  {role}
+                  <button
+                    type="button"
+                    className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
+                    onClick={() => removeJobRole(role)}
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div className="relative">
+              <FormControl>
+                <Input
+                  value={jobRoleInputValue}
+                  onChange={handleJobRoleInputChange}
+                  placeholder="Type to search job roles..."
+                  className="dark:border-gray-400"
+                />
+              </FormControl>
+              {jobRoleSuggestions.length > 0 && (
+                <ul className="absolute z-10 w-full bg-white dark:bg-gray-800 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto">
+                  {jobRoleSuggestions.map((role, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleJobRoleSelect(role)}
+                      className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      {role.title}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
             <FormMessage />
           </FormItem>
         )}
@@ -160,13 +265,29 @@ export function BasicInfoTab({ form }) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>Designation</FormLabel>
-            <FormControl>
-              <Input
-                {...field}
-                placeholder="e.g. Senior Software Engineer"
-                className="dark:border-gray-400"
-              />
-            </FormControl>
+            <div className="relative">
+              <FormControl>
+                <Input
+                  value={designationInputValue}
+                  onChange={handleDesignationInputChange}
+                  placeholder="Type to search designations..."
+                  className="dark:border-gray-400"
+                />
+              </FormControl>
+              {designationSuggestions.length > 0 && (
+                <ul className="absolute z-10 w-full bg-white dark:bg-gray-800 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto">
+                  {designationSuggestions.map((designation, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleDesignationSelect(designation)}
+                      className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      {designation.title}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
             <FormMessage />
           </FormItem>
         )}
