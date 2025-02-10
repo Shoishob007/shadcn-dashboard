@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 
-export function EmploymentTab({ form }) {
+export function EmploymentTab({ form, jobTypes, employeeTypes }) {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -35,9 +35,11 @@ export function EmploymentTab({ form }) {
                       <SelectValue placeholder="Select Category" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="full-time">Full-Time</SelectItem>
-                      <SelectItem value="part-time">Part-Time</SelectItem>
-                      <SelectItem value="contractual">Contractual</SelectItem>
+                      {employeeTypes?.map((type) => (
+                        <SelectItem key={type.id} value={type.id}>
+                          {type.title}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -54,19 +56,20 @@ export function EmploymentTab({ form }) {
             <FormItem>
               <FormLabel>Job Type</FormLabel>
               <FormControl>
-                <div className="flex items-center border dark:border-gray-400  rounded-md">
-                  {/* <SlidersVertical className="mx-3 text-gray-400 w-4" /> */}
+                <div className="flex items-center border dark:border-gray-400 rounded-md">
                   <Select
                     onValueChange={field.onChange}
                     value={field.value || ""}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select Nature" />
+                      <SelectValue placeholder="Select Job Type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="physical">Onsite</SelectItem>
-                      <SelectItem value="remote">Remote</SelectItem>
-                      <SelectItem value="hybrid">Hybrid</SelectItem>
+                      {jobTypes?.map((type) => (
+                        <SelectItem key={type.id} value={type.id}>
+                          {type.title}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>

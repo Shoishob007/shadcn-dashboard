@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   FormField,
   FormItem,
@@ -7,39 +8,32 @@ import {
 } from "@/components/ui/form";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
-import { useSkillsStore } from "@/stores/job-createStore/skillStore";
-import { useDegreeLevelStore } from "@/stores/job-createStore/degreeLevelStore";
-import { useStudyFieldStore } from "@/stores/job-createStore/studyFieldStore";
-import { useState, useEffect } from "react";
 import {
   allSkills,
   degreeLevelData,
   fieldOfStudyData,
-} from "../../../../stores/job-createStore/component/JobCreateData";
+} from "@/stores/job-createStore/component/JobCreateData";
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
+import { useFormContext } from "react-hook-form";
+import { useJobForm } from "./context/JobFormContext";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 export function RequirementsTab({ form }) {
-  const { skillTags, addSkill, removeSkill, initializeSkills, resetSkills } =
-    useSkillsStore();
-  const { degreeTags, addDegree, removeDegree, initializeDegrees, resetDegrees } =
-    useDegreeLevelStore();
-  const {
-    fieldOfStudyTags,
-    addFieldOfStudy,
-    removeFieldOfStudy,
-    initializeFieldOfStudy,
-    resetStudyFields
-  } = useStudyFieldStore();
-
+  const formContext = useFormContext();
   const [skillInputValue, setSkillInputValue] = useState("");
   const [skillSuggestions, setSkillSuggestions] = useState([]);
+  const [selectedSkills, setSelectedSkills] = useState([]);
+
   const [degreeInputValue, setDegreeInputValue] = useState("");
   const [degreeSuggestions, setDegreeSuggestions] = useState([]);
+  const [selectedDegrees, setSelectedDegrees] = useState([]);
+
   const [studyInputValue, setStudyInputValue] = useState("");
   const [studySuggestions, setStudySuggestions] = useState([]);
+  const [selectedFieldsOfStudy, setSelectedFieldsOfStudy] = useState([]);
+
   const [requirementsContent, setRequirementsContent] = useState("");
 
   const modules = {
@@ -50,83 +44,88 @@ export function RequirementsTab({ form }) {
       ["clean"],
     ],
   };
-    // Reset stores when component unmounts
-    useEffect(() => {
-      return () => {
-        resetSkills();
-        resetDegrees();
-        resetStudyFields();
-      };
-    }, [resetSkills, resetDegrees, resetStudyFields]);
 
-  // Initializing store values from form default values
   useEffect(() => {
-    const defaultValues = form.getValues();
+    const defaultValues = formContext.getValues();
 
     if (defaultValues?.skills?.length > 0) {
-      initializeSkills(defaultValues.skills);
+      const skills = defaultValues.skills
+        .map((id) => {
+          const skill = allSkills.docs.find((s) => s.id === id);
+          return skill ? { id: skill.id, title: skill.title } : null;
+        })
+        .filter(Boolean);
+      setSelectedSkills(skills);
+      console.log("skills :: ", skills);
     }
 
     if (defaultValues?.degreeLevel?.length > 0) {
-      initializeDegrees(defaultValues.degreeLevel);
+      const degrees = defaultValues.degreeLevel
+        .map((id) => {
+          const degree = degreeLevelData.docs.find((d) => d.id === id);
+          return degree ? { id: degree.id, title: degree.title } : null;
+        })
+        .filter(Boolean);
+      setSelectedDegrees(degrees);
+      console.log("Degrees :: ", degrees);
     }
 
     if (defaultValues?.fieldOfStudy?.length > 0) {
-      initializeFieldOfStudy(defaultValues.fieldOfStudy);
+      const fields = defaultValues.fieldOfStudy
+        .map((id) => {
+          const field = fieldOfStudyData.docs.find((f) => f.id === id);
+          return field ? { id: field.id, title: field.title } : null;
+        })
+        .filter(Boolean);
+      setSelectedFieldsOfStudy(fields);
     }
 
-    const requirements = form.getValues("requirements") || [];
-
-    console.log("Degree Levels:", form.getValues("degreeLevel"));
-
-
+    const requirements = defaultValues?.requirements || [];
     if (Array.isArray(requirements)) {
       const content = requirements.map((item) => `<p>${item}</p>`).join("");
       setRequirementsContent(content);
     }
-  }, [form, initializeSkills, initializeDegrees, initializeFieldOfStudy]);
-  console.log(degreeTags)
+  }, [formContext]);
 
+  useEffect(() => {
+    const skillIds = selectedSkills.map((skill) => skill.id);
+    formContext.setValue("skills", skillIds);
+  }, [selectedSkills, formContext]);
+
+  useEffect(() => {
+    const degreeIds = selectedDegrees.map((degree) => degree.id);
+    formContext.setValue("degreeLevel", degreeIds);
+  }, [selectedDegrees, formContext]);
+
+  useEffect(() => {
+    const fieldIds = selectedFieldsOfStudy.map((field) => field.id);
+    formContext.setValue("fieldOfStudy", fieldIds);
+  }, [selectedFieldsOfStudy, formContext]);
 
   const handleRequirementsChange = (content) => {
     setRequirementsContent(content);
-
     const items = content
       .split("</p>")
       .map((item) => item.replace(/<p>|<br>/g, "").trim())
       .filter(Boolean);
-
-    form.setValue("requirements", items);
+    formContext.setValue("requirements", items, {
+      shouldDirty: true,
+      shouldTouch: true,
+    });
   };
-
-  // Syncing form values with store state
-  useEffect(() => {
-    if (skillTags.length > 0) {
-      form.setValue("skills", skillTags);
-    }
-    if (degreeTags.length > 0) {
-      form.setValue("degreeLevel", degreeTags);
-    }
-    if (fieldOfStudyTags.length > 0) {
-      form.setValue("fieldOfStudy", fieldOfStudyTags);
-    }
-  }, [skillTags, degreeTags, fieldOfStudyTags, form]);
 
   const handleSkillInputChange = (e) => {
     const value = e.target.value;
     setSkillInputValue(value);
 
     if (value) {
-      const filtered = allSkills
+      const filtered = allSkills.docs
         .filter(
           (skill) =>
-            skill.toLowerCase().includes(value.toLowerCase()) &&
-            !skillTags.includes(skill)
+            skill.title.toLowerCase().includes(value.toLowerCase()) &&
+            !selectedSkills.some((s) => s.id === skill.id)
         )
         .slice(0, 5);
-      if (!filtered.includes(value)) {
-        filtered.push(value);
-      }
       setSkillSuggestions(filtered);
     } else {
       setSkillSuggestions([]);
@@ -138,17 +137,13 @@ export function RequirementsTab({ form }) {
     setDegreeInputValue(value);
 
     if (value) {
-      const filtered = degreeLevelData
+      const filtered = degreeLevelData.docs
         .filter(
           (degree) =>
-            degree.toLowerCase().includes(value.toLowerCase()) &&
-            !degreeTags.includes(degree)
+            degree.title.toLowerCase().includes(value.toLowerCase()) &&
+            !selectedDegrees.some((d) => d.id === degree.id)
         )
         .slice(0, 5);
-
-      if (!filtered.includes(value)) {
-        filtered.push(value);
-      }
       setDegreeSuggestions(filtered);
     } else {
       setDegreeSuggestions([]);
@@ -160,16 +155,13 @@ export function RequirementsTab({ form }) {
     setStudyInputValue(value);
 
     if (value) {
-      const filtered = fieldOfStudyData
+      const filtered = fieldOfStudyData.docs
         .filter(
-          (studyField) =>
-            studyField.toLowerCase().includes(value.toLowerCase()) &&
-            !fieldOfStudyTags.includes(studyField)
+          (field) =>
+            field.title.toLowerCase().includes(value.toLowerCase()) &&
+            !selectedFieldsOfStudy.some((f) => f.id === field.id)
         )
         .slice(0, 5);
-      if (!filtered.includes(value)) {
-        filtered.push(value);
-      }
       setStudySuggestions(filtered);
     } else {
       setStudySuggestions([]);
@@ -177,27 +169,40 @@ export function RequirementsTab({ form }) {
   };
 
   const handleSkillSelect = (skill) => {
-    addSkill(skill);
+    setSelectedSkills([
+      ...selectedSkills,
+      { id: skill.id, title: skill.title },
+    ]);
     setSkillInputValue("");
     setSkillSuggestions([]);
   };
 
   const handleDegreeSelect = (degree) => {
-    addDegree(degree);
+    setSelectedDegrees([
+      ...selectedDegrees,
+      { id: degree.id, title: degree.title },
+    ]);
     setDegreeInputValue("");
     setDegreeSuggestions([]);
   };
 
-  const handleStudyFieldSelect = (studyField) => {
-    addFieldOfStudy(studyField);
+  const handleStudyFieldSelect = (field) => {
+    setSelectedFieldsOfStudy([
+      ...selectedFieldsOfStudy,
+      { id: field.id, title: field.title },
+    ]);
     setStudyInputValue("");
     setStudySuggestions([]);
   };
 
   return (
     <div className="space-y-4">
+      <input type="hidden" {...formContext.register("skills")} />
+      <input type="hidden" {...formContext.register("degreeLevel")} />
+      <input type="hidden" {...formContext.register("fieldOfStudy")} />
+
       <FormField
-        control={form.control}
+        control={formContext.control}
         name="requirements"
         render={({ field }) => (
           <FormItem>
@@ -215,32 +220,36 @@ export function RequirementsTab({ form }) {
           </FormItem>
         )}
       />
-
       <FormField
-        control={form.control}
+        control={formContext.control}
         name="skills"
         render={({ field }) => (
           <div>
             <FormLabel className="font-medium">Required Skills</FormLabel>
             <div className="flex flex-wrap gap-2 mt-1">
-              {skillTags.map((skill, index) => (
+              {selectedSkills.map((skill) => (
                 <div
-                  key={index}
+                  key={skill.id}
                   className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
                 >
-                  {skill}
+                  {skill.title}
                   <button
                     type="button"
                     className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
-                    onClick={() => removeSkill(skill)}
+                    onClick={() =>
+                      setSelectedSkills(
+                        selectedSkills.filter((s) => s.id !== skill.id)
+                      )
+                    }
                   >
-                    <X className="h-4 w-4"/>
+                    <X className="h-4 w-4" />
                   </button>
                 </div>
               ))}
             </div>
             <div className="relative mt-2">
               <Input
+                {...field}
                 type="text"
                 value={skillInputValue}
                 onChange={handleSkillInputChange}
@@ -249,13 +258,13 @@ export function RequirementsTab({ form }) {
               />
               {skillSuggestions.length > 0 && (
                 <ul className="absolute bg-white dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
-                  {skillSuggestions.map((skill, index) => (
+                  {skillSuggestions.map((skill) => (
                     <li
-                      key={index}
+                      key={skill.id}
                       onClick={() => handleSkillSelect(skill)}
                       className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
                     >
-                      {skill}
+                      {skill.title}
                     </li>
                   ))}
                 </ul>
@@ -264,101 +273,110 @@ export function RequirementsTab({ form }) {
           </div>
         )}
       />
-
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <FormField
-        control={form.control}
-        name="degreeLevel"
-        render={({ field }) => (
-          <div>
-            <FormLabel className="font-medium">Degree Levels</FormLabel>
-            <div className="relative mt-2">
-              <Input
-                type="text"
-                value={degreeInputValue}
-                onChange={handleDegreeInputChange}
-                placeholder="Type to search degrees..."
-                className="border text-sm w-full rounded-md px-3 py-2"
-              />
-              {degreeSuggestions.length > 0 && (
-                <ul className="absolute bg-white border border-gray-200 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
-                  {degreeSuggestions.map((degree, index) => (
-                    <li
-                      key={index}
-                      onClick={() => handleDegreeSelect(degree)}
-                      className="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                    >
-                      {degree}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {degreeTags.map((degree, index) => (
+        <FormField
+          control={formContext.control}
+          name="degreeLevel"
+          render={({ field }) => (
+            <div>
+              <FormLabel className="font-medium">Degree Levels</FormLabel>
+              <div className="flex flex-wrap gap-2 mt-1">
+                {selectedDegrees.map((degree) => (
                   <div
-                    key={index}
+                    key={degree.id}
                     className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
-                    >
-                    {degree}
+                  >
+                    {degree.title}
                     <button
                       type="button"
-                      className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground"
-                      onClick={() => removeDegree(degree)}
+                      className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
+                      onClick={() =>
+                        setSelectedDegrees(
+                          selectedDegrees.filter((d) => d.id !== degree.id)
+                        )
+                      }
                     >
-                    <X className="h-4 w-4"/>
+                      <X className="h-4 w-4" />
                     </button>
                   </div>
                 ))}
-            </div>
-          </div>
-        )}
-      />
-
-        <FormField
-          control={form.control}
-          name="fieldOfStudy"
-          render={({ field }) => (
-            <div>
-              <FormLabel className="font-medium">Field of Study</FormLabel>
+              </div>
               <div className="relative mt-2">
                 <Input
+                  {...field}
                   type="text"
-                  value={studyInputValue}
-                  onChange={handleStudyFieldInputChange}
-                  placeholder="Type to search field of study..."
+                  value={degreeInputValue}
+                  onChange={handleDegreeInputChange}
+                  placeholder="Type to search degrees..."
                   className="border text-sm w-full rounded-md px-3 py-2"
                 />
-                {studySuggestions.length > 0 && (
-                  <ul className="absolute bg-white border border-gray-200 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
-                    {studySuggestions.map((studyField, index) => (
+                {degreeSuggestions.length > 0 && (
+                  <ul className="absolute bg-white dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
+                    {degreeSuggestions.map((degree) => (
                       <li
-                        key={index}
-                        onClick={() => handleStudyFieldSelect(studyField)}
-                        className="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                        key={degree.id}
+                        onClick={() => handleDegreeSelect(degree)}
+                        className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
-                        {studyField}
+                        {degree.title}
                       </li>
                     ))}
                   </ul>
                 )}
               </div>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {fieldOfStudyTags.map((studyField, index) => (
+            </div>
+          )}
+        />
+
+        <FormField
+          control={formContext.control}
+          name="fieldOfStudy"
+          render={({ field }) => (
+            <div>
+              <FormLabel className="font-medium">Fields of Study</FormLabel>
+              <div className="flex flex-wrap gap-2 mt-1">
+                {selectedFieldsOfStudy.map((field) => (
                   <div
-                    key={index}
+                    key={field.id}
                     className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
-                    >
-                    {studyField}
+                  >
+                    {field.title}
                     <button
                       type="button"
-                      className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground"
-                      onClick={() => removeFieldOfStudy(studyField)}
+                      className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
+                      onClick={() =>
+                        setSelectedFieldsOfStudy(
+                          selectedFieldsOfStudy.filter((f) => f.id !== field.id)
+                        )
+                      }
                     >
-                    <X className="h-4 w-4"/>
+                      <X className="h-4 w-4" />
                     </button>
                   </div>
                 ))}
+              </div>
+              <div className="relative mt-2">
+                <Input
+                  {...field}
+                  type="text"
+                  value={studyInputValue}
+                  onChange={handleStudyFieldInputChange}
+                  placeholder="Type to search fields of study..."
+                  className="border text-sm w-full rounded-md px-3 py-2"
+                />
+                {studySuggestions.length > 0 && (
+                  <ul className="absolute bg-white dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
+                    {studySuggestions.map((field) => (
+                      <li
+                        key={field.id}
+                        onClick={() => handleStudyFieldSelect(field)}
+                        className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        {field.title}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
           )}

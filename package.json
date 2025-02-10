@@ -56,7 +56,7 @@
     "next-themes": "^0.3.0",
     "nextjs-cors": "^2.2.0",
     "openssl": "^2.0.0",
-    "qs": "^6.13.1",
+    "qs": "^6.14.0",
     "react": "^18",
     "react-aria-components": "^1.5.0",
     "react-calendly": "^4.3.1",

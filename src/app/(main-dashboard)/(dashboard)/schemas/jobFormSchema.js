@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const basicInfoSchema = z.object({
     title: z.string().min(3, "Job title is required and must be at least 3 characters"),
     description: z.string().min(10, "Description must be at least 10 characters"),
-    jobRole: z.string().min(1, "Job role is required"),
+    jobRole: z.array(z.string()).min(1, "Job role is required"),
     designation: z.string().optional(),
     responsibilities: z.array(z.string()).min(1, "At least one responsibility is required"),
     employeeBenefits: z.array(z.string()),
@@ -41,7 +41,7 @@ export const locationSchema = z.object({
 export const jobSchema = z.object({
     title: z.string().min(3, "Job title is required and must be at least 3 characters"),
     description: z.string().min(10, "Description must be at least 10 characters"),
-    jobRole: z.string().min(1, "Job role is required"),
+    jobRole: z.array(z.string()).min(1, "Job role is required"),
     designation: z.string().optional(),
     responsibilities: z.array(z.string()).min(1, "At least one responsibility is required"),
     employeeBenefits: z.array(z.string()),

@@ -1,6 +1,5 @@
 "use client";
-import React from "react";
-import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,6 +17,7 @@ import { loginSchema } from "../schemas/formSchemas";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import useLoginStore from "@/stores/authStore/useLoginStore";
+import Link from "next/link";
 
 export default function LoginForm() {
   const {
@@ -27,13 +27,16 @@ export default function LoginForm() {
   } = useForm({
     resolver: zodResolver(loginSchema),
   });
+
   const router = useRouter();
-  const { formData, setFormData, loginUser, resetFormData } = useLoginStore();
+  const { setFormData, loginUser, resetFormData } = useLoginStore();
 
   const onSubmit = async (data) => {
     setFormData(data);
-    await loginUser(data, router);
-    resetFormData();
+    const success = await loginUser(data, router);
+    if (success) {
+      resetFormData();
+    }
   };
 
   return (
@@ -74,7 +77,6 @@ export default function LoginForm() {
                   placeholder="******"
                   {...register("password")}
                 />
-
                 {errors.password && (
                   <span className="text-xs text-red-500">
                     {errors.password.message}

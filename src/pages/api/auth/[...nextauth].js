@@ -6,6 +6,7 @@ import GoogleProvider from "next-auth/providers/google";
 import LinkedInProvider from "next-auth/providers/linkedin";
 // Asdfgh@11
 // qononifi@cyclelove.cc
+// faxah14991 @rykone.com
 
 export const authOptions = {
     providers: [
@@ -100,20 +101,16 @@ export const authOptions = {
                                     (doc) => doc.organization.id === user.user.id
                                 );
                                 const organizationId = organization?.id;
-                                // console.log("Organization ID:", organizationId);
-                                // console.log("Organization :", orgData.docs[0]);
+                                const industryType = organization?.industryType;
 
                                 return {
                                     id: user.user.id,
                                     email: user.user.email || null,
                                     name: organization.orgName || null,
-                                    // tagline: orgData.docs[0]?.orgTagline || null,
-                                    // mission: orgData.docs[0]?.orgMission || null,
-                                    // vision: orgData.docs[0]?.orgVision || null,
-                                    // address: orgData.docs[0]?.orgAddress || null,
                                     image: user.user.pictureUrl || null,
                                     accessToken: user.token,
                                     organizationId,
+                                    industryType
                                 };
                             }
                         } else if (user.user.role == "applicant") {
@@ -130,9 +127,7 @@ export const authOptions = {
                                 );
 
                                 if (applicantResponse.ok) {
-                                    const applicantData = await applicantResponse.json();
-                                    // console.log("Organization ID:", organizationId);
-                                    // console.log("Organization :", orgData.docs[0]);
+                                    const applicantData = await applicantResponse.json()
                                     const applicant = applicantData.docs.find(
                                         (doc) => doc.applicant.id === user.user.id
                                     );
@@ -142,10 +137,6 @@ export const authOptions = {
                                         id: user.user.id,
                                         email: user.user.email || null,
                                         name: applicant?.name || null,
-                                        // tagline: applicantData.docs[0]?.orgTagline || null,
-                                        // mission: applicantData.docs[0]?.orgMission || null,
-                                        // vision: applicantData.docs[0]?.orgVision || null,
-                                        // address: applicantData.docs[0]?.orgAddress || null,
                                         image: user.user.pictureUrl || null,
                                         accessToken: user.token,
                                     };
@@ -186,6 +177,9 @@ export const authOptions = {
                 token.image = user.image;
                 token.access_token = user.accessToken;
                 token.organizationId = user.organizationId;
+                token.industryType = user.industryType;
+
+
             }
 
             if (account) {
@@ -208,6 +202,8 @@ export const authOptions = {
                 session.user.image = token.image;
                 session.access_token = token.access_token;
                 session.organizationId = token.organizationId;
+                session.industryType = token.industryType;
+
 
                 console.log("Current Server Session :", session);
             }
