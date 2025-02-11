@@ -30,6 +30,7 @@ export default function CreateJobCard() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -63,6 +64,8 @@ export default function CreateJobCard() {
       }
 
       const responseData = await response.json();
+      reset();
+
       const newJobId = responseData.doc.id;
 
       const query = qs.stringify(

@@ -11,6 +11,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import qs from "qs";
 
 const JobDetailsPage = () => {
   const router = useRouter();
@@ -75,7 +76,14 @@ const JobDetailsPage = () => {
   };
 
   const job = currentJobInfo;
- console.log("job ", job);
+  console.log("job ", job);
+
+  const fomatDate = (dateString) => {
+  const date = new Date(dateString);
+
+  return date.toLocaleDateString("en-CA");
+  }
+
   return (
     <>
       <Breadcrumb className="mb-4">
@@ -111,8 +119,11 @@ const JobDetailsPage = () => {
               <h1 className="text-base sm:text-xl font-bold">
                 {job?.job?.title || "N/A"}
               </h1>
-              <p className="text-gray-700 dark:text-gray-300">
+              {/* <p className="text-gray-700 dark:text-gray-300">
                 {job?.jobRole?.map((role) => role.title).join(", ") || "N/A"}
+              </p> */}
+              <p className="text-gray-500 dark:text-gray-400">
+                {job?.job?.organization?.orgName || "N/A"}
               </p>
               <p className="text-gray-500 dark:text-gray-400">
                 {job?.address || "Location N/A"}
@@ -157,60 +168,57 @@ const JobDetailsPage = () => {
               )}
             </ul>
           </section>
+          {/* <section className="mb-4 text-xs sm:text-sm">
+            <h2 className="text-lg font-semibold">Requirements for the role</h2>
+            {job?.requirements ? (
+              <div dangerouslySetInnerHTML={{ __html: job.requirements }} />
+            ) : (
+              <p>Not Specified</p>
+            )}
+          </section> */}
           <section className="mb-4 text-xs sm:text-sm">
             <h2 className="text-lg font-semibold">Requirements for the role</h2>
-            <ul className="list-disc list-inside space-y-1">
-              {job?.requirements?.length > 0 ? (
-                job.requirements.map((req, index) => (
-                  <>
-                    {" "}
-                    <li key={index}>{req}</li>
-                    <li>
-                      {job.degreeLevel && job.degreeLevel.join(" or ")} in{" "}
-                      {job.fieldOfStudy && job.fieldOfStudy.join(", ")} or a
-                      related field.
-                    </li>
-                    <li>
-                      {job.yearOfExperience && job.yearOfExperience}+ years in
-                      {job.jobRole} or a related field.
-                    </li>{" "}
-                  </>
-                ))
-              ) : (
-                <li>Not Specified</li>
-              )}
-            </ul>
+            <p>{job?.requirements || "Not Specified"}</p>
           </section>
+
+          {/* <section className="mb-4 text-xs sm:text-sm">
+            <h2 className="text-lg font-semibold">Employee Benefits</h2>
+            {job?.employeeBenefits ? (
+              <div dangerouslySetInnerHTML={{ __html: job.employeeBenefits }} />
+            ) : (
+              <p>No benefits specified</p>
+            )}
+          </section> */}
+          <section className="mb-4 text-xs sm:text-sm">
+            <h2 className="text-lg font-semibold">Employee Benefits</h2>
+            <p>{job?.employeeBenefits || "No benefits specified"}</p>
+          </section>
+
           <section className="mb-4 text-xs sm:text-sm">
             <h2 className="text-base sm:text-lg font-semibold mb-2">
               Mandatory skills
             </h2>
             <ul className="list-disc list-inside space-y-1">
               {job?.skills?.length > 0 ? (
-                job.skills.map((item, index) => <li key={index}>{item}</li>)
+                job.skills.map((skill, index) => (
+                  <li key={index}>{skill?.title}</li>
+                ))
               ) : (
                 <li>Not specified</li>
               )}
             </ul>
           </section>
-          <section className="mb-4 text-xs sm:text-sm">
-            <h2 className="text-lg font-semibold">Employee Benefits</h2>
-            <p>
-              {job?.employeeBenefits?.length > 0
-                ? job.employeeBenefits.join(", ")
-                : "No benefits specified"}
-            </p>
-          </section>
+
           <section className="mb-4 text-xs sm:text-sm">
             <h2 className="text-lg font-semibold">Salary</h2>
-            <p>{job?.salary ? `${job.salary}BDT` : "Not specified"}</p>
+            <p>{job?.salary ? `${job.salary} BDT` : "Not specified"}</p>
           </section>
           <section className="bg-red-50 dark:bg-red-100 dark:text-gray-600 p-4 rounded-sm text-xs sm:text-sm flex flex-col sm:flex-row space-x-4 items-center sm:items-start justify-evenly">
             <p>
-              <strong>Active until:</strong> {job?.deadline || "N/A"}
+              <strong>Active until:</strong> {fomatDate(job?.deadline) || "N/A"}
             </p>
             <p>
-              <strong>Published On:</strong> {job?.published || "N/A"}
+              <strong>Created On:</strong> {fomatDate(job?.createdAt) || "N/A"}
             </p>
             <p>
               <strong>Applicants:</strong> {job?.applicantCount || "N/A"}
