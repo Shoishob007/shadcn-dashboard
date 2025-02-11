@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { JobFilters } from "@/components/filters/JobFilters";
-import { documents } from "./components/jobData";
 import { filterJobs } from "../../../utils/filters";
 import CreateJobForm from "../demoJobFormCreate/components/CreateJobForm";
 import {
@@ -25,11 +25,11 @@ import {
 import { House, Plus } from "lucide-react";
 import { FilterSheet } from "@/components/filters/FilterSheet";
 
-const getJobRoles = () => {
+const getJobRoles = (docs) => {
   const jobRoles = new Set();
-  documents.docs.forEach((applicantDoc) => {
+  docs.forEach((applicantDoc) => {
     const jobId = applicantDoc.job.id;
-    const matchingJob = documents.docs.find((job) => job.job.id === jobId);
+    const matchingJob = docs.find((job) => job.job.id === jobId);
     if (matchingJob) {
       jobRoles.add(matchingJob.jobRole);
     }
@@ -37,10 +37,9 @@ const getJobRoles = () => {
   return Array.from(jobRoles);
 };
 
-const jobRoles = getJobRoles();
-
 const JobList = ({ showFilters = true }) => {
   const router = useRouter();
+  const { data: session } = useSession();
   const [isEditing, setIsEditing] = useState(false);
   const [id, setId] = useState(null);
   const [job, setJob] = useState("");
@@ -57,6 +56,38 @@ const JobList = ({ showFilters = true }) => {
     password: "",
     reason: "",
   });
+  const [documents, setDocuments] = useState({ docs: [] });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const accessToken = session?.access_token;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/job-details?limit=1000`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch job details");
+        }
+        const data = await response.json();
+        setDocuments(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (accessToken) {
+      fetchData();
+    }
+  }, [accessToken]);
 
   const handleFilterChange = (filterName, value) => {
     setFilters((prev) => ({ ...prev, [filterName]: value }));
@@ -109,6 +140,14 @@ const JobList = ({ showFilters = true }) => {
     }
     setDeleteDialog({ isOpen: false, job: null, password: "", reason: "" });
   };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   let filteredJobs = filterJobs(documents.docs, filters);
 
