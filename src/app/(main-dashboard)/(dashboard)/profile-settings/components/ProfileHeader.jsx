@@ -174,7 +174,7 @@ const ProfileSetting = () => {
             <div className="flex gap-4 items-center">
               <div className="flex flex-col text-gray-600 dark:dark:text-gray-200">
                 <h1 className="font-semibold text-base md:text-lg">
-                  {session?.user?.name} / Settings
+                  {session?.user?.name || "Your"} / Settings
                 </h1>
                 <p className="text-sm">Update your profile information</p>
               </div>

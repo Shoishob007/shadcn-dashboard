@@ -19,23 +19,19 @@ const useProfileStore = create((set, get) => ({
     loading: false,
     error: null,
 
-    setFormData: (newData) =>
-        set((state) => ({
-            formData: {
-                ...state.formData,
-                ...newData,
-                industryType: Array.isArray(newData?.industryType)
-                    ? newData.industryType
-                    : state.formData.industryType || [],
-            },
-        })),
+    setFormData: (newData) => set((state) => ({
+        formData: {
+            ...state.formData,
+            ...newData
+        }
+    })),
 
+    // available industry types
     fetchIndustryTypes: async (accessToken) => {
         try {
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/industry-types`,
                 {
-                    method: "GET",
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                         "Content-Type": "application/json",
@@ -48,26 +44,26 @@ const useProfileStore = create((set, get) => ({
             }
 
             const data = await response.json();
-            set({ industryTypes: Array.isArray(data?.docs) ? data.docs : [] });
-
+            // Storing the fetched industry types
+            set({ industryTypes: data?.docs || [] });
         } catch (error) {
             console.error("Error fetching industry types:", error);
+            set({ industryTypes: [] });
             toast({
                 title: "Error fetching industry types.",
                 description: error.message,
                 variant: "ourDestructive",
             });
+            throw error;
         }
     },
 
     fetchProfile: async (accessToken, orgID) => {
-        console.log("triggered")
         set({ loading: true, error: null });
         try {
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${orgID}`,
                 {
-                    method: "GET",
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                         "Content-Type": "application/json",
@@ -80,14 +76,22 @@ const useProfileStore = create((set, get) => ({
             }
 
             const profile = await response.json();
+            console.log("profile ::: ", profile);
+
+            const industryTypeIds = Array.isArray(profile.industryType)
+                ? profile.industryType.map((industry) => industry.id) // Extracting IDs
+                : profile.industryType
+                    ? [profile.industryType.id]
+                    : [];
+
+            console.log("Processed industryTypeIds:", industryTypeIds);
+
             set({
                 profileDetails: profile,
                 formData: {
                     ...get().formData,
                     ...profile,
-                    industryType: Array.isArray(profile?.industryType)
-                        ? profile.industryType
-                        : [],
+                    industryType: industryTypeIds,
                 },
             });
         } catch (error) {
@@ -109,7 +113,7 @@ const useProfileStore = create((set, get) => ({
             const transformedFormData = {
                 ...get().formData,
                 img: get().formData?.img?.id,
-                industryType: get().formData?.industryType?.map(industry => industry.id),
+                industryType: get().formData.industryType || [],
                 socialLinks: get().formData?.socialLinks?.map((link) => ({
                     socialMediaUrl: link?.socialMediaUrl,
                     socialMedia: link?.socialMedia?.id,
@@ -133,20 +137,17 @@ const useProfileStore = create((set, get) => ({
             }
 
             const updatedProfile = await response.json();
-            const processedProfile = {
-                ...updatedProfile.doc,
-                industryType: Array.isArray(updatedProfile.doc?.industryType)
-                    ? updatedProfile.doc.industryType
-                    : [],
-            };
 
+            // Update state 
             set({
-                profileDetails: processedProfile,
+                profileDetails: updatedProfile.doc,
                 formData: {
                     ...get().formData,
-                    ...processedProfile,
+                    ...updatedProfile.doc,
+                    industryType: updatedProfile.doc.industryType.map((industry) => industry.id), // array of IDs
                 },
             });
+
             toast({
                 title: "Success!",
                 description: "Profile updated successfully.",
@@ -165,6 +166,5 @@ const useProfileStore = create((set, get) => ({
         }
     },
 }));
-
 
 export default useProfileStore;

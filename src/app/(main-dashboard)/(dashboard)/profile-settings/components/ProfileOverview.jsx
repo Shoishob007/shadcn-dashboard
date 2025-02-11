@@ -15,10 +15,11 @@ import {
 import useProfileStore from "@/stores/profile-settings/useProfileStore";
 import { Pencil, X } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function ProfileOverview() {
   const { data: session } = useSession();
+  const [isSaving, setIsSaving] = useState(false);
 
   const {
     profileDetails,
@@ -38,21 +39,28 @@ export default function ProfileOverview() {
 
   useEffect(() => {
     if (accessToken && organizationId) {
-      fetchProfile(accessToken, organizationId);
-      fetchIndustryTypes(accessToken);
+      // First fetching industry then profile
+      fetchIndustryTypes(accessToken)
+        .then(() => {
+          return fetchProfile(accessToken, organizationId);
+        })
+        .catch(console.error);
     }
   }, [accessToken, organizationId]);
 
-  useEffect(() => {
-    console.log("formData:", formData);
-    console.log("industryTypes:", industryTypes);
-  }, [formData, industryTypes]);
-
-  const handleSubmit = (e) => {
+  // Form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (accessToken && organizationId) {
-      saveProfile(accessToken, organizationId);
-      setIsEditing(false);
+      setIsSaving(true);
+      try {
+        await saveProfile(accessToken, organizationId);
+        setIsEditing(false);
+      } catch (error) {
+        console.error("Error saving profile:", error);
+      } finally {
+        setIsSaving(false);
+      }
     }
   };
 
@@ -61,36 +69,44 @@ export default function ProfileOverview() {
     setFormData(profileDetails);
   };
 
-  const handleIndustryTypeChange = (selectedIndustries) => {
+  // selection changes
+  const handleIndustryTypeChange = (selectedIds) => {
     setFormData({
       ...formData,
-      industryType: selectedIndustries ?? [],
+      industryType: selectedIds || [],
     });
   };
 
-  const removeIndustryType = (industryId) => {
-    setFormData({
-      ...formData,
-      industryType: (formData.industryType || []).filter(
-        (id) => id !== industryId
-      ),
+  // Industry types for Combobox
+  const industryOptions = useMemo(() => {
+    return industryTypes.map((industry) => ({
+      label: industry.title,
+      value: industry.id,
+    }));
+  }, [industryTypes]);
+
+  // currently selected industry
+  const selectedIndustryValues = useMemo(() => {
+    const industryTypeIds = formData.industryType || [];
+
+    const filteredIds = industryTypeIds.filter((id) => {
+      const exists = industryTypes.some(
+        (industry) => industry.id.toString() === id.toString()
+      );
+      return exists;
     });
-  };
+
+    return filteredIds;
+  }, [formData.industryType, industryTypes]);
+
+  // console.log("selectedIndustryValues :: ", selectedIndustryValues);
+  // console.log("formData.industryType :: ", formData.industryType);
+  // console.log("industryTypes :: ", industryTypes);
+
 
   if (loading && !profileDetails) {
     return <div>Loading profile details...</div>;
   }
-
- const industryOptions = (industryTypes || []).map((industry) => ({
-   label: industry.title || "",
-   value: industry.id || "",
- }));
-
-const selectedIndustries =
-  formData.industryType && Array.isArray(formData.industryType)
-    ? formData.industryType
-    : [];
-
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg dark:text-gray-200">
@@ -239,6 +255,7 @@ const selectedIndustries =
             )}
           </Field>
 
+          {/* Industry type */}
           <Field
             label="Industry Type"
             id="industryType"
@@ -248,74 +265,34 @@ const selectedIndustries =
             {isEditing ? (
               <Combobox
                 options={industryOptions}
-                value={formData.industryType || []}
+                value={selectedIndustryValues}
                 onChange={handleIndustryTypeChange}
                 placeholder="Select industries..."
                 multiple={true}
+                isEditing={isEditing}
               />
             ) : (
               <div className="flex flex-wrap gap-2">
-                {selectedIndustries.map((industry) => (
-                  <Badge
-                    key={industry.id}
-                    variant="secondary"
-                    className="flex items-center gap-1"
-                  >
-                    {industry.title}
-                    {isEditing && (
-                      <X
-                        className="h-3 w-3 cursor-pointer"
-                        onClick={() => removeIndustryType(industry.id)}
-                      />
-                    )}
-                  </Badge>
-                ))}
-                {!selectedIndustries.length && "Not provided"}
+                {isSaving ? (
+                  <Badge variant="secondary">Updating...</Badge>
+                ) : (
+                  selectedIndustryValues.map((industryId) => {
+                    const industry = industryTypes.find(
+                      (t) => t.id.toString() === industryId.toString()
+                    );
+                    return (
+                      <Badge
+                        key={industryId}
+                        variant="secondary"
+                        className="flex items-center gap-1"
+                      >
+                        {industry?.title || "Unknown Industry"}
+                      </Badge>
+                    );
+                  })
+                )}
+                {!selectedIndustryValues.length && "Not provided"}
               </div>
-            )}
-          </Field>
-
-          {/* Tagline */}
-          <Field
-            label="Tagline"
-            id="orgTagline"
-            isEditing={isEditing}
-            mdColSpan
-          >
-            {isEditing ? (
-              <Input
-                id="orgTagline"
-                className="text-xs sm:text-sm"
-                value={formData.orgTagline}
-                onChange={(e) =>
-                  setFormData({ ...formData, orgTagline: e.target.value })
-                }
-                placeholder="Enter organization tagline"
-              />
-            ) : (
-              formData.orgTagline || "Not provided"
-            )}
-          </Field>
-
-          {/* Mission */}
-          <Field
-            label="Mission"
-            id="orgMission"
-            isEditing={isEditing}
-            mdColSpan
-          >
-            {isEditing ? (
-              <Textarea
-                id="orgMission"
-                value={formData.orgMission}
-                onChange={(e) =>
-                  setFormData({ ...formData, orgMission: e.target.value })
-                }
-                rows={4}
-                placeholder="Enter organization mission"
-              />
-            ) : (
-              formData.orgMission || "Not provided"
             )}
           </Field>
 

@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { House, Plus } from "lucide-react";
 import { FilterSheet } from "@/components/filters/FilterSheet";
+import qs from "qs";
 
 const getJobRoles = (docs) => {
   const jobRoles = new Set();
@@ -63,9 +64,18 @@ const JobList = ({ showFilters = true }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const query = qs.stringify(
+        {
+          where: {
+            "job.organization.id": { equals: session?.organizationId },
+          },
+        },
+        { encode: false }
+      );
+      // console.log("Query ::", query);
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/job-details?limit=1000`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/job-details?${query}&limit=1000`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -87,7 +97,7 @@ const JobList = ({ showFilters = true }) => {
     if (accessToken) {
       fetchData();
     }
-  }, [accessToken]);
+  }, [accessToken, session?.organizationId]);
 
   const handleFilterChange = (filterName, value) => {
     setFilters((prev) => ({ ...prev, [filterName]: value }));
