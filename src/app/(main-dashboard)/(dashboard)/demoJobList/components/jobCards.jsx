@@ -1,4 +1,3 @@
-// JobCards.js
 "use client";
 import React from "react";
 import { Card } from "@/components/ui/card";
@@ -38,14 +37,11 @@ const JobCards = ({
           const deadlineDate = new Date(document.deadline);
           const currentDate = new Date();
           const isPastDeadline = currentDate > deadlineDate;
-          const diff = formatRelativeDate(document.published);
+          const diff = formatRelativeDate(document.createdAt);
 
           return (
-            <>
-              <Card
-                key={document.id}
-                className="flex flex-col dark:border dark:border-gray-500 relative mx-auto md:flex-row items-center justify-between py-6 md:p-6 px-2 rounded-lg transition-shadow gap-6 md:gap-4 max-w-5xl"
-              >
+            <React.Fragment key={document.id}>
+              <Card className="flex flex-col dark:border dark:border-gray-500 relative mx-auto md:flex-row items-center justify-between py-6 md:p-6 px-2 rounded-lg transition-shadow gap-6 md:gap-4 max-w-5xl">
                 {/* Dropdown Menu */}
                 <div className="absolute top-2 right-2">
                   <DropdownMenu>
@@ -69,15 +65,18 @@ const JobCards = ({
                   </DropdownMenu>
                 </div>
 
-                <div className="jobListCard flex items-center justify-center md:justify-start w-full md:w-fit">
+                <div className="jobListCard flex items-center justify-around md:justify-start w-full md:w-fit">
                   <div className="flex flex-col gap-3 md:gap-5">
-                    <div className="flex space-x-0 md:space-x-3 items-start">
-                      <Avatar className="h-16 md:h-16 w-16 md:w-16 ">
+                    <div className="flex space-x-3 md:space-x-3 items-start">
+                      <Avatar className="h-16 md:h-16 w-16 md:w-16">
                         <AvatarImage
                           src={
-                            document.job.organization.img.sizes.thumbnail.url
+                            document.job.organization?.img?.sizes?.thumbnail
+                              ?.url || ""
+                          } // Adjust based on fetched data
+                          alt={
+                            document.job.organization?.orgName || "Organization"
                           }
-                          alt={document.job.organization.orgName}
                         />
                         <AvatarFallback className="font-semibold text-base sm:text-xs text-yellow-600 bg-yellow-100">
                           {document.title}
@@ -90,7 +89,8 @@ const JobCards = ({
                               {document.title}
                             </h3>
                             <p className="text-gray-500 text-xs font-medium dark:text-gray-300">
-                              {document.job.organization.orgName}
+                              {document.job.organization?.orgName ||
+                                "Organization"}
                             </p>
                           </div>
                           <div>
@@ -105,7 +105,7 @@ const JobCards = ({
                                 Expired
                               </div>
                             ) : (
-                              <div className="text-green-500 text-xs font-semibold flex gap-1 items-center border border-emerald-500 pr-2 rounded-md  md:mt-1">
+                              <div className="text-green-500 text-xs font-semibold flex gap-1 items-center border border-emerald-500 pr-2 rounded-md md:mt-1">
                                 <Dot
                                   strokeWidth={4}
                                   size={20}
@@ -128,7 +128,9 @@ const JobCards = ({
                           >
                             <div className="flex items-center gap-2">
                               <BriefcaseBusiness className="h-4 w-4" />
-                              {capitalizeText(document.jobType)}
+                              {capitalizeText(
+                                document.jobType?.title || "Job Type"
+                              )}
                             </div>
                           </Badge>
 
@@ -138,7 +140,9 @@ const JobCards = ({
                           >
                             <div className="flex items-center gap-2">
                               <Clock className="h-4 w-4" />
-                              {capitalizeText(document.employeeType)}
+                              {capitalizeText(
+                                document.employeeType?.title || "Employee Type"
+                              )}
                             </div>
                           </Badge>
                           <Badge
@@ -147,32 +151,25 @@ const JobCards = ({
                           >
                             <div className="flex items-center gap-2">
                               <UserCog className="h-4 w-4" />
-                              {capitalizeText(document.jobRole)}
+                              {capitalizeText(
+                                document.jobRole?.[0]?.title || "Job Role"
+                              )}
                             </div>
                           </Badge>
-                          {/* <Badge
-                            variant="secondary"
-                            className="dark:bg-gray-900"
-                          >
-                            <div className="flex items-center gap-2">
-                              <UserCog className="h-4 w-4" />
-                              {capitalizeText(document.jobDesignation)}
-                            </div>
-                          </Badge> */}
                         </div>
                       </div>
                       <div className="flex gap-2 md:gap-3 lg:gap-5">
                         <div className="items-center gap-1 flex">
                           <BriefcaseBusiness size={12} />
                           <p className="font-medium text-gray-600 dark:text-gray-300">
-                            {document.applicantCount} applications
+                            {document.applicantCount || 0} applications
                           </p>
                         </div>
                         <div className="flex items-center gap-1">
                           <CalendarDays size={12} />
                           <p className="font-semibold">
-                            {" "}
-                            Deadline: {document.deadline}
+                            Deadline:{" "}
+                            {new Date(document.deadline).toLocaleDateString()}
                           </p>
                         </div>
                         <div className="flex items-center gap-1">
@@ -187,14 +184,14 @@ const JobCards = ({
                       <div className="items-center gap-1 flex">
                         <BriefcaseBusiness size={12} />
                         <p className="font-medium text-gray-600 dark:text-gray-300">
-                          {document.applicantCount} applications
+                          {document.applicantCount || 0} applications
                         </p>
                       </div>
                       <div className="flex items-center gap-1">
                         <CalendarDays size={12} />
                         <p className="font-semibold">
-                          {" "}
-                          Deadline: {document.deadline}
+                          Deadline:{" "}
+                          {new Date(document.deadline).toLocaleDateString()}
                         </p>
                       </div>
                       <div className="flex items-center gap-1">
@@ -206,39 +203,42 @@ const JobCards = ({
                 </div>
                 <div className="flex items-center gap-6 md:gap-0 px-2 md:px-0">
                   <div className="flex flex-col gap-5 justify-center mt-2">
-                    <div className="flex justify-center md:justify-start sm:flex-row text-emerald-600 font-semibold">
-                      <div className="flex flex-row items-center justify-center w-full sm:mr-4">
-                        <AnimatedTooltip items={document.job.applicants} />
+                    {/* Applicants Section (if available) */}
+                    {document.job.applicants && (
+                      <div className="flex justify-center md:justify-start sm:flex-row text-emerald-600 font-semibold">
+                        <div className="flex flex-row items-center justify-center w-full sm:mr-4">
+                          <AnimatedTooltip items={document.job.applicants} />
+                        </div>
                       </div>
-                    </div>
+                    )}
 
                     <div className="flex items-center justify-center gap-10">
                       <div className="flex md:hidden flex-wrap justify-center gap-1 w-full max-w-[300px]">
                         <Badge variant="secondary" className="dark:bg-gray-900">
                           <div className="flex items-center gap-2">
                             <BriefcaseBusiness className="h-4 w-4" />
-                            {capitalizeText(document.jobType)}
+                            {capitalizeText(
+                              document.jobType?.title || "Job Type"
+                            )}
                           </div>
                         </Badge>
 
                         <Badge variant="secondary" className="dark:bg-gray-900">
                           <div className="flex items-center gap-2">
                             <Clock className="h-4 w-4" />
-                            {capitalizeText(document.employeeType)}
+                            {capitalizeText(
+                              document.employeeType?.title || "Employee Type"
+                            )}
                           </div>
                         </Badge>
                         <Badge variant="secondary" className="dark:bg-gray-900">
                           <div className="flex items-center gap-2">
                             <UserCog className="h-4 w-4" />
-                            {capitalizeText(document.jobRole)}
+                            {capitalizeText(
+                              document.jobRole?.[0]?.title || "Job Role"
+                            )}
                           </div>
                         </Badge>
-                        {/* <Badge variant="secondary" className="dark:bg-gray-900">
-                          <div className="flex items-center gap-2">
-                            <UserCog className="h-4 w-4" />
-                            {capitalizeText(document.jobDesignation)}
-                          </div>
-                        </Badge> */}
                       </div>
                       {/* Action Buttons */}
                       <div className="flex space-y-2 md:space-y-0 md:space-x-1 flex-col md:flex-row text-xs md:text-md">
@@ -250,7 +250,8 @@ const JobCards = ({
                             handleViewApplicantList(document.job.id)
                           }
                         >
-                          View All Applicants ({document.job.applicants.length})
+                          View All Applicants (
+                          {document.job.applicants?.length || 0})
                         </Button>
                         <Button
                           variant="ghost"
@@ -265,7 +266,7 @@ const JobCards = ({
                   </div>
                 </div>
               </Card>
-            </>
+            </React.Fragment>
           );
         })
       ) : (
