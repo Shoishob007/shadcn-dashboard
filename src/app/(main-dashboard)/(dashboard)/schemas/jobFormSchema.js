@@ -2,10 +2,10 @@ import { z } from 'zod';
 
 export const basicInfoSchema = z.object({
     description: z.string().min(10, "Description must be at least 10 characters"),
-    jobRole: z.array(z.string()).min(1, "Job role is required"),
+    jobRole: z.array(z.string()).optional(),
     designation: z.string().optional(),
     responsibilities: z.array(z.string()).min(1, "At least one responsibility is required"),
-    employeeBenefits: z.array(z.string()),
+    employeeBenefits: z.string().optional(),
     hiringStages: z.array(z.string()).optional(),
 });
 
@@ -27,7 +27,7 @@ export const employmentSchema = z.object({
 });
 
 export const requirementsSchema = z.object({
-        requirements: z.array(z.string()).optional(),
+    requirements: z.string().optional(),
         skills: z.array(z.string()).optional(),
         degreeLevel: z.array(z.string()).optional(),
         fieldOfStudy: z.array(z.string()).optional(),
@@ -43,11 +43,11 @@ export const locationSchema = z.object({
 export const jobSchema = z.object({
     title: z.string().optional(),
     description: z.string().min(10, "Description must be at least 10 characters"),
-    jobRole: z.array(z.string()).min(1, "Job role is required"),
+    jobRole: z.array(z.string()).optional(),
     designation: z.string().optional(),
     responsibilities: z.array(z.string()).min(1, "At least one responsibility is required"),
-    employeeBenefits: z.array(z.string()),
-    requirements: z.array(z.string()).optional(),
+    employeeBenefits: z.string().optional(),
+    requirements: z.string().optional(),
     skills: z.array(z.string()).optional(),
     degreeLevel: z.array(z.string()).optional(),
     fieldOfStudy: z.array(z.string()).optional(),    

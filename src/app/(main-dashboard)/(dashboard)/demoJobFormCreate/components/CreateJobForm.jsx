@@ -52,11 +52,9 @@ const CreateJobForm = ({
 }) => {
   const { toast } = useToast();
   const { data: session } = useSession();
-  const accessToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2MGQ5MDRmLTI1MGItNDEwZS04YmI0LTQ5NzU1YzlmMTJlNyIsImNvbGxlY3Rpb24iOiJ1c2VycyIsImVtYWlsIjoiYmFkaG9uLmFsYW0zMkBnbWFpbC5jb20iLCJwcm92aWRlciI6ImNyZWRlbnRpYWxzIiwiaWF0IjoxNzM4NzUxMzM2LCJleHAiOjIxNzA3NTEzMzZ9.mOug1_RB0G1q0r9MZPMVHAR3RXpkBL1rRJEnYK9EOLY";
+  const accessToken = session?.access_token
   const [isEditMode, setIsEditMode] = useState(Boolean(jobId));
   const [formData, setFormData] = useState({
-    steps: initialData?.steps || [],
     skills: initialData?.skills || [],
     degreeLevel: initialData?.degreeLevel || [],
     fieldOfStudy: initialData?.fieldOfStudy || [],
@@ -66,7 +64,6 @@ const CreateJobForm = ({
   const form = useForm({
     resolver: zodResolver(jobSchema),
     defaultValues: {
-      steps: initialData?.steps || [],
       employeeType: initialData?.employeeType || "",
       skills: initialData?.skills || [],
       degreeLevel: initialData?.degreeLevel || [],
@@ -351,10 +348,9 @@ const CreateJobForm = ({
       skills: [],
       degreeLevel: [],
       fieldOfStudy: [],
-      requirements: [],
+      requirements: "",
       address: "",
       email: "",
-      steps: [],
     });
     setFormData({
       skills: [],
