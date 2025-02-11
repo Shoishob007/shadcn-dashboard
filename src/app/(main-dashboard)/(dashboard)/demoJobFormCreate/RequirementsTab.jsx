@@ -76,11 +76,8 @@ export function RequirementsTab({ callback }) {
       setSelectedFieldsOfStudy(fields);
     }
 
-    const requirements = defaultValues?.requirements || [];
-    if (Array.isArray(requirements)) {
-      const content = requirements.map((item) => `<p>${item}</p>`).join("");
-      setRequirementsContent(content);
-    }
+    const requirements = defaultValues?.requirements || "";
+      setRequirementsContent(requirements);
   }, [formContext]);
 
   // Updating callback with selected values whenever they change
@@ -94,14 +91,7 @@ export function RequirementsTab({ callback }) {
 
   const handleRequirementsChange = (content) => {
     setRequirementsContent(content);
-    const items = content
-      .split("</p>")
-      .map((item) => item.replace(/<p>|<br>/g, "").trim())
-      .filter(Boolean);
-    formContext.setValue("requirements", items, {
-      shouldDirty: true,
-      shouldTouch: true,
-    });
+    formContext.setValue("requirements", content);
   };
 
   const handleSkillInputChange = (e) => {

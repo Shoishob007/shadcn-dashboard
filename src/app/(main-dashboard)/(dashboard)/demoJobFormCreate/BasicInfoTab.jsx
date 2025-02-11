@@ -43,27 +43,27 @@ export function BasicInfoTab({ form, jobRoles = [], designations = [], callback 
     ],
   };
 
-  useEffect(() => {
-    const fetchHiringStages = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages`
-        );
-        const data = await response.json();
-        const steps = data.docs.map((step) => ({
-          id: step.id,
-          title: step.title,
-        }));
-        setStepsData(steps);
+  // useEffect(() => {
+  //   const fetchHiringStages = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages`
+  //       );
+  //       const data = await response.json();
+  //       const steps = data.docs.map((step) => ({
+  //         id: step.id,
+  //         title: step.title,
+  //       }));
+  //       setStepsData(steps);
 
-        console.log("steps ::", data);
-      } catch (error) {
-        console.error("Error fetching hiring stages:", error);
-      }
-    };
+  //       console.log("steps ::", data);
+  //     } catch (error) {
+  //       console.error("Error fetching hiring stages:", error);
+  //     }
+  //   };
 
-    fetchHiringStages();
-  }, []);
+  //   fetchHiringStages();
+  // }, []);
 
   useEffect(() => {
     const formValues = form.getValues();
@@ -97,17 +97,15 @@ export function BasicInfoTab({ form, jobRoles = [], designations = [], callback 
 
   useEffect(() => {
     const responsibilities = form.getValues("responsibilities") || [];
-    const employeeBenefits = form.getValues("employeeBenefits") || [];
+    const employeeBenefits = form.getValues("employeeBenefits") || "";
 
     if (Array.isArray(responsibilities)) {
       const content = responsibilities.map((item) => `<p>${item}</p>`).join("");
       setResponsibilitiesContent(content);
     }
 
-    if (Array.isArray(employeeBenefits)) {
-      const content = employeeBenefits.map((item) => `<p>${item}</p>`).join("");
-      setBenefitsContent(content);
-    }
+    setBenefitsContent(employeeBenefits);
+
   }, [form]);
 
   const handleJobRoleInputChange = (e) => {
@@ -191,26 +189,20 @@ const removeJobRole = (roleId) => {
 
   const handleBenefitsChange = (content) => {
     setBenefitsContent(content);
-
-    const items = content
-      .split("</p>")
-      .map((item) => item.replace(/<p>|<br>/g, "").trim())
-      .filter(Boolean);
-
-    form.setValue("employeeBenefits", items);
+    form.setValue("employeeBenefits", content);
   };
 
-  const handleStepsChange = (steps) => {
-    const selectedIds = steps.map((step) => step.id);
-    setStepsIds(selectedIds);
-    form.setValue("steps", steps);
-  };
+//   const handleStepsChange = (steps) => {
+//     const selectedIds = steps.map((step) => step.id);
+//     setStepsIds(selectedIds);
+//     form.setValue("steps", steps);
+//   };
 
-useEffect(() => {
-  callback({
-    steps: stepsIds,
-  });
-}, [stepsIds]);
+// useEffect(() => {
+//   callback({
+//     steps: stepsIds,
+//   });
+// }, [stepsIds]);
 
 
   return (
@@ -360,7 +352,7 @@ useEffect(() => {
         )}
       />
 
-      {currentSubscriptionId !== 1 && (
+      {/* {currentSubscriptionId !== 1 && (
         <FormField
           control={form.control}
           name="steps"
@@ -378,7 +370,7 @@ useEffect(() => {
             </FormItem>
           )}
         />
-      )}
+      )} */}
     </div>
   );
 }
