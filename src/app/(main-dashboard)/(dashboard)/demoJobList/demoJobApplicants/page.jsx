@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-"use client"
+"use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { FaFacebook, FaGoogle, FaLinkedin } from "react-icons/fa";
 import { useRouter, useSearchParams } from "next/navigation";
 import JobInfoCard from "../../demoAppList/components/JobInfoCard";
@@ -64,13 +64,13 @@ const DemoApplicants = () => {
   const [applicantProfiles, setApplicantProfiles] = useState({});
   const [isLoadingProfiles, setIsLoadingProfiles] = useState(false);
   const [hasMoreApplicants, setHasMoreApplicants] = useState(true);
+  const [page, setPage] = useState(1); // Track the current page for infinite scroll
 
-  // state for organization details
+  // State for organization details
   const [organizationDetails, setOrganizationDetails] = useState(null);
   const [isLoadingOrg, setIsLoadingOrg] = useState(false);
 
   // UI states
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState("applied");
   const [selectedStep, setSelectedStep] = useState("");
   const [currentJobInfo, setCurrentJobInfo] = useState(null);
@@ -81,6 +81,44 @@ const DemoApplicants = () => {
   );
   const maxViews = orgSettings.docs[0]?.subscriptionId === 1 ? 3 : Infinity;
 
+  // Fetch job applications
+  useEffect(() => {
+    const fetchJobApplications = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?where[jobDetails.job.id][equals]=${jobId}&limit=${APPLICANTS_PER_PAGE}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        const data = await response.json();
+        if (page === 1) {
+          setJobApplications(data.docs || []);
+        } else {
+          setJobApplications((prev) => [...prev, ...(data.docs || [])]);
+        }
+        setCurrentJobInfo(data.docs[0]?.jobDetails);
+
+        if (data.docs[0]?.jobDetails?.job?.organization) {
+          fetchOrganizationDetails(data.docs[0].jobDetails.job.organization);
+        }
+
+        // Check if there are more applicants to load
+        setHasMoreApplicants(data.docs.length === APPLICANTS_PER_PAGE);
+      } catch (error) {
+        console.error("Error fetching job applications:", error);
+      }
+    };
+
+    if (jobId) {
+      fetchJobApplications();
+    }
+  }, [jobId, accessToken, page]);
+
+  // Fetch organization details
   const fetchOrganizationDetails = async (orgId) => {
     setIsLoadingOrg(true);
     try {
@@ -93,8 +131,6 @@ const DemoApplicants = () => {
         }
       );
       const data = await response.json();
-        console.log("organization details data:: ", data);
-
       setOrganizationDetails(data);
     } catch (error) {
       console.error("Error fetching organization details:", error);
@@ -102,42 +138,6 @@ const DemoApplicants = () => {
       setIsLoadingOrg(false);
     }
   };
-
-  // console.log("organization details :: ", organizationDetails)
-
-  // Fetch job applications
-  useEffect(() => {
-    const fetchJobApplications = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?where[jobDetails.job.id][equals]=${jobId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        const data = await response.json();
-        setJobApplications(data.docs || []);
-        setCurrentJobInfo(data.docs[0]?.jobDetails);
-
-        if (data.docs[0]?.jobDetails?.job?.organization) {
-          fetchOrganizationDetails(data.docs[0].jobDetails.job.organization);
-        }
-      } catch (error) {
-        console.error("Error fetching job applications:", error);
-      }
-    };
-
-    if (jobId) {
-      fetchJobApplications();
-    }
-  }, [jobId, accessToken]);
-
-  // console.log("jobApplications :: ", jobApplications);
-    // console.log("currentJobInfo :: ", currentJobInfo);
-
 
   // Function to fetch applicant profiles in chunks
   const fetchApplicantProfiles = async (applicantIds) => {
@@ -170,11 +170,9 @@ const DemoApplicants = () => {
     }
   };
 
-  // console.log("applicantsProfile :: ", applicantProfiles);
-
   // Load more applicant profiles when scrolling or changing page
   useEffect(() => {
-    const startIndex = (currentPage - 1) * APPLICANTS_PER_PAGE;
+    const startIndex = (page - 1) * APPLICANTS_PER_PAGE;
     const applicantIdsToFetch = jobApplications
       .slice(startIndex, startIndex + APPLICANTS_PER_PAGE)
       .map((app) => app.applicant)
@@ -183,17 +181,12 @@ const DemoApplicants = () => {
     if (applicantIdsToFetch.length > 0) {
       fetchApplicantProfiles(applicantIdsToFetch);
     }
-
-    setHasMoreApplicants(
-      startIndex + APPLICANTS_PER_PAGE < jobApplications.length
-    );
-  }, [currentPage, jobApplications]);
+  }, [page, jobApplications]);
 
   // Transform applicant data to match the component's expected format
   const transformedApplicants = jobApplications
     .map((application) => {
       const profile = applicantProfiles[application.applicant];
-      console.log("Profile ::: ", profile)
       if (!profile) return null;
 
       return {
@@ -225,6 +218,25 @@ const DemoApplicants = () => {
     })
     .filter(Boolean);
 
+  // Infinite scroll handler
+  const handleScroll = (() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop ===
+        document.documentElement.offsetHeight &&
+      hasMoreApplicants &&
+      !isLoadingProfiles
+    ) {
+      setPage((prev) => prev + 1); // Load the next page
+    }
+  });
+
+  // Add scroll event listener
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  // Transform job info
   const transformJobInfo = (jobDetails) => {
     if (!jobDetails) return null;
 
@@ -254,7 +266,7 @@ const DemoApplicants = () => {
       requirements: jobDetails.requirements || "",
       employeeBenefits: jobDetails.employeeBenefits || "",
       deadline: jobDetails.deadline || "",
-      createdAt : jobDetails.createdAt || "",
+      createdAt: jobDetails.createdAt || "",
       industry:
         organizationDetails?.industryType
           ?.map((type) => type.title)
@@ -262,18 +274,6 @@ const DemoApplicants = () => {
       establishedYear: organizationDetails?.orgEstablishedYear || "",
     };
   };
-
-  // Pagination handling
-  const currentPaginatedApplicants = transformedApplicants.slice(
-    (currentPage - 1) * APPLICANTS_PER_PAGE,
-    currentPage * APPLICANTS_PER_PAGE
-  );
-
-  // console.log("Current Paginated applicants :: ", currentPaginatedApplicants);
-
-  const totalPages = Math.ceil(
-    transformedApplicants.length / APPLICANTS_PER_PAGE
-  );
 
   const handleViewDetails = (id) => {
     router.push(`/demoAppList/demoAppDetails?id=${id}`);
@@ -331,14 +331,14 @@ const DemoApplicants = () => {
               </div>
             </div>
 
-            {isLoadingProfiles && currentPaginatedApplicants.length === 0 ? (
+            {isLoadingProfiles && transformedApplicants.length === 0 ? (
               <div className="text-center p-8">
                 Loading applicant profiles...
               </div>
-            ) : currentPaginatedApplicants.length > 0 ? (
+            ) : transformedApplicants.length > 0 ? (
               viewMode === "list" ? (
                 <ApplicantsTable
-                  applicants={currentPaginatedApplicants}
+                  applicants={transformedApplicants}
                   calculateTotalExperience={calculateTotalExperience}
                   handleViewDetails={handleViewDetails}
                   viewCount={viewCount}
@@ -347,7 +347,7 @@ const DemoApplicants = () => {
                 />
               ) : (
                 <JobApplicantsCards
-                  currentPaginatedApplicants={currentPaginatedApplicants}
+                  currentPaginatedApplicants={transformedApplicants}
                   calculateTotalExperience={calculateTotalExperience}
                   handleViewDetails={handleViewDetails}
                   socialMediaIcons={socialMediaIcons}
@@ -359,14 +359,12 @@ const DemoApplicants = () => {
             ) : (
               <p className="text-center text-gray-500">No applicants found!</p>
             )}
+
+            {isLoadingProfiles && hasMoreApplicants && (
+              <div className="text-center p-4">Loading more applicants...</div>
+            )}
           </div>
         )}
-
-        <OurPagination
-          totalPages={totalPages}
-          currentPage={currentPage}
-          onPageChange={setCurrentPage}
-        />
       </div>
     </>
   );
