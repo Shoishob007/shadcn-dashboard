@@ -8,7 +8,7 @@ const JobDetailsPage = async ({ params }) => {
     `${process.env.NEXT_PUBLIC_API_URL}/api/job-details/${detailsId}`
   );
   const data = await response.json();
-  console.log("Response data: ", data);
+  //   console.log("Response data ::::: ", data);
 
   return (
     <div className=" bg-white dark:bg-gray-800 rounded-lg">
@@ -47,13 +47,13 @@ const JobDetailsPage = async ({ params }) => {
           <h2 className="text-base sm:text-lg font-semibold mb-2">
             Requirements
           </h2>
-          <ul className="list-disc list-inside space-y-1">
+          {/* <ul className="list-disc list-inside space-y-1">
             {data?.requirements?.length
-              ? data?.requirements.map((item, index) => (
+              ? data?.requirements?.map((item, index) => (
                   <li key={index}>{item}</li>
                 ))
               : "No requirements specified."}
-          </ul>
+          </ul> */}
         </section>
 
         <section className="mb-4 text-xs sm:text-sm">
@@ -69,13 +69,13 @@ const JobDetailsPage = async ({ params }) => {
           <h2 className="text-base sm:text-lg font-semibold mb-2">
             Employee Benefits
           </h2>
-          <ul className="list-disc list-inside space-y-1">
+          {/* <ul className="list-disc list-inside space-y-1">
             {data?.employeeBenefits?.length
               ? data?.employeeBenefits.map((benefit, index) => (
                   <li key={index}>{benefit}</li>
                 ))
               : "No benefits listed."}
-          </ul>
+          </ul> */}
         </section>
 
         {/* Apply form */}

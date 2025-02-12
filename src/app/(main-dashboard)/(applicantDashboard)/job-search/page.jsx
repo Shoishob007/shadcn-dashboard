@@ -63,7 +63,6 @@ const JobSearch = () => {
     getJobData();
   }, []);
 
-  console.log("Fetched Jobs:", jobData);
 
   // Sort Jobs
   const sortJobs = (jobs) => {

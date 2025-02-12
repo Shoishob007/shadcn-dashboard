@@ -22,6 +22,7 @@ const JobSearchCard = ({ job }) => {
     img = "", 
   } = job || {};
 
+
   const formattedEmployeeType =
     typeof employeeType === "string" ? employeeType.replace("-", " ") : "Other"; // Prevents null errors
 
