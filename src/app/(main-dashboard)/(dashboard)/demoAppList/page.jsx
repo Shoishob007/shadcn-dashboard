@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { FaFacebook, FaGoogle, FaLinkedin } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import OurPagination from "@/components/Pagination";
 import ToggleGroupComponent from "../demoJobList/components/ToggleGroup";
 import {
   Breadcrumb,
@@ -21,7 +20,7 @@ import JobApplicantsCards from "../demoJobList/components/jobApplicantsCards";
 import { ApplicantFilterSheet } from "@/components/filters/ApplicantFilterSheet";
 import { getSafeValue } from "@/lib/helper";
 
-const APPLICANTS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 10;
 
 const socialMediaIcons = {
   linkedin: FaLinkedin,
@@ -54,18 +53,22 @@ const calculateTotalExperience = (experiences) => {
 
 const DemoAppList = () => {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const accessToken = session?.access_token;
   const orgId = session?.organizationId;
+
+  // Refs for infinite scrolling
+  const observerRef = useRef(null);
+  const loadingRef = useRef(null);
 
   // State for job applications and applicants
   const [jobApplications, setJobApplications] = useState([]);
   const [applicantProfiles, setApplicantProfiles] = useState({});
   const [isLoadingProfiles, setIsLoadingProfiles] = useState(false);
-  const [hasMoreApplicants, setHasMoreApplicants] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
 
   // UI states
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState("applied");
   const [selectedStep, setSelectedStep] = useState("");
   const [viewMode, setViewMode] = useState("card");
@@ -78,46 +81,29 @@ const DemoAppList = () => {
     selectedTime: "all",
   });
 
-  // Debugging: Log session, orgId, and accessToken
-  useEffect(() => {
-    console.log("Session status:", status);
-    console.log("Session data:", session);
-    console.log("orgId:", orgId);
-    console.log("accessToken:", accessToken);
-  }, [session, status, orgId, accessToken]);
-
   // Fetch job applications
-  useEffect(() => {
-    const fetchJobApplications = async () => {
-      try {
-        console.log("Fetching job applications...");
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?where[jobDetails.job.organization][equals]=${orgId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        const data = await response.json();
-        console.log("Job applications data:", data);
-        setJobApplications(data.docs || []);
-      } catch (error) {
-        console.error("Error fetching job applications:", error);
-      }
-    };
-
-    if (orgId && accessToken) {
-      fetchJobApplications();
-    } else {
-      console.error(
-        "orgId or accessToken is missing. Cannot fetch job applications."
+  const fetchJobApplications = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?where[jobDetails.job.organization][equals]=${orgId}&limit=${ITEMS_PER_PAGE}&page=${page}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
-    }
-  }, [orgId, accessToken]);
+      const data = await response.json();
 
-  // Function to fetch applicant profiles in chunks
+      // Append new applications to existing ones
+      setJobApplications((prev) => [...prev, ...(data.docs || [])]);
+      setHasMore(data.hasNextPage || false);
+    } catch (error) {
+      console.error("Error fetching job applications:", error);
+    }
+  };
+
+  // Function to fetch applicant profiles
   const fetchApplicantProfiles = async (applicantIds) => {
     setIsLoadingProfiles(true);
     try {
@@ -148,24 +134,56 @@ const DemoAppList = () => {
     }
   };
 
-  // Load more applicant profiles when scrolling or changing page
+  // Intersection Observer callback
+  const handleObserver = useCallback(
+    (entries) => {
+      const target = entries[0];
+      if (target.isIntersecting && hasMore && !isLoadingProfiles) {
+        setPage((prev) => prev + 1);
+      }
+    },
+    [hasMore, isLoadingProfiles]
+  );
+
+  // Setup Intersection Observer
   useEffect(() => {
-    const startIndex = (currentPage - 1) * APPLICANTS_PER_PAGE;
-    const applicantIdsToFetch = jobApplications
-      .slice(startIndex, startIndex + APPLICANTS_PER_PAGE)
+    const option = {
+      root: null,
+      rootMargin: "20px",
+      threshold: 0,
+    };
+    observerRef.current = new IntersectionObserver(handleObserver, option);
+
+    if (loadingRef.current) {
+      observerRef.current.observe(loadingRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [handleObserver]);
+
+  // Fetch initial job applications
+  useEffect(() => {
+    if (orgId && accessToken) {
+      fetchJobApplications();
+    }
+  }, [orgId, accessToken, page]);
+
+  // Fetch applicant profiles for new applications
+  useEffect(() => {
+    const newApplicantIds = jobApplications
       .map((app) => app.applicant)
       .filter((id) => !applicantProfiles[id]);
 
-    if (applicantIdsToFetch.length > 0) {
-      fetchApplicantProfiles(applicantIdsToFetch);
+    if (newApplicantIds.length > 0) {
+      fetchApplicantProfiles(newApplicantIds);
     }
+  }, [jobApplications]);
 
-    setHasMoreApplicants(
-      startIndex + APPLICANTS_PER_PAGE < jobApplications.length
-    );
-  }, [currentPage, jobApplications]);
-
-  // Transform applicant data to match the component's expected format
+  // Transform applicant data
   const transformedApplicants = jobApplications
     .map((application) => {
       const profile = applicantProfiles[application.applicant];
@@ -206,7 +224,7 @@ const DemoAppList = () => {
     })
     .filter(Boolean);
 
-  // Filter applicants based on selected filters
+  // Filter applicants
   const filteredApplicants = transformedApplicants.filter((applicant) => {
     const statusMatch = !selectedStatus || applicant.status === selectedStatus;
     const stepMatch = !selectedStep || applicant.steps === selectedStep;
@@ -216,7 +234,7 @@ const DemoAppList = () => {
     const timeMatch =
       filters.selectedTime === "all" ||
       (filters.selectedTime === "recent" &&
-        new Date(applicant.createdAt) > new Date(Date.now() - 7 * 86400000)); // Last 7 days
+        new Date(applicant.createdAt) > new Date(Date.now() - 7 * 86400000));
     const searchMatch =
       !filters.searchQuery ||
       applicant.name
@@ -228,14 +246,6 @@ const DemoAppList = () => {
 
     return statusMatch && stepMatch && jobRoleMatch && timeMatch && searchMatch;
   });
-
-  // Pagination handling
-  const currentPaginatedApplicants = filteredApplicants.slice(
-    (currentPage - 1) * APPLICANTS_PER_PAGE,
-    currentPage * APPLICANTS_PER_PAGE
-  );
-
-  const totalPages = Math.ceil(filteredApplicants.length / APPLICANTS_PER_PAGE);
 
   const handleViewDetails = (id) => {
     router.push(`/demoAppList/demoAppDetails?id=${id}`);
@@ -297,39 +307,44 @@ const DemoAppList = () => {
             </div>
           </div>
 
-          {isLoadingProfiles && currentPaginatedApplicants.length === 0 ? (
+          {isLoadingProfiles && filteredApplicants.length === 0 ? (
             <div className="text-center p-8">Loading applicant profiles...</div>
-          ) : currentPaginatedApplicants.length > 0 ? (
-            viewMode === "list" ? (
-              <ApplicantsTable
-                applicants={currentPaginatedApplicants}
-                calculateTotalExperience={calculateTotalExperience}
-                handleViewDetails={handleViewDetails}
-                viewCount={viewCount}
-                setViewCount={setViewCount}
-                maxViews={Infinity}
-              />
-            ) : (
-              <JobApplicantsCards
-                currentPaginatedApplicants={currentPaginatedApplicants}
-                calculateTotalExperience={calculateTotalExperience}
-                handleViewDetails={handleViewDetails}
-                socialMediaIcons={socialMediaIcons}
-                viewCount={viewCount}
-                setViewCount={setViewCount}
-                maxViews={Infinity}
-              />
-            )
+          ) : filteredApplicants.length > 0 ? (
+            <div>
+              {viewMode === "list" ? (
+                <ApplicantsTable
+                  applicants={filteredApplicants}
+                  calculateTotalExperience={calculateTotalExperience}
+                  handleViewDetails={handleViewDetails}
+                  viewCount={viewCount}
+                  setViewCount={setViewCount}
+                  maxViews={Infinity}
+                />
+              ) : (
+                <JobApplicantsCards
+                  currentPaginatedApplicants={filteredApplicants}
+                  calculateTotalExperience={calculateTotalExperience}
+                  handleViewDetails={handleViewDetails}
+                  socialMediaIcons={socialMediaIcons}
+                  viewCount={viewCount}
+                  setViewCount={setViewCount}
+                  maxViews={Infinity}
+                />
+              )}
+
+              {/* Loading indicator and observer target */}
+              <div ref={loadingRef} className="h-10 w-full">
+                {hasMore && (
+                  <div className="text-center py-4">
+                    Loading more applicants...
+                  </div>
+                )}
+              </div>
+            </div>
           ) : (
             <p className="text-center text-gray-500">No applicants found!</p>
           )}
         </div>
-
-        <OurPagination
-          totalPages={totalPages}
-          currentPage={currentPage}
-          onPageChange={setCurrentPage}
-        />
       </div>
     </>
   );
