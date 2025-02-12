@@ -9,7 +9,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { FaFile } from "react-icons/fa";
 import { FileText } from "lucide-react";
 
 const JobApplicantsCards = ({
