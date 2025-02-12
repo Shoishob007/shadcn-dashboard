@@ -1,0 +1,14 @@
+applicant: [
+    {
+        email: migero5340@nike4s.com,
+        password: demoPass
+    },
+    {
+        email: vorib57596@gufutu.com,
+        password: Asdfgh@11
+    },
+    {
+        email: dobujiga@logsmarter.net,
+        password: demoPass
+    },
+]
