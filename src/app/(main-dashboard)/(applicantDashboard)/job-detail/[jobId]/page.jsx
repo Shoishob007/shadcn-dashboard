@@ -1,86 +1,68 @@
-import { jobs } from "@/components/ApplicantDashboardUI/applicantJobData";
 import Image from "next/image";
 import companyLogo from "../../../../../../public/assests/company.png";
-import ApplyForm from "../../job-details/components/ApplyForm";
+import ApplyJob from "../../job-search/[detailsId]/components/ApplyJob";
 
-const JobDetailsPage = ({ params }) => {
-  const jobId = params.jobId;
-  const jobData = jobs.find((data) => data.id === parseInt(jobId));
+
+const JobDetailsPage = async ({ params }) => {
+  const { jobId } = params;
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/job-details/${jobId}`
+  );
+  const data = await response.json();
+  //   console.log("Response data ::::: ", data);
 
   return (
-    <div
-      key={jobData.id}
-      className="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-lg"
-    >
+    <div className=" bg-white dark:bg-gray-800 rounded-lg">
       <div className="flex border-y-2 dark:border-gray-500 items-center justify-between px-4 sm:px-6 py-4">
         <header className="flex items-center text-xs sm:text-sm">
           <Image
             src={companyLogo}
-            alt={jobData.orgName}
+            alt={"Company Logo"} // organization ||
             height={72}
             width={72}
             className="rounded-full"
           />
-          <div>
-            <h1 className="text-base sm:text-xl font-bold">{jobData.title}</h1>
+          <div className="ml-3">
+            <h1 className="text-base sm:text-xl font-bold">
+              {data?.job.title || "N/A"}
+            </h1>
             <p className="text-gray-700 dark:text-gray-300">
-              {jobData.jobRole}
+              {data?.designation || "N/A"}
             </p>
-            <p className="text-gray-500 dark:text-gray-400">
-              {jobData.location}
+            <p className="text-gray-700 dark:text-gray-300">
+              {data?.location || "N/A"}
             </p>
           </div>
         </header>
-        {/* <button className="flex gap-2 items-center border py-2.5 px-3 rounded-sm text-white font-medium bg-[#78AEB3] dark:bg-[#78AEB3]">
-          <span className="text-sm">Apply Now</span>{" "}
-          <SendHorizontal className="dark:text-white" size={16} />
-        </button> */}
       </div>
+
       <div className="px-6 sm:px-10 py-3">
         <section className="mb-4 text-xs sm:text-sm">
           <h2 className="text-base sm:text-lg font-semibold mb-2">
-            Job Overview
+            Job Description
           </h2>
-          <p>{jobData.description}</p>
+          <p>{data?.description || "No description available."}</p>
         </section>
 
         <section className="mb-4 text-xs sm:text-sm">
           <h2 className="text-base sm:text-lg font-semibold mb-2">
-            What will you do?
+            Requirements
           </h2>
-          <ul className="list-disc list-inside space-y-1">
-            {jobData.responsibilities.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
+          {/* <ul className="list-disc list-inside space-y-1">
+            {data?.requirements?.length
+              ? data?.requirements?.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))
+              : "No requirements specified."}
+          </ul> */}
         </section>
 
         <section className="mb-4 text-xs sm:text-sm">
-          <h2 className="text-lg font-semibold mb-2">
-            Requirements for the role
-          </h2>
+          <h2 className="text-base sm:text-lg font-semibold mb-2">Skills</h2>
           <ul className="list-disc list-inside space-y-1">
-            <li>
-              {jobData.degreeLevel.join(" or ")} in{" "}
-              {jobData.fieldOfStudy.join(", ")} or a related field.
-            </li>
-            <li>
-              {jobData.yearOfExperience}+ years in full-stack development.
-            </li>
-            {jobData.requirements.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="mb-4 text-xs sm:text-sm">
-          <h2 className="text-base sm:text-lg font-semibold mb-2">
-            Mandatory skills
-          </h2>
-          <ul className="list-disc list-inside space-y-1">
-            {jobData.skills.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
+            {data?.skills?.length
+              ? data?.skills.map((item, index) => <li key={index}>{item}</li>)
+              : "No skills mentioned."}
           </ul>
         </section>
 
@@ -88,14 +70,24 @@ const JobDetailsPage = ({ params }) => {
           <h2 className="text-base sm:text-lg font-semibold mb-2">
             Employee Benefits
           </h2>
-          <ul className="list-disc list-inside space-y-1">
-            {jobData.employeeBenefits.map((benefit, index) => (
-              <li key={index}>{benefit}</li>
-            ))}
-          </ul>
+          {/* <ul className="list-disc list-inside space-y-1">
+            {data?.employeeBenefits?.length
+              ? data?.employeeBenefits.map((benefit, index) => (
+                  <li key={index}>{benefit}</li>
+                ))
+              : "No benefits listed."}
+          </ul> */}
         </section>
-        <section>
-          <ApplyForm />
+
+        {/* Apply form */}
+        {/* <section>
+          <ApplyForm
+            appliedStatus={appliedStatus}
+            setAppliedStatus={setAppliedStatus}
+          />
+        </section> */}
+        <section className="flex items-center justify-end fixed bottom-20 right-20">
+          <ApplyJob id={data.id} />
         </section>
       </div>
     </div>
