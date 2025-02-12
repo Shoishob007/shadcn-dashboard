@@ -7,21 +7,75 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import SkillsDisplay from "./SkillsDisplay";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 const JobCard = ({ job }) => {
-  const {
-    id,
-    orgName,
-    location,
-    title,
-    employeeType,
-    skills,
-    salary,
-    yearOfExperience,
-    jobType,
-  } = job;
+    const { data: session, status } = useSession();
+    const accessToken = session?.access_token;
+    const [storeOrgName, setStoreOrgName]= useState('');
+    const {
+      id = `${job?.id ? job?.id : "unknown"}`,
+      orgName = `${storeOrgName ? storeOrgName : "Unknown Company"}`,
+      orgId = `${
+        job?.job?.organization?.id
+          ? job?.job?.organization?.id
+          : "Unknown Company"
+      }`,
+      title = `${
+        job?.job?.title ? job?.job?.title : "Job Title Not Available"
+      }`,
+      address = `${
+        job?.address
+          ? job?.address
+          : job?.address === null
+          ? "Address not defined"
+          : "Address Not Specified"
+      }`,
+      skills = `${
+        job?.skills
+          ? job?.skills.map((skill) => <p key={skill.id}>{skill}</p>)
+          : "No Skills Listed"
+      }`,
+      employeeType = `${job?.employeeType ? job?.employeeType : "not found"}`,
+      salary = "0",
+      img = "",
+      yearOfExperience = `${
+        job?.yearOfExperience === null
+          ? "not specified"
+          : job?.yearOfExperience
+          ? job?.yearOfExperience
+          : "not found"
+      }`,
+    } = job || {};
+
+        useEffect(() => {
+            const getOrgName = async() => {
+                try {
+                  const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${orgId}`,
+                    {
+                      method: "GET",
+                      headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                      },
+                    }
+                  );
+                  const data = await response.json();
+                //   console.log("Org response :: ", data);
+                  setStoreOrgName(data.orgName);
+                //   console.log("Org name :: ", data.orgName);
+                } catch (error) {
+                  console.log(
+                    "Error fetching application details: ",
+                    error.message
+                  );
+                }
+            };
+            getOrgName();
+        }, [orgId, accessToken]);
   return (
-    <Link href={`/job-detail/${job.id}`} className="">
+    <Link href={`/job-detail/${id}`} className="">
       <Card className="w-full hover:border hover:border-black duration-300 cursor-pointer">
         <CardHeader>
           <div className="flex items-center gap-2">
@@ -30,7 +84,7 @@ const JobCard = ({ job }) => {
             </div>
             <div>
               <h1 className="text-[15px] font-medium">{orgName}</h1>
-              <p className="text-xs">{location}</p>
+              <p className="text-xs">{address}</p>
             </div>
           </div>
         </CardHeader>
@@ -52,7 +106,7 @@ const JobCard = ({ job }) => {
                 {employeeType}
               </span>
               <span className="text-xs font-medium">
-                {yearOfExperience} {yearOfExperience === 1 ? "year" : "years"}
+                {yearOfExperience}
               </span>
               {/* <span className="text-xs font-medium">{jobType}</span> */}
             </div>

@@ -16,9 +16,18 @@ const ApplicationCards = ({
   currentPage,
   totalPages,
 }) => {
-  const { data: session } = useSession();
+  console.log("Application:: ", application)
+  console.log("organization:: ", application?.jobDetails?.job?.organization)
+    const { data: session } = useSession();
   const accessToken = session?.access_token;
-  const [orgNames, setOrgNames] = useState({});
+  const [orgNames, setOrgNames] = useState([]);
+//   console.log("organization name: ", orgNames)
+
+// const {
+//     orgId = `${application.map((app) => app?.jobDetails?.job?.organization)}`,
+// } = application || {};
+
+// console.log("Organization Id: ", orgId);
 
   useEffect(() => {
     const fetchOrganizations = async () => {
@@ -59,6 +68,26 @@ const ApplicationCards = ({
     fetchOrganizations();
   }, [application, accessToken]);
 
+//   useEffect(() => {
+//     const getOrgName = async() => {
+//         try {
+//             const response = await fetch(
+//               `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${orgId}`,
+//               {
+//                 method: "GET",
+//                 headers: {
+//                   Authorization: `Bearer ${accessToken}`,
+//                 },
+//               }
+//             );
+//             const data = await response.json();
+//             console.log("org data: ", data);
+//         } catch (error) {
+//             console.error("Error fetching organization:", error);
+//         }
+//     };
+//     getOrgName();
+//   }, [ accessToken]);
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -104,11 +133,11 @@ const ApplicationCards = ({
                         >
                           {app.employeeType}
                         </span> */}
-                        <span
+                        {/* <span
                           className={`text-xs font-semibold capitalize ${
-                            app.jobDetails.employeeType.title === "full-time"
+                            app?.jobDetails?.employeeType?.title === "full-time"
                               ? "text-[#20c997]"
-                              : app.jobDetails.employeeType.title ===
+                              : app?.jobDetails?.employeeType?.title ===
                                 "contractual"
                               ? "text-[#ffc107]"
                               : app.jobDetails.employeeType.title ===
@@ -118,10 +147,15 @@ const ApplicationCards = ({
                           }`}
                         >
                           {app.jobDetails.employeeType.title}
+                        </span> */}
+                        <span className="text-xs font-medium">
+                          Employee type
                         </span>
                         <span className="text-xs font-medium">
                           {app.jobDetails?.yearOfExperience}{" "}
-                          {app.jobDetails?.yearOfExperience === null ? "experience not found" : app.jobDetails?.yearOfExperience === 1
+                          {app.jobDetails?.yearOfExperience === null
+                            ? "experience not found"
+                            : app.jobDetails?.yearOfExperience === 1
                             ? "year"
                             : "years"}
                         </span>
@@ -129,8 +163,7 @@ const ApplicationCards = ({
                       <div className="mt-1">
                         <div className="flex items-center gap-3">
                           <span className="text-xs">
-                            Applied on:{" "}
-                            <span className="font-medium"></span>
+                            Applied on: <span className="font-medium"></span>
                           </span>
                           <span
                             className={`text-xs lowercase font-medium p-1 rounded-md ${
