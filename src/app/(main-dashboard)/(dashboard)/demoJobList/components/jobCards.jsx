@@ -30,6 +30,7 @@ const JobCards = ({
   handleViewApplicantList,
   handleViewJobDetails,
 }) => {
+  console.log("jobs :: ", jobs);
   return (
     <>
       {jobs.length > 0 ? (
