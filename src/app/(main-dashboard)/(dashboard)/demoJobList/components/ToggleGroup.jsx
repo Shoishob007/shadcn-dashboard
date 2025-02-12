@@ -19,7 +19,7 @@ const ToggleGroupComponent = ({
   return (
     <>
       <ToggleGroup
-        className="flex gap-0 justify-start bg-white dark:bg-gray-800 w-fit rounded-full shadow-sm h-7 md:h-9"
+        className="flex gap-0 justify-start bg-white dark:bg-gray-800 w-fit rounded-full shadow-sm h-7 sm:h-9"
         type="single"
         value={selectedStatus}
         onValueChange={(value) => value && setSelectedStatus(value)}
