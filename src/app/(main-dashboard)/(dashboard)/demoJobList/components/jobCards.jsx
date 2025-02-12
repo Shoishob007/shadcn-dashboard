@@ -204,10 +204,16 @@ const JobCards = ({
                 <div className="flex items-center gap-6 md:gap-0 px-2 md:px-0">
                   <div className="flex flex-col gap-5 justify-center mt-2">
                     {/* Applicants Section (if available) */}
-                    {document.job.applicants && (
+                    {document.job.applicants ? (
                       <div className="flex justify-center md:justify-start sm:flex-row text-emerald-600 font-semibold">
                         <div className="flex flex-row items-center justify-center w-full sm:mr-4">
                           <AnimatedTooltip items={document.job.applicants} />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex justify-center md:justify-start sm:flex-row font-semibold">
+                        <div className="flex flex-row items-center justify-center w-full sm:mr-4">
+                          <p>No Applicants For This Job</p>
                         </div>
                       </div>
                     )}

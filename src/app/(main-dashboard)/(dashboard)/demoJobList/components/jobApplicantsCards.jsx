@@ -3,6 +3,14 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import PricingDialogue from "./pricingDialogue";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { FaFile } from "react-icons/fa";
+import { FileText } from "lucide-react";
 
 const JobApplicantsCards = ({
   currentPaginatedApplicants,
@@ -14,6 +22,13 @@ const JobApplicantsCards = ({
   maxViews,
 }) => {
   const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
+
+  console.log("currentPaginatedApplicants :: ", currentPaginatedApplicants);
+   const handleViewCV = (cvUrl) => {
+     if (cvUrl) {
+       window.open(cvUrl, "_blank");
+     }
+   };
 
   return (
     <>
@@ -34,7 +49,7 @@ const JobApplicantsCards = ({
                     alt={applicant.name}
                   />
                   <AvatarFallback className="bg-gray-300 text-xs font-bold text-gray-700">
-                    {applicant.name}
+                    {applicant.name.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col w-full">
@@ -85,9 +100,25 @@ const JobApplicantsCards = ({
                   Certifications:
                   <strong> {applicant.certifications?.length || 0}</strong>
                 </p>
-                <p>
-                  CV Score:<strong> {applicant.CVScore || "N/A"}</strong>
-                </p>
+                <div className="flex gap-2 items-center">
+                  <p>Resume:</p>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          onClick={() => handleViewCV(applicant.CV)}
+                          className="p-2 rounded-full transition-colors border-none"
+                          variant="outline"
+                        >
+                          <FileText className="h-5 w-5 text-gray-600" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>View CV</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
               </div>
 
               <div className="flex justify-between items-center gap-4">

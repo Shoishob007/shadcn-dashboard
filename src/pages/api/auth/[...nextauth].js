@@ -7,6 +7,7 @@ import LinkedInProvider from "next-auth/providers/linkedin";
 // Asdfgh@11
 // qononifi@cyclelove.cc
 // faxah14991 @rykone.com
+// levityko @azuretechtalk.net
 
 export const authOptions = {
     providers: [
