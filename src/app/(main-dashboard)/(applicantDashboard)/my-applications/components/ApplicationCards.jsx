@@ -6,40 +6,66 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const ApplicationCards = ({
   application,
-  applications,
   handlePageChange,
   currentPage,
   totalPages,
 }) => {
-  //   const { data: session } = useSession();
-  //   const accessToken = session?.access_token;
+  const { data: session } = useSession();
+  const accessToken = session?.access_token;
+  const [orgNames, setOrgNames] = useState({});
 
-  //   useEffect(() => {
-  //     const getOrganization = async () => {
-  //       const response = await fetch(
-  //         `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${application?.jobDetails?.job?.organization}`,
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             Authorization: `Bearer ${accessToken}`,
-  //           },
-  //         }
-  //       );
-  //       console.log("Response :: ", response);
-  //     };
+  useEffect(() => {
+    const fetchOrganizations = async () => {
+      if (!application.length) return;
 
-  //     getOrganization();
-  //   }, []);
+      const orgIds = application.map(
+        (app) => app?.jobDetails?.job?.organization
+      );
+      const uniqueOrgIds = [...new Set(orgIds)];
+
+      let fetchedNames = {};
+
+      await Promise.all(
+        uniqueOrgIds.map(async (id) => {
+          if (!id) return;
+          try {
+            const response = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${id}`,
+              {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                },
+              }
+            );
+            const data = await response.json();
+            fetchedNames[id] = data?.name || "Unknown Organization";
+          } catch (error) {
+            console.error("Error fetching organization:", error);
+            fetchedNames[id] = "Unknown Organization";
+          }
+        })
+      );
+
+      setOrgNames(fetchedNames);
+    };
+
+    fetchOrganizations();
+  }, [application, accessToken]);
+
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {application.map((app, index) => {
-          //   const date = app.deadline;
-          //   const formattedDate = format(date, "MMM dd, yyyy");
+          const orgId = app.jobDetails.job.organization;
+          const orgName = orgNames[orgId] || "Loading...";
+
           return (
             <div key={index}>
               <Link href={`/my-applications/${app.id}`}>
@@ -47,19 +73,13 @@ const ApplicationCards = ({
                   <CardHeader>
                     <div className="flex items-center gap-2">
                       <div className="w-10 h-10 font-medium bg-gray-200 rounded-full flex items-center justify-center">
-                        <span>
-                          {app.orgName ? app.orgName.slice(0, 1) : "Un"}
-                        </span>
+                        <span>{orgName ? orgName.charAt(0) : "U"}</span>
                       </div>
                       <div>
-                        <h1 className="text-[15px] font-medium">
-                          {app.jobDetails.job.organization
-                            ? app.jobDetails.job.organization
-                            : "Organization not found"}
-                        </h1>
+                        <h1 className="text-[15px] font-medium">{orgName}</h1>
                         <p className="text-xs">
                           {app.jobDetails.address
-                            ? app.location
+                            ? app.jobDetails.address
                             : "Location not found"}
                         </p>
                       </div>
@@ -71,7 +91,7 @@ const ApplicationCards = ({
                         {app.jobDetails.job.title}
                       </h1>
                       <div className="flex items-center mt-3 gap-3">
-                        <span
+                        {/* <span
                           className={`text-xs font-semibold capitalize ${
                             app.employeeType === "full-time"
                               ? "text-[#20c997]"
@@ -83,18 +103,34 @@ const ApplicationCards = ({
                           }`}
                         >
                           {app.employeeType}
+                        </span> */}
+                        <span
+                          className={`text-xs font-semibold capitalize ${
+                            app.jobDetails.employeeType.title === "full-time"
+                              ? "text-[#20c997]"
+                              : app.jobDetails.employeeType.title ===
+                                "contractual"
+                              ? "text-[#ffc107]"
+                              : app.jobDetails.employeeType.title ===
+                                "part-time"
+                              ? "text-[#6610f2]"
+                              : "text-black"
+                          }`}
+                        >
+                          {app.jobDetails.employeeType.title}
                         </span>
                         <span className="text-xs font-medium">
-                          {app.yearOfExperience}{" "}
-                          {app.yearOfExperience === 1 ? "year" : "years"}
+                          {app.jobDetails?.yearOfExperience}{" "}
+                          {app.jobDetails?.yearOfExperience === null ? "experience not found" : app.jobDetails?.yearOfExperience === 1
+                            ? "year"
+                            : "years"}
                         </span>
-                        {/* <span className="text-xs font-medium">{jobType}</span> */}
                       </div>
                       <div className="mt-1">
                         <div className="flex items-center gap-3">
                           <span className="text-xs">
                             Applied on:{" "}
-                            <span className="font-medium">Date: {app.id}</span>
+                            <span className="font-medium"></span>
                           </span>
                           <span
                             className={`text-xs lowercase font-medium p-1 rounded-md ${
