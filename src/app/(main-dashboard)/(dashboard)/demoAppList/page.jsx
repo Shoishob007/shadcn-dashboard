@@ -69,7 +69,7 @@ const DemoAppList = () => {
   const [page, setPage] = useState(1);
 
   // UI states
-  const [selectedStatus, setSelectedStatus] = useState("applied");
+  const [selectedStatus, setSelectedStatus] = useState("pending");
   const [selectedStep, setSelectedStep] = useState("");
   const [viewMode, setViewMode] = useState("card");
   const [viewCount, setViewCount] = useState(1);
@@ -105,10 +105,20 @@ const DemoAppList = () => {
 
   // Function to fetch applicant profiles
   const fetchApplicantProfiles = async (applicantIds) => {
+    const validIds = [];
+    for (const id of applicantIds) {
+      if (id === null) break;
+      validIds.push(id);
+    }
+
+    if (validIds.length === 0) return;
+
+    console.log("Valid applicantIds :: ", validIds);
     setIsLoadingProfiles(true);
+
     try {
       const profiles = await Promise.all(
-        applicantIds.map(async (id) => {
+        validIds.map(async (id) => {
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/api/applicants/${id}`,
             {
@@ -119,6 +129,7 @@ const DemoAppList = () => {
             }
           );
           const data = await response.json();
+          console.log("Data :: ", data)
           return { id, profile: data };
         })
       );
@@ -192,12 +203,11 @@ const DemoAppList = () => {
       return {
         id: application.applicant,
         name: getSafeValue(profile.name, "N/A"),
-        status: getSafeValue(application.applicationStatus?.status, "applied"),
-        steps: getSafeValue(application.applicationStatus?.currentStep),
-        schedule: {
-          date: getSafeValue(application.applicationStatus?.scheduleDate),
-          time: getSafeValue(application.applicationStatus?.scheduleTime),
-        },
+        // steps: getSafeValue(application.applicationStatus?.currentStep),
+        // schedule: {
+        //   date: getSafeValue(application.applicationStatus?.scheduleDate),
+        //   time: getSafeValue(application.applicationStatus?.scheduleTime),
+        // },
         CVScore: getSafeValue(profile.CVScore, profile.cv ? 75 : 0),
         CV: getSafeValue(profile.cv),
         certifications: getSafeValue(profile.trainingAndCertifications, []),
@@ -219,33 +229,36 @@ const DemoAppList = () => {
           application.jobDetails?.jobRole?.[0]?.title,
           "N/A"
         ),
+        applicationStatus: application.applicationStatus,
+
         createdAt: getSafeValue(application.createdAt),
       };
     })
     .filter(Boolean);
 
   // Filter applicants
-  const filteredApplicants = transformedApplicants.filter((applicant) => {
-    const statusMatch = !selectedStatus || applicant.status === selectedStatus;
-    const stepMatch = !selectedStep || applicant.steps === selectedStep;
-    const jobRoleMatch =
-      filters.selectedJobRole === "all" ||
-      applicant.jobRole === filters.selectedJobRole;
-    const timeMatch =
-      filters.selectedTime === "all" ||
-      (filters.selectedTime === "recent" &&
-        new Date(applicant.createdAt) > new Date(Date.now() - 7 * 86400000));
-    const searchMatch =
-      !filters.searchQuery ||
-      applicant.name
-        .toLowerCase()
-        .includes(filters.searchQuery.toLowerCase()) ||
-      applicant.jobTitle
-        .toLowerCase()
-        .includes(filters.searchQuery.toLowerCase());
+  // const filteredApplicants = transformedApplicants.filter((applicant) => {
+  //   const statusMatch =
+  //     !selectedStatus || applicant.applicationStatus === selectedStatus;
+  //   const stepMatch = !selectedStep || applicant.steps === selectedStep;
+  //   const jobRoleMatch =
+  //     filters.selectedJobRole === "all" ||
+  //     applicant.jobRole === filters.selectedJobRole;
+  //   const timeMatch =
+  //     filters.selectedTime === "all" ||
+  //     (filters.selectedTime === "recent" &&
+  //       new Date(applicant.createdAt) > new Date(Date.now() - 7 * 86400000));
+  //   const searchMatch =
+  //     !filters.searchQuery ||
+  //     applicant.name
+  //       .toLowerCase()
+  //       .includes(filters.searchQuery.toLowerCase()) ||
+  //     applicant.jobTitle
+  //       .toLowerCase()
+  //       .includes(filters.searchQuery.toLowerCase());
 
-    return statusMatch && stepMatch && jobRoleMatch && timeMatch && searchMatch;
-  });
+  //   return statusMatch && stepMatch && jobRoleMatch && timeMatch && searchMatch;
+  // });
 
   const handleViewDetails = (id) => {
     router.push(`/demoAppList/demoAppDetails?id=${id}`);
@@ -307,13 +320,13 @@ const DemoAppList = () => {
             </div>
           </div>
 
-          {isLoadingProfiles && filteredApplicants.length === 0 ? (
+          {isLoadingProfiles && transformedApplicants.length === 0 ? (
             <div className="text-center p-8">Loading applicant profiles...</div>
-          ) : filteredApplicants.length > 0 ? (
+          ) : transformedApplicants.length > 0 ? (
             <div>
               {viewMode === "list" ? (
                 <ApplicantsTable
-                  applicants={filteredApplicants}
+                  applicants={transformedApplicants}
                   calculateTotalExperience={calculateTotalExperience}
                   handleViewDetails={handleViewDetails}
                   viewCount={viewCount}
@@ -322,7 +335,7 @@ const DemoAppList = () => {
                 />
               ) : (
                 <JobApplicantsCards
-                  currentPaginatedApplicants={filteredApplicants}
+                  currentPaginatedApplicants={transformedApplicants}
                   calculateTotalExperience={calculateTotalExperience}
                   handleViewDetails={handleViewDetails}
                   socialMediaIcons={socialMediaIcons}
