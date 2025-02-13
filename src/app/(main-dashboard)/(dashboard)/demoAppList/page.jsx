@@ -63,6 +63,7 @@ const DemoAppList = () => {
 
   // State for job applications and applicants
   const [jobApplications, setJobApplications] = useState([]);
+    const[hiringStages, setHiringStages] = useState([]);
   const [applicantProfiles, setApplicantProfiles] = useState({});
   const [isLoadingProfiles, setIsLoadingProfiles] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -193,6 +194,29 @@ const DemoAppList = () => {
       fetchApplicantProfiles(newApplicantIds);
     }
   }, [jobApplications]);
+
+    // fetching hiring stages for the company
+    const fetchHiringStages = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages?where[organization.id]=${orgId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setHiringStages(data);
+        console.log("Hiring Stages :: ", data)
+      } catch (error) {
+        console.error("Error fetching hiring stages :", error);
+      }
+    };
+  
+      useEffect(() => {
+        fetchHiringStages();
+      }, [orgId, accessToken]);
 
   // Transform applicant data
   const transformedApplicants = jobApplications
