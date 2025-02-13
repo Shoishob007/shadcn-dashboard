@@ -26,29 +26,29 @@ const ToggleGroupComponent = ({
       >
         <ToggleGroupItem
           className={`h-7 md:h-9 pr-2 pl-3 md:px-6 py-1 md:py-2 text-xs md:text-sm font-medium rounded-l-full transition-all duration-300 ${
-            selectedStatus === "applied"
+            selectedStatus === "pending"
               ? "!text-white dark:!text-blue-900 shadow-md !bg-gray-800 dark:!bg-blue-300"
               : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
           }`}
-          value="applied"
+          value="pending"
         >
-          Applied
+          Pending
         </ToggleGroupItem>
 
         <ToggleGroupItem
           className={`h-7 md:h-9 px-2 md:px-6 py-1 md:py-2 text-xs md:text-sm font-medium rounded-none transition-all duration-300 ${
-            selectedStatus === "shortlisted"
+            selectedStatus === "in-processing"
               ? "!text-white dark:!text-yellow-900 shadow-md !bg-gray-800 dark:!bg-yellow-300"
               : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
           }`}
-          value="shortlisted"
+          value="in-processing"
         >
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center justify-between w-full">
-              Shortlisted
+              In-Processing
               <ChevronDown
                 className={`w-4 h-4 ${
-                  selectedStatus === "shortlisted"
+                  selectedStatus === "in-processing"
                     ? "text-white"
                     : "text-gray-700"
                 }`}
@@ -61,7 +61,7 @@ const ToggleGroupComponent = ({
                   {selectedStep === "all" && "✔"}
                 </div>
               </DropdownMenuItem>
-              {steps.map((step) => (
+              {steps?.map((step) => (
                 <DropdownMenuItem
                   key={step}
                   onSelect={() => setSelectedStep(step)}
@@ -78,21 +78,21 @@ const ToggleGroupComponent = ({
 
         <ToggleGroupItem
           className={`h-7 md:h-9 px-2 md:px-6 py-1 md:py-2 text-xs md:text-sm font-medium rounded-none transition-all duration-300 ${
-            selectedStatus === "hired"
+            selectedStatus === "passed"
               ? "!text-white dark:!text-emerald-900 shadow-md !bg-gray-800 dark:!bg-emerald-300"
               : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
           }`}
-          value="hired"
+          value="passed"
         >
-          Hired
+          Passed
         </ToggleGroupItem>
         <ToggleGroupItem
           className={`h-7 md:h-9 pr-3 pl-2 md:px-6 py-1 md:py-2 text-xs md:text-sm font-medium rounded-r-full transition-all duration-300 ${
-            selectedStatus === "rejected"
+            selectedStatus === "failed"
               ? "!text-white dark:!text-red-900 shadow-md !bg-gray-800 dark:!bg-red-300"
               : "bg-white dark:bg-gray-800 text-gray-700 hover:bg-gray-300 dark:hover:!bg-gray-700 dark:text-gray-300"
           }`}
-          value="rejected"
+          value="failed"
         >
           Rejected
         </ToggleGroupItem>

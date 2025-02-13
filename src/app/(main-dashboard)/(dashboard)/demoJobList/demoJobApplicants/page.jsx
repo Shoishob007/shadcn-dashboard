@@ -28,13 +28,6 @@ const socialMediaIcons = {
   facebook: FaFacebook,
 };
 
-const steps = [
-  "screening test",
-  "aptitude test",
-  "technical test",
-  "interview",
-];
-
 const calculateTotalExperience = (experiences) => {
   if (!experiences) return "No Experience!";
 
@@ -61,7 +54,7 @@ const DemoApplicants = () => {
 
   // State for job applications and applicants
   const [jobApplications, setJobApplications] = useState([]);
-  const[hiringStages, setHiringStages] = useState([]);
+  const [hiringStages, setHiringStages] = useState([]);
   const [applicantProfiles, setApplicantProfiles] = useState({});
   const [isLoadingProfiles, setIsLoadingProfiles] = useState(false);
   const [hasMoreApplicants, setHasMoreApplicants] = useState(true);
@@ -72,7 +65,7 @@ const DemoApplicants = () => {
   const [isLoadingOrg, setIsLoadingOrg] = useState(false);
 
   // UI states
-  const [selectedStatus, setSelectedStatus] = useState("applied");
+  const [selectedStatus, setSelectedStatus] = useState("pending");
   const [selectedStep, setSelectedStep] = useState("");
   const [currentJobInfo, setCurrentJobInfo] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -201,15 +194,15 @@ const DemoApplicants = () => {
       );
       const data = await response.json();
       setHiringStages(data);
-      console.log("Hiring Stages :: ", data)
+      console.log("Hiring Stages :: ", data);
     } catch (error) {
       console.error("Error fetching hiring stages :", error);
     }
   };
 
-    useEffect(() => {
-      fetchHiringStages();
-    }, [organizationID]);
+  useEffect(() => {
+    fetchHiringStages();
+  }, [organizationID]);
 
   // Transforming applicant data to match the component's expected format
   const transformedApplicants = jobApplications
@@ -217,18 +210,15 @@ const DemoApplicants = () => {
       const profile = applicantProfiles[application.applicant];
       if (!profile) return null;
 
-        console.log("profile :: ", profile);
+      // console.log("profile :: ", profile);
+      const latestStatus =
+        application.applicationStatus?.docs?.[0]?.status || "pending";
 
-
+      // console.log("latestStatus :: ", latestStatus);
 
       return {
         id: application.applicant,
         name: profile.name || "N/A",
-        // steps: application.applicationStatus?.currentStep,
-        // schedule: {
-        //   date: application.applicationStatus?.scheduleDate || null,
-        //   time: application.applicationStatus?.scheduleTime || null,
-        // },
         CVScore: profile.CVScore || (profile.cv ? 75 : 0),
         CV: profile.cv,
         certifications: profile.trainingAndCertifications || [],
@@ -245,13 +235,15 @@ const DemoApplicants = () => {
           pictureUrl: profile.img?.url || null,
           websiteUrl: profile.applicantWebsiteUrl || null,
         },
-        applicationStatus: application.applicationStatus,
+        applicationStatus: latestStatus,
+        hiringStep:
+          application.applicationStatus?.docs[0]?.hiringStage?.title || "N/A",
       };
     })
     .filter(Boolean);
 
   // Infinite scroll handler
-  const handleScroll = (() => {
+  const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop ===
         document.documentElement.offsetHeight &&
@@ -260,7 +252,7 @@ const DemoApplicants = () => {
     ) {
       setPage((prev) => prev + 1); // Loading the next page
     }
-  });
+  };
 
   // scroll event listener
   useEffect(() => {
@@ -315,6 +307,28 @@ const DemoApplicants = () => {
     return <div className="text-center p-8">Loading...</div>;
   }
 
+  const hiringSteps = hiringStages.docs
+    .sort((a, b) => a.order - b.order)
+    .map((stage) => stage.title);
+
+  const filteredApplicants = transformedApplicants.filter((applicant) => {
+    if (selectedStatus === "pending") {
+      return applicant.applicationStatus === "pending";
+    } else if (selectedStatus === "passed") {
+      return applicant.applicationStatus === "passed";
+    } else if (selectedStatus === "in-processing") {
+      if (selectedStep === "all") {
+        return applicant.applicationStatus === "in-processing";
+      } else {
+        return (
+          applicant.applicationStatus === "in-processing" &&
+          applicant.hiringStep === selectedStep
+        );
+      }
+    }
+    return false; // Fallback for unknown status
+  });
+
   // console.log("transformedApplicants :: ", transformedApplicants);
 
   return (
@@ -351,7 +365,7 @@ const DemoApplicants = () => {
           <div className="flex-1">
             <div className="flex items-center justify-between mb-4">
               <ToggleGroupComponent
-                steps={steps}
+                steps={hiringSteps}
                 selectedStep={selectedStep}
                 selectedStatus={selectedStatus}
                 setSelectedStep={setSelectedStep}
@@ -369,25 +383,27 @@ const DemoApplicants = () => {
               <div className="text-center p-8">
                 Loading applicant profiles...
               </div>
-            ) : transformedApplicants.length > 0 ? (
+            ) : filteredApplicants.length > 0 ? (
               viewMode === "list" ? (
                 <ApplicantsTable
-                  applicants={transformedApplicants}
+                  applicants={filteredApplicants}
                   calculateTotalExperience={calculateTotalExperience}
                   handleViewDetails={handleViewDetails}
                   viewCount={viewCount}
                   setViewCount={setViewCount}
                   maxViews={maxViews}
+                  hiringStages={hiringStages}
                 />
               ) : (
                 <JobApplicantsCards
-                  currentPaginatedApplicants={transformedApplicants}
+                  currentPaginatedApplicants={filteredApplicants}
                   calculateTotalExperience={calculateTotalExperience}
                   handleViewDetails={handleViewDetails}
                   socialMediaIcons={socialMediaIcons}
                   viewCount={viewCount}
                   setViewCount={setViewCount}
                   maxViews={maxViews}
+                  hiringStages={hiringStages}
                 />
               )
             ) : (

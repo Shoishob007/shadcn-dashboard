@@ -1,5 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-"use client";
+"use client"
+
+
+// Issues in filtering
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { FaFacebook, FaGoogle, FaLinkedin } from "react-icons/fa";
@@ -27,13 +30,6 @@ const socialMediaIcons = {
   google: FaGoogle,
   facebook: FaFacebook,
 };
-
-const steps = [
-  "screening test",
-  "aptitude test",
-  "technical test",
-  "interview",
-];
 
 const calculateTotalExperience = (experiences) => {
   if (!experiences) return "No Experience!";
@@ -63,7 +59,7 @@ const DemoAppList = () => {
 
   // State for job applications and applicants
   const [jobApplications, setJobApplications] = useState([]);
-    const[hiringStages, setHiringStages] = useState([]);
+  const [hiringStages, setHiringStages] = useState([]);
   const [applicantProfiles, setApplicantProfiles] = useState({});
   const [isLoadingProfiles, setIsLoadingProfiles] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -130,7 +126,7 @@ const DemoAppList = () => {
             }
           );
           const data = await response.json();
-          console.log("Data :: ", data)
+          console.log("Data :: ", data);
           return { id, profile: data };
         })
       );
@@ -195,28 +191,28 @@ const DemoAppList = () => {
     }
   }, [jobApplications]);
 
-    // fetching hiring stages for the company
-    const fetchHiringStages = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages?where[organization.id]=${orgId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        const data = await response.json();
-        setHiringStages(data);
-        console.log("Hiring Stages :: ", data)
-      } catch (error) {
-        console.error("Error fetching hiring stages :", error);
-      }
-    };
-  
-      useEffect(() => {
-        fetchHiringStages();
-      }, [orgId, accessToken]);
+  // Fetch hiring stages for the company
+  const fetchHiringStages = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages?where[organization.id]=${orgId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const data = await response.json();
+      setHiringStages(data);
+      console.log("Hiring Stages :: ", data);
+    } catch (error) {
+      console.error("Error fetching hiring stages :", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchHiringStages();
+  }, [orgId, accessToken]);
 
   // Transform applicant data
   const transformedApplicants = jobApplications
@@ -224,14 +220,12 @@ const DemoAppList = () => {
       const profile = applicantProfiles[application.applicant];
       if (!profile) return null;
 
+      const latestStatus =
+        application.applicationStatus?.docs?.[0]?.status || "pending";
+
       return {
         id: application.applicant,
         name: getSafeValue(profile.name, "N/A"),
-        // steps: getSafeValue(application.applicationStatus?.currentStep),
-        // schedule: {
-        //   date: getSafeValue(application.applicationStatus?.scheduleDate),
-        //   time: getSafeValue(application.applicationStatus?.scheduleTime),
-        // },
         CVScore: getSafeValue(profile.CVScore, profile.cv ? 75 : 0),
         CV: getSafeValue(profile.cv),
         certifications: getSafeValue(profile.trainingAndCertifications, []),
@@ -253,36 +247,71 @@ const DemoAppList = () => {
           application.jobDetails?.jobRole?.[0]?.title,
           "N/A"
         ),
-        applicationStatus: application.applicationStatus,
-
+        applicationStatus: latestStatus,
+        hiringStep:
+          application.applicationStatus?.docs[0]?.hiringStage?.title || "N/A",
         createdAt: getSafeValue(application.createdAt),
       };
     })
     .filter(Boolean);
 
   // Filter applicants
-  // const filteredApplicants = transformedApplicants.filter((applicant) => {
-  //   const statusMatch =
-  //     !selectedStatus || applicant.applicationStatus === selectedStatus;
-  //   const stepMatch = !selectedStep || applicant.steps === selectedStep;
-  //   const jobRoleMatch =
-  //     filters.selectedJobRole === "all" ||
-  //     applicant.jobRole === filters.selectedJobRole;
-  //   const timeMatch =
-  //     filters.selectedTime === "all" ||
-  //     (filters.selectedTime === "recent" &&
-  //       new Date(applicant.createdAt) > new Date(Date.now() - 7 * 86400000));
-  //   const searchMatch =
-  //     !filters.searchQuery ||
-  //     applicant.name
-  //       .toLowerCase()
-  //       .includes(filters.searchQuery.toLowerCase()) ||
-  //     applicant.jobTitle
-  //       .toLowerCase()
-  //       .includes(filters.searchQuery.toLowerCase());
+  const hiringSteps = hiringStages.docs
+    ?.sort((a, b) => a.order - b.order)
+    .map((stage) => stage.title);
 
-  //   return statusMatch && stepMatch && jobRoleMatch && timeMatch && searchMatch;
-  // });
+  const filteredApplicants = transformedApplicants.filter((applicant) => {
+    // Apply status and step filters
+    if (selectedStatus === "pending") {
+      if (applicant.applicationStatus !== "pending") return false;
+    } else if (selectedStatus === "passed") {
+      if (applicant.applicationStatus !== "passed") return false;
+    } else if (selectedStatus === "in-processing") {
+      if (applicant.applicationStatus !== "in-processing") return false;
+      if (selectedStep !== "all" && applicant.hiringStep !== selectedStep)
+        return false;
+    }
+
+    // Apply additional filters (search query, job role, time)
+    if (
+      filters.searchQuery &&
+      !applicant.name.toLowerCase().includes(filters.searchQuery.toLowerCase())
+    ) {
+      return false;
+    }
+    if (
+      filters.selectedJobRole !== "all" &&
+      applicant.jobRole !== filters.selectedJobRole
+    ) {
+      return false;
+    }
+    if (filters.selectedTime !== "all") {
+      const createdAt = new Date(applicant.createdAt);
+      const now = new Date();
+      const timeDiff = now - createdAt;
+
+      if (
+        filters.selectedTime === "last24h" &&
+        timeDiff > 24 * 60 * 60 * 1000
+      ) {
+        return false;
+      }
+      if (
+        filters.selectedTime === "last7d" &&
+        timeDiff > 7 * 24 * 60 * 60 * 1000
+      ) {
+        return false;
+      }
+      if (
+        filters.selectedTime === "last30d" &&
+        timeDiff > 30 * 24 * 60 * 60 * 1000
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  });
 
   const handleViewDetails = (id) => {
     router.push(`/demoAppList/demoAppDetails?id=${id}`);
@@ -323,7 +352,7 @@ const DemoAppList = () => {
         <div className="flex-1">
           <div className="flex items-center justify-between mb-4">
             <ToggleGroupComponent
-              steps={steps}
+              steps={hiringSteps}
               selectedStep={selectedStep}
               selectedStatus={selectedStatus}
               setSelectedStep={setSelectedStep}
@@ -346,26 +375,28 @@ const DemoAppList = () => {
 
           {isLoadingProfiles && transformedApplicants.length === 0 ? (
             <div className="text-center p-8">Loading applicant profiles...</div>
-          ) : transformedApplicants.length > 0 ? (
+          ) : filteredApplicants.length > 0 ? (
             <div>
               {viewMode === "list" ? (
                 <ApplicantsTable
-                  applicants={transformedApplicants}
+                  applicants={filteredApplicants}
                   calculateTotalExperience={calculateTotalExperience}
                   handleViewDetails={handleViewDetails}
                   viewCount={viewCount}
                   setViewCount={setViewCount}
                   maxViews={Infinity}
+                  hiringStages={hiringStages}
                 />
               ) : (
                 <JobApplicantsCards
-                  currentPaginatedApplicants={transformedApplicants}
+                  currentPaginatedApplicants={filteredApplicants}
                   calculateTotalExperience={calculateTotalExperience}
                   handleViewDetails={handleViewDetails}
                   socialMediaIcons={socialMediaIcons}
                   viewCount={viewCount}
                   setViewCount={setViewCount}
                   maxViews={Infinity}
+                  hiringStages={hiringStages}
                 />
               )}
 

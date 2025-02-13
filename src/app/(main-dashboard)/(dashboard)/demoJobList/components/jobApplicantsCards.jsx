@@ -22,17 +22,17 @@ const JobApplicantsCards = ({
 }) => {
   const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
 
- const getLatestStatus = (applicationStatus) => {
-   if (!applicationStatus?.docs || applicationStatus.docs.length === 0) {
-     return "pending";
-   }
+//  const getLatestStatus = (applicationStatus) => {
+//    if (!applicationStatus?.docs || applicationStatus.docs.length === 0) {
+//      return "pending";
+//    }
 
-   const sortedDocs = applicationStatus.docs.sort(
-     (a, b) => new Date(b.timeStamp) - new Date(a.timeStamp)
-   );
+//    const sortedDocs = applicationStatus.docs.sort(
+//      (a, b) => new Date(b.timeStamp) - new Date(a.timeStamp)
+//    );
 
-   return sortedDocs[0].status;
- };
+//    return sortedDocs[0].status;
+//  };
 
   const getLatestStage = (applicationStatus) => {
     if (!applicationStatus?.docs || applicationStatus.docs.length === 0) {
@@ -42,6 +42,7 @@ const JobApplicantsCards = ({
     const sortedDocs = applicationStatus.docs.sort(
       (a, b) => new Date(b.timeStamp) - new Date(a.timeStamp)
     );
+
 
     return sortedDocs[0].hiringStage.title;
   };
@@ -76,7 +77,7 @@ const JobApplicantsCards = ({
             applicant.experiences
           );
           // console.log("Applicants :: ", applicant);
-          const latestStatus = getLatestStatus(applicant.applicationStatus);
+          const latestStatus = applicant.applicationStatus;
                     const latestHiringStage = getLatestStage(
                       applicant.applicationStatus
                     );
