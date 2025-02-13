@@ -11,4 +11,8 @@ applicant: [
         email: dobujiga@logsmarter.net,
         password: demoPass
     },
+    {
+        email: cofev53189@owlny.com,
+        password: demoPass@
+    },
 ]

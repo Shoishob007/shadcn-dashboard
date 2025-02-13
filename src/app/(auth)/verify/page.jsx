@@ -1,14 +1,16 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 export default function VerifyPage() {
   const router = useRouter();
   const { toast } = useToast();
   const searchParams = useSearchParams();
   const token = useMemo(() => searchParams.get("token"), [searchParams]);
+  console.log("Token: ", token);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
@@ -29,7 +31,7 @@ export default function VerifyPage() {
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-email/${token}`,
         {
           method: "GET",
-          mode: 'cors',
+          mode: "cors",
           headers: {
             "Content-Type": "application/json",
           },

@@ -55,7 +55,7 @@ const ProfileHeader = ({ profileData = [] }) => {
                 A creative and detail-oriented Frontend Developer with a strong
                 focus on user experience and design aesthetics. Dedicated to
                 crafting visually appealing, responsive, and user-friendly
-                interfaces that enhance engagement.
+                interfaces that enhance engagement. 
               </p>
             </div>
           </div>
