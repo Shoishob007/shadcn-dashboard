@@ -34,6 +34,18 @@ const JobApplicantsCards = ({
    return sortedDocs[0].status;
  };
 
+  const getLatestStage = (applicationStatus) => {
+    if (!applicationStatus?.docs || applicationStatus.docs.length === 0) {
+      return "Not Started";
+    }
+
+    const sortedDocs = applicationStatus.docs.sort(
+      (a, b) => new Date(b.timeStamp) - new Date(a.timeStamp)
+    );
+
+    return sortedDocs[0].hiringStage.title;
+  };
+
   // console.log("currentPaginatedApplicants :: ", currentPaginatedApplicants);
    const handleViewCV = (cvUrl) => {
      if (cvUrl) {
@@ -65,6 +77,10 @@ const JobApplicantsCards = ({
           );
           // console.log("Applicants :: ", applicant);
           const latestStatus = getLatestStatus(applicant.applicationStatus);
+                    const latestHiringStage = getLatestStage(
+                      applicant.applicationStatus
+                    );
+
           // console.log("Latest Status :: ", latestStatus)
           const { bgColor, textColor } = getStatusBadgeProps(latestStatus);
           return (
@@ -93,13 +109,20 @@ const JobApplicantsCards = ({
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       {applicant.experiences?.[0]?.position || "N/A"}
                     </p>
-                    <div
-                      className={`px-2 py-1 rounded-full text-[10px] font-semibold mx-auto ${bgColor} ${textColor}`}
-                    >
-                      {latestStatus
-                        ? latestStatus.charAt(0).toUpperCase() +
-                          latestStatus.slice(1)
-                        : "pending"}
+                    <div className="flex flex-col items-center gap-2">
+                      <div
+                        className={`px-2 py-1 rounded-full text-[10px] font-semibold mx-auto ${bgColor} ${textColor}`}
+                      >
+                        {latestStatus
+                          ? latestStatus.charAt(0).toUpperCase() +
+                            latestStatus.slice(1)
+                          : "pending"}
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {latestHiringStage}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

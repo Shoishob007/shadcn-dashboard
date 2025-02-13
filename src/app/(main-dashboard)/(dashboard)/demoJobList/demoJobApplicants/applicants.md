@@ -60,8 +60,29 @@
                 "docs": [
                     {
                         "id": "64625612-c6b5-434b-966b-fa81b1219b7d",
-                        "hiringStage": "83222807-36a4-419c-ae78-d44fb1d9e323",
-                        "jobApplication": "c68c3425-7c70-4ce1-b3d3-c8d0cb4291ad",
+                        "hiringStage": {
+                            "id": "83222807-36a4-419c-ae78-d44fb1d9e323",
+                            "organization": "618cf21a-384b-43f9-a971-d1ec25d373ec",
+                            "title": "test stage 1",
+                            "order": 1,
+                            "description": "dsadadas",
+                            "updatedAt": "2025-02-12T19:05:34.467Z",
+                            "createdAt": "2025-02-03T07:44:52.335Z"
+                        },
+                        "jobApplication": {
+                            "id": "c68c3425-7c70-4ce1-b3d3-c8d0cb4291ad",
+                            "applicant": "5ffb2903-a38f-4bfe-b57a-2818ee134218",
+                            "jobDetails": "72caf2e7-2955-41af-8652-afa2dce9af59",
+                            "applicationStatus": {
+                                "docs": [
+                                    "64625612-c6b5-434b-966b-fa81b1219b7d",
+                                    "db1f9964-dea3-4bef-a36a-374495e5e15d"
+                                ],
+                                "hasNextPage": false
+                            },
+                            "updatedAt": "2025-02-11T11:06:39.893Z",
+                            "createdAt": "2025-02-11T11:06:39.893Z"
+                        },
                         "status": "pending",
                         "timeStamp": "2007-10-23T18:00:00.000Z",
                         "comment": "No Comment!!!",
@@ -75,7 +96,6 @@
                         "comment": "No Comment!",
                     }
                 ],
-                "hasNextPage": false
             },
         },
     ]
