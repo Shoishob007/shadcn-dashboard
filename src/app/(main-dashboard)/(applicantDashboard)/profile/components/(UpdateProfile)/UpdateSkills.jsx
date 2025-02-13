@@ -115,7 +115,7 @@ const UpdateSkills = () => {
                 onClick={() => addSkill(input)}
                 className="p-2 hover:bg-gray-100 cursor-pointer text-gray-500"
               >
-                Add "{input}"
+                Add `{input}`
               </li>
             )}
           </ul>
