@@ -4,9 +4,9 @@ import { Pencil, X } from "lucide-react";
 import { useState } from "react";
 import ProfileField from "./ProfileField";
 
-const BasicDetails = ({ profileData }) => {
+const BasicDetails = ({ profileData , data }) => {
   const [isEditing, setIsEditing] = useState(false);
-//   console.log("profile Basic Details: ", profileData);
+  console.log("profile Basic Details: ", profileData);
   return (
     <div>
       <div className="space-y-2">
@@ -33,7 +33,7 @@ const BasicDetails = ({ profileData }) => {
 
       {/* Profile info field */}
       {isEditing ? (
-        <ProfileField />
+        <ProfileField profileData={profileData} data={data} />
       ) : (
         <div className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

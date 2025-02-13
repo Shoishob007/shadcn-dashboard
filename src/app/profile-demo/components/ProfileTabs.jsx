@@ -39,7 +39,9 @@ const ProfileTabs = ({profileData}) => {
         {/* Tabs content */}
         <div className="mt-6 w-full">
           <TabsContent value="overview">
-            <ProfileOverview profileData={profileData} />
+            {
+                profileData?.map((data) => <ProfileOverview key={data.id} profileData={profileData} data={data} />)
+            }
           </TabsContent>
           <TabsContent value="resume">
             <Resume/>

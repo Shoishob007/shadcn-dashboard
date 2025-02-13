@@ -7,13 +7,13 @@ import { useState } from "react";
 import BasicDetails from "./BasicDetails";
 import SocialLinks from "./SocialLinks";
 
-const ProfileOverview = ({profileData}) => {
+const ProfileOverview = ({profileData , data}) => {
   const [isEditing, setIsEditing] = useState(false);
-
+//  console.log("Profile overview data: ", data);
   return (
     <section className="bg-white dark:bg-gray-800 rounded-lg dark:text-gray-200">
       <div className="p-4 space-y-4 w-full">
-        <BasicDetails profileData={profileData} />
+        <BasicDetails profileData={profileData} data={data} />
         <Separator className="my-8" />
         {/* Socials links */}
         <div className="">

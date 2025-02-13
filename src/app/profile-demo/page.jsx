@@ -8,23 +8,24 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { House } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import ProfileHeader from "./components/ProfileHeader";
 import ProfileTabs from "./components/ProfileTabs";
 
 const ProfileDemo = () => {
   const [profileData, setProfileData] = useState(null);
+  const { data: session } = useSession();
+  const accessToken = session?.access_token;
   useEffect(() => {
     const getProfileData = async () => {
       try {
         const response = await fetch(
-          `https://hhapi.nakhlah.xyz/api/applicants`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/applicants`,
           {
             method: "GET",
             headers: {
-              Authorization:
-                "Bearer " +
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4ZDExZTIwLTNmYmUtNDFlYy1hMDM3LTYyYjM4ZDkxMzc3ZCIsImNvbGxlY3Rpb24iOiJ1c2VycyIsImVtYWlsIjoidm9yaWI1NzU5NkBndWZ1dHUuY29tIiwicHJvdmlkZXIiOiJjcmVkZW50aWFscyIsImlhdCI6MTczODY2OTM4NywiZXhwIjoyMTcwNjY5Mzg3fQ.fe3iQX-eeRNvtOa5SPa0y_r4wOvRyYP5EC6urB-aeUs",
+              Authorization: `Bearer ${accessToken}`,
             },
           }
         );
@@ -42,7 +43,7 @@ const ProfileDemo = () => {
     };
 
     getProfileData();
-  }, []);
+  }, [accessToken]);
 
   return (
     <>
