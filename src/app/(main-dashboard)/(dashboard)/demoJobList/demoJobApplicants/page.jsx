@@ -5,7 +5,6 @@ import React, { useEffect, useState, useCallback } from "react";
 import { FaFacebook, FaGoogle, FaLinkedin } from "react-icons/fa";
 import { useRouter, useSearchParams } from "next/navigation";
 import JobInfoCard from "../../demoAppList/components/JobInfoCard";
-import OurPagination from "@/components/Pagination";
 import ToggleGroupComponent from "../components/ToggleGroup";
 import JobApplicantsCards from "../components/jobApplicantsCards";
 import ApplicantsTable from "../components/test/ApplicantsTable";
@@ -64,7 +63,7 @@ const DemoApplicants = () => {
   const [applicantProfiles, setApplicantProfiles] = useState({});
   const [isLoadingProfiles, setIsLoadingProfiles] = useState(false);
   const [hasMoreApplicants, setHasMoreApplicants] = useState(true);
-  const [page, setPage] = useState(1); // Track the current page for infinite scroll
+  const [page, setPage] = useState(1);
 
   // State for organization details
   const [organizationDetails, setOrganizationDetails] = useState(null);
@@ -95,6 +94,8 @@ const DemoApplicants = () => {
           }
         );
         const data = await response.json();
+        console.log("Data response for the job applications:", data);
+
         if (page === 1) {
           setJobApplications(data.docs || []);
         } else {
@@ -170,7 +171,7 @@ const DemoApplicants = () => {
     }
   };
 
-  // Load more applicant profiles when scrolling or changing page
+  // more applicant profiles when scrolling or changing page
   useEffect(() => {
     const startIndex = (page - 1) * APPLICANTS_PER_PAGE;
     const applicantIdsToFetch = jobApplications
@@ -183,21 +184,26 @@ const DemoApplicants = () => {
     }
   }, [page, jobApplications]);
 
-  // Transform applicant data to match the component's expected format
+  console.log("job Applications :: ", jobApplications);
+
+  // Transforming applicant data to match the component's expected format
   const transformedApplicants = jobApplications
     .map((application) => {
       const profile = applicantProfiles[application.applicant];
       if (!profile) return null;
 
+        console.log("profile :: ", profile);
+
+
+
       return {
         id: application.applicant,
         name: profile.name || "N/A",
-        status: application.applicationStatus?.status || "applied",
-        steps: application.applicationStatus?.currentStep,
-        schedule: {
-          date: application.applicationStatus?.scheduleDate || null,
-          time: application.applicationStatus?.scheduleTime || null,
-        },
+        // steps: application.applicationStatus?.currentStep,
+        // schedule: {
+        //   date: application.applicationStatus?.scheduleDate || null,
+        //   time: application.applicationStatus?.scheduleTime || null,
+        // },
         CVScore: profile.CVScore || (profile.cv ? 75 : 0),
         CV: profile.cv,
         certifications: profile.trainingAndCertifications || [],
@@ -214,6 +220,7 @@ const DemoApplicants = () => {
           pictureUrl: profile.img?.url || null,
           websiteUrl: profile.applicantWebsiteUrl || null,
         },
+        applicationStatus: application.applicationStatus,
       };
     })
     .filter(Boolean);
@@ -226,17 +233,17 @@ const DemoApplicants = () => {
       hasMoreApplicants &&
       !isLoadingProfiles
     ) {
-      setPage((prev) => prev + 1); // Load the next page
+      setPage((prev) => prev + 1); // Loading the next page
     }
   });
 
-  // Add scroll event listener
+  // scroll event listener
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  // Transform job info
+  // job info
   const transformJobInfo = (jobDetails) => {
     if (!jobDetails) return null;
 
@@ -282,6 +289,8 @@ const DemoApplicants = () => {
   if (!currentJobInfo || isLoadingOrg) {
     return <div className="text-center p-8">Loading...</div>;
   }
+
+  // console.log("transformedApplicants :: ", transformedApplicants);
 
   return (
     <>

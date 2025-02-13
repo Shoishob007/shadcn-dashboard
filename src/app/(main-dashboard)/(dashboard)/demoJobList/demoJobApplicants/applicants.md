@@ -57,25 +57,26 @@
                 "jobStatus": true,
             },
             "applicationStatus": {
-                "docs": [],
+                "docs": [
+                    {
+                        "id": "64625612-c6b5-434b-966b-fa81b1219b7d",
+                        "hiringStage": "83222807-36a4-419c-ae78-d44fb1d9e323",
+                        "jobApplication": "c68c3425-7c70-4ce1-b3d3-c8d0cb4291ad",
+                        "status": "pending",
+                        "timeStamp": "2007-10-23T18:00:00.000Z",
+                        "comment": "No Comment!!!",
+                    },
+                    {
+                        "id": "db1f9964-dea3-4bef-a36a-374495e5e15d",
+                        "hiringStage": "83222807-36a4-419c-ae78-d44fb1d9e323",
+                        "jobApplication": "c68c3425-7c70-4ce1-b3d3-c8d0cb4291ad",
+                        "status": "pending",
+                        "timeStamp": "2007-10-23T18:00:00.000Z",
+                        "comment": "No Comment!",
+                    }
+                ],
                 "hasNextPage": false
             },
         },
-        {
-            "id": "a58f34d4-fbec-4e21-ac47-9e571dac6ea3",
-            "applicant": "0ba3d0df-eb12-4677-9b2f-d636f2472a8f",
-            "jobDetails": {
-                "id": "72caf2e7-2955-41af-8652-afa2dce9af59",
-                "job": {
-                    "id": "efb95211-98e8-4c38-9a2f-1fe20d4443d5",
-                    "title": "Managing All At Once Job",
-                    "organization": "618cf21a-384b-43f9-a971-d1ec25d373ec",
-                    "socialLinks": [],
-                }
-                /* same fields */
-            },
-            "applicationStatus": {
-                "docs": [],
-                "hasNextPage": false
-            },
-        },
+    ]
+}

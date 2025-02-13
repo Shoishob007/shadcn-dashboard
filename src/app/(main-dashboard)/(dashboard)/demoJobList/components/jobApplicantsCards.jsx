@@ -22,10 +22,37 @@ const JobApplicantsCards = ({
 }) => {
   const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
 
-  console.log("currentPaginatedApplicants :: ", currentPaginatedApplicants);
+ const getLatestStatus = (applicationStatus) => {
+   if (!applicationStatus?.docs || applicationStatus.docs.length === 0) {
+     return "pending";
+   }
+
+   const sortedDocs = applicationStatus.docs.sort(
+     (a, b) => new Date(b.timeStamp) - new Date(a.timeStamp)
+   );
+
+   return sortedDocs[0].status;
+ };
+
+  // console.log("currentPaginatedApplicants :: ", currentPaginatedApplicants);
    const handleViewCV = (cvUrl) => {
      if (cvUrl) {
        window.open(cvUrl, "_blank");
+     }
+   };
+
+   const getStatusBadgeProps = (status) => {
+     switch (status) {
+       case "pending":
+         return { bgColor: "bg-blue-100", textColor: "text-blue-600" };
+       case "in-progress":
+         return { bgColor: "bg-yellow-100", textColor: "text-yellow-600" };
+       case "passed":
+         return { bgColor: "bg-emerald-100", textColor: "text-emerald-600" };
+       case "failed":
+         return { bgColor: "bg-red-100", textColor: "text-red-600" };
+       default:
+         return { bgColor: "bg-blue-100", textColor: "text-blue-600" };
      }
    };
 
@@ -36,6 +63,10 @@ const JobApplicantsCards = ({
           const totalExperience = calculateTotalExperience(
             applicant.experiences
           );
+          // console.log("Applicants :: ", applicant);
+          const latestStatus = getLatestStatus(applicant.applicationStatus);
+          // console.log("Latest Status :: ", latestStatus)
+          const { bgColor, textColor } = getStatusBadgeProps(latestStatus);
           return (
             <Card
               key={applicant.id}
@@ -63,20 +94,12 @@ const JobApplicantsCards = ({
                       {applicant.experiences?.[0]?.position || "N/A"}
                     </p>
                     <div
-                      className={`px-2 py-1 rounded-full text-[10px] font-semibold mx-auto ${
-                        applicant.status === "shortlisted"
-                          ? "bg-yellow-100 text-yellow-600"
-                          : applicant.status === "hired"
-                          ? "bg-emerald-100 text-emerald-600"
-                          : applicant.status === "rejected"
-                          ? "bg-red-100 text-red-600"
-                          : "bg-blue-100 text-blue-600"
-                      }`}
+                      className={`px-2 py-1 rounded-full text-[10px] font-semibold mx-auto ${bgColor} ${textColor}`}
                     >
-                      {applicant.status
-                        ? applicant.status.charAt(0).toUpperCase() +
-                          applicant.status.slice(1)
-                        : "Applied"}
+                      {latestStatus
+                        ? latestStatus.charAt(0).toUpperCase() +
+                          latestStatus.slice(1)
+                        : "pending"}
                     </div>
                   </div>
                 </div>
