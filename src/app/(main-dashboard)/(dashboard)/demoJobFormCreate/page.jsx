@@ -39,7 +39,7 @@ export default function CreateJobCard() {
       toast({
         title: "Error",
         description: "You must be logged in to create a job",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
       return;
     }
@@ -108,7 +108,7 @@ export default function CreateJobCard() {
       toast({
         title: "Error",
         description: error.message || "Failed to create job",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
     } finally {
       setIsLoading(false);
