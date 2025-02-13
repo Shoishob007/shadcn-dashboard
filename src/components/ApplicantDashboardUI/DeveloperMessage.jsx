@@ -10,7 +10,7 @@ const DeveloperMessage = () => {
           Coming Soon!
         </h1>
         <p className=" mb-3 ">
-          Shh… the developer is coding magic into this page. Don't disturb, or
+          Shh… the developer is coding magic into this page. Don&apos;t disturb, or
           it might turn into a potato!
         </p>
       </div>
