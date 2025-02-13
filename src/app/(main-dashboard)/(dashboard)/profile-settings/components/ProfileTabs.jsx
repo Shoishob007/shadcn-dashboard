@@ -1,47 +1,20 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProfileOverview from "./ProfileOverview.jsx";
 import Socials from "./Socials.jsx";
+import HiringStages from "./HiringStages.jsx";
 import Password from "./Password.jsx";
 import User from "./User.jsx";
 import Delete from "./Delete.jsx";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 
 const ProfileTabs = () => {
   const { data: session } = useSession();
   const accessToken = session?.access_token;
-  const organizationId = session?.organizationId;
-  const [imageId, setImageId] = useState(null); 
-
-  // useEffect(() => {
-  //   const fetchImageId = async () => {
-  //     if (accessToken && organizationId) {
-  //       try {
-  //         const response = await fetch(
-  //           `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${organizationId}`,
-  //           {
-  //             headers: {
-  //               Authorization: `Bearer ${accessToken}`,
-  //             },
-  //           }
-  //         );
-
-  //         if (response.ok) {
-  //           const data = await response.json();
-  //           console.log("Response ::", data)
-  //           setImageId(data?.img?.id || null);
-  //         } else {
-  //           console.error("Failed to fetch organization data.");
-  //         }
-  //       } catch (error) {
-  //         console.error("Error fetching organization data:", error);
-  //       }
-  //     }
-  //   };
-
-  //   fetchImageId();
-  // }, [session, accessToken, organizationId]);
-
+  const orgId = session?.organizationId;
+  const [imageId, setImageId] = useState(null);
 
   return (
     <div>
@@ -59,6 +32,9 @@ const ProfileTabs = () => {
           {/* <TabsTrigger className="ml-8" value="branches">
             Branches
           </TabsTrigger> */}
+          <TabsTrigger className="ml-8" value="hiringStages">
+            Hiring Stages
+          </TabsTrigger>
           <TabsTrigger className="ml-8" value="user">
             User Management
           </TabsTrigger>
@@ -81,11 +57,14 @@ const ProfileTabs = () => {
           {/* <TabsContent value="branches">
             <Branches />
           </TabsContent> */}
+          <TabsContent value="hiringStages">
+            <HiringStages />
+          </TabsContent>
           <TabsContent value="user">
             <User />
           </TabsContent>
           <TabsContent value="delete">
-            <Delete />{" "}
+            <Delete />
           </TabsContent>
         </div>
       </Tabs>
