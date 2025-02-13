@@ -3,6 +3,7 @@ import { SearchBar } from "./SearchBar.jsx";
 import { RangeFilter } from "./RangeFilters";
 import { Button } from "@/components/ui/button";
 import { RotateCcw } from "lucide-react";
+import { getSafeValue } from "@/lib/helper.js";
 
 const statusOptions = [
   { label: "Any Status", value: "all" },
@@ -96,6 +97,14 @@ export const AppFilters = ({
   onFilterChange,
   onReset,
 }) => {
+  const jobTitleOptions = [
+    { value: "all", label: "All Job Titles" },
+    ...(jobTitles || []).map((title) => ({
+      value: getSafeValue(title),
+      label: getSafeValue(title),
+    })),
+  ];
+
   return (
     <div className="w-full max-w-4xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
       <div className="space-y-6">
@@ -119,13 +128,7 @@ export const AppFilters = ({
             </label>
             <RangeFilter
               placeholder="Select Job Title"
-              options={[
-                { value: "all", label: "All Job Titles" },
-                ...jobTitles.map((title) => ({
-                  value: title,
-                  label: title,
-                })),
-              ]}
+              options={jobTitleOptions}
               value={filters.selectedTitle}
               onChange={(value) => onFilterChange("selectedTitle", value)}
               className="w-full"

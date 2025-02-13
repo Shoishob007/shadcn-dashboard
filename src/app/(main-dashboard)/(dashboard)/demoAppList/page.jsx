@@ -1,18 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-"use client"
+"use client";
 
-import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { documents as jobApplicants } from "../demoJobList/components/jobApplicants";
-import { documents as jobData } from "../demoJobList/components/jobData";
-import { orgSettings } from "./components/org-settings";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { FaFacebook, FaGoogle, FaLinkedin } from "react-icons/fa";
-import { useRouter, useSearchParams } from "next/navigation";
-import OurPagination from "@/components/Pagination";
+import { useRouter } from "next/navigation";
 import ToggleGroupComponent from "../demoJobList/components/ToggleGroup";
-import ApplicantsTable from "../demoJobList/components/test/ApplicantsTable";
-import JobApplicantsCards from "../demoJobList/components/jobApplicantsCards";
-import GridListTooltip from "@/components/GridListTooltip";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -21,7 +13,14 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { House } from "lucide-react";
+import { useSession } from "next-auth/react";
+import ApplicantsTable from "../demoJobList/components/test/ApplicantsTable";
+import GridListTooltip from "@/components/GridListTooltip";
+import JobApplicantsCards from "../demoJobList/components/jobApplicantsCards";
 import { ApplicantFilterSheet } from "@/components/filters/ApplicantFilterSheet";
+import { getSafeValue } from "@/lib/helper";
+
+const ITEMS_PER_PAGE = 10;
 
 const socialMediaIcons = {
   linkedin: FaLinkedin,
@@ -33,12 +32,13 @@ const steps = [
   "screening test",
   "aptitude test",
   "technical test",
-  "hr interview",
   "interview",
 ];
 
 const calculateTotalExperience = (experiences) => {
-  const totalMonths = experiences?.reduce((acc, exp) => {
+  if (!experiences) return "No Experience!";
+
+  const totalMonths = experiences.reduce((acc, exp) => {
     const start = new Date(exp.startDate);
     const end = new Date(exp.endDate);
     const duration =
@@ -51,42 +51,205 @@ const calculateTotalExperience = (experiences) => {
   return `${years} years ${months} months`;
 };
 
-const getJobTitles = () => {
-  const jobTitles = new Set();
-  jobApplicants.docs.forEach((applicantDoc) => {
-    const jobId = applicantDoc.job.id;
-    const matchingJob = jobData.docs.find((job) => job.job.id === jobId);
-    if (matchingJob) {
-      jobTitles.add(matchingJob.title);
-    }
-  });
-  return Array.from(jobTitles);
-};
-
-const jobTitles = getJobTitles();
-
-const ApplicantsList = ({ limitToThree = false }) => {
+const DemoAppList = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const jobId = searchParams.get("jobId");
-  const itemsPerPage = limitToThree ? 3 : 9;
-  const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
-  const [filteredApplicantsList, setFilteredApplicantsList] = useState([]);
+  const { data: session } = useSession();
+  const accessToken = session?.access_token;
+  const orgId = session?.organizationId;
+
+  // Refs for infinite scrolling
+  const observerRef = useRef(null);
+  const loadingRef = useRef(null);
+
+  // State for job applications and applicants
+  const [jobApplications, setJobApplications] = useState([]);
+  const [applicantProfiles, setApplicantProfiles] = useState({});
+  const [isLoadingProfiles, setIsLoadingProfiles] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
+
+  // UI states
   const [selectedStatus, setSelectedStatus] = useState("applied");
   const [selectedStep, setSelectedStep] = useState("");
-  const [currentJob, setCurrentJob] = useState(null);
-  const [viewCount, setViewCount] = useState(
-    orgSettings.docs[0]?.numberOfCvViewed
-  );
-  const maxViews = orgSettings.docs[0]?.subscriptionId === 1 ? 3 : Infinity;
+  const [viewMode, setViewMode] = useState("card");
+  const [viewCount, setViewCount] = useState(1);
 
+  // Filter states
   const [filters, setFilters] = useState({
     searchQuery: "",
-    selectedTitle: "all",
+    selectedJobRole: "all",
+    selectedTime: "all",
   });
-  const [viewMode, setViewMode] = useState("card");
 
-  const isListView = viewMode === "list";
+  // Fetch job applications
+  const fetchJobApplications = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?where[jobDetails.job.organization][equals]=${orgId}&limit=${ITEMS_PER_PAGE}&page=${page}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const data = await response.json();
+
+      // Append new applications to existing ones
+      setJobApplications((prev) => [...prev, ...(data.docs || [])]);
+      setHasMore(data.hasNextPage || false);
+    } catch (error) {
+      console.error("Error fetching job applications:", error);
+    }
+  };
+
+  // Function to fetch applicant profiles
+  const fetchApplicantProfiles = async (applicantIds) => {
+    setIsLoadingProfiles(true);
+    try {
+      const profiles = await Promise.all(
+        applicantIds.map(async (id) => {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/applicants/${id}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
+          const data = await response.json();
+          return { id, profile: data };
+        })
+      );
+
+      setApplicantProfiles((prev) => ({
+        ...prev,
+        ...Object.fromEntries(profiles.map(({ id, profile }) => [id, profile])),
+      }));
+    } catch (error) {
+      console.error("Error fetching applicant profiles:", error);
+    } finally {
+      setIsLoadingProfiles(false);
+    }
+  };
+
+  // Intersection Observer callback
+  const handleObserver = useCallback(
+    (entries) => {
+      const target = entries[0];
+      if (target.isIntersecting && hasMore && !isLoadingProfiles) {
+        setPage((prev) => prev + 1);
+      }
+    },
+    [hasMore, isLoadingProfiles]
+  );
+
+  // Setup Intersection Observer
+  useEffect(() => {
+    const option = {
+      root: null,
+      rootMargin: "20px",
+      threshold: 0,
+    };
+    observerRef.current = new IntersectionObserver(handleObserver, option);
+
+    if (loadingRef.current) {
+      observerRef.current.observe(loadingRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [handleObserver]);
+
+  // Fetch initial job applications
+  useEffect(() => {
+    if (orgId && accessToken) {
+      fetchJobApplications();
+    }
+  }, [orgId, accessToken, page]);
+
+  // Fetch applicant profiles for new applications
+  useEffect(() => {
+    const newApplicantIds = jobApplications
+      .map((app) => app.applicant)
+      .filter((id) => !applicantProfiles[id]);
+
+    if (newApplicantIds.length > 0) {
+      fetchApplicantProfiles(newApplicantIds);
+    }
+  }, [jobApplications]);
+
+  // Transform applicant data
+  const transformedApplicants = jobApplications
+    .map((application) => {
+      const profile = applicantProfiles[application.applicant];
+      if (!profile) return null;
+
+      return {
+        id: application.applicant,
+        name: getSafeValue(profile.name, "N/A"),
+        status: getSafeValue(application.applicationStatus?.status, "applied"),
+        steps: getSafeValue(application.applicationStatus?.currentStep),
+        schedule: {
+          date: getSafeValue(application.applicationStatus?.scheduleDate),
+          time: getSafeValue(application.applicationStatus?.scheduleTime),
+        },
+        CVScore: getSafeValue(profile.CVScore, profile.cv ? 75 : 0),
+        CV: getSafeValue(profile.cv),
+        certifications: getSafeValue(profile.trainingAndCertifications, []),
+        experiences: getSafeValue(profile.experiences, []),
+        socialLinks: getSafeValue(profile.socialLinks, []),
+        education: getSafeValue(profile.educations, []),
+        skills: getSafeValue(profile.skills, []),
+        contactInfo: {
+          email: getSafeValue(profile.email),
+          phone: getSafeValue(profile.phone),
+          address: getSafeValue(profile.address),
+        },
+        applicant: {
+          pictureUrl: getSafeValue(profile.img?.url),
+          websiteUrl: getSafeValue(profile.applicantWebsiteUrl),
+        },
+        jobTitle: getSafeValue(application.jobDetails?.job?.title, "N/A"),
+        jobRole: getSafeValue(
+          application.jobDetails?.jobRole?.[0]?.title,
+          "N/A"
+        ),
+        createdAt: getSafeValue(application.createdAt),
+      };
+    })
+    .filter(Boolean);
+
+  // Filter applicants
+  const filteredApplicants = transformedApplicants.filter((applicant) => {
+    const statusMatch = !selectedStatus || applicant.status === selectedStatus;
+    const stepMatch = !selectedStep || applicant.steps === selectedStep;
+    const jobRoleMatch =
+      filters.selectedJobRole === "all" ||
+      applicant.jobRole === filters.selectedJobRole;
+    const timeMatch =
+      filters.selectedTime === "all" ||
+      (filters.selectedTime === "recent" &&
+        new Date(applicant.createdAt) > new Date(Date.now() - 7 * 86400000));
+    const searchMatch =
+      !filters.searchQuery ||
+      applicant.name
+        .toLowerCase()
+        .includes(filters.searchQuery.toLowerCase()) ||
+      applicant.jobTitle
+        .toLowerCase()
+        .includes(filters.searchQuery.toLowerCase());
+
+    return statusMatch && stepMatch && jobRoleMatch && timeMatch && searchMatch;
+  });
+
+  const handleViewDetails = (id) => {
+    router.push(`/demoAppList/demoAppDetails?id=${id}`);
+  };
 
   const handleFilterChange = (filterName, value) => {
     setFilters((prev) => ({
@@ -98,194 +261,93 @@ const ApplicantsList = ({ limitToThree = false }) => {
   const handleReset = () => {
     setFilters({
       searchQuery: "",
-      selectedTitle: "all",
+      selectedJobRole: "all",
+      selectedTime: "all",
     });
   };
 
-  useEffect(() => {
-    if (jobId) {
-      const job = jobApplicants.docs.find((doc) => doc.job.id === jobId);
-      if (job) {
-        setCurrentJob(job.job);
-      }
-    }
-  }, [jobId]);
-
-  const allApplicants = jobApplicants.docs.flatMap((doc) =>
-    doc.applicants.map((applicant) => ({
-      ...applicant,
-      job: doc.job,
-    }))
-  );
-
-  const filteredApplicants = allApplicants.filter((applicant) => {
-    const applicantStatus = applicant.status || "applied";
-    const searchQuery = filters.searchQuery.toLowerCase();
-
-    const statusMatch =
-      selectedStatus === "applied"
-        ? applicantStatus === "applied" ||
-          applicantStatus === "shortlisted" ||
-          applicantStatus === "hired" ||
-          applicantStatus === "rejected" ||
-          !applicant.status
-        : selectedStatus === "shortlisted" && selectedStep === "all"
-        ? applicantStatus === "shortlisted"
-        : selectedStatus === "shortlisted" && selectedStep !== "all"
-        ? applicantStatus === "shortlisted" && applicant.steps === selectedStep
-        : selectedStatus === applicantStatus;
-
-    const jobTitleMatch =
-      filters.selectedTitle === "all" ||
-      !filters.selectedTitle ||
-      (() => {
-        const matchingJob = jobData.docs.find(
-          (job) => job.job.id === applicant.job.id
-        );
-        return (
-          matchingJob &&
-          matchingJob.title.toLowerCase() ===
-            filters.selectedTitle.toLowerCase()
-        );
-      })();
-
-    const searchMatch =
-      !searchQuery ||
-      applicant.name.toLowerCase().includes(searchQuery) ||
-      applicant.job?.organization?.orgName
-        ?.toLowerCase()
-        .includes(searchQuery) ||
-      applicant.education?.some((edu) =>
-        edu.degree.toLowerCase().includes(searchQuery)
-      ) ||
-      applicant.experiences?.some(
-        (exp) =>
-          exp.title?.toLowerCase().includes(searchQuery) ||
-          exp.company?.toLowerCase().includes(searchQuery)
-      );
-
-    return statusMatch && searchMatch && jobTitleMatch;
-  });
-
-  const handleViewDetails = (id) => {
-    router.push(`/demoAppList/demoAppDetails?id=${id}`);
-  };
-
-  useEffect(() => {
-    const applicants = filteredApplicants;
-    setFilteredApplicantsList(applicants);
-  }, [
-    selectedStatus,
-    selectedStep,
-    filters.searchQuery,
-    filters.selectedTitle,
-  ]);
-
-  const startIndex = (currentPaginationPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentPaginatedApplicants = filteredApplicants.slice(
-    startIndex,
-    endIndex
-  );
-
-  const totalPaginationPages = Math.ceil(
-    filteredApplicantsList.length / itemsPerPage
-  );
-
   return (
     <>
-      {!limitToThree && (
-        <Breadcrumb className="mb-4">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">
-                <House className="h-4 w-4" />
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/demoAppList">
-                Applicants List
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      )}
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">
+              <House className="h-4 w-4" />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/demoAppList">Applicants List</BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
       <div className="space-y-6">
         <div className="flex-1">
-          {!limitToThree && (
-            <div className="flex items-center gap-4 sm:gap-1 justify-between mb-4">
-              <ToggleGroupComponent
-                steps={steps}
-                selectedStep={selectedStep}
-                selectedStatus={selectedStatus}
-                setSelectedStep={setSelectedStep}
-                setSelectedStatus={setSelectedStatus}
+          <div className="flex items-center justify-between mb-4">
+            <ToggleGroupComponent
+              steps={steps}
+              selectedStep={selectedStep}
+              selectedStatus={selectedStatus}
+              setSelectedStep={setSelectedStep}
+              setSelectedStatus={setSelectedStatus}
+            />
+            <div className="flex items-center gap-2">
+              <ApplicantFilterSheet
+                filters={filters}
+                onFilterChange={handleFilterChange}
+                onReset={handleReset}
               />
-
-              <div className="flex items-center gap-2">
-                <ApplicantFilterSheet
-                  applicants={jobApplicants.docs?.applicants}
-                  filters={filters}
-                  jobTitles={jobTitles}
-                  onFilterChange={handleFilterChange}
-                  onReset={handleReset}
+              <div className="mr-2 flex items-center shadow-md">
+                <GridListTooltip
+                  setViewMode={setViewMode}
+                  isListView={viewMode === "list"}
                 />
-                <div className="mr-2 flex items-center shadow-md">
-                  <GridListTooltip
-                    setViewMode={setViewMode}
-                    isListView={isListView}
-                  />
-                </div>
               </div>
             </div>
-          )}
-          {currentPaginatedApplicants.length > 0 ? (
-            isListView ? (
-              <ApplicantsTable
-                applicants={currentPaginatedApplicants}
-                calculateTotalExperience={calculateTotalExperience}
-                handleViewDetails={handleViewDetails}
-                viewCount={viewCount}
-                setViewCount={setViewCount}
-                maxViews={maxViews}
-              />
-            ) : (
-              <JobApplicantsCards
-                currentPaginatedApplicants={currentPaginatedApplicants}
-                calculateTotalExperience={calculateTotalExperience}
-                handleViewDetails={handleViewDetails}
-                socialMediaIcons={socialMediaIcons}
-                viewCount={viewCount}
-                setViewCount={setViewCount}
-                maxViews={maxViews}
-              />
-            )
+          </div>
+
+          {isLoadingProfiles && filteredApplicants.length === 0 ? (
+            <div className="text-center p-8">Loading applicant profiles...</div>
+          ) : filteredApplicants.length > 0 ? (
+            <div>
+              {viewMode === "list" ? (
+                <ApplicantsTable
+                  applicants={filteredApplicants}
+                  calculateTotalExperience={calculateTotalExperience}
+                  handleViewDetails={handleViewDetails}
+                  viewCount={viewCount}
+                  setViewCount={setViewCount}
+                  maxViews={Infinity}
+                />
+              ) : (
+                <JobApplicantsCards
+                  currentPaginatedApplicants={filteredApplicants}
+                  calculateTotalExperience={calculateTotalExperience}
+                  handleViewDetails={handleViewDetails}
+                  socialMediaIcons={socialMediaIcons}
+                  viewCount={viewCount}
+                  setViewCount={setViewCount}
+                  maxViews={Infinity}
+                />
+              )}
+
+              {/* Loading indicator and observer target */}
+              <div ref={loadingRef} className="h-10 w-full">
+                {hasMore && (
+                  <div className="text-center py-4">
+                    Loading more applicants...
+                  </div>
+                )}
+              </div>
+            </div>
           ) : (
             <p className="text-center text-gray-500">No applicants found!</p>
           )}
         </div>
-
-        {!limitToThree && (
-          <OurPagination
-            totalPages={totalPaginationPages}
-            currentPage={currentPaginationPage}
-            onPageChange={(page) => setCurrentPaginationPage(page)}
-          />
-        )}
-
-        {limitToThree && (
-          <Button
-            onClick={() => router.push("/demoAppList")}
-            className="!mt-4 float-right"
-            size="sm"
-          >
-            See All Applicants
-          </Button>
-        )}
       </div>
     </>
   );
 };
 
-export default ApplicantsList;
+export default DemoAppList;

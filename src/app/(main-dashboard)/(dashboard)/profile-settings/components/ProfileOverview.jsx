@@ -296,6 +296,44 @@ export default function ProfileOverview() {
             )}
           </Field>
 
+          {/* Tagline */}
+          <Field
+            label="Tagline"
+            id="orgTagline"
+            isEditing={isEditing}
+            mdColSpan
+          >
+            {isEditing ? (
+              <Input
+                id="orgTagline"
+                className="text-xs sm:text-sm"
+                value={formData.orgTagline}
+                onChange={(e) => setFormData({ orgTagline: e.target.value })}
+              />
+            ) : (
+              formData.orgTagline || "Not provided"
+            )}
+          </Field>
+
+          {/* Mission */}
+          <Field
+            label="Mission"
+            id="orgMission"
+            isEditing={isEditing}
+            mdColSpan
+          >
+            {isEditing ? (
+              <Textarea
+                id="orgMission"
+                value={formData.orgMission}
+                onChange={(e) => setFormData({ orgMission: e.target.value })}
+                rows={4}
+              />
+            ) : (
+              formData.orgMission || "Not provided"
+            )}
+          </Field>
+
           {/* Vision */}
           <Field label="Vision" id="orgVision" isEditing={isEditing} mdColSpan>
             {isEditing ? (
@@ -309,7 +347,7 @@ export default function ProfileOverview() {
                 placeholder="Enter organization vision"
               />
             ) : (
-              formData.orgVision || "Not provided"
+              formData?.orgVision || "Not provided"
             )}
           </Field>
         </div>
