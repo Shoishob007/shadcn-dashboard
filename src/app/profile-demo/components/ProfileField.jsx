@@ -1,11 +1,70 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useSession } from "next-auth/react";
+import { useForm } from "react-hook-form";
 
-const ProfileField = () => {
+const ProfileField = ({ profileData, data }) => {
+  const { data: session } = useSession();
+  const accessToken = session?.access_token;
+  const { id } = data;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (value) => {
+    // console.log(value);
+
+    const profileInfo = {
+      name: value.name,
+      phone: value.phone,
+      email: value.email,
+    //   designation: value.designation,
+      bloodGroup: value.bloodGroup,
+    };
+    console.log("profile info: ", profileInfo);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/applicants/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(profileInfo),
+        }
+      );
+      const profileResponse = await response.json();
+      console.log("profile response data: ", profileResponse);
+    } catch (error) {
+      console.log("Error in Profile info: ", error.message);
+    }
+  };
+  //   console.log(id);
+  //   console.log("Profile field : ", data);
+
+  //   useEffect(() => {
+  //     const setProfileData = async () => {
+  //       const response = await fetch(
+  //         `${NEXT_PUBLIC_API_URL}/api/applicants/${id}`,
+  //         {
+  //           method: "POST",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${accessToken}`,
+  //           },
+  //         }
+  //       );
+  //     };
+  //     setProfileData();
+  //   }, [id, accessToken]);
   return (
     <div className="mt-6">
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <Label htmlFor="name">Full Name</Label>
@@ -14,6 +73,7 @@ const ProfileField = () => {
               type="text"
               defaultValue="Emam Jion"
               className="mt-2.5"
+              {...register("name")}
             />
           </div>
           <div>
@@ -23,6 +83,7 @@ const ProfileField = () => {
               type="text"
               defaultValue="Frontend Designer"
               className="mt-2.5"
+              {...register("designation")}
             />
           </div>
           <div>
@@ -32,6 +93,7 @@ const ProfileField = () => {
               type="text"
               defaultValue="123 456 789"
               className="mt-2.5"
+              {...register("phone")}
             />
           </div>
           <div>
@@ -41,6 +103,7 @@ const ProfileField = () => {
               type="email"
               defaultValue="demo@example.com"
               className="mt-2.5"
+              {...register("email")}
             />
           </div>
           <div>
@@ -50,6 +113,7 @@ const ProfileField = () => {
               type="text"
               defaultValue="1 Year"
               className="mt-2.5"
+              //   {...register("experiences")}
             />
           </div>
           <div>
@@ -59,6 +123,7 @@ const ProfileField = () => {
               type="text"
               defaultValue="B+"
               className="mt-2.5"
+              {...register("bloodGroup")}
             />
           </div>
           <div>
@@ -68,6 +133,7 @@ const ProfileField = () => {
               type="text"
               defaultValue="B.Sc"
               className="mt-2.5"
+              //   {...register("educations")}
             />
           </div>
         </div>
