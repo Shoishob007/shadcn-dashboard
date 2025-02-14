@@ -4,9 +4,9 @@ import { Pencil, X } from "lucide-react";
 import { useState } from "react";
 import ProfileField from "./ProfileField";
 
-const BasicDetails = ({ profileData , data }) => {
+const BasicDetails = ({ profileData, data }) => {
   const [isEditing, setIsEditing] = useState(false);
-  console.log("profile Basic Details: ", profileData);
+  console.log("profile Basic Details: ", data);
   return (
     <div>
       <div className="space-y-2">
