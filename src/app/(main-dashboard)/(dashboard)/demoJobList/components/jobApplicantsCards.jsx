@@ -9,7 +9,15 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { FileText } from "lucide-react";
+import {
+  FileText,
+  Check,
+  X,
+  HelpCircle,
+  Clock,
+  AlertCircle,
+} from "lucide-react";
+import HiringProgress from "./HiringProgressBar";
 
 const JobApplicantsCards = ({
   currentPaginatedApplicants,
@@ -19,55 +27,60 @@ const JobApplicantsCards = ({
   viewCount,
   setViewCount,
   maxViews,
+  hiringStages,
 }) => {
   const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
 
-//  const getLatestStatus = (applicationStatus) => {
-//    if (!applicationStatus?.docs || applicationStatus.docs.length === 0) {
-//      return "pending";
-//    }
+  // Get the latest stage and status for an applicant
+  const getLatestStageInfo = (applicant) => {
+    const latestStatus = applicant.applicationStatus;
+    const latestHiringStage = applicant.hiringStepTitle;
+    const latestHiringStageOrder = applicant.hiringStepOrder;
 
-//    const sortedDocs = applicationStatus.docs.sort(
-//      (a, b) => new Date(b.timeStamp) - new Date(a.timeStamp)
-//    );
-
-//    return sortedDocs[0].status;
-//  };
-
-  const getLatestStage = (applicationStatus) => {
-    if (!applicationStatus?.docs || applicationStatus.docs.length === 0) {
-      return "Not Started";
-    }
-
-    const sortedDocs = applicationStatus.docs.sort(
-      (a, b) => new Date(b.timeStamp) - new Date(a.timeStamp)
-    );
-
-
-    return sortedDocs[0].hiringStage.title;
+    return {
+      status: latestStatus,
+      stage: latestHiringStage,
+      order: latestHiringStageOrder,
+    };
   };
 
-  // console.log("currentPaginatedApplicants :: ", currentPaginatedApplicants);
-   const handleViewCV = (cvUrl) => {
-     if (cvUrl) {
-       window.open(cvUrl, "_blank");
-     }
-   };
+  // Render the hiring stages progress bar with circular indicators
+  const renderHiringStages = (applicant) => {
+    const {
+      stage: latestStage,
+      order: latestStageOrder,
+      status: latestStatus,
+    } = getLatestStageInfo(applicant);
 
-   const getStatusBadgeProps = (status) => {
-     switch (status) {
-       case "pending":
-         return { bgColor: "bg-blue-100", textColor: "text-blue-600" };
-       case "in-progress":
-         return { bgColor: "bg-yellow-100", textColor: "text-yellow-600" };
-       case "passed":
-         return { bgColor: "bg-emerald-100", textColor: "text-emerald-600" };
-       case "failed":
-         return { bgColor: "bg-red-100", textColor: "text-red-600" };
-       default:
-         return { bgColor: "bg-blue-100", textColor: "text-blue-600" };
-     }
-   };
+    return (
+      <HiringProgress
+        currentStage={latestStageOrder}
+        totalStages={hiringStages.docs.length}
+        stages={hiringStages.docs}
+        status={latestStatus}
+      />
+    );
+  };
+  const handleViewCV = (cvUrl) => {
+    if (cvUrl) {
+      window.open(cvUrl, "_blank");
+    }
+  };
+
+  const getStatusBadgeProps = (status) => {
+    switch (status) {
+      case "pending":
+        return { bgColor: "bg-blue-100", textColor: "text-blue-600" };
+      case "in-processing":
+        return { bgColor: "bg-yellow-100", textColor: "text-yellow-600" };
+      case "passed":
+        return { bgColor: "bg-emerald-100", textColor: "text-emerald-600" };
+      case "failed":
+        return { bgColor: "bg-red-100", textColor: "text-red-600" };
+      default:
+        return { bgColor: "bg-blue-100", textColor: "text-blue-600" };
+    }
+  };
 
   return (
     <>
@@ -76,14 +89,9 @@ const JobApplicantsCards = ({
           const totalExperience = calculateTotalExperience(
             applicant.experiences
           );
-          // console.log("Applicants :: ", applicant);
-          const latestStatus = applicant.applicationStatus;
-                    const latestHiringStage = getLatestStage(
-                      applicant.applicationStatus
-                    );
-
-          // console.log("Latest Status :: ", latestStatus)
+          const latestStatus = applicant?.applicationStatus ?? "pending";
           const { bgColor, textColor } = getStatusBadgeProps(latestStatus);
+
           return (
             <Card
               key={applicant.id}
@@ -119,15 +127,13 @@ const JobApplicantsCards = ({
                             latestStatus.slice(1)
                           : "pending"}
                       </div>
-                      <div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {latestHiringStage}
-                        </p>
-                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+              {/* Render hiring stages */}
+              {renderHiringStages(applicant)}
 
               <div className="text-gray-700 text-sm dark:text-gray-300 mb-3">
                 <div className="flex flex-col text-sm mb-3">
