@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "@/hooks/use-toast";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 
@@ -23,7 +24,7 @@ const ProfileField = ({ profileData, data }) => {
       phone: value.phone,
       email: value.email,
       //   designation: value.designation,
-      applicantBloodGroup: value.applicantBloodGroup,
+      bloodGroup: value.bloodGroup,
     };
     console.log("profile info: ", profileInfo);
     try {
@@ -39,6 +40,13 @@ const ProfileField = ({ profileData, data }) => {
         }
       );
       const profileResponse = await response.json();
+      if(profileResponse?.doc?.id){
+        toast({
+          title: "Success",
+          description: profileResponse?.message,
+          variant: "success",
+        });
+      }
       console.log("profile response data: ", profileResponse);
     } catch (error) {
       console.log("Error in Profile info: ", error.message);
@@ -71,7 +79,7 @@ const ProfileField = ({ profileData, data }) => {
             <Input
               id="name"
               type="text"
-              defaultValue="Emam Jion"
+              defaultValue={data?.name}
               className="mt-2.5"
               {...register("name")}
             />
@@ -81,7 +89,7 @@ const ProfileField = ({ profileData, data }) => {
             <Input
               id="designation"
               type="text"
-              defaultValue="Frontend Designer"
+              defaultValue="Frontend Engineer"
               className="mt-2.5"
               {...register("designation")}
             />
@@ -91,7 +99,7 @@ const ProfileField = ({ profileData, data }) => {
             <Input
               id="phone"
               type="text"
-              defaultValue="123 456 789"
+              defaultValue={data?.phone}
               className="mt-2.5"
               {...register("phone")}
             />
@@ -101,7 +109,7 @@ const ProfileField = ({ profileData, data }) => {
             <Input
               id="email"
               type="email"
-              defaultValue="demo@example.com"
+              defaultValue={data?.email}
               className="mt-2.5"
               {...register("email")}
             />
@@ -117,13 +125,13 @@ const ProfileField = ({ profileData, data }) => {
             />
           </div>
           <div>
-            <Label htmlFor="blood-group">Blood Group</Label>
+            <Label htmlFor="bloodGroup">Blood Group</Label>
             <Input
-              id="blood-group"
+              id="bloodGroup"
               type="text"
-              defaultValue="B+"
+              defaultValue={data?.bloodGroup}
               className="mt-2.5"
-              {...register("applicantBloodGroup")}
+              {...register("bloodGroup")}
             />
           </div>
           <div>
@@ -134,6 +142,16 @@ const ProfileField = ({ profileData, data }) => {
               defaultValue="B.Sc"
               className="mt-2.5"
               //   {...register("educations")}
+            />
+          </div>
+          <div>
+            <Label htmlFor="education">Address</Label>
+            <Input
+              id="Address"
+              type="text"
+              defaultValue={data?.address}
+              className="mt-2.5"
+                {...register("address")}
             />
           </div>
         </div>
