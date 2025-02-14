@@ -24,7 +24,9 @@ const ProfileHeader = ({ profileData = [] }) => {
             className="rounded-2xl border-4 border-white object-cover profile-img"
           />
           <div>
-            <h1 className="text-xl font-semibold">{data?.name}</h1>
+            <h1 className="text-xl font-semibold">
+              {data?.name === null ? "No Name" : data?.name }
+            </h1>
             <h4 className="mb-3 text-sm">
               {data?.designation === null
                 ? "Frontend Designer"
@@ -55,7 +57,7 @@ const ProfileHeader = ({ profileData = [] }) => {
                 A creative and detail-oriented Frontend Developer with a strong
                 focus on user experience and design aesthetics. Dedicated to
                 crafting visually appealing, responsive, and user-friendly
-                interfaces that enhance engagement. 
+                interfaces that enhance engagement.
               </p>
             </div>
           </div>

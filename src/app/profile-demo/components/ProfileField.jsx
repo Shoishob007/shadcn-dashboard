@@ -22,8 +22,8 @@ const ProfileField = ({ profileData, data }) => {
       name: value.name,
       phone: value.phone,
       email: value.email,
-    //   designation: value.designation,
-      bloodGroup: value.bloodGroup,
+      //   designation: value.designation,
+      applicantBloodGroup: value.applicantBloodGroup,
     };
     console.log("profile info: ", profileInfo);
     try {
@@ -123,7 +123,7 @@ const ProfileField = ({ profileData, data }) => {
               type="text"
               defaultValue="B+"
               className="mt-2.5"
-              {...register("bloodGroup")}
+              {...register("applicantBloodGroup")}
             />
           </div>
           <div>
