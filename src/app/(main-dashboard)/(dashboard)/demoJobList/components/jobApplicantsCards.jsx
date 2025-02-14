@@ -34,8 +34,8 @@ const JobApplicantsCards = ({
   // Get the latest stage and status for an applicant
   const getLatestStageInfo = (applicant) => {
     const latestStatus = applicant.applicationStatus;
-    const latestHiringStage = applicant.hiringStepTitle;
-    const latestHiringStageOrder = applicant.hiringStepOrder;
+    const latestHiringStage = applicant.hiringStep?.title;
+    const latestHiringStageOrder = applicant.hiringStep?.order;
 
     return {
       status: latestStatus,
@@ -69,13 +69,13 @@ const JobApplicantsCards = ({
 
   const getStatusBadgeProps = (status) => {
     switch (status) {
-      case "pending":
+      case "applied":
         return { bgColor: "bg-blue-100", textColor: "text-blue-600" };
-      case "in-processing":
+      case "shortlisted":
         return { bgColor: "bg-yellow-100", textColor: "text-yellow-600" };
-      case "passed":
+      case "hired":
         return { bgColor: "bg-emerald-100", textColor: "text-emerald-600" };
-      case "failed":
+      case "rejected":
         return { bgColor: "bg-red-100", textColor: "text-red-600" };
       default:
         return { bgColor: "bg-blue-100", textColor: "text-blue-600" };
@@ -125,7 +125,7 @@ const JobApplicantsCards = ({
                         {latestStatus
                           ? latestStatus.charAt(0).toUpperCase() +
                             latestStatus.slice(1)
-                          : "pending"}
+                          : "applied"}
                       </div>
                     </div>
                   </div>

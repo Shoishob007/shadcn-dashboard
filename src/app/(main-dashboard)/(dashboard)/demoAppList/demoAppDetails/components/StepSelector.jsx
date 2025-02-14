@@ -11,7 +11,7 @@ import { steps, isStepDisabled, getStepIndex, cn } from "@/app/utils/steps";
 
 export function StepSelector({ selectedStep, onStepChange, onReject }) {
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 justify-center">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button

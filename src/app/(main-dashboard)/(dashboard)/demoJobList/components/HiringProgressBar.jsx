@@ -11,15 +11,16 @@ const HiringProgress = ({ currentStage, totalStages, stages, status }) => {
   // Get status color based on the stage status
   const getStatusColor = (status) => {
     switch (status) {
-      case "passed":
+      case "hired":
         return "bg-emerald-500";
-      case "in-processing":
+      case "shortlisted":
         return "bg-yellow-500";
-      case "failed":
+      case "rejected":
         return "bg-red-500";
-      case "pending":
+      case "applied":
         return "bg-blue-500";
       default:
+      case "applied":
         return "bg-gray-500";
     }
   };
@@ -27,13 +28,13 @@ const HiringProgress = ({ currentStage, totalStages, stages, status }) => {
   // Get icon based on the stage status
   const getStageIcon = (status) => {
     switch (status) {
-      case "passed":
+      case "hired":
         return <Check className="h-3 w-3 text-white" />;
-      case "in-processing":
+      case "shortlisted":
         return <Clock className="h-3 w-3 text-white" />;
-      case "failed":
+      case "rejected":
         return <AlertCircle className="h-3 w-3 text-white" />;
-      case "pending":
+      case "applied":
         return <HelpCircle className="h-3 w-3 text-white" />;
       default:
         return <HelpCircle className="h-3 w-3 text-white" />;
@@ -45,16 +46,15 @@ const HiringProgress = ({ currentStage, totalStages, stages, status }) => {
       {/* Current stage info */}
       <div className="flex justify-between items-center mb-6">
         <span
-          className={`text-sm font-medium ${getStatusColor(status).replace(
-            "bg-",
-            "text-"
-          )}`}
+          className={`hidden md:block text-sm font-medium ${getStatusColor(
+            status
+          ).replace("bg-", "text-")}`}
         >
-          {stages[currentStage]?.title || "Not Started"}
+          {stages[currentStage]?.title || stages[0]?.title}
         </span>
-        <span className="text-xs text-gray-500">
-          Stage {currentStage + 1} of {stages.length}
-        </span>
+        {/* <span className="text-xs text-gray-500">
+          Stage {currentStage ?? + 1 } of {stages.length}
+        </span> */}
       </div>
 
       {/* Progress bar with integrated steps */}
@@ -66,9 +66,7 @@ const HiringProgress = ({ currentStage, totalStages, stages, status }) => {
         <div
           className="absolute h-[2px] bg-emerald-500 transition-all duration-300"
           style={{
-            width: `${
-              (Math.max(0, currentStage) / (stages.length - 1)) * 100
-            }%`,
+            width: `${(currentStage / (stages.length - 1)) * 100}%`,
           }}
         />
 
@@ -80,8 +78,8 @@ const HiringProgress = ({ currentStage, totalStages, stages, status }) => {
             const stageStatus = isCurrent
               ? status
               : isCompleted
-              ? "passed"
-              : "pending";
+              ? "hired"
+              : "shortlisted";
 
             return (
               <TooltipProvider key={index}>
@@ -109,7 +107,9 @@ const HiringProgress = ({ currentStage, totalStages, stages, status }) => {
                         <Check className="h-3 w-3 text-white" />
                       ) : isCurrent ? (
                         getStageIcon(status)
-                      ) : null}
+                      ) : (
+                        getStageIcon(status)
+                      )}
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>
