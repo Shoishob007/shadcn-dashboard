@@ -21,6 +21,7 @@ const ApplicantsTable = ({
   maxViews,
   hiringStages,
 }) => {
+  console.log("applicants :::::: ", applicants)
   const [openDropdowns, setOpenDropdowns] = useState({});
   const [scheduleModal, setScheduleModal] = useState({
     isOpen: false,
@@ -33,99 +34,82 @@ const ApplicantsTable = ({
   useEffect(() => {
     const updatedApplicants = applicants.map((applicant) => ({
       ...applicant,
-      step:
-        getLatestStatus(applicant.applicationStatus) === "in-progress"
-          ? applicant.steps || applicant.step || "pending"
-          : applicant.step || "pending",
+      step:"applied"
+          ? applicant.steps || applicant.step || "applied"
+          : applicant.step || "applied",
     }));
 
     setApplicantsState(updatedApplicants);
+
+        console.log("updatedApplicants :: ", updatedApplicants);
+
   }, [applicants]);
 
-
-      const handleStepChange = (applicantId, newStep) => {
-        const updatedApplicants = applicantsState.map((applicant) => {
-          if (applicant.id === applicantId) {
-            return {
-              ...applicant,
-              step: newStep,
-              steps: newStep,
-            };
-          }
-          return applicant;
-        });
-
-        setApplicantsState(updatedApplicants);
-        setOpenDropdowns((prevState) => ({
-          ...prevState,
-          [applicantId]: false,
-        }));
-
-        setScheduleModal({
-          isOpen: true,
-          applicantId,
+  const handleStepChange = (applicantId, newStep) => {
+    const updatedApplicants = applicantsState.map((applicant) => {
+      if (applicant.id === applicantId) {
+        return {
+          ...applicant,
           step: newStep,
-        });
-
-        if (onUpdateApplicant) {
-          onUpdateApplicant(
-            updatedApplicants.find((a) => a.id === applicantId)
-          );
-        }
-      };
-
-      const handleSchedule = (date, time) => {
-        const updatedApplicants = applicantsState.map((applicant) => {
-          if (applicant.id === scheduleModal.applicantId) {
-            return {
-              ...applicant,
-              schedule: { date, time },
-            };
-          }
-          return applicant;
-        });
-
-        setApplicantsState(updatedApplicants);
-        setScheduleModal({ isOpen: false, applicantId: null, step: "" });
-
-        if (onUpdateApplicant) {
-          onUpdateApplicant(
-            updatedApplicants.find((a) => a.id === scheduleModal.applicantId)
-          );
-        }
-      };
-
-      const handleRejectApplicant = (applicantId) => {
-        const updatedApplicants = applicantsState.map((applicant) =>
-          applicant.id === applicantId ? { ...applicant, step: "" } : applicant
-        );
-        setApplicantsState(updatedApplicants);
-
-        if (onUpdateApplicant) {
-          onUpdateApplicant(
-            updatedApplicants.find((a) => a.id === applicantId)
-          );
-        }
-      };
-
-    const getStatusBadgeProps = (status) => {
-      switch (status) {
-        case "pending":
-          return { bgColor: "bg-blue-100", textColor: "text-blue-600" };
-        case "in-processing":
-          return { bgColor: "bg-yellow-100", textColor: "text-yellow-600" };
-        case "passed":
-          return { bgColor: "bg-emerald-100", textColor: "text-emerald-600" };
-        case "failed":
-          return { bgColor: "bg-red-100", textColor: "text-red-600" };
-        default:
-          return { bgColor: "bg-blue-100", textColor: "text-blue-600" };
+          steps: newStep,
+        };
       }
-    };
+      return applicant;
+    });
+
+    setApplicantsState(updatedApplicants);
+    setOpenDropdowns((prevState) => ({
+      ...prevState,
+      [applicantId]: false,
+    }));
+
+    setScheduleModal({
+      isOpen: true,
+      applicantId,
+      step: newStep,
+    });
+
+    if (onUpdateApplicant) {
+      onUpdateApplicant(updatedApplicants.find((a) => a.id === applicantId));
+    }
+  };
+
+  const handleSchedule = (date, time) => {
+    const updatedApplicants = applicantsState.map((applicant) => {
+      if (applicant.id === scheduleModal.applicantId) {
+        return {
+          ...applicant,
+          schedule: { date, time },
+        };
+      }
+      return applicant;
+    });
+
+    setApplicantsState(updatedApplicants);
+    setScheduleModal({ isOpen: false, applicantId: null, step: "" });
+
+    if (onUpdateApplicant) {
+      onUpdateApplicant(
+        updatedApplicants.find((a) => a.id === scheduleModal.applicantId)
+      );
+    }
+  };
+
+  const handleRejectApplicant = (applicantId) => {
+    const updatedApplicants = applicantsState.map((applicant) =>
+      applicant.id === applicantId ? { ...applicant, step: "" } : applicant
+    );
+    setApplicantsState(updatedApplicants);
+
+    if (onUpdateApplicant) {
+      onUpdateApplicant(updatedApplicants.find((a) => a.id === applicantId));
+    }
+  };
+
 
   const getLatestStatus = (applicationStatus) => {
     if (!applicationStatus?.docs || applicationStatus.docs.length === 0) {
-      return "pending";
+      return "applied";
     }
 
     const sortedDocs = applicationStatus.docs.sort(
@@ -137,8 +121,8 @@ const ApplicantsTable = ({
 
   const getLatestStageInfo = (applicant) => {
     const latestStatus = getLatestStatus(applicant.applicationStatus);
-    const latestHiringStage = applicant.hiringStepTitle;
-    const latestHiringStageOrder = applicant.hiringStepOrder;
+    const latestHiringStage = applicant.hiringStep?.title;
+    const latestHiringStageOrder = applicant.hiringStep?.order;
 
     return {
       status: latestStatus,
@@ -173,18 +157,14 @@ const ApplicantsTable = ({
               <th className="pl-3 pr-2 py-3">Applicant</th>
               <th className="px-2 py-3">Education</th>
               <th className="px-2 py-3">Certifications</th>
-              <th className="px-2 py-3">Status</th>
-              <th className="px-2 py-3">Hiring Progress</th> {/* New Column */}
-              <th className="pl-2 pr-3 py-3 text-center">Actions</th>
+              {/* <th className="px-2 py-3 text-center">Status</th> */}
+              <th className="px-2 py-3 text-center">Hiring Progress</th>
+              <th className="px-2 py-3 text-center">Change Schedule</th>
+              <th className="pl-2 pr-3 py-3 text-center">Details</th>
             </tr>
           </thead>
           <tbody>
             {applicantsState.map((applicant) => {
-              const currentStatus = getLatestStatus(
-                applicant.applicationStatus
-              );
-              const { bgColor, textColor } = getStatusBadgeProps(currentStatus);
-
               return (
                 <tr
                   key={applicant.id}
@@ -258,72 +238,31 @@ const ApplicantsTable = ({
                     )}
                   </td>
 
-                  {/* Status */}
-                  <td className="px-2 py-3 text-center">
-                    {currentStatus === "failed" ? (
-                      <div className="text-[10px] px-1 py-1 rounded-md font-medium capitalize bg-red-100 dark:bg-red-200 text-red-600 border border-red-500">
-                        Failed
-                      </div>
-                    ) : currentStatus === "pending" ? (
-                      <StepSelector
-                        selectedStep={applicant.step}
-                        onStepChange={(newStep) =>
-                          handleStepChange(applicant.id, newStep)
-                        }
-                        onReject={() => handleRejectApplicant(applicant.id)}
-                      />
-                    ) : (
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div
-                              className={`text-[10px] px-1 py-1 rounded-md font-medium cursor-pointer capitalize ${bgColor} ${textColor} border border-current`}
-                              onClick={() => {
-                                if (currentStatus === "in-progress") {
-                                  toggleDropdown(applicant.id);
-                                }
-                              }}
-                            >
-                              {applicant?.schedule?.date
-                                ? `${applicant?.step}: ${new Date(
-                                    applicant?.schedule.date
-                                  ).toLocaleDateString()} at ${
-                                    applicant?.schedule.time
-                                  }`
-                                : currentStatus === "in-progress"
-                                ? `${applicant?.step || "Step not set"}`
-                                : currentStatus}
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            {currentStatus === "in-progress" ? (
-                              openDropdowns[applicant?.id] ? (
-                                <p>Click to close</p>
-                              ) : (
-                                <p>Click to change schedule</p>
-                              )
-                            ) : (
-                              <p>Current status: {currentStatus}</p>
-                            )}
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    )}
-                    {/* Step Selector (Dropdown) */}
-                    {openDropdowns[applicant.id] &&
-                      currentStatus === "in-progress" && (
-                        <StepSelector
-                          selectedStep={applicant?.steps || applicant?.step}
-                          onStepChange={(newStep) =>
-                            handleStepChange(applicant.id, newStep)
-                          }
-                          onReject={() => handleRejectApplicant(applicant.id)}
-                        />
-                      )}
-                  </td>
+                  {/* Latest Status */}
+                  {/* <td className="px-2 py-3 text-center">
+                    <div
+                      className={`px-1 py-1 rounded-md font-medium capitalize ${textColor}`}
+                    >
+                      {currentStatus}
+                    </div>
+                  </td> */}
 
                   {/* Hiring Progress */}
-                  <td className="px-2 py-3">{renderHiringStages(applicant)}</td>
+                  <td className="px-2 py-3 text-center">
+                    {renderHiringStages(applicant)}
+                  </td>
+
+{/* Change Schedule or reject */}
+                  <td className="px-2 py-3 text-center">
+                    <StepSelector
+                      selectedStep={applicant.step}
+                      onStepChange={(newStep) =>
+                        handleStepChange(applicant.id, newStep)
+                      }
+                      onReject={() => handleRejectApplicant(applicant.id)}
+                      className="justify-center"
+                    />
+                  </td>
 
                   {/* Actions */}
                   <td className="pl-2 pr-3 py-2 text-center">

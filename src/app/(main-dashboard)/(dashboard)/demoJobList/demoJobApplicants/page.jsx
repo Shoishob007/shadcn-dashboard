@@ -65,7 +65,7 @@ const DemoApplicants = () => {
   const [isLoadingOrg, setIsLoadingOrg] = useState(false);
 
   // UI states
-  const [selectedStatus, setSelectedStatus] = useState("pending");
+  const [selectedStatus, setSelectedStatus] = useState("applied");
   const [selectedStep, setSelectedStep] = useState("");
   const [currentJobInfo, setCurrentJobInfo] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -212,7 +212,7 @@ const DemoApplicants = () => {
 
       // console.log("profile :: ", profile);
       const latestStatus =
-        application.applicationStatus?.docs?.[0]?.status || "pending";
+        application.applicationStatus?.docs?.[0]?.status || "shortlisted";
 
       // console.log("latestStatus :: ", latestStatus);
 
@@ -236,10 +236,8 @@ const DemoApplicants = () => {
           websiteUrl: profile.applicantWebsiteUrl || null,
         },
         applicationStatus: latestStatus,
-        hiringStepTitle:
-          application.applicationStatus?.docs[0]?.hiringStage?.title || "N/A",
-        hiringStepOrder:
-          application.applicationStatus?.docs[0]?.hiringStage?.order || 1,
+        hiringStep:
+          application.applicationStatus?.docs[0]?.hiringStage
       };
     })
     .filter(Boolean);
@@ -313,18 +311,19 @@ const DemoApplicants = () => {
     .sort((a, b) => a.order - b.order)
     .map((stage) => stage.title);
 
+    console.log("transformedApplicants :: ", transformedApplicants);
   const filteredApplicants = transformedApplicants.filter((applicant) => {
-    if (selectedStatus === "pending") {
-      return applicant.applicationStatus === "pending";
-    } else if (selectedStatus === "passed") {
-      return applicant.applicationStatus === "passed";
-    } else if (selectedStatus === "in-processing") {
+    if (selectedStatus === "applied") {
+      return applicant.applicationStatus === "applied";
+    } else if (selectedStatus === "hired") {
+      return applicant.applicationStatus === "hired";
+    } else if (selectedStatus === "shortlisted") {
       if (selectedStep === "all") {
-        return applicant.applicationStatus === "in-processing";
+        return applicant.applicationStatus === "shortlisted";
       } else {
         return (
-          applicant.applicationStatus === "in-processing" &&
-          applicant.hiringStepTitle === selectedStep
+          applicant.applicationStatus === "shortlisted" &&
+          applicant.hiringStep?.title === selectedStep
         );
       }
     }
