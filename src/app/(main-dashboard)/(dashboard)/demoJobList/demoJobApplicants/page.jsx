@@ -236,8 +236,10 @@ const DemoApplicants = () => {
           websiteUrl: profile.applicantWebsiteUrl || null,
         },
         applicationStatus: latestStatus,
-        hiringStep:
+        hiringStepTitle:
           application.applicationStatus?.docs[0]?.hiringStage?.title || "N/A",
+        hiringStepOrder:
+          application.applicationStatus?.docs[0]?.hiringStage?.order || 1,
       };
     })
     .filter(Boolean);
@@ -322,14 +324,15 @@ const DemoApplicants = () => {
       } else {
         return (
           applicant.applicationStatus === "in-processing" &&
-          applicant.hiringStep === selectedStep
+          applicant.hiringStepTitle === selectedStep
         );
       }
     }
     return false; // Fallback for unknown status
   });
 
-  // console.log("transformedApplicants :: ", transformedApplicants);
+  console.log("filteredApplicants :: ", filteredApplicants);
+  // console.log("Hiring stages :: ",hiringStages)
 
   return (
     <>

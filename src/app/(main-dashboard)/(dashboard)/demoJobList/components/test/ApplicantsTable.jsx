@@ -11,6 +11,7 @@ import { StepSelector } from "../../../demoAppList/demoAppDetails/components/Ste
 import { ScheduleModal } from "../../../demoAppList/demoAppDetails/components/ScheduleModal";
 import Link from "next/link";
 import PricingDialogue from "../pricingDialogue";
+import HiringProgress from "../HiringProgressBar";
 
 const ApplicantsTable = ({
   applicants,
@@ -18,6 +19,7 @@ const ApplicantsTable = ({
   viewCount,
   setViewCount,
   maxViews,
+  hiringStages,
 }) => {
   const [openDropdowns, setOpenDropdowns] = useState({});
   const [scheduleModal, setScheduleModal] = useState({
@@ -40,88 +42,86 @@ const ApplicantsTable = ({
     setApplicantsState(updatedApplicants);
   }, [applicants]);
 
-  const toggleDropdown = (applicantId) => {
-    setOpenDropdowns((prevState) => ({
-      ...prevState,
-      [applicantId]: !prevState[applicantId],
-    }));
-  };
 
-  const handleStepChange = (applicantId, newStep) => {
-    const updatedApplicants = applicantsState.map((applicant) => {
-      if (applicant.id === applicantId) {
-        return {
-          ...applicant,
+      const handleStepChange = (applicantId, newStep) => {
+        const updatedApplicants = applicantsState.map((applicant) => {
+          if (applicant.id === applicantId) {
+            return {
+              ...applicant,
+              step: newStep,
+              steps: newStep,
+            };
+          }
+          return applicant;
+        });
+
+        setApplicantsState(updatedApplicants);
+        setOpenDropdowns((prevState) => ({
+          ...prevState,
+          [applicantId]: false,
+        }));
+
+        setScheduleModal({
+          isOpen: true,
+          applicantId,
           step: newStep,
-          steps: newStep,
-        };
+        });
+
+        if (onUpdateApplicant) {
+          onUpdateApplicant(
+            updatedApplicants.find((a) => a.id === applicantId)
+          );
+        }
+      };
+
+      const handleSchedule = (date, time) => {
+        const updatedApplicants = applicantsState.map((applicant) => {
+          if (applicant.id === scheduleModal.applicantId) {
+            return {
+              ...applicant,
+              schedule: { date, time },
+            };
+          }
+          return applicant;
+        });
+
+        setApplicantsState(updatedApplicants);
+        setScheduleModal({ isOpen: false, applicantId: null, step: "" });
+
+        if (onUpdateApplicant) {
+          onUpdateApplicant(
+            updatedApplicants.find((a) => a.id === scheduleModal.applicantId)
+          );
+        }
+      };
+
+      const handleRejectApplicant = (applicantId) => {
+        const updatedApplicants = applicantsState.map((applicant) =>
+          applicant.id === applicantId ? { ...applicant, step: "" } : applicant
+        );
+        setApplicantsState(updatedApplicants);
+
+        if (onUpdateApplicant) {
+          onUpdateApplicant(
+            updatedApplicants.find((a) => a.id === applicantId)
+          );
+        }
+      };
+
+    const getStatusBadgeProps = (status) => {
+      switch (status) {
+        case "pending":
+          return { bgColor: "bg-blue-100", textColor: "text-blue-600" };
+        case "in-processing":
+          return { bgColor: "bg-yellow-100", textColor: "text-yellow-600" };
+        case "passed":
+          return { bgColor: "bg-emerald-100", textColor: "text-emerald-600" };
+        case "failed":
+          return { bgColor: "bg-red-100", textColor: "text-red-600" };
+        default:
+          return { bgColor: "bg-blue-100", textColor: "text-blue-600" };
       }
-      return applicant;
-    });
-
-    setApplicantsState(updatedApplicants);
-    setOpenDropdowns((prevState) => ({
-      ...prevState,
-      [applicantId]: false,
-    }));
-
-    setScheduleModal({
-      isOpen: true,
-      applicantId,
-      step: newStep,
-    });
-
-    if (onUpdateApplicant) {
-      onUpdateApplicant(updatedApplicants.find((a) => a.id === applicantId));
-    }
-  };
-
-  const handleSchedule = (date, time) => {
-    const updatedApplicants = applicantsState.map((applicant) => {
-      if (applicant.id === scheduleModal.applicantId) {
-        return {
-          ...applicant,
-          schedule: { date, time },
-        };
-      }
-      return applicant;
-    });
-
-    setApplicantsState(updatedApplicants);
-    setScheduleModal({ isOpen: false, applicantId: null, step: "" });
-
-    if (onUpdateApplicant) {
-      onUpdateApplicant(
-        updatedApplicants.find((a) => a.id === scheduleModal.applicantId)
-      );
-    }
-  };
-
-  const handleRejectApplicant = (applicantId) => {
-    const updatedApplicants = applicantsState.map((applicant) =>
-      applicant.id === applicantId ? { ...applicant, step: "" } : applicant
-    );
-    setApplicantsState(updatedApplicants);
-
-    if (onUpdateApplicant) {
-      onUpdateApplicant(updatedApplicants.find((a) => a.id === applicantId));
-    }
-  };
-
-  const getStatusBadgeProps = (status) => {
-    switch (status) {
-      case "pending":
-        return { bgColor: "bg-blue-100", textColor: "text-blue-600" };
-      case "in-progress":
-        return { bgColor: "bg-yellow-100", textColor: "text-yellow-600" };
-      case "passed":
-        return { bgColor: "bg-emerald-100", textColor: "text-emerald-600" };
-      case "failed":
-        return { bgColor: "bg-red-100", textColor: "text-red-600" };
-      default:
-        return { bgColor: "bg-blue-100", textColor: "text-blue-600" };
-    }
-  };
+    };
 
   const getLatestStatus = (applicationStatus) => {
     if (!applicationStatus?.docs || applicationStatus.docs.length === 0) {
@@ -135,6 +135,35 @@ const ApplicantsTable = ({
     return sortedDocs[0].status;
   };
 
+  const getLatestStageInfo = (applicant) => {
+    const latestStatus = getLatestStatus(applicant.applicationStatus);
+    const latestHiringStage = applicant.hiringStepTitle;
+    const latestHiringStageOrder = applicant.hiringStepOrder;
+
+    return {
+      status: latestStatus,
+      stage: latestHiringStage,
+      order: latestHiringStageOrder,
+    };
+  };
+
+  const renderHiringStages = (applicant) => {
+    const {
+      stage: latestStage,
+      order: latestStageOrder,
+      status: latestStatus,
+    } = getLatestStageInfo(applicant);
+
+    return (
+      <HiringProgress
+        currentStage={latestStageOrder}
+        totalStages={hiringStages.docs.length}
+        stages={hiringStages.docs}
+        status={latestStatus}
+      />
+    );
+  };
+
   return (
     <>
       <div className="overflow-x-auto shadow-md rounded-lg bg-white border border-gray-200 dark:border-gray-500">
@@ -145,6 +174,7 @@ const ApplicantsTable = ({
               <th className="px-2 py-3">Education</th>
               <th className="px-2 py-3">Certifications</th>
               <th className="px-2 py-3">Status</th>
+              <th className="px-2 py-3">Hiring Progress</th> {/* New Column */}
               <th className="pl-2 pr-3 py-3 text-center">Actions</th>
             </tr>
           </thead>
@@ -291,6 +321,9 @@ const ApplicantsTable = ({
                         />
                       )}
                   </td>
+
+                  {/* Hiring Progress */}
+                  <td className="px-2 py-3">{renderHiringStages(applicant)}</td>
 
                   {/* Actions */}
                   <td className="pl-2 pr-3 py-2 text-center">
