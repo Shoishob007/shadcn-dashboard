@@ -4,9 +4,8 @@ import { Check, CloudUpload, FileText, Loader } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-export default function ResumeUpload() {
+export default function ResumeUpload({ setFileURL }) {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [fileURL, setFileURL] = useState("");
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
   const accessToken = session?.access_token;
@@ -15,8 +14,6 @@ export default function ResumeUpload() {
     const file = e.target.files[0];
     if (file) {
       setSelectedFile(file);
-      const url = URL.createObjectURL(file);
-      setFileURL(url);
     }
   };
 
@@ -32,7 +29,7 @@ export default function ResumeUpload() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/media-images`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/media-images`, // Update the URL accordingly
         {
           method: "POST",
           headers: {
@@ -42,24 +39,21 @@ export default function ResumeUpload() {
         }
       );
 
-      // Log the response for debugging
-      console.log("Response Status:", response.status);
-
       if (!response.ok) {
-        // Log the error response from the server
         const errorData = await response.json();
-        console.error("Server Error Response:", errorData);
-        throw new Error(
-          `Failed to upload file: ${errorData.message || "Unknown error"}`
-        );
+        throw new Error(errorData.message || "Upload failed");
       }
 
       const data = await response.json();
-      console.log("File uploaded successfully!");
-      console.log("Server Response:", data);
+      const uploadedResumeURL = data?.fileURL;
+
+      // Store the uploaded resume URL in localStorage
+      localStorage.setItem("uploadedResume", uploadedResumeURL);
+
+      // Set the file URL state
+      setFileURL(uploadedResumeURL);
       alert("File uploaded successfully!");
     } catch (error) {
-      console.error("Upload Error:", error);
       alert(`File upload failed: ${error.message}`);
     } finally {
       setLoading(false);
@@ -103,21 +97,6 @@ export default function ResumeUpload() {
         className="hidden"
         onChange={handleFileChange}
       />
-
-      {/* Preview Section */}
-      {fileURL && (
-        <div className="mt-4 text-sm text-gray-600">
-          <span className="font-semibold">Preview:</span>
-          <a
-            href={fileURL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline ml-2"
-          >
-            View File
-          </a>
-        </div>
-      )}
 
       {/* Upload Button */}
       <div className="flex justify-end mt-6">

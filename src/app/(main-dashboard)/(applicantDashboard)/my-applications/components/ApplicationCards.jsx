@@ -1,4 +1,5 @@
 "use client";
+import HiringSteps from "@/components/ApplicantDashboardUI/HiringSteps";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,18 +17,19 @@ const ApplicationCards = ({
   currentPage,
   totalPages,
 }) => {
-  console.log("Application:: ", application)
-  console.log("organization:: ", application?.jobDetails?.job?.organization)
-    const { data: session } = useSession();
+  console.log("Application:: ", application);
+  console.log("organization:: ", application?.jobDetails?.job?.organization);
+  const { data: session } = useSession();
   const accessToken = session?.access_token;
   const [orgNames, setOrgNames] = useState([]);
-//   console.log("organization name: ", orgNames)
+  const [dataStore, setDataStore] = useState([]);
+  //   console.log("organization name: ", orgNames)
 
-// const {
-//     orgId = `${application.map((app) => app?.jobDetails?.job?.organization)}`,
-// } = application || {};
+  // const {
+  //     orgId = `${application.map((app) => app?.jobDetails?.job?.organization)}`,
+  // } = application || {};
 
-// console.log("Organization Id: ", orgId);
+  // console.log("Organization Id: ", orgId);
 
   useEffect(() => {
     const fetchOrganizations = async () => {
@@ -68,26 +70,23 @@ const ApplicationCards = ({
     fetchOrganizations();
   }, [application, accessToken]);
 
-//   useEffect(() => {
-//     const getOrgName = async() => {
-//         try {
-//             const response = await fetch(
-//               `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${orgId}`,
-//               {
-//                 method: "GET",
-//                 headers: {
-//                   Authorization: `Bearer ${accessToken}`,
-//                 },
-//               }
-//             );
-//             const data = await response.json();
-//             console.log("org data: ", data);
-//         } catch (error) {
-//             console.error("Error fetching organization:", error);
-//         }
-//     };
-//     getOrgName();
-//   }, [ accessToken]);
+  useEffect(() => {
+    const getApplicantSteps = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const statusResponse = await response.json();
+      console.log("Status Response: ", statusResponse.docs);
+      setDataStore(statusResponse.docs);
+    };
+    getApplicantSteps();
+  }, [accessToken]);
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -161,21 +160,26 @@ const ApplicationCards = ({
                         </span>
                       </div>
                       <div className="mt-1">
-                        <div className="flex items-center gap-3">
-                          <span className="text-xs">
-                            Applied on: <span className="font-medium"></span>
-                          </span>
-                          <span
-                            className={`text-xs lowercase font-medium p-1 rounded-md ${
-                              app.status === "Applied"
-                                ? "text-blue-500 bg-blue-100"
-                                : app.status === "Shortlisted"
-                                ? "text-yellow-500 bg-yellow-100"
-                                : "text-red-500 bg-red-100"
-                            }`}
-                          >
-                            {app.status}
-                          </span>
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-3">
+                            <span className="text-xs">
+                              Applied on: <span className="font-medium"></span>
+                            </span>
+                            <span
+                              className={`text-xs lowercase font-medium p-1 rounded-md ${
+                                app.status === "Applied"
+                                  ? "text-blue-500 bg-blue-100"
+                                  : app.status === "Shortlisted"
+                                  ? "text-yellow-500 bg-yellow-100"
+                                  : "text-red-500 bg-red-100"
+                              }`}
+                            >
+                              {app.status}
+                            </span>
+                          </div>
+                          <div>
+                            <HiringSteps dataStore={dataStore} />
+                          </div>
                         </div>
                       </div>
                     </div>

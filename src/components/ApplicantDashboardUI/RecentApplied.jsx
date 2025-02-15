@@ -11,6 +11,7 @@ const RecentApplied = () => {
     const { data: session, status } = useSession();
     const accessToken = session?.access_token;
       const [application, setApplication] = useState([]);
+     
   
     useEffect(() => {
     const getJobApplications = async () => {
