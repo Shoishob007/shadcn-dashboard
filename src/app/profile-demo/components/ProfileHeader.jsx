@@ -18,7 +18,7 @@ const ProfileHeader = ({ profileData = [] }) => {
     const file = event.target.files[0];
     console.log("file: ", file);
     if (file) {
-      setSelectedImage(file);
+      setSelectedImage(file.name);
       setPreview(URL.createObjectURL(file));
     }
   };
