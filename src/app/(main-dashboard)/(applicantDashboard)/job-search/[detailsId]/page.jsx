@@ -85,7 +85,7 @@ const JobDetailsPage = async ({ params }) => {
             setAppliedStatus={setAppliedStatus}
           />
         </section> */}
-        <section className="flex items-center justify-end fixed bottom-20 right-20">
+        <section className="flex items-center justify-end fixed bottom-32 right-20">
           <ApplyJob id={data.id} />
         </section>
       </div>

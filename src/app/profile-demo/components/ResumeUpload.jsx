@@ -1,11 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Check, CloudUpload, FileText } from "lucide-react";
+import { Check, CloudUpload, FileText, Loader } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 export default function ResumeUpload() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileURL, setFileURL] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { data: session } = useSession();
+  const accessToken = session?.access_token;
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -16,19 +20,55 @@ export default function ResumeUpload() {
     }
   };
 
-  const handleUpload = () => {
-    if (selectedFile) {
-      alert(`Uploaded file: ${selectedFile.name}`);
-      console.log("File URL:", fileURL);
-      console.log("File:", selectedFile);
-    } else {
+  const handleUpload = async () => {
+    if (!selectedFile) {
       alert("Please select a file to upload.");
+      return;
+    }
+
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("cv", selectedFile);
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/media-images`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: formData,
+        }
+      );
+
+      // Log the response for debugging
+      console.log("Response Status:", response.status);
+
+      if (!response.ok) {
+        // Log the error response from the server
+        const errorData = await response.json();
+        console.error("Server Error Response:", errorData);
+        throw new Error(
+          `Failed to upload file: ${errorData.message || "Unknown error"}`
+        );
+      }
+
+      const data = await response.json();
+      console.log("File uploaded successfully!");
+      console.log("Server Response:", data);
+      alert("File uploaded successfully!");
+    } catch (error) {
+      console.error("Upload Error:", error);
+      alert(`File upload failed: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className=" bg-white">
-    {/* Upload Box */}
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      {/* Upload Box */}
       <label
         htmlFor="file-upload"
         className="block w-full cursor-pointer border-2 border-dashed border-gray-300 rounded-xl p-6 text-center bg-gray-50 hover:bg-gray-100 hover:border-gray-600 transition"
@@ -81,9 +121,9 @@ export default function ResumeUpload() {
 
       {/* Upload Button */}
       <div className="flex justify-end mt-6">
-        <Button onClick={handleUpload} className="px-4 py-2">
-          <Check />
-          Upload Resume
+        <Button onClick={handleUpload} className="px-4 py-2" disabled={loading}>
+          {loading ? <Loader className="animate-spin" /> : <Check />}
+          {loading ? "Uploading..." : "Upload Resume"}
         </Button>
       </div>
     </div>
