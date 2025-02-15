@@ -7,11 +7,14 @@ import {
 } from "@/components/ui/tooltip";
 import { Eye, FileText } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { StepSelector } from "../../../demoAppList/demoAppDetails/components/StepSelector";
-import { ScheduleModal } from "../../../demoAppList/demoAppDetails/components/ScheduleModal";
 import Link from "next/link";
 import PricingDialogue from "../pricingDialogue";
 import HiringProgress from "../HiringProgressBar";
+import { useSession } from "next-auth/react";
+import StepSelector from "../../../demoAppList/demoAppDetails/components/StepSelector";
+import ScheduleModal from "../../../demoAppList/demoAppDetails/components/ScheduleModal";
+import { Button } from "@/components/ui/button";
+import StatusModal from "../../../demoAppList/demoAppDetails/components/StatusModal";
 
 const ApplicantsTable = ({
   applicants,
@@ -22,90 +25,118 @@ const ApplicantsTable = ({
   hiringStages,
 }) => {
   console.log("applicants :::::: ", applicants);
+  const { data: session } = useSession();
+  const accessToken = session?.access_token;  
   const [openDropdowns, setOpenDropdowns] = useState({});
   const [scheduleModal, setScheduleModal] = useState({
     isOpen: false,
     applicantId: null,
+    applicationId: null,
     step: "",
   });
-  const [applicantsState, setApplicantsState] = useState(applicants);
+    const [statusModal, setStatusModal] = useState({
+      isOpen: false,
+      applicantId: null,
+      applicationId: null,
+      currentStatus: null,
+    });
   const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
 
-  // useEffect(() => {
-  //   const updatedApplicants = applicants.map((applicant) => ({
-  //     ...applicant,
-  //     step: "applied"
-  //       ? applicant.steps || applicant.step || "applied"
-  //       : applicant.step || "applied",
-  //   }));
-
-  //   setApplicantsState(updatedApplicants);
-
-  //   console.log("updatedApplicants :: ", updatedApplicants);
-  // }, [applicants]);
+    const handleUpdateStatus = (applicantId, newStatus) => {
+      const updatedApplicants = applicants.map((applicant) =>
+        applicant.id === applicantId
+          ? { ...applicant, applicationStatus: newStatus }
+          : applicant
+      );
+      onUpdateApplicant(updatedApplicants);
+    };
 
 
-  const handleStepChange = (applicantId, newStep) => {
-    const updatedApplicants = applicantsState.map((applicant) => {
-      if (applicant.id === applicantId) {
-        return {
-          ...applicant,
-          applicationStatus: newStep,
-        };
+const handleStepChange = async (applicantId, applicationId, newStage) => {
+  const applicant = applicants.find((a) => a.id === applicantId);
+  const currentStage = applicant.hiringStep;
+
+  if (!currentStage) {
+    // Make a POST request
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            jobApplication: applicantId,
+            hiringStage: newStage.id,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        // Updating the applicant's hiring stage in the state
+        const updatedApplicant = { ...applicant, hiringStep: newStage };
+        onUpdateApplicant(updatedApplicant);
       }
-      return applicant;
-    });
-
-    setApplicantsState(updatedApplicants);
-    setOpenDropdowns((prevState) => ({
-      ...prevState,
-      [applicantId]: false,
-    }));
-
-    setScheduleModal({
-      isOpen: true,
-      applicantId,
-      step: newStep,
-    });
-
-    if (onUpdateApplicant) {
-      onUpdateApplicant(updatedApplicants.find((a) => a.id === applicantId));
+    } catch (error) {
+      console.error("Error updating applicant status:", error);
     }
-  };
+  } else {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status/${applicant.applicationId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            hiringStage: newStage.id,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        // Update the applicant's hiring stage in the state
+        const updatedApplicant = { ...applicant, hiringStep: newStage };
+        onUpdateApplicant(updatedApplicant);
+      }
+    } catch (error) {
+      console.error("Error updating applicant status:", error);
+    }
+  }
+
+  setOpenDropdowns((prevState) => ({
+    ...prevState,
+    [applicantId]: false,
+  }));
+
+  setScheduleModal({
+    isOpen: true,
+    applicantId,
+    step: newStage.title,
+  });
+};
 
   const handleSchedule = (date, time) => {
-    const updatedApplicants = applicantsState.map((applicant) => {
-      if (applicant.id === scheduleModal.applicantId) {
-        return {
-          ...applicant,
-          schedule: { date, time },
-        };
-      }
-      return applicant;
-    });
-
-    setApplicantsState(updatedApplicants);
-    setScheduleModal({ isOpen: false, applicantId: null, step: "" });
+    setScheduleModal({ isOpen: false, applicantId: null,applicationId: null, step: "" });
 
     if (onUpdateApplicant) {
       onUpdateApplicant(
-        updatedApplicants.find((a) => a.id === scheduleModal.applicantId)
+        applicants.find((a) => a.id === scheduleModal.applicantId)
       );
     }
   };
 
   const handleRejectApplicant = (applicantId) => {
-    const updatedApplicants = applicantsState.map((applicant) =>
-      applicant.id === applicantId ? { ...applicant, step: "" } : applicant
-    );
-    setApplicantsState(updatedApplicants);
-
     if (onUpdateApplicant) {
-      onUpdateApplicant(updatedApplicants.find((a) => a.id === applicantId));
+      onUpdateApplicant(applicants.find((a) => a.id === applicantId));
     }
   };
 
-  console.log("updatedApplicants :: ", applicantsState);
+  console.log("updated applicants :: ", applicants);
 
   const getLatestStatus = (applicationStatus) => {
     if (!applicationStatus?.docs || applicationStatus.docs.length === 0) {
@@ -138,7 +169,7 @@ const ApplicantsTable = ({
       status: latestStatus,
     } = getLatestStageInfo(applicant);
 
-    console.log("latest stage :: ", latestStage)
+    console.log("latest stage :: ", applicant)
 
     return (
       <HiringProgress
@@ -166,7 +197,7 @@ const ApplicantsTable = ({
             </tr>
           </thead>
           <tbody>
-            {applicantsState.map((applicant) => {
+            {applicants.map((applicant) => {
               return (
                 <tr
                   key={applicant.id}
@@ -240,15 +271,6 @@ const ApplicantsTable = ({
                     )}
                   </td>
 
-                  {/* Latest Status */}
-                  {/* <td className="px-2 py-3 text-center">
-                    <div
-                      className={`px-1 py-1 rounded-md font-medium capitalize ${textColor}`}
-                    >
-                      {currentStatus}
-                    </div>
-                  </td> */}
-
                   {/* Hiring Progress */}
                   <td className="px-2 py-3 text-center">
                     {renderHiringStages(applicant)}
@@ -256,14 +278,36 @@ const ApplicantsTable = ({
 
                   {/* Change Schedule or reject */}
                   <td className="px-2 py-3 text-center">
-                    <StepSelector
-                      selectedStep={applicant.step}
-                      onStepChange={(newStep) =>
-                        handleStepChange(applicant.id, newStep)
-                      }
-                      onReject={() => handleRejectApplicant(applicant.id)}
-                      className="justify-center"
-                    />
+                    <td className="px-2 py-3 text-center">
+                      <StepSelector
+                        selectedStep={applicant.hiringStep}
+                        onStepChange={(newStage) =>
+                          handleStepChange(
+                            applicant.id,
+                            applicant.applicationId,
+                            newStage
+                          )
+                        }
+                        // onReject={() => handleRejectApplicant(applicant.id)}
+                        hiringStages={hiringStages.docs}
+                        className="justify-center"
+                      />
+                      <Button
+                        variant="outline"
+                        size="xs"
+                        className="ml-2"
+                        onClick={() =>
+                          setStatusModal({
+                            isOpen: true,
+                            applicantId: applicant?.id,
+                            applicationId: applicant?.applicationId,
+                            currentStatus: applicant?.applicationStatus,
+                          })
+                        }
+                      >
+                        Change Status
+                      </Button>
+                    </td>
                   </td>
 
                   {/* Actions */}
@@ -338,14 +382,33 @@ const ApplicantsTable = ({
         </table>
       </div>
 
+      {/* Status Modal */}
+      <StatusModal
+        isOpen={statusModal.isOpen}
+        onClose={() =>
+          setStatusModal({
+            isOpen: false,
+            applicantId: null,
+            applicationId: null,
+            currentStatus: null,
+          })
+        }
+        applicantId={statusModal.applicantId}
+        applicationId={statusModal.applicationId}
+        currentStatus={statusModal.currentStatus}
+        onUpdateStatus={handleUpdateStatus}
+      />
       {/* Schedule Modal */}
       <ScheduleModal
         isOpen={scheduleModal.isOpen}
         onClose={() =>
-          setScheduleModal({ isOpen: false, applicantId: null, step: "" })
+          setScheduleModal({ isOpen: false, applicant: null, step: "" })
         }
         step={scheduleModal.step}
         onSchedule={handleSchedule}
+        applicantId={scheduleModal.applicantId}
+        applicationId={scheduleModal.applicationId}
+        accessToken={accessToken}
       />
 
       {isPricingDialogOpen && (

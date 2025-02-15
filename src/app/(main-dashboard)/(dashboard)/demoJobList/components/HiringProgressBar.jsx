@@ -41,6 +41,8 @@ const HiringProgress = ({ currentStage, totalStages, stages, status }) => {
     }
   };
 
+  console.log("Current stage :: ", currentStage)
+
   return (
     <div className="w-full px-2 py-4">
       {/* Current stage info */}
@@ -50,7 +52,7 @@ const HiringProgress = ({ currentStage, totalStages, stages, status }) => {
             status
           ).replace("bg-", "text-")}`}
         >
-          {stages[currentStage]?.title || stages[0]?.title}
+          {stages[currentStage - 1]?.title || "Not specified"}
         </span>
         {/* <span className="text-xs text-gray-500">
           Stage {currentStage ?? + 1 } of {stages.length}

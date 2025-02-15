@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/app/utils/steps";
 
-export default function StepSelector({
+export default function StatusSelector({
   selectedStep,
   onStepChange,
   onReject,
@@ -26,7 +26,7 @@ export default function StepSelector({
             size="xs"
             className="border border-blue-600 bg-blue-100 dark:bg-blue-200 text-blue-600 hover:bg-blue-200 shadow-none dark:border-blue-600 dark:text-blue-700 dark:hover:bg-blue-300"
           >
-            Change Stage
+            Change Status
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48">
