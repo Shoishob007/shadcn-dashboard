@@ -21,16 +21,16 @@ const ProfileTabs = ({profileData}) => {
           <TabsTrigger className="ml-8" value="educations">
             Educations
           </TabsTrigger>
-          <TabsTrigger className="ml-8" value="experiences">
+          {/* <TabsTrigger className="ml-8" value="experiences">
             Experiences
-          </TabsTrigger>
+          </TabsTrigger> */}
           <TabsTrigger className="ml-8" value="skills">
             Skills
           </TabsTrigger>
           
-          <TabsTrigger className="ml-8" value="projects">
+          {/* <TabsTrigger className="ml-8" value="projects">
             Projects
-          </TabsTrigger>
+          </TabsTrigger> */}
           <TabsTrigger className="ml-8" value="changePassword">
             Change Password
           </TabsTrigger>
@@ -49,15 +49,15 @@ const ProfileTabs = ({profileData}) => {
           <TabsContent value="educations">
             <Educations/>
           </TabsContent>
-          <TabsContent value="experiences">
+          {/* <TabsContent value="experiences">
             <Experiences/>
-          </TabsContent>
+          </TabsContent> */}
           <TabsContent value="skills">
             <Skills />
           </TabsContent>
-          <TabsContent value="projects">
+          {/* <TabsContent value="projects">
             <Projects />
-          </TabsContent>
+          </TabsContent> */}
           <TabsContent value="changePassword">
             <ChangePassword/>
           </TabsContent>

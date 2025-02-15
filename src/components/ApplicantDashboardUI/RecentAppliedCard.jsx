@@ -8,9 +8,11 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import HiringSteps from "./HiringSteps";
 
 const RecentAppliedCard = ({ app }) => {
   const [storeOrgName, setstoreOrgName] = useState("");
+   const [dataStore, setDataStore] = useState([]);
   const { data: session } = useSession();
   const accessToken = session?.access_token;
   console.log("Recent applied card : ", app);
@@ -51,6 +53,25 @@ const RecentAppliedCard = ({ app }) => {
     getOrgName();
   }, [orgId, accessToken]);
 
+  
+  useEffect(() => {
+    const getApplicantSteps = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const statusResponse = await response.json();
+      console.log("Status Response: ", statusResponse.docs);
+      setDataStore(statusResponse.docs);
+    };
+    getApplicantSteps();
+  }, [accessToken]);
+
   return (
     <div key={app.id}>
       <Card className="w-full hover:border hover:border-black duration-300 cursor-pointer">
@@ -90,21 +111,26 @@ const RecentAppliedCard = ({ app }) => {
                 {/* <span className="text-xs font-medium">{jobType}</span> */}
               </div>
               <div className="mt-1">
-                <div className="flex items-center gap-3">
-                  <span className="text-xs">
-                    Applied on: <span className="font-medium"></span>
-                  </span>
-                  <span
-                    className={`text-xs lowercase font-medium p-1 rounded-md ${
-                      app.status === "Applied"
-                        ? "text-blue-500 bg-blue-100"
-                        : app.status === "Shortlisted"
-                        ? "text-yellow-500 bg-yellow-100"
-                        : "text-red-500 bg-red-100"
-                    }`}
-                  >
-                    {app.status}
-                  </span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs">
+                      Applied on: <span className="font-medium"></span>
+                    </span>
+                    <span
+                      className={`text-xs lowercase font-medium p-1 rounded-md ${
+                        app.status === "Applied"
+                          ? "text-blue-500 bg-blue-100"
+                          : app.status === "Shortlisted"
+                          ? "text-yellow-500 bg-yellow-100"
+                          : "text-red-500 bg-red-100"
+                      }`}
+                    >
+                      {app.status}
+                    </span>
+                  </div>
+                  <div>
+                    <HiringSteps dataStore={dataStore} />
+                  </div>
                 </div>
               </div>
             </div>
@@ -118,7 +144,7 @@ const RecentAppliedCard = ({ app }) => {
             </div>
           </div>
           <Button variant="outline" size="sm">
-            View status
+            View Details
           </Button>
         </CardFooter>
       </Card>

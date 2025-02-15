@@ -4,8 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Check, X } from "lucide-react";
 import { useState } from "react";
 
-const UpdateSkills = () => {
-  const [skills, setSkills] = useState([]);
+const UpdateSkills = ({ skills, setSkills }) => {
   const [input, setInput] = useState("");
 
   const suggestions = [
@@ -29,7 +28,9 @@ const UpdateSkills = () => {
   );
 
   const addSkill = (skill) => {
-    if (!skills.includes(skill)) setSkills([...skills, skill]);
+    if (!skills.includes(skill)) {
+      setSkills([...skills, skill]); // Parent Component ke update kortechi
+    }
     setInput("");
   };
 
@@ -57,8 +58,7 @@ const UpdateSkills = () => {
           >
             {skill}
             <span
-              className="rounded-full w-4 h-4"
-              variant="ghost"
+              className="rounded-full w-4 h-4 cursor-pointer"
               onClick={() => removeSkill(skill)}
             >
               <X />
@@ -118,7 +118,7 @@ const UpdateSkills = () => {
 
       {/* Save Button */}
       <div className="flex items-center justify-end mt-5">
-        <Button type="submit" className="px-4 py-2">
+        <Button type="submit" className="px-4 py-2" onClick={handleInputSubmit}>
           <Check />
           Save
         </Button>
