@@ -19,7 +19,7 @@ export function StepSelector({ selectedStep, onStepChange, onReject }) {
             size="xs"
             className="border border-blue-600 bg-blue-100 dark:bg-blue-200 text-blue-600 hover:bg-blue-200 shadow-none dark:border-blue-600 dark:text-blue-700 dark:hover:bg-blue-300"
           >
-            Change Schedule
+            Change Stage
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48">
@@ -61,7 +61,7 @@ export function StepSelector({ selectedStep, onStepChange, onReject }) {
         className="border border-red-600 bg-red-100 dark:bg-red-200 text-red-600 hover:bg-red-200 shadow-none dark:border-red-600 dark:text-red-700 dark:hover:bg-red-300 disabled:opacity-50 disabled:cursor-not-allowed"
         onClick={onReject}
       >
-        Reject
+        Reject Applicant
       </Button>
     </div>
   );

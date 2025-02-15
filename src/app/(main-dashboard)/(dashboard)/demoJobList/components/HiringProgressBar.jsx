@@ -66,20 +66,20 @@ const HiringProgress = ({ currentStage, totalStages, stages, status }) => {
         <div
           className="absolute h-[2px] bg-emerald-500 transition-all duration-300"
           style={{
-            width: `${(currentStage / (stages.length - 1)) * 100}%`,
+            width: `${((currentStage - 1) / (stages.length - 1)) * 100}%`,
           }}
         />
 
         {/* Steps container - positioned relative to allow absolute positioning of steps */}
         <div className="relative flex justify-between">
           {stages.map((stage, index) => {
-            const isCompleted = index < currentStage;
-            const isCurrent = index === currentStage;
-            const stageStatus = isCurrent
-              ? status
-              : isCompleted
-              ? "hired"
-              : "shortlisted";
+            const isCompleted = index < currentStage - 1;
+            const isCurrent = index === currentStage - 1;
+            // const stageStatus = isCurrent
+            //   ? status
+            //   : isCompleted
+            //   ? "hired"
+            //   : "shortlisted";
 
             return (
               <TooltipProvider key={index}>

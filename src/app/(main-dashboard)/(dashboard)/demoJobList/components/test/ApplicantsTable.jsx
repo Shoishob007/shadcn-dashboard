@@ -21,7 +21,7 @@ const ApplicantsTable = ({
   maxViews,
   hiringStages,
 }) => {
-  console.log("applicants :::::: ", applicants)
+  console.log("applicants :::::: ", applicants);
   const [openDropdowns, setOpenDropdowns] = useState({});
   const [scheduleModal, setScheduleModal] = useState({
     isOpen: false,
@@ -31,27 +31,26 @@ const ApplicantsTable = ({
   const [applicantsState, setApplicantsState] = useState(applicants);
   const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
 
-  useEffect(() => {
-    const updatedApplicants = applicants.map((applicant) => ({
-      ...applicant,
-      step:"applied"
-          ? applicant.steps || applicant.step || "applied"
-          : applicant.step || "applied",
-    }));
+  // useEffect(() => {
+  //   const updatedApplicants = applicants.map((applicant) => ({
+  //     ...applicant,
+  //     step: "applied"
+  //       ? applicant.steps || applicant.step || "applied"
+  //       : applicant.step || "applied",
+  //   }));
 
-    setApplicantsState(updatedApplicants);
+  //   setApplicantsState(updatedApplicants);
 
-        console.log("updatedApplicants :: ", updatedApplicants);
+  //   console.log("updatedApplicants :: ", updatedApplicants);
+  // }, [applicants]);
 
-  }, [applicants]);
 
   const handleStepChange = (applicantId, newStep) => {
     const updatedApplicants = applicantsState.map((applicant) => {
       if (applicant.id === applicantId) {
         return {
           ...applicant,
-          step: newStep,
-          steps: newStep,
+          applicationStatus: newStep,
         };
       }
       return applicant;
@@ -106,6 +105,7 @@ const ApplicantsTable = ({
     }
   };
 
+  console.log("updatedApplicants :: ", applicantsState);
 
   const getLatestStatus = (applicationStatus) => {
     if (!applicationStatus?.docs || applicationStatus.docs.length === 0) {
@@ -137,6 +137,8 @@ const ApplicantsTable = ({
       order: latestStageOrder,
       status: latestStatus,
     } = getLatestStageInfo(applicant);
+
+    console.log("latest stage :: ", latestStage)
 
     return (
       <HiringProgress
@@ -252,7 +254,7 @@ const ApplicantsTable = ({
                     {renderHiringStages(applicant)}
                   </td>
 
-{/* Change Schedule or reject */}
+                  {/* Change Schedule or reject */}
                   <td className="px-2 py-3 text-center">
                     <StepSelector
                       selectedStep={applicant.step}
