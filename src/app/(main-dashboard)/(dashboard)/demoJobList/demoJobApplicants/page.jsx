@@ -212,7 +212,9 @@ const DemoApplicants = () => {
 
       // console.log("profile :: ", profile);
       const latestStatus =
-        application.applicationStatus?.docs?.[0]?.status || "shortlisted";
+        application.applicationStatus?.docs?.[0]?.status || "applied";
+        const applicationId =
+          application.applicationStatus?.docs?.[0]?.id;
 
       // console.log("latestStatus :: ", latestStatus);
 
@@ -236,6 +238,7 @@ const DemoApplicants = () => {
           websiteUrl: profile.applicantWebsiteUrl || null,
         },
         applicationStatus: latestStatus,
+        applicationId : applicationId,
         hiringStep:
           application.applicationStatus?.docs[0]?.hiringStage
       };
@@ -330,6 +333,31 @@ const DemoApplicants = () => {
     return false; // Fallback for unknown status
   });
 
+
+  const handleUpdateApplicant = (updatedApplicant) => {
+    // Update the jobApplications state with the new applicant data
+    setJobApplications((prevApplications) => {
+      return prevApplications.map((application) => {
+        if (application.applicant === updatedApplicant.id) {
+          return {
+            ...application,
+            applicationStatus: {
+              ...application.applicationStatus,
+              docs: [
+                {
+                  ...application.applicationStatus?.docs?.[0],
+                  status: updatedApplicant.applicationStatus,
+                  hiringStage: updatedApplicant.hiringStep.id,
+                },
+              ],
+            },
+          };
+        }
+        return application;
+      });
+    });
+  };
+
   console.log("filteredApplicants :: ", filteredApplicants);
   // console.log("Hiring stages :: ",hiringStages)
 
@@ -389,6 +417,7 @@ const DemoApplicants = () => {
               viewMode === "list" ? (
                 <ApplicantsTable
                   applicants={filteredApplicants}
+                  onUpdateApplicant={handleUpdateApplicant}
                   calculateTotalExperience={calculateTotalExperience}
                   handleViewDetails={handleViewDetails}
                   viewCount={viewCount}
