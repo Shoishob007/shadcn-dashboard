@@ -89,7 +89,7 @@ const DemoApplicants = () => {
           }
         );
         const data = await response.json();
-        console.log("Data response for the job applications:", data);
+        // console.log("Data response for the job applications:", data);
 
         if (page === 1) {
           setJobApplications(data.docs || []);
@@ -421,7 +421,7 @@ const DemoApplicants = () => {
                   handleViewDetails={handleViewDetails}
                   viewCount={viewCount}
                   setViewCount={setViewCount}
-                  maxViews={maxViews}
+                  maxViews={Infinity}
                   hiringStages={hiringStages}
                 />
               ) : (

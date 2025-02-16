@@ -25,6 +25,8 @@ const ApplicantsTable = ({
   maxViews,
   hiringStages,
 }) => {
+
+  console.log("Applicants i got in the appicants table ")
   const { data: session } = useSession();
   const accessToken = session?.access_token;
   const { toast } = useToast();
@@ -208,7 +210,7 @@ const ApplicantsTable = ({
           ...applicant,
           applicationStatus: "rejected",
         };
-        onUpdateApplicant(updatedApplicant); // Updating from the parent state
+        onUpdateApplicant(updatedApplicant);
         toast({
           title: "Success",
           description: "Applicant rejected successfully.",
