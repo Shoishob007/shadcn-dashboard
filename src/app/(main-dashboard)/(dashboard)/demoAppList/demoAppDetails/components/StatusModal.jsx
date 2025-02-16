@@ -16,14 +16,14 @@ import {
 } from "@/components/ui/select";
 import { useSession } from "next-auth/react";
 
-const StatusModal = ({
+export default function StatusModal ({
   isOpen,
   onClose,
   applicantId,
   applicationId,
   currentStatus,
   onUpdateStatus,
-}) => {
+}) {
   const { data: session } = useSession();
   const [selectedStatus, setSelectedStatus] = useState(currentStatus || "");
 
@@ -117,5 +117,3 @@ const StatusModal = ({
     </Dialog>
   );
 };
-
-export default StatusModal;

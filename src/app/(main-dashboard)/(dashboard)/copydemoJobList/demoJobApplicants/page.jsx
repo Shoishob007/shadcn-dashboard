@@ -213,8 +213,9 @@ const DemoApplicants = () => {
       // console.log("profile :: ", profile);
       const latestStatus =
         application.applicationStatus?.docs?.[0]?.status || "applied";
-      const applicationId = application.applicationStatus?.docs?.[0]?.id;
-      console.log("jobApplication :: ", application.id);
+        const applicationId =
+          application.applicationStatus?.docs?.[0]?.id;
+        console.log("jobApplication :: ", application.id);
 
       // console.log("latestStatus :: ", latestStatus);
 
@@ -238,8 +239,9 @@ const DemoApplicants = () => {
           websiteUrl: profile.applicantWebsiteUrl || null,
         },
         applicationStatus: latestStatus,
-        applicationId: applicationId,
-        hiringStep: application.applicationStatus?.docs[0]?.hiringStage,
+        applicationId : applicationId,
+        hiringStep:
+          application.applicationStatus?.docs[0]?.hiringStage
       };
     })
     .filter(Boolean);
@@ -318,9 +320,10 @@ const DemoApplicants = () => {
       return application.applicationStatus === "applied";
     } else if (selectedStatus === "hired") {
       return application.applicationStatus === "hired";
-    } else if (selectedStatus === "rejected") {
-      return application.applicationStatus === "rejected";
-    } else if (selectedStatus === "shortlisted") {
+    }
+    else if (selectedStatus === "rejected") {
+      return application.applicationStatus === "rejected";}
+       else if (selectedStatus === "shortlisted") {
       if (selectedStep === "all") {
         return application.applicationStatus === "shortlisted";
       } else {
@@ -330,8 +333,9 @@ const DemoApplicants = () => {
         );
       }
     }
-    return false;
+    return false; // Fallback for unknown status
   });
+
 
   const handleUpdateApplication = (updatedApplication) => {
     // Update the jobApplications state with the new applicant data
