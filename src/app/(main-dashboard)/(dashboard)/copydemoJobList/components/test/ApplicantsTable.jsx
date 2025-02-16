@@ -40,6 +40,7 @@ const ApplicantsTable = ({
     const applicant = applications.find((a) => a.id === applicantId);
 
     if (!applicationId) {
+      // Shortlist: Make a POST request
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status`,
@@ -59,6 +60,7 @@ const ApplicantsTable = ({
         );
 
         if (response.ok) {
+          // Update the applicant's hiring stage in the state
           const updatedApplicant = {
             ...applicant,
             applicationStatus: "shortlisted",
@@ -68,7 +70,7 @@ const ApplicantsTable = ({
           toast({
             title: "Success",
             description: "Applicant shortlisted successfully.",
-            variant: "ourSuccess",
+            variant: "success",
           });
         } else {
           throw new Error("Failed to shortlist applicant");
@@ -78,15 +80,16 @@ const ApplicantsTable = ({
         toast({
           title: "Error",
           description: "Failed to shortlist applicant. Please try again.",
-          variant: "ourDestructive",
+          variant: "destructive",
         });
       }
     } else {
+      // Open the schedule modal for updating the hiring stage and timestamp
       setScheduleModal({
         isOpen: true,
         applicantId,
         applicationId,
-        step: newStage,
+        step: newStage, // Pass the selected hiring stage to the modal
       });
     }
   };
@@ -102,7 +105,7 @@ const ApplicantsTable = ({
       return;
     }
 
-    // 12-hour format to 24-hour format
+    // Convert 12-hour format to 24-hour format
     const convertTo24Hour = (time) => {
       const match = time.match(/^(\d{1,2}):(\d{2})\s?(AM|PM)$/i);
       if (!match) return null;
@@ -128,7 +131,7 @@ const ApplicantsTable = ({
       return;
     }
 
-    //timestamp
+    // Create timestamp
     const timestamp = new Date(
       `${date.toISOString().split("T")[0]}T${formattedTime}Z`
     ).toISOString();
@@ -151,20 +154,21 @@ const ApplicantsTable = ({
       );
 
       if (response.ok) {
-        // Updating the applicant's hiring stage in the state
+        // Update the applicant's hiring stage in the state
         const updatedApplicant = applications.find(
           (app) => app.id === scheduleModal.applicantId
         );
         updatedApplicant.hiringStep = selectedStage;
         updatedApplicant.applicationStatus = "scheduled";
 
-        onUpdateApplicant(updatedApplicant);
+        onUpdateApplicant(updatedApplicant); // Update the parent state
         toast({
           title: "Success",
           description: "Applicant schedule updated successfully.",
           variant: "success",
         });
 
+        // Reset the schedule modal state
         setScheduleModal({
           isOpen: false,
           applicantId: null,
@@ -204,11 +208,12 @@ const ApplicantsTable = ({
       );
 
       if (response.ok) {
+        // Update the applicant's status to rejected in the state
         const updatedApplicant = {
           ...applicant,
           applicationStatus: "rejected",
         };
-        onUpdateApplicant(updatedApplicant); // Updating from the parent state
+        onUpdateApplicant(updatedApplicant); // Update the parent state
         toast({
           title: "Success",
           description: "Applicant rejected successfully.",
@@ -247,15 +252,16 @@ const ApplicantsTable = ({
       );
 
       if (response.ok) {
+        // Update the applicant's status to hired in the state
         const updatedApplicant = {
           ...applicant,
           applicationStatus: "hired",
         };
         onUpdateApplicant(updatedApplicant);
         toast({
-          title: "Success!",
+          title: "Success",
           description: "Applicant hired successfully.",
-          variant: "ourSuccess",
+          variant: "success",
         });
       } else {
         throw new Error("Failed to hire applicant");
@@ -263,9 +269,9 @@ const ApplicantsTable = ({
     } catch (error) {
       console.error("Error updating applicant status:", error);
       toast({
-        title: "Error!",
+        title: "Error",
         description: "Failed to hire applicant. Please try again.",
-        variant: "ourDestructive",
+        variant: "destructive",
       });
     }
   };

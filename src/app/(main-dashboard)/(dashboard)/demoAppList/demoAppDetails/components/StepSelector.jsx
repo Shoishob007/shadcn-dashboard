@@ -1,74 +1,66 @@
-"use client";
-
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/app/utils/steps";
 
 export default function StepSelector({
   selectedStep,
   onStepChange,
   onReject,
+  onHire,
   hiringStages,
+  applicationId,
+  applicationStatus,
 }) {
-  const currentStageOrder = selectedStep?.order || 0;
+  const [isLastStage, setIsLastStage] = useState(false);
+
+  useEffect(() => {
+    const lastStageIndex = hiringStages.length - 1;
+    setIsLastStage(selectedStep?.order === lastStageIndex + 1);
+  }, [selectedStep, hiringStages]);
+
+  const isRejectedOrHired =
+    applicationStatus === "rejected" || applicationStatus === "hired";
 
   return (
-    <div className="flex gap-2 justify-center">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="default"
-            size="xs"
-            className="border border-blue-600 bg-blue-100 dark:bg-blue-200 text-blue-600 hover:bg-blue-200 shadow-none dark:border-blue-600 dark:text-blue-700 dark:hover:bg-blue-300"
-          >
-            Change Stage
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-48">
-          {hiringStages.map((stage) => {
-            const disabled = stage.order <= currentStageOrder;
-            const isSelected = selectedStep?.id === stage.id;
+    <div className="flex flex-col gap-2 items-center">
+      {isLastStage && !isRejectedOrHired ? (
+        <Button
+          variant="default"
+          size="sm"
+          className="border border-green-600 bg-green-100 text-green-600 hover:bg-green-200"
+          onClick={onHire}
+        >
+          Hire
+        </Button>
+      ) : !applicationId ? (
+        <Button
+          variant="default"
+          size="sm"
+          className="border border-yellow-600 bg-yellow-100 text-yellow-600 hover:bg-yellow-200"
+          onClick={() => onStepChange(hiringStages[0])}
+          disabled={isRejectedOrHired}
+        >
+          Shortlist
+        </Button>
+      ) : (
+        <Button
+          variant="default"
+          size="sm"
+          className="border border-blue-600 bg-blue-100 text-blue-600 hover:bg-blue-200"
+          onClick={() => onStepChange()}
+          disabled={isRejectedOrHired}
+        >
+          Schedule
+        </Button>
+      )}
 
-            return (
-              <DropdownMenuItem
-                key={stage.id}
-                className={cn(
-                  "!text-xs flex justify-between items-center",
-                  disabled && "opacity-50 cursor-not-allowed",
-                  isSelected && "bg-blue-50 dark:bg-gray-800"
-                )}
-                disabled={disabled}
-                onClick={() => !disabled && onStepChange(stage)}
-              >
-                <span style={{ textTransform: "capitalize" }}>
-                  {stage.title}
-                </span>
-                {isSelected ? (
-                  <span className="text-green-500 ml-2">✔</span>
-                ) : disabled ? (
-                  <span className="text-gray-700 ml-2 text-[10px]">
-                    {stage.order < currentStageOrder ? "Completed" : "Locked"}
-                  </span>
-                ) : null}
-              </DropdownMenuItem>
-            );
-          })}
-        </DropdownMenuContent>
-      </DropdownMenu>
-
-      {/* Reject Button */}
       <Button
         variant="destructive"
-        size="xs"
-        className="border border-red-600 bg-red-100 dark:bg-red-200 text-red-600 hover:bg-red-200 shadow-none dark:border-red-600 dark:text-red-700 dark:hover:bg-red-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        size="sm"
+        className="border border-red-600 bg-red-100 text-red-600 hover:bg-red-200"
         onClick={onReject}
+        disabled={isRejectedOrHired}
       >
-        Reject Applicant
+        Reject
       </Button>
     </div>
   );

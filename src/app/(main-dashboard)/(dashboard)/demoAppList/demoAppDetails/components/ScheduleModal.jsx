@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
+import React, { useState, useEffect } from "react";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
@@ -7,83 +7,113 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { useSession } from "next-auth/react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
-const ScheduleModal = ({
+export default function ScheduleModal({
   isOpen,
   onClose,
   onSchedule,
-  applicantId,
-  applicationId,
-  accessToken,
-}) => {
-  const { data: session } = useSession();
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  step,
+  hiringStages,
+}) {
+  const [selectedDate, setSelectedDate] = useState();
+  const [selectedTime, setSelectedTime] = useState();
+  const [selectedStage, setSelectedStage] = useState(step);
 
-  const handleSchedule = async () => {
-    if (!date || !time) {
-      alert("Please select a date and time.");
+  useEffect(() => {
+    if (isOpen) {
+      // Reset the state when the modal is opened
+      setSelectedDate(null);
+      setSelectedTime(null);
+      setSelectedStage(step);
+    }
+  }, [isOpen, step]);
+
+  const timeSlots = [
+    "09:00 AM",
+    "10:00 AM",
+    "11:00 AM",
+    "12:00 PM",
+    "02:00 PM",
+    "03:00 PM",
+    "04:00 PM",
+    "05:00 PM",
+  ];
+
+  const handleSchedule = () => {
+    if (!selectedDate || !selectedTime || !selectedStage) {
+      alert("Please select date, time, and hiring stage");
       return;
     }
 
-    const timestamp = new Date(`${date}T${time}`).toISOString();
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status/${applicationId}`,
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify({
-            jobApplication: applicantId,
-            timeStamp: timestamp,
-          }),
-        }
-      );
-
-      if (response.ok) {
-        alert("Schedule updated successfully!");
-        onSchedule(date, time); // Update state in parent component
-        onClose(); // Close the modal
-      } else {
-        alert("Failed to update schedule.");
-      }
-    } catch (error) {
-      console.error("Error updating schedule:", error);
-    }
+    onSchedule(selectedDate, selectedTime, selectedStage);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Change Schedule</DialogTitle>
+          <DialogTitle>Schedule {selectedStage?.title}</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+        <div className="grid gap-4 py-4">
+          <Calendar
+            mode="single"
+            selected={selectedDate}
+            onSelect={setSelectedDate}
+            className="rounded-md border mx-auto"
+            disabled={(date) =>
+              date < new Date() || date.getDay() === 0 || date.getDay() === 6
+            }
           />
-          <input
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
+          <Select onValueChange={setSelectedTime}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select time" />
+            </SelectTrigger>
+            <SelectContent>
+              {timeSlots.map((time) => (
+                <SelectItem key={time} value={time}>
+                  {time}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select
+            value={selectedStage?.id}
+            onValueChange={(value) =>
+              setSelectedStage(hiringStages.find((stage) => stage.id === value))
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select hiring stage" />
+            </SelectTrigger>
+            <SelectContent>
+              {hiringStages.map((stage) => (
+                <SelectItem key={stage.id} value={stage.id}>
+                  {stage.title}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={handleSchedule}>Save</Button>
+          <Button
+            onClick={handleSchedule}
+            disabled={!selectedDate || !selectedTime || !selectedStage}
+          >
+            Schedule
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-};
-
-export default ScheduleModal;
+}
