@@ -35,6 +35,7 @@ const Scheduler = () => {
   const orgId = session?.organizationId;
   const accessToken = session?.access_token;
 
+
   const fetchEvents = async () => {
     try {
       const response = await fetch(
@@ -97,7 +98,7 @@ const Scheduler = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/api/applicants/${applicantId}`,
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessToken}`, 
           },
         }
       );
@@ -125,7 +126,7 @@ const Scheduler = () => {
     if (session) {
       fetchEvents();
     }
-  }, [session]);
+  }, [session]); 
 
   const eventTemplate = (props) => {
     console.log("Rendering event template with props:", props);

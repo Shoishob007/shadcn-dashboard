@@ -1,9 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
-
-// Issues in filtering
-
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { FaFacebook, FaGoogle, FaLinkedin } from "react-icons/fa";
 import { useRouter } from "next/navigation";
@@ -66,7 +63,7 @@ const DemoAppList = () => {
   const [page, setPage] = useState(1);
 
   // UI states
-  const [selectedStatus, setSelectedStatus] = useState("pending");
+  const [selectedStatus, setSelectedStatus] = useState("applied");
   const [selectedStep, setSelectedStep] = useState("");
   const [viewMode, setViewMode] = useState("card");
   const [viewCount, setViewCount] = useState(1);
@@ -93,8 +90,11 @@ const DemoAppList = () => {
       const data = await response.json();
 
       // Append new applications to existing ones
-      setJobApplications((prev) => [...prev, ...(data.docs || [])]);
-      setHasMore(data.hasNextPage || false);
+if (page === 1) {
+  setJobApplications(data.docs || []);
+} else {
+  setJobApplications((prev) => [...prev, ...(data.docs || [])]);
+}      setHasMore(data.hasNextPage || false);
     } catch (error) {
       console.error("Error fetching job applications:", error);
     }
@@ -221,10 +221,13 @@ const DemoAppList = () => {
       if (!profile) return null;
 
       const latestStatus =
-        application.applicationStatus?.docs?.[0]?.status || "pending";
+        application.applicationStatus?.docs?.[0]?.status || "applied";
+              const applicationId =
+                application.applicationStatus?.docs?.[0]?.id;
+
 
       return {
-        id: application.applicant,
+        id: application.id,
         name: getSafeValue(profile.name, "N/A"),
         CVScore: getSafeValue(profile.CVScore, profile.cv ? 75 : 0),
         CV: getSafeValue(profile.cv),
@@ -248,8 +251,8 @@ const DemoAppList = () => {
           "N/A"
         ),
         applicationStatus: latestStatus,
-        hiringStep:
-          application.applicationStatus?.docs[0]?.hiringStage?.title || "N/A",
+        applicationId: applicationId,
+        hiringStep: application.applicationStatus?.docs[0]?.hiringStage,
         createdAt: getSafeValue(application.createdAt),
       };
     })
@@ -262,14 +265,21 @@ const DemoAppList = () => {
 
   const filteredApplicants = transformedApplicants.filter((applicant) => {
     // Apply status and step filters
-    if (selectedStatus === "pending") {
-      if (applicant.applicationStatus !== "pending") return false;
-    } else if (selectedStatus === "passed") {
-      if (applicant.applicationStatus !== "passed") return false;
-    } else if (selectedStatus === "in-processing") {
-      if (applicant.applicationStatus !== "in-processing") return false;
-      if (selectedStep !== "all" && applicant.hiringStep !== selectedStep)
-        return false;
+    if (selectedStatus === "applied") {
+      return applicant.applicationStatus === "applied";
+    } else if (selectedStatus === "hired") {
+      return applicant.applicationStatus === "hired";
+    } else if (selectedStatus === "rejected") {
+      return applicant.applicationStatus === "rejected";
+    } else if (selectedStatus === "shortlisted") {
+      if (selectedStep === "all") {
+        return applicant.applicationStatus === "shortlisted";
+      } else {
+        return (
+          applicant.applicationStatus === "shortlisted" &&
+          applicant.hiringStep?.title === selectedStep
+        );
+      }
     }
 
     // Apply additional filters (search query, job role, time)
@@ -332,6 +342,33 @@ const DemoAppList = () => {
     });
   };
 
+    const handleUpdateApplication = (updatedApplication) => {
+      // Update the jobApplications state with the new applicant data
+      setJobApplications((prevApplications) => {
+        return prevApplications.map((application) => {
+          if (application.applicant === updatedApplication.id) {
+            return {
+              ...application,
+              applicationStatus: {
+                ...application.applicationStatus,
+                docs: [
+                  {
+                    ...application.applicationStatus?.docs?.[0],
+                    status: updatedApplication.applicationStatus,
+                    hiringStage: updatedApplication.hiringStep.id,
+                  },
+                ],
+              },
+            };
+          }
+          return application;
+        });
+      });
+    };
+
+    console.log("filtered applicants :: ", filteredApplicants)
+    // console.log("transformed Applicants :: ", transformedApplicants)
+
   return (
     <>
       <Breadcrumb className="mb-4">
@@ -379,7 +416,8 @@ const DemoAppList = () => {
             <div>
               {viewMode === "list" ? (
                 <ApplicantsTable
-                  applicants={filteredApplicants}
+                  applications={filteredApplicants}
+                  onUpdateApplicant={handleUpdateApplication}
                   calculateTotalExperience={calculateTotalExperience}
                   handleViewDetails={handleViewDetails}
                   viewCount={viewCount}

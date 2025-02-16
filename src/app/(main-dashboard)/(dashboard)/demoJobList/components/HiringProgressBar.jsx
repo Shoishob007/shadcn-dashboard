@@ -41,19 +41,19 @@ const HiringProgress = ({ currentStage, totalStages, stages, status }) => {
     }
   };
 
-  console.log("Current stage :: ", currentStage)
+  // console.log("Current stage :: ", currentStage)
 
   return (
     <div className="w-full px-2 py-4">
       {/* Current stage info */}
       <div className="flex justify-between items-center mb-6">
-        <span
+        {/* <span
           className={`hidden md:block text-sm font-medium ${getStatusColor(
             status
           ).replace("bg-", "text-")}`}
         >
           {stages[currentStage - 1]?.title || "Not specified"}
-        </span>
+        </span> */}
         {/* <span className="text-xs text-gray-500">
           Stage {currentStage ?? + 1 } of {stages.length}
         </span> */}
@@ -77,11 +77,6 @@ const HiringProgress = ({ currentStage, totalStages, stages, status }) => {
           {stages.map((stage, index) => {
             const isCompleted = index < currentStage - 1;
             const isCurrent = index === currentStage - 1;
-            // const stageStatus = isCurrent
-            //   ? status
-            //   : isCompleted
-            //   ? "hired"
-            //   : "shortlisted";
 
             return (
               <TooltipProvider key={index}>
