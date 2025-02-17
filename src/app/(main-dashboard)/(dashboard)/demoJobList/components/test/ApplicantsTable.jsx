@@ -14,7 +14,6 @@ import { useSession } from "next-auth/react";
 import StepSelector from "../../../demoAppList/demoAppDetails/components/StepSelector";
 import ScheduleModal from "../../../demoAppList/demoAppDetails/components/ScheduleModal";
 import { Button } from "@/components/ui/button";
-import StatusModal from "../../../demoAppList/demoAppDetails/components/StatusModal";
 import { useToast } from "@/hooks/use-toast";
 
 const ApplicantsTable = ({

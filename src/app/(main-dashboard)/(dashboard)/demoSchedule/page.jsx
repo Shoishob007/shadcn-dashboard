@@ -24,9 +24,10 @@ import { House } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useSession } from "next-auth/react";
 import { format } from "date-fns";
+import EventEditor from "./components/EventEditor";
 
 registerLicense(
-  "Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCfEx3TXxbf1x1ZFREalxQTnVYUiweQnxTdEBjWH5XcHRVR2RcWEN3Xw=="
+  "Ngo9BigBOggjHTQxAR8/V1NMaF1cXmhKYVJ/WmFZfVtgdl9EYVZUQmY/P1ZhSXxWdkdiXn5acnVQT2VbVUE="
 );
 
 const Scheduler = () => {
@@ -175,14 +176,7 @@ const Scheduler = () => {
           application?.applicationStatus?.docs[0]?.hiringStage?.order;
         const saveButton = document.querySelector(".e-event-save");
         const deleteButton = document.querySelector(".e-event-delete");
-
-        if (saveButton) {
-          saveButton.innerText = order === 5 ? "Hire" : "Schedule";
-        }
-
-        if (deleteButton) {
-          deleteButton.innerText = "Reject";
-        }
+        const cancelButton = document.querySelector(".e-event-cancel");
 
         // Add hiring stages to the form
         const stageSelect = document.createElement("select");
@@ -196,9 +190,7 @@ const Scheduler = () => {
         });
 
         const formElement = document.querySelector(".e-schedule-form");
-        const repeatContainer = formElement.querySelector(
-          ".e-editor"
-        );
+        const repeatContainer = formElement.querySelector(".e-editor");
         if (repeatContainer) {
           const repeatLabel = repeatContainer.querySelector(".e-float-line");
           if (repeatLabel) {
@@ -225,6 +217,15 @@ const Scheduler = () => {
         if (allDayElement) {
           allDayElement.parentNode.removeChild(allDayElement);
         }
+        if (saveButton) {
+          saveButton.parentNode.removeChild(saveButton);
+        }
+        if (deleteButton) {
+          deleteButton.parentNode.removeChild(deleteButton);
+        }
+        if (cancelButton) {
+          cancelButton.parentNode.removeChild(cancelButton);
+        }
       }, 0);
     }
   };
@@ -240,6 +241,8 @@ const Scheduler = () => {
   });
 
   const handleCellClick = (args) => {
+    args.cancel = true;
+
     const clickedDate = new Date(args.startTime);
     const formattedDate = format(clickedDate, "MMMM d, yyyy");
     const formattedTime = format(clickedDate, "h:mm a");
@@ -306,6 +309,21 @@ const Scheduler = () => {
     );
   }
 
+  const editorTemplate = (props) => {
+    const handleClose = () => {
+      const scheduleObj =
+        document.querySelector(".e-schedule").ej2_instances[0];
+      scheduleObj.closeEditor();
+    };
+    return (
+      <EventEditor
+        props={props}
+        hiringStages={hiringStages}
+        accessToken={accessToken}
+        onClose={handleClose}
+      />
+    );
+  };
   return (
     <>
       <Breadcrumb className="mb-4">
@@ -328,6 +346,7 @@ const Scheduler = () => {
             dataSource: events,
             template: eventTemplate,
           }}
+          editorTemplate={editorTemplate}
           cssClass={theme === "dark" ? "dark" : "light"}
           eventRendered={eventTemplate}
           popupOpen={handlePopupOpen}
