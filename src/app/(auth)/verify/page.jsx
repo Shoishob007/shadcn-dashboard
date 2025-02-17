@@ -10,11 +10,14 @@ export default function VerifyPage() {
   const { toast } = useToast();
   const searchParams = useSearchParams();
   const token = useMemo(() => searchParams.get("token"), [searchParams]);
-  console.log("Token: ", token);
+  console.log("Token: ", token); // Log the token immediately after retrieval
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
+    console.log("handleSubmit triggered"); // Log when handleSubmit is called
+
     if (!token) {
+      console.log("No token found, displaying error toast");
       toast({
         title: "Error",
         description: "No token found for verification.",
@@ -23,10 +26,15 @@ export default function VerifyPage() {
       return;
     }
 
-    if (loading) return;
+    if (loading) {
+      console.log("Already loading, exiting handleSubmit");
+      return;
+    }
     setLoading(true);
+    console.log("Set loading to true");
 
     try {
+      console.log("Attempting to fetch verification API");
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-email/${token}`,
         {
@@ -38,27 +46,37 @@ export default function VerifyPage() {
         }
       );
 
+      console.log("Verification API request sent");
+
       if (!response.ok) {
+        console.error("Verification API request failed");
         const errorData = await response.json();
+        console.error("Error data:", errorData);
         throw new Error(errorData.message || "Verification failed.");
       }
 
+      console.log("Verification API request successful");
       const data = await response.json();
+      console.log("Verification API response data:", data);
 
+      console.log("Attempting to sign in");
       await signIn("credentials", {
         email: data.user.email,
-        token: data.token,
+        token: token,
         redirect: false,
       });
 
+      console.log("Sign in successful");
       toast({
         title: "Success",
         description: "Verification successful! You are now logged in.",
         variant: "ourSuccess",
       });
 
+      console.log("Redirecting to home page");
       router.push("/");
     } catch (error) {
+      console.error("Error during verification process:", error);
       toast({
         title: "Error",
         description: error.message,
@@ -66,6 +84,7 @@ export default function VerifyPage() {
       });
     } finally {
       setLoading(false);
+      console.log("Set loading to false");
     }
   };
 
