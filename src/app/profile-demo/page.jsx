@@ -17,6 +17,7 @@ const ProfileDemo = () => {
   const [profileData, setProfileData] = useState(null);
   const { data: session } = useSession();
   const accessToken = session?.access_token;
+  console.log("Access token: ", accessToken)
   useEffect(() => {
     const getProfileData = async () => {
       try {
@@ -35,8 +36,8 @@ const ProfileDemo = () => {
         }
 
         const data = await response.json();
-        setProfileData(data.docs);
-        // console.log("Profile data: ", data.docs);
+        setProfileData(data?.docs);
+        console.log("Profile data: ", data.docs);
       } catch (error) {
         console.error("Error fetching profile data:", error);
       }
