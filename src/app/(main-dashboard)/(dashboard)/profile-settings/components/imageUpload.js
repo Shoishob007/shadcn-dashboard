@@ -1,40 +1,6 @@
 export const uploadCoverImage = async (file, accessToken, organizationId) => {
-    if (file) {
-        const formData = new FormData();
-        formData.append("img", file, file.name);
-
-        try {
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${organizationId}`,
-                {
-                    method: "PATCH",
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                    body: formData,
-                }
-            );
-
-            if (!response.ok) {
-                console.error("Failed to upload and update cover image");
-                return;
-            }
-
-            const result = await response.json();
-            // console.log("Patch request response: ", result)
-            const updatedImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${result.doc.img.url}`;
-            console.log("Cover image updated successfully:", updatedImageUrl);
-            return updatedImageUrl;
-        } catch (error) {
-            console.error("Error uploading cover image:", error);
-        }
-    }
-};
-
-
-export const uploadLogoImage = async (file, accessToken, session, orgId, update) => {
     const formData = new FormData();
-    formData.append("file", file, file.name);
+    formData.append("file", file);
 
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/media-images`, {
@@ -45,52 +11,83 @@ export const uploadLogoImage = async (file, accessToken, session, orgId, update)
 
         if (response.ok) {
             const result = await response.json();
-            // console.log(result.doc)
-            const imageUrl = `${process.env.NEXT_PUBLIC_API_URL}${result.doc.url}`;
+            const imageID = result.doc.id;
+            const imageURL = `${process.env.NEXT_PUBLIC_API_URL}${result.doc.url}`;
 
-            console.log("Profile/logo image uploaded successfully:", imageUrl);
+            console.log("Cover image uploaded successfully:", imageID);
 
-            const updateResponse = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/users/${session?.user?.id}`,
+            // Update the organization's cover image with the new image ID
+            const updatedResponse = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${organizationId}`,
                 {
                     method: "PATCH",
                     headers: {
-                        "Content-Type": "application/json",
                         Authorization: `Bearer ${accessToken}`,
+                        "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        pictureUrl: imageUrl,
+                        img: imageID,
                     }),
                 }
             );
 
-            // console.log("Update response after the patch request :", updateResponse.json())
-
-            if (!updateResponse.ok) {
-                console.error("Failed to update organization with new pictureUrl");
-                return false;
+            if (!updatedResponse.ok) {
+                console.error("Failed to update organization with new cover image");
+                return null;
             }
 
-            // console.log("Organization updated with new pictureUrl");
+            console.log("Organization updated with new cover image");
+            return imageURL;
+        } else {
+            console.error("Failed to upload cover image");
+            return null;
+        }
+    } catch (error) {
+        console.error("Error uploading cover image:", error);
+        return null;
+    }
+};
 
+
+export const uploadLogoImage = async (file, accessToken, session, update) => {
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/media-images`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${accessToken}` },
+            body: formData,
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+
+            console.log("Upload response ::", result);
+
+            const imageURL = `${process.env.NEXT_PUBLIC_API_URL}${result.doc?.url}`;
+
+            console.log("imageURL:", imageURL);
+
+            // Updating the session 
             const updatedSession = {
                 ...session,
                 user: {
                     ...session.user,
-                    image: imageUrl,
+                    image: imageURL,
                 },
             };
-
-            await update(updatedSession);
-
-            console.log("Session updated with new profile image");
-            return true;
+            await update(updatedSession); 
+            return imageURL;
         } else {
-            console.error("Failed to upload logo/profile picture");
-            return false;
+            console.error("Failed to upload logo/profile picture. Response status:", response.status);
+            const errorText = await response.text();
+            console.error("Response Text:", errorText);
+            return null;
         }
     } catch (error) {
         console.error("Error uploading logo/profile picture:", error);
-        return false;
+        return null;
     }
 };

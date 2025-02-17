@@ -18,41 +18,43 @@ const ProfileSetting = () => {
   const accessToken = session?.access_token;
   const organizationId = session?.organizationId;
 
-  // useEffect(() => {
-  //   const fetchUserCoverPhoto = async () => {
-  //     if (accessToken && session) {
-  //       try {
-  //         const response = await fetch(
-  //           `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${organizationId}`,
-  //           {
-  //             headers: {
-  //               Authorization: `Bearer ${accessToken}`,
-  //             },
-  //           }
-  //         );
+  console.log("session :: ", session);
 
-  //         if (response.ok) {
-  //           const userData = await response.json();
-  //           const fullImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${userData?.img?.url}`;
-  //           setCoverPhoto(fullImageUrl || "");
-  //           setLoadingCoverPhoto(false);
-  //         } else {
-  //           console.error("Failed to fetch user cover photo.");
-  //           setLoadingCoverPhoto(false);
-  //         }
-  //       } catch (error) {
-  //         console.error("Error fetching user cover photo:", error);
-  //         setLoadingCoverPhoto(false);
-  //       }
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchUserCoverPhoto = async () => {
+      if (accessToken && session) {
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${organizationId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
 
-  //   fetchUserCoverPhoto();
-  // }, [accessToken, session, organizationId]);
+          if (response.ok) {
+            const userData = await response.json();
+            const fullImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${userData?.img?.url}`;
+            setCoverPhoto(fullImageUrl || "");
+            setLoadingCoverPhoto(false);
+          } else {
+            console.error("Failed to fetch user cover photo.");
+            setLoadingCoverPhoto(false);
+          }
+        } catch (error) {
+          console.error("Error fetching user cover photo:", error);
+          setLoadingCoverPhoto(false);
+        }
+      }
+    };
 
-  // useEffect(() => {
-  //   setProfileImage(session?.user?.image || "");
-  // }, [session, organizationId, accessToken]);
+    fetchUserCoverPhoto();
+  }, [accessToken, session, organizationId]);
+
+  useEffect(() => {
+    setProfileImage(session?.user?.image || "");
+  }, [session, organizationId, accessToken]);
 
   const handleCoverChange = async (e) => {
     const file = e.target?.files?.[0];
@@ -76,20 +78,21 @@ const ProfileSetting = () => {
   const handleLogoChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const success = await uploadLogoImage(
+      const imageURL = await uploadLogoImage(
         file,
         accessToken,
         session,
-        organizationId,
-        async (updatedSession) => {
-          setProfileImage(updatedSession?.user?.image);
-        }
+        update,
       );
-      if (!success) {
+      if (imageURL) {
+        // Updating the local state
+        setProfileImage(imageURL);
+      } else {
         console.error("Failed to upload logo.");
       }
     }
   };
+
 
   useEffect(() => {
     const handleSessionUpdate = (event) => {
