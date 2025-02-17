@@ -405,6 +405,14 @@
   color: chocolate;
 }
 
+.e-editor{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
 
 /* Dark Mode Styling */
 .dark .e-schedule {
