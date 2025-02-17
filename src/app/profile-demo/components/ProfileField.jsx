@@ -1,12 +1,26 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { toast } from "@/hooks/use-toast";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-const ProfileField = ({ profileData, data }) => {
+const ProfileField = ({ data }) => {
   const { data: session } = useSession();
   const accessToken = session?.access_token;
   const { id } = data;
@@ -14,19 +28,48 @@ const ProfileField = ({ profileData, data }) => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
 
-  const onSubmit = async (value) => {
-    // console.log(value);
+  const [designations, setDesignations] = useState([]);
+  const [selectedDesignation, setSelectedDesignation] = useState(null);
+  const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    const getDesignations = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/designations`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        const designationRes = await response.json();
+        const fetchedDesignations = designationRes.docs.map((d) => ({
+          id: d.id,
+          title: d.title,
+        }));
+        setDesignations(fetchedDesignations);
+      } catch (error) {
+        console.error("Error fetching designations: ", error.message);
+      }
+    };
+    getDesignations();
+  }, [accessToken]);
+
+  const onSubmit = async (value) => {
     const profileInfo = {
       name: value.name,
       phone: value.phone,
       email: value.email,
-      //   designation: value.designation,
       bloodGroup: value.bloodGroup,
+      address: value.address,
+      designation: selectedDesignation?.id,
     };
-    console.log("profile info: ", profileInfo);
+    console.log("Designation: ", profileInfo);
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/applicants/${id}`,
@@ -40,36 +83,19 @@ const ProfileField = ({ profileData, data }) => {
         }
       );
       const profileResponse = await response.json();
-      if(profileResponse?.doc?.id){
+      console.log("Profile Response: ", profileResponse);
+      if (profileResponse?.doc?.id) {
         toast({
           title: "Success",
           description: profileResponse?.message,
           variant: "success",
         });
       }
-      console.log("profile response data: ", profileResponse);
     } catch (error) {
-      console.log("Error in Profile info: ", error.message);
+      console.error("Error updating profile info: ", error.message);
     }
   };
-  //   console.log(id);
-  //   console.log("Profile field : ", data);
 
-  //   useEffect(() => {
-  //     const setProfileData = async () => {
-  //       const response = await fetch(
-  //         `${NEXT_PUBLIC_API_URL}/api/applicants/${id}`,
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${accessToken}`,
-  //           },
-  //         }
-  //       );
-  //     };
-  //     setProfileData();
-  //   }, [id, accessToken]);
   return (
     <div className="mt-6">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -86,13 +112,36 @@ const ProfileField = ({ profileData, data }) => {
           </div>
           <div>
             <Label htmlFor="designation">Designation</Label>
-            <Input
-              id="designation"
-              type="text"
-              defaultValue="Frontend Engineer"
-              className="mt-2.5"
-              {...register("designation")}
-            />
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="mt-2.5 w-full">
+                  {selectedDesignation
+                    ? selectedDesignation.title
+                    : "Select Designation"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0">
+                <Command>
+                  <CommandInput placeholder="Search designation..." />
+                  <CommandList>
+                    <CommandEmpty>No results found.</CommandEmpty>
+                    <CommandGroup>
+                      {designations.map((designation) => (
+                        <CommandItem
+                          key={designation.id}
+                          onSelect={() => {
+                            setSelectedDesignation(designation);
+                            setOpen(false);
+                          }}
+                        >
+                          {designation.title}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
           <div>
             <Label htmlFor="phone">Phone</Label>
@@ -115,16 +164,6 @@ const ProfileField = ({ profileData, data }) => {
             />
           </div>
           <div>
-            <Label htmlFor="experience">Experience</Label>
-            <Input
-              id="experience"
-              type="text"
-              defaultValue="1 Year"
-              className="mt-2.5"
-              //   {...register("experiences")}
-            />
-          </div>
-          <div>
             <Label htmlFor="bloodGroup">Blood Group</Label>
             <Input
               id="bloodGroup"
@@ -135,34 +174,15 @@ const ProfileField = ({ profileData, data }) => {
             />
           </div>
           <div>
-            <Label htmlFor="education">Highest Education</Label>
+            <Label htmlFor="address">Address</Label>
             <Input
-              id="education"
-              type="text"
-              defaultValue="B.Sc"
-              className="mt-2.5"
-              //   {...register("educations")}
-            />
-          </div>
-          <div>
-            <Label htmlFor="education">Address</Label>
-            <Input
-              id="Address"
+              id="address"
               type="text"
               defaultValue={data?.address}
               className="mt-2.5"
-                {...register("address")}
+              {...register("address")}
             />
           </div>
-        </div>
-        <div className="mt-6">
-          <Label htmlFor="description">Description</Label>
-          <textarea
-            id="description"
-            className="w-full mt-2.5 px-5 py-4 rounded-lg border bg-[#f0f5f7] text-[#696969] text-sm"
-            rows="5"
-            defaultValue="A creative and detail-oriented Frontend Developer with a strong focus on user experience and design aesthetics. Dedicated to crafting visually appealing, responsive, and user-friendly interfaces that enhance engagement. Skilled in turning ideas into functional web solutions while maintaining a commitment to delivering quality and meeting project goals effectively."
-          ></textarea>
         </div>
         <div className="mt-3 flex items-center justify-end">
           <Button type="submit">Save changes</Button>

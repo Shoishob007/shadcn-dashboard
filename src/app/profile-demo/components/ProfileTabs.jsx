@@ -7,7 +7,7 @@ import Projects from "./Projects";
 import Resume from "./Resume";
 import Skills from "./Skills";
 
-const ProfileTabs = ({profileData}) => {
+const ProfileTabs = ({profileData = []}) => {
   return (
     <div>
       <Tabs defaultValue="overview" className="">
