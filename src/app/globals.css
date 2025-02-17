@@ -992,21 +992,3 @@
   @apply border border-gray-400
 }
 
-
-
-.custom-event-card {
-  background-color: var(--background-color);
-  border-radius: 4px;
-  padding: 10px;
-  color: var(--text-color);
-}
-
-.custom-event-title {
-  font-weight: bold;
-}
-
-.custom-event-description {
-  margin-top: 5px;
-}
-
-
