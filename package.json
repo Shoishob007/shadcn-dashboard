@@ -38,6 +38,8 @@
     "@react-hook/window-size": "^3.1.1",
     "@syncfusion/ej2-base": "^28.1.33",
     "@syncfusion/ej2-buttons": "^28.1.33",
+    "@syncfusion/ej2-react-calendars": "^28.2.3",
+    "@syncfusion/ej2-react-dropdowns": "^28.2.5",
     "@syncfusion/ej2-react-schedule": "^28.1.35",
     "@tanstack/react-table": "^8.20.5",
     "autoprefixer": "^10.4.20",
