@@ -21,10 +21,6 @@ const JobInfoCard = ({ job }) => {
 
   if (!job) return null;
 
-  // function (text) {
-  //   return text.charAt(0).toUpperCase() + text.slice(1);
-  // }
-
   const handleEdit = () => {
     setIsDialogOpen(true);
   };

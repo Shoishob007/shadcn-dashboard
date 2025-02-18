@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
-const EventEditor = ({ props, hiringStages, accessToken }) => {
+const EventEditor = ({ props, hiringStages, accessToken, onClose }) => {
   const { toast } = useToast();
 
   const [selectedHiringStage, setSelectedHiringStage] = useState(
@@ -50,21 +50,21 @@ const EventEditor = ({ props, hiringStages, accessToken }) => {
           description: `Applicant has been ${
             status === "hired" ? "hired" : "scheduled"
           }.`,
-          variant: "default",
+          variant: "ourSuccess",
         });
         onClose();
       } else {
         toast({
           title: "Error!",
           description: "Failed to update the applicant status.",
-          variant: "destructive",
+          variant: "ourDestructive",
         });
       }
     } catch (error) {
       toast({
         title: "Error!",
         description: "An error occurred while updating the applicant status.",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
     }
   };
@@ -96,21 +96,21 @@ const EventEditor = ({ props, hiringStages, accessToken }) => {
         toast({
           title: "Success!",
           description: "Applicant has been rejected.",
-          variant: "default",
+          variant: "ourSuccess",
         });
         onClose();
       } else {
         toast({
           title: "Error!",
           description: "Failed to reject the applicant.",
-          variant: "destructive",
+          variant: "ourDestructive",
         });
       }
     } catch (error) {
       toast({
         title: "Error!",
         description: "An error occurred while rejecting the applicant.",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
     }
   };
@@ -126,6 +126,7 @@ const EventEditor = ({ props, hiringStages, accessToken }) => {
           type="text"
           name="Subject"
           defaultValue={props.Subject || ""}
+          readOnly
         />
       </div>
 
@@ -137,6 +138,7 @@ const EventEditor = ({ props, hiringStages, accessToken }) => {
           className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
           name="Description"
           defaultValue={props.Description || ""}
+          readOnly
         />
       </div>
 
@@ -149,6 +151,7 @@ const EventEditor = ({ props, hiringStages, accessToken }) => {
           type="text"
           name="Location"
           defaultValue={props.Location || ""}
+          readOnly
         />
       </div>
 
