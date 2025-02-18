@@ -64,9 +64,12 @@ export default function CreateJobCard() {
       }
 
       const responseData = await response.json();
+      console.log("Response after job create :: ", responseData)
       reset();
 
       const newJobId = responseData.doc.id;
+      console.log("New Job Id :: ", newJobId);
+      // console.log("New Job.job Id :: ", responseData.doc.job.id);
 
       const query = qs.stringify(
         {

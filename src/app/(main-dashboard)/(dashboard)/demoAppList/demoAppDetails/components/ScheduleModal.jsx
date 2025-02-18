@@ -94,7 +94,7 @@ export default function ScheduleModal({
               <SelectValue placeholder="Select hiring stage" />
             </SelectTrigger>
             <SelectContent>
-              {hiringStages.map((stage) => (
+              {hiringStages?.map((stage) => (
                 <SelectItem key={stage.id} value={stage.id}>
                   {stage.title}
                 </SelectItem>

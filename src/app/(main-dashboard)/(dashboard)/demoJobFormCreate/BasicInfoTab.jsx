@@ -17,11 +17,9 @@ import { X } from "lucide-react";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
-export function BasicInfoTab({ form, jobRoles = [], designations = [], callback }) {
+export function BasicInfoTab({ form, designations = [], callback }) {
   const [responsibilitiesContent, setResponsibilitiesContent] = useState("");
   const [benefitsContent, setBenefitsContent] = useState("");
-  const [stepsData, setStepsData] = useState([]);
-  const [stepsIds, setStepsIds] = useState([]);
   const currentSubscriptionId = orgSettings.docs[0]?.subscriptionId;
 
   // Job Role state
@@ -70,7 +68,7 @@ export function BasicInfoTab({ form, jobRoles = [], designations = [], callback 
 
     // Initialize job roles
     if (formValues.jobRole?.length > 0) {
-      const initialJobRoles = formValues.jobRole
+      const initialJobRoles = formValues?.jobRole
         .map((roleId) => {
           const role = jobRoles.find((r) => r.id === roleId);
           return role ? { id: role.id, title: role.title } : null;
@@ -93,7 +91,7 @@ export function BasicInfoTab({ form, jobRoles = [], designations = [], callback 
       }
     }
 
-  }, [form, jobRoles, designations]);
+  }, [form, designations]);
 
   useEffect(() => {
     const responsibilities = form.getValues("responsibilities") || [];

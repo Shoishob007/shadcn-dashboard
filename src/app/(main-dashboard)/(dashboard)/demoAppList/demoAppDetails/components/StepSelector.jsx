@@ -13,7 +13,7 @@ export default function StepSelector({
   const [isLastStage, setIsLastStage] = useState(false);
 
   useEffect(() => {
-    const lastStageIndex = hiringStages.length - 1;
+    const lastStageIndex = hiringStages?.length - 1;
     setIsLastStage(selectedStep?.order === lastStageIndex + 1);
   }, [selectedStep, hiringStages]);
 

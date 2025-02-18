@@ -19,13 +19,13 @@ import { useToast } from "@/hooks/use-toast";
 const ApplicantsTable = ({
   applications,
   onUpdateApplicant,
+  handleViewDetails,
   viewCount,
   setViewCount,
   maxViews,
   hiringStages,
 }) => {
-
-  console.log("Applicants i got in the appicants table ")
+  // console.log("Applicants i got in the appicants table :: ", applications);
   const { data: session } = useSession();
   const accessToken = session?.access_token;
   const { toast } = useToast();
@@ -273,7 +273,7 @@ const ApplicantsTable = ({
 
   const renderHiringStages = (applicant) => {
     const latestStageOrder = applicant.hiringStep?.order || 0;
-    const latestStatus = applicant.applicationStatus || "applied";
+    const latestStatus = applicant?.applicationStatus || "applied";
 
     return (
       <HiringProgress
@@ -284,6 +284,8 @@ const ApplicantsTable = ({
       />
     );
   };
+
+  console.log("applications :: ", applications);
 
   return (
     <>
@@ -381,7 +383,7 @@ const ApplicantsTable = ({
                 {/* Action */}
                 <td className="px-2 py-3 text-center">
                   <StepSelector
-                    selectedStep={application.hiringStep}
+                    selectedStep={application?.hiringStep}
                     onStepChange={(newStage) =>
                       handleStepChange(
                         application.id,
@@ -421,6 +423,9 @@ const ApplicantsTable = ({
                               setIsPricingDialogOpen(true);
                             } else {
                               setViewCount((prev) => prev + 1);
+                              handleViewDetails(
+                                application.applicantProfileID , application.id, application.applicationId
+                              );
                             }
                           }}
                         >

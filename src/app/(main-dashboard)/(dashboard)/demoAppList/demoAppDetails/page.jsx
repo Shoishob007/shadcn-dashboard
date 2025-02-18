@@ -1,12 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-// import { applicantsData } from "../../demoAppList/components/applicantsData";
+import React, { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { ScheduleModal } from "./components/ScheduleModal";
 import {
   Linkedin,
   Facebook,
@@ -20,7 +17,7 @@ import {
   House,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { StepSelector } from "./components/StepSelector";
+import StepSelector from "./components/StepSelector";
 import {
   Tooltip,
   TooltipContent,
@@ -35,22 +32,38 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { useSession } from "next-auth/react";
+import ScheduleModal from "./components/ScheduleModal";
+import { useToast } from "@/hooks/use-toast";
+import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
-const ApplicantDetails = () => {
+const ApplicantDetails = ({
+  inHome,
+  applicantId,
+  jobApplicationId,
+  applicationStatusId,
+  hiringStages,
+}) => {
+    console.log("Applicant Profile ID:", applicantId);
+    console.log("Job Application ID:", jobApplicationId);
+    console.log("Application Status ID:", applicationStatusId);
+  console.log("Hiring stages :: ", hiringStages);
   const searchParams = useSearchParams();
-  const applicantId = searchParams.get("id");
+  const jobApplication = searchParams.get("id");
+  console.log("jobApplication :: ", jobApplication)
   const { data: session } = useSession();
   const accessToken = session?.access_token;
+  const { toast } = useToast();
   const [applicant, setApplicant] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [status, setStatus] = useState("applied");
   const [selectedStep, setSelectedStep] = useState("");
-  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [schedule, setSchedule] = useState({
-    date: null,
-    time: "",
+  const [scheduleModal, setScheduleModal] = useState({
+    isOpen: false,
+    applicantId: null,
+    applicationId: null,
+    step: null,
   });
 
   useEffect(() => {
@@ -64,14 +77,13 @@ const ApplicantDetails = () => {
             },
           }
         );
-        console.log("REsponse :: ", response);
         if (!response.ok) {
           throw new Error("Failed to fetch applicant data");
         }
         const data = await response.json();
         setApplicant(data);
-        setStatus(data.status || "applied");
-        setSelectedStep(data.steps || "");
+        setStatus(data?.status || "applied");
+        setSelectedStep(data?.steps || "");
       } catch (err) {
         setError(err.message);
       } finally {
@@ -84,7 +96,212 @@ const ApplicantDetails = () => {
     }
   }, [applicantId, accessToken]);
 
-  console.log("Applicant we got :: ", applicant);
+  const handleStepChange = async (newStage) => {
+    if (!applicationStatusId) {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({
+              jobApplication: jobApplication,
+              hiringStage: hiringStages.docs[0].id,
+              status: "shortlisted",
+              timeStamp: new Date().toISOString(),
+            }),
+          }
+        );
+
+        if (response.ok) {
+          setStatus("shortlisted");
+          setSelectedStep(newStage);
+          toast({
+            title: "Success",
+            description: "Applicant shortlisted successfully.",
+            variant: "ourSuccess",
+          });
+        } else {
+          throw new Error("Failed to shortlist applicant");
+        }
+      } catch (error) {
+        console.error("Error updating applicant status:", error);
+        toast({
+          title: "Error",
+          description: "Failed to shortlist applicant. Please try again.",
+          variant: "ourDestructive",
+        });
+      }
+    } else {
+      setScheduleModal({
+        isOpen: true,
+        applicantId: jobApplicationId,
+        applicationStatusId: applicationStatusId,
+        step: newStage,
+      });
+    }
+  };
+
+  const handleReject = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status/${applicationStatusId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            jobApplication: jobApplicationId,
+            status: "rejected",
+          }),
+        }
+      );
+
+      if (response.ok) {
+        setStatus("rejected");
+        toast({
+          title: "Success",
+          description: "Applicant rejected successfully.",
+          variant: "success",
+        });
+      } else {
+        throw new Error("Failed to reject applicant");
+      }
+    } catch (error) {
+      console.error("Error updating applicant status:", error);
+      toast({
+        title: "Error",
+        description: "Failed to reject applicant. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleHire = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status/${applicationStatusId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            jobApplication: jobApplicationId,
+            status: "hired",
+          }),
+        }
+      );
+
+      if (response.ok) {
+        setStatus("hired");
+        toast({
+          title: "Success!",
+          description: "Applicant hired successfully.",
+          variant: "ourSuccess",
+        });
+      } else {
+        throw new Error("Failed to hire applicant");
+      }
+    } catch (error) {
+      console.error("Error updating applicant status:", error);
+      toast({
+        title: "Error!",
+        description: "Failed to hire applicant. Please try again.",
+        variant: "ourDestructive",
+      });
+    }
+  };
+
+  const handleSchedule = async (date, time, selectedStage) => {
+    if (!(date instanceof Date) || isNaN(date.getTime())) {
+      console.error("Invalid date value");
+      toast({
+        title: "Error",
+        description: "Invalid date selected.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const convertTo24Hour = (time) => {
+      const match = time.match(/^(\d{1,2}):(\d{2})\s?(AM|PM)$/i);
+      if (!match) return null;
+
+      let [_, hours, minutes, period] = match;
+      hours = parseInt(hours, 10);
+      if (period.toUpperCase() === "PM" && hours !== 12) {
+        hours += 12;
+      } else if (period.toUpperCase() === "AM" && hours === 12) {
+        hours = 0;
+      }
+      return `${String(hours).padStart(2, "0")}:${minutes}:00`;
+    };
+
+    const formattedTime = convertTo24Hour(time);
+    if (!formattedTime) {
+      console.error("Invalid time format");
+      toast({
+        title: "Error",
+        description: "Invalid time format. Please use HH:MM AM/PM.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const timestamp = new Date(
+      `${date.toISOString().split("T")[0]}T${formattedTime}Z`
+    ).toISOString();
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status/${applicationStatusId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            jobApplication: jobApplicationId,
+            hiringStage: selectedStage.id,
+            timeStamp: timestamp,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        setStatus("scheduled");
+        setSelectedStep(selectedStage);
+        toast({
+          title: "Success",
+          description: "Applicant schedule updated successfully.",
+          variant: "success",
+        });
+        setScheduleModal({
+          isOpen: false,
+          applicantId: null,
+          applicationId: null,
+          step: null,
+        });
+      } else {
+        throw new Error("Failed to update hiring stage");
+      }
+    } catch (error) {
+      console.error("Error updating applicant status:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update hiring stage. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   if (loading) {
     return (
@@ -109,26 +326,6 @@ const ApplicantDetails = () => {
       </div>
     );
   }
-
-  const handleStepChange = (step) => {
-    setSelectedStep(step);
-    setStatus("shortlisted");
-    setSchedule({ date: null, time: "" });
-    setIsScheduleModalOpen(true);
-  };
-
-  const handleReject = () => {
-    setStatus("rejected");
-    setSelectedStep("");
-  };
-
-  const handleSchedule = (date, time) => {
-    setSchedule({ date, time });
-  };
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
 
   const {
     name = "N/A",
@@ -182,7 +379,6 @@ const ApplicantDetails = () => {
           <div className="flex flex-col items-center">
             <div className="flex items-start sm:items-center gap-4">
               <Avatar className="h-16 sm:h-24 w-16 sm:w-24 border-4 border-emerald-300 dark:border-emerald-400">
-                <AvatarImage src={applicant.img} alt={displayName} />
                 <AvatarFallback className="text-xl sm:text-2xl md:text-4xl bg-emerald-400 dark:bg-emerald-500 text-white">
                   {displayName.charAt(0)}
                 </AvatarFallback>
@@ -193,7 +389,7 @@ const ApplicantDetails = () => {
                   {displayName}
                 </h2>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
-                  {designation}
+                  {designation?.title || "Not Provided"}
                 </p>
                 <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 items-center">
                   🩸 {bloodGroup}
@@ -206,7 +402,7 @@ const ApplicantDetails = () => {
                 {displayName}
               </h2>
               <p className="text-sm text-gray-600 dark:text-gray-300">
-                {designation}
+                {designation.title}
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 🩸 {bloodGroup}
@@ -228,21 +424,15 @@ const ApplicantDetails = () => {
                 </p>
                 <div className="flex gap-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300 justify-center">
                   {socialLinks.length > 0 ? (
-                    socialLinks.map((link) => (
+                    socialLinks.map((link, index) => (
                       <a
-                        key={link.id}
+                        key={index}
                         href={link.socialMediaUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-gray-600 dark:text-gray-300 hover:text-blue-500 transition"
                       >
-                        {link.socialMedia?.title === "facebook" ? (
-                          <Facebook size={16} />
-                        ) : link.socialMedia?.title === "linkedin" ? (
-                          <Linkedin size={16} />
-                        ) : (
-                          <Globe size={16} />
-                        )}
+                        <Globe size={16} />
                       </a>
                     ))
                   ) : (
@@ -271,56 +461,15 @@ const ApplicantDetails = () => {
               View Resume
             </Button>
 
-            {status === "applied" ? (
-              <StepSelector
-                selectedStep={selectedStep}
-                onStepChange={handleStepChange}
-                onReject={handleReject}
-              />
-            ) : status === "shortlisted" ? (
-              <div className="flex flex-col gap-2 items-center">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div
-                        className="text-[10px] bg-yellow-100 text-yellow-600 border border-yellow-500 font-medium dark:border-yellow-600 dark:bg-yellow-100 dark:text-yellow-700 dark:hover:bg-yellow-200 p-1.5 rounded-md cursor-pointer"
-                        onClick={toggleDropdown}
-                      >
-                        {schedule.date
-                          ? `${selectedStep}: ${schedule.date.toLocaleDateString()} at ${
-                              schedule.time
-                            }`
-                          : `Appearing ${selectedStep || "Step not defined"}`}
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      {isDropdownOpen ? "Click to close" : "Click to change"}
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-
-                {isDropdownOpen && (
-                  <StepSelector
-                    selectedStep={selectedStep}
-                    onStepChange={handleStepChange}
-                    onReject={handleReject}
-                  />
-                )}
-              </div>
-            ) : (
-              <Button
-                variant="default"
-                size="xs"
-                className={`border ${
-                  status === "hired"
-                    ? "bg-emerald-100 text-emerald-600 border-emerald-600 dark:border-emerald-600 dark:bg-emerald-100 dark:text-emerald-600 dark:hover:bg-emerald-200"
-                    : "bg-red-100 text-red-600"
-                } disabled:opacity-50`}
-                disabled
-              >
-                This applicant is {status}
-              </Button>
-            )}
+            <StepSelector
+              selectedStep={selectedStep}
+              onStepChange={handleStepChange}
+              onReject={handleReject}
+              onHire={handleHire}
+              hiringStages={hiringStages}
+              applicationId={jobApplicationId}
+              applicationStatus={status}
+            />
           </div>
         </div>
 
@@ -336,19 +485,19 @@ const ApplicantDetails = () => {
               experiences.map((exp, index) => (
                 <div key={index} className="mb-3 text-sm">
                   <p className="font-medium text-gray-700 dark:text-gray-300">
-                    {exp.position || "Position not specified"}
+                    {exp.designation.title || "Position not specified"}
                   </p>
                   <div className="flex sm:flex-col justify-between sm:justify-start">
                     <p className="dark:text-gray-300">
                       {exp.companyName || "Company not specified"}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      {exp.startDate
-                        ? new Date(exp.startDate).toLocaleDateString()
+                      {exp.beginning
+                        ? new Date(exp.beginning).toLocaleDateString()
                         : "Start date not specified"}{" "}
                       -
-                      {exp.endDate
-                        ? new Date(exp.endDate).toLocaleDateString()
+                      {exp.ending
+                        ? new Date(exp.ending).toLocaleDateString()
                         : "Present"}
                     </p>
                   </div>
@@ -371,19 +520,20 @@ const ApplicantDetails = () => {
               trainingAndCertifications.map((cert, index) => (
                 <div key={index} className="mb-3 text-sm">
                   <p className="font-semibold text-gray-700 dark:text-gray-300">
-                    {cert.name || "Certificate name not specified"}
+                    {cert.title || "Certificate name not specified"}
                   </p>
                   <div className="flex sm:flex-col justify-between">
                     <p className="text-sm text-gray-700 dark:text-gray-300">
-                      {cert.issuingOrganization || "Organization not specified"}
+                      {cert?.issuingOrganization ||
+                        "Organization not specified"}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      {cert.dateObtained
-                        ? new Date(cert.dateObtained).toLocaleDateString()
+                      {cert.beginning
+                        ? new Date(cert.beginning).toLocaleDateString()
                         : "Date obtained not specified"}{" "}
                       -
-                      {cert.expirationDate
-                        ? new Date(cert.expirationDate).toLocaleDateString()
+                      {cert.ending
+                        ? new Date(cert.ending).toLocaleDateString()
                         : "No expiration date"}
                     </p>
                   </div>
@@ -406,13 +556,13 @@ const ApplicantDetails = () => {
               educations.map((edu, index) => (
                 <div key={index} className="mb-2 text-sm">
                   <p className="font-semibold dark:text-gray-200">
-                    {edu.degree || "Degree not specified"}
+                    {edu.degreeLevel.title || "Degree not specified"}
                   </p>
                   <p className="text-sm text-gray-700 dark:text-gray-300">
-                    {edu.institution || "Institution not specified"}
+                    {edu.instituteName || "Institution not specified"}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Graduated: {edu.graduationYear || "Year not specified"}
+                    Graduated: {edu.ending || "Year not specified"}
                   </p>
                 </div>
               ))
@@ -441,9 +591,9 @@ const ApplicantDetails = () => {
                         {activity.description || "No description available"}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-300">
-                        {activity.academicActivityType?.title ||
+                        {activity?.academicActivityType?.title ||
                           "Type not specified"}
-                        ({activity.duration || "N/A"} months)
+                        ({activity?.duration || "N/A"} months)
                       </p>
                     </div>
                     <p className="text-xs hidden sm:block text-gray-500 dark:text-gray-400">
@@ -504,7 +654,7 @@ const ApplicantDetails = () => {
                     key={index}
                     className="text-xs px-2 py-1 text-gray-700 dark:text-gray-200 bg-gray-200 hover:bg-gray-300 dark:bg-gray-900"
                   >
-                    {skill}
+                    {skill.title}
                   </Badge>
                 ))
               ) : (
@@ -517,12 +667,21 @@ const ApplicantDetails = () => {
         </div>
       </Card>
 
-      <ScheduleModal
-        isOpen={isScheduleModalOpen}
-        onClose={() => setIsScheduleModalOpen(false)}
-        step={selectedStep}
-        onSchedule={handleSchedule}
-      />
+      {/* Schedule Modal */}
+            <ScheduleModal
+              isOpen={scheduleModal.isOpen}
+              onClose={() =>
+                setScheduleModal({
+                  isOpen: false,
+                  applicantId: null,
+                  applicationId: null,
+                  step: null,
+                })
+              }
+              step={scheduleModal.step}
+              onSchedule={handleSchedule}
+              hiringStages={hiringStages.docs}
+            />
     </>
   );
 };

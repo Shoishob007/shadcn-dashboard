@@ -11,11 +11,6 @@ import {
 } from "@/components/ui/tooltip";
 import {
   FileText,
-  Check,
-  X,
-  HelpCircle,
-  Clock,
-  AlertCircle,
 } from "lucide-react";
 import HiringProgress from "./HiringProgressBar";
 
@@ -30,6 +25,8 @@ const JobApplicantsCards = ({
   hiringStages,
 }) => {
   const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
+
+  // console.log("cuurenmt ::: ", currentPaginatedApplicants)
 
   // Get the latest stage and status for an applicant
   const getLatestStageInfo = (applicant) => {
@@ -91,6 +88,7 @@ const JobApplicantsCards = ({
           );
           const latestStatus = applicant?.applicationStatus ?? "pending";
           const { bgColor, textColor } = getStatusBadgeProps(latestStatus);
+          console.log("Applicant ::::: ", applicant)
 
           return (
             <Card
@@ -205,7 +203,7 @@ const JobApplicantsCards = ({
                       setIsPricingDialogOpen(true);
                     } else {
                       setViewCount((prev) => prev + 1);
-                      handleViewDetails(applicant.id);
+                      handleViewDetails(applicant.applicantProfileID , applicant.id, applicant.applicationId);
                     }
                   }}
                 >
