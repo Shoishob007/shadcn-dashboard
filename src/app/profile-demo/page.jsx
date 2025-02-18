@@ -17,7 +17,6 @@ const ProfileDemo = () => {
   const [profileData, setProfileData] = useState(null);
   const { data: session } = useSession();
   const accessToken = session?.access_token;
-  console.log("Access token: ", accessToken)
   useEffect(() => {
     const getProfileData = async () => {
       try {
