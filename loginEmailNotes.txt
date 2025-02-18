@@ -15,4 +15,9 @@ applicant: [
         email: cofev53189@owlny.com,
         password: demoPass@
     },
+    {
+        email: sasipo7085@btcours.com,
+        password: demoPass@,
+        role: org
+    },
 ]

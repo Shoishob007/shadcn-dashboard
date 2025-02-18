@@ -6,7 +6,7 @@ import ProfileField from "./ProfileField";
 
 const BasicDetails = ({ profileData, data }) => {
   const [isEditing, setIsEditing] = useState(false);
-  console.log("profile Basic Details: ", data);
+//   console.log("profile Basic Details: ", data?.applicant?.email);
   return (
     <div>
       <div className="space-y-2">
@@ -40,7 +40,9 @@ const BasicDetails = ({ profileData, data }) => {
             <div>
               <Label htmlFor="name">Full Name</Label>
               <div className="bg-[#f0f5f7] border border-[#f0f5f7] px-5 py-4 mt-2.5 rounded-lg">
-                <span className="text-[#696969] text-sm">{data?.name === null ? "Pikachu" : data?.name}</span>
+                <span className="text-[#696969] text-sm">
+                  {data?.name === null ? "Pikachu" : data?.name}
+                </span>
               </div>
             </div>
             <div>
@@ -54,13 +56,17 @@ const BasicDetails = ({ profileData, data }) => {
             <div>
               <Label htmlFor="designation">Phone</Label>
               <div className="bg-[#f0f5f7] border border-[#f0f5f7] px-5 py-4 mt-2.5 rounded-lg">
-                <span className="text-[#696969] text-sm">{data?.phone === null ? "123 456 789" : data?.phone}</span>
+                <span className="text-[#696969] text-sm">
+                  {data?.phone === null ? "123 456 789" : data?.phone}
+                </span>
               </div>
             </div>
             <div>
               <Label htmlFor="designation">Email address</Label>
               <div className="bg-[#f0f5f7] border border-[#f0f5f7] px-5 py-4 mt-2.5 rounded-lg">
-                <span className="text-[#696969] text-sm">{data?.email === null ? "your@email.com" : data?.email}</span>
+                <span className="text-[#696969] text-sm">
+                  {data?.email === null ? "your@email.com" : data?.email}
+                </span>
               </div>
             </div>
             <div>
@@ -72,7 +78,9 @@ const BasicDetails = ({ profileData, data }) => {
             <div>
               <Label htmlFor="designation">Blood Group</Label>
               <div className="bg-[#f0f5f7] border border-[#f0f5f7] px-5 py-4 mt-2.5 rounded-lg">
-                <span className="text-[#696969] text-sm">{data?.bloodGroup === null ? "B+" : data?.bloodGroup}</span>
+                <span className="text-[#696969] text-sm">
+                  {data?.bloodGroup === null ? "B+" : data?.bloodGroup}
+                </span>
               </div>
             </div>
             <div>
@@ -84,7 +92,9 @@ const BasicDetails = ({ profileData, data }) => {
             <div>
               <Label htmlFor="designation">Address</Label>
               <div className="bg-[#f0f5f7] border border-[#f0f5f7] px-5 py-4 mt-2.5 rounded-lg">
-                <span className="text-[#696969] text-sm">{data?.address === null ? "Dhaka, Bangladesh" : data?.address}</span>
+                <span className="text-[#696969] text-sm">
+                  {data?.address === null ? "Dhaka, Bangladesh" : data?.address}
+                </span>
               </div>
             </div>
           </div>

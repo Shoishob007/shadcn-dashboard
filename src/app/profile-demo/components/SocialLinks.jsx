@@ -11,10 +11,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 const platformsData = [
-  { platform: "facebook", label: "Facebook", placeholder: "https://facebook.com/your-profile" },
-  { platform: "twitter", label: "Twitter", placeholder: "https://twitter.com/your-profile" },
-  { platform: "linkedin", label: "LinkedIn", placeholder: "https://linkedin.com/in/your-profile" },
-  { platform: "instagram", label: "Instagram", placeholder: "https://instagram.com/your-profile" },
+  {
+    platform: "facebook",
+    label: "Facebook",
+    placeholder: "https://facebook.com/your-profile",
+  },
+  {
+    platform: "twitter",
+    label: "Twitter",
+    placeholder: "https://twitter.com/your-profile",
+  },
+  {
+    platform: "linkedin",
+    label: "LinkedIn",
+    placeholder: "https://linkedin.com/in/your-profile",
+  },
+  {
+    platform: "instagram",
+    label: "Instagram",
+    placeholder: "https://instagram.com/your-profile",
+  },
 ];
 
 export default function SocialLinks() {
@@ -22,38 +38,39 @@ export default function SocialLinks() {
   const [connectedPlatforms, setConnectedPlatforms] = useState([]);
   const [editingPlatform, setEditingPlatform] = useState("");
 
-  const handleConnectPlatform = (platform) => {
-    const url = formData[platform];
-    if (url) {
-      setConnectedPlatforms((prev) => [...prev, { platform, url }]);
+  const handleConnectPlatform = async (platform) => {
+    const socialMediaUrl = formData[platform];
+    if (socialMediaUrl) {
+      const newPlatform = { platform, socialMediaUrl };
+
+      setConnectedPlatforms((prev) => [...prev, newPlatform]);
       setFormData((prev) => ({ ...prev, [platform]: "" }));
+
+      console.log("Connected Platforms:", [...connectedPlatforms, newPlatform]);
+
+      // Send data to backend
+      try {
+        const response = await fetch(
+          "https://your-backend-api.com/social-links",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newPlatform),
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to save link");
+        }
+        console.log("Link saved successfully");
+      } catch (error) {
+        console.error("Error saving link:", error);
+      }
     }
-  };
-
-  const handleRemovePlatform = (platform) => {
-    setConnectedPlatforms((prev) => prev.filter((p) => p.platform !== platform));
-  };
-
-  const handleEditPlatform = (platform) => {
-    const platformData = connectedPlatforms.find((p) => p.platform === platform);
-    if (platformData) {
-      setEditingPlatform(platform);
-      setFormData((prev) => ({ ...prev, [platform]: platformData.url }));
-    }
-  };
-
-  const handleSavePlatform = (platform) => {
-    setConnectedPlatforms((prev) =>
-      prev.map((p) => (p.platform === platform ? { ...p, url: formData[platform] } : p))
-    );
-    setEditingPlatform("");
   };
 
   return (
     <>
-      <div >
-
-        {/* Connect New Platforms */}
+      <div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {platformsData.map(({ platform, label, placeholder }) => (
             <Card key={platform}>
@@ -73,11 +90,15 @@ export default function SocialLinks() {
                         setFormData({ ...formData, [platform]: e.target.value })
                       }
                       placeholder={placeholder}
-                      disabled={connectedPlatforms.some((p) => p.platform === platform)}
+                      disabled={connectedPlatforms.some(
+                        (p) => p.platform === platform
+                      )}
                     />
                     <Button
                       onClick={() => handleConnectPlatform(platform)}
-                      disabled={connectedPlatforms.some((p) => p.platform === platform)}
+                      disabled={connectedPlatforms.some(
+                        (p) => p.platform === platform
+                      )}
                     >
                       Connect
                     </Button>
@@ -86,68 +107,6 @@ export default function SocialLinks() {
               </CardContent>
             </Card>
           ))}
-        </div>
-
-        {/* Connected Platforms */}
-        <div className="mt-8 ">
-          <h2 className="text-xl font-semibold mb-4">Connected Platforms</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {connectedPlatforms.map(({ platform, url }) => {
-              const { label, placeholder } = platformsData.find((p) => p.platform === platform) || {};
-              return (
-                <Card key={platform}>
-                  <CardHeader>
-                    <CardTitle>{label}</CardTitle>
-                    <CardDescription>{url}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex gap-4">
-                      {editingPlatform !== platform ? (
-                        <>
-                          <Button variant="outline" onClick={() => handleEditPlatform(platform)}>
-                            Edit
-                          </Button>
-                          <Button variant="destructive" onClick={() => handleRemovePlatform(platform)}>
-                            Remove
-                          </Button>
-                        </>
-                      ) : (
-                        <form
-                          className="w-full space-y-2"
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            handleSavePlatform(platform);
-                          }}
-                        >
-                          <Input
-                            type="url"
-                            value={formData[platform] || ""}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                [platform]: e.target.value,
-                              })
-                            }
-                            placeholder={placeholder}
-                          />
-                          <div className="flex justify-end gap-2">
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              onClick={() => setEditingPlatform("")}
-                            >
-                              Cancel
-                            </Button>
-                            <Button type="submit">Save</Button>
-                          </div>
-                        </form>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
         </div>
       </div>
     </>
