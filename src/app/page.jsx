@@ -61,6 +61,7 @@ export default function Home() {
   const { data: session } = useSession();
   const [showFilters, setShowFilters] = useState(false);
   const [limitToThree, setLimitToThree] = useState(true);
+const [inHome, setInHome] = useState(true);
 
   const handleClick = () => {
     router.push("/demoBillings/pricing");
@@ -76,7 +77,9 @@ export default function Home() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/"><House className="h-4 w-4" /></BreadcrumbLink>
+                  <BreadcrumbLink href="/">
+                    <House className="h-4 w-4" />
+                  </BreadcrumbLink>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -116,7 +119,7 @@ export default function Home() {
                   Recent Applications
                 </p>
               </section>
-              <ApplicantsList limitToThree={limitToThree} />
+              <ApplicantsList limitToThree={limitToThree} inHome={inHome} setInHome={setInHome} />
             </CardContent>
           </section>
         </div>

@@ -266,6 +266,8 @@ const DemoApplicants = () => {
   const transformJobInfo = (jobDetails) => {
     if (!jobDetails) return null;
 
+    console.log("job details ::: ", jobDetails)
+
     return {
       title: jobDetails.job.title,
       job: {
@@ -282,8 +284,10 @@ const DemoApplicants = () => {
           socialLinks: organizationDetails?.socialLinks || [],
         },
       },
-      jobType: jobDetails.jobType?.title || "",
-      employeeType: jobDetails.employeeType?.title || "",
+      jobType: jobDetails.jobType?.id || "",
+      employeeType: jobDetails.employeeType?.id || "",
+      jobTypeTitle: jobDetails.jobType?.title || "",
+      employeeTypeTitle: jobDetails.employeeType?.title || "",
       jobRole: jobDetails.jobRole?.[0]?.title || "",
       designation: jobDetails.designation?.title || "",
       location: jobDetails.location || "",
@@ -291,6 +295,9 @@ const DemoApplicants = () => {
       description: jobDetails.description || "",
       requirements: jobDetails.requirements || "",
       employeeBenefits: jobDetails.employeeBenefits || "",
+      skills: jobDetails?.skills || [],
+      degreeLevel: jobDetails?.degreeLevel || [],
+      fieldOfStudy: jobDetails?.fieldOfStudy || [],
       deadline: jobDetails.deadline || "",
       createdAt: jobDetails.createdAt || "",
       industry:

@@ -255,27 +255,6 @@ export function RequirementsTab({ callback }) {
           render={({ field }) => (
             <div>
               <FormLabel className="font-medium">Degree Levels</FormLabel>
-              <div className="flex flex-wrap gap-2 mt-1">
-                {selectedDegrees.map((degree) => (
-                  <div
-                    key={degree.id}
-                    className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
-                  >
-                    {degree.title}
-                    <button
-                      type="button"
-                      className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
-                      onClick={() =>
-                        setSelectedDegrees(
-                          selectedDegrees.filter((d) => d.id !== degree.id)
-                        )
-                      }
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-                ))}
-              </div>
               <div className="relative mt-2">
                 <Input
                   type="text"
@@ -298,6 +277,27 @@ export function RequirementsTab({ callback }) {
                   </ul>
                 )}
               </div>
+              <div className="flex flex-wrap gap-2 mt-1">
+                {selectedDegrees.map((degree) => (
+                  <div
+                    key={degree.id}
+                    className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
+                  >
+                    {degree.title}
+                    <button
+                      type="button"
+                      className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
+                      onClick={() =>
+                        setSelectedDegrees(
+                          selectedDegrees.filter((d) => d.id !== degree.id)
+                        )
+                      }
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         />
@@ -308,27 +308,6 @@ export function RequirementsTab({ callback }) {
           render={({ field }) => (
             <div>
               <FormLabel className="font-medium">Fields of Study</FormLabel>
-              <div className="flex flex-wrap gap-2 mt-1">
-                {selectedFieldsOfStudy.map((field) => (
-                  <div
-                    key={field.id}
-                    className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
-                  >
-                    {field.title}
-                    <button
-                      type="button"
-                      className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
-                      onClick={() =>
-                        setSelectedFieldsOfStudy(
-                          selectedFieldsOfStudy.filter((f) => f.id !== field.id)
-                        )
-                      }
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-                ))}
-              </div>
               <div className="relative mt-2">
                 <Input
                   type="text"
@@ -350,6 +329,27 @@ export function RequirementsTab({ callback }) {
                     ))}
                   </ul>
                 )}
+              </div>
+              <div className="flex flex-wrap gap-2 mt-1">
+                {selectedFieldsOfStudy.map((field) => (
+                  <div
+                    key={field.id}
+                    className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
+                  >
+                    {field.title}
+                    <button
+                      type="button"
+                      className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
+                      onClick={() =>
+                        setSelectedFieldsOfStudy(
+                          selectedFieldsOfStudy.filter((f) => f.id !== field.id)
+                        )
+                      }
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
           )}

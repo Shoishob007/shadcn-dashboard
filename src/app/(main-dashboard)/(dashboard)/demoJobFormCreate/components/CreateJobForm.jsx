@@ -50,6 +50,7 @@ const CreateJobForm = ({
   initialData,
   isDialogOpen = false,
 }) => {
+  console.log("Initial Data ::: ", initialData)
   const { toast } = useToast();
   const { data: session } = useSession();
   const accessToken = session?.access_token
@@ -58,13 +59,12 @@ const CreateJobForm = ({
     skills: initialData?.skills || [],
     degreeLevel: initialData?.degreeLevel || [],
     fieldOfStudy: initialData?.fieldOfStudy || [],
-    employeeType: initialData?.employeeType || "",
   });
 
   const form = useForm({
     resolver: zodResolver(jobSchema),
     defaultValues: {
-      employeeType: initialData?.employeeType || "",
+      employeeType: initialData?.employeeType.id || "",
       skills: initialData?.skills || [],
       degreeLevel: initialData?.degreeLevel || [],
       fieldOfStudy: initialData?.fieldOfStudy || [],

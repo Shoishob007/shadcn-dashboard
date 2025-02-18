@@ -79,9 +79,11 @@ const JobInfoCard = ({ job }) => {
               <Badge variant="secondary" className="dark:bg-gray-900">
                 <div className="flex items-center gap-2 w-fit">
                   <BriefcaseBusiness className="h-4 w-4" />
-                  {job.jobType == "" || !job.jobType || job.jobType == undefined
+                  {job.jobType == "" ||
+                  !job.jobType ||
+                  job.jobTypeTitle == undefined
                     ? "N/A"
-                    : job.jobType}
+                    : job.jobTypeTitle}
                 </div>
               </Badge>
               <Badge variant="secondary" className="dark:bg-gray-900">
@@ -91,7 +93,7 @@ const JobInfoCard = ({ job }) => {
                   !job.employeeType ||
                   job.employeeType == undefined
                     ? "N/A"
-                    : job.employeeType}
+                    : job.employeeTypeTitle}
                 </div>
               </Badge>
 

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-"use client"
+"use client";
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { FaFacebook, FaGoogle, FaLinkedin } from "react-icons/fa";
@@ -19,8 +19,11 @@ import GridListTooltip from "@/components/GridListTooltip";
 import JobApplicantsCards from "../demoJobList/components/jobApplicantsCards";
 import { ApplicantFilterSheet } from "@/components/filters/ApplicantFilterSheet";
 import { getSafeValue } from "@/lib/helper";
+import ApplicantDetails from "./demoAppDetails/page";
 
 const ITEMS_PER_PAGE = 10;
+
+const HOME_PAGE_ITEMS = 6;
 
 const socialMediaIcons = {
   linkedin: FaLinkedin,
@@ -44,7 +47,7 @@ const calculateTotalExperience = (experiences) => {
   return `${years} years ${months} months`;
 };
 
-const DemoAppList = () => {
+const DemoAppList = (inHome = false ) => {
   const router = useRouter();
   const { data: session } = useSession();
   const accessToken = session?.access_token;
@@ -61,6 +64,10 @@ const DemoAppList = () => {
   const [isLoadingProfiles, setIsLoadingProfiles] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
+  const [selectedApplicantId, setSelectedApplicantId] = useState(null);
+    const [selectedJobApplicationId, setSelectedJobApplicationId] = useState(null);
+  const [selectedApplicationStatusId, setSelectedApplicationStatusId] = useState(null);
+
 
   // UI states
   const [selectedStatus, setSelectedStatus] = useState("applied");
@@ -75,11 +82,15 @@ const DemoAppList = () => {
     selectedTime: "all",
   });
 
+  // const url = !inHome
+  //   ? `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?where[jobDetails.job.organization][equals]=${orgId}&limit=${ITEMS_PER_PAGE}&page=${page}`
+  //   : `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?where[jobDetails.job.organization][equals]=${orgId}&limit=${HOME_PAGE_ITEMS}&page=${page}`;
+
   // Fetch job applications
   const fetchJobApplications = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?where[jobDetails.job.organization][equals]=${orgId}&limit=${ITEMS_PER_PAGE}&page=${page}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?where[jobDetails.job.organization][equals]=${orgId}&page=${page}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -90,11 +101,17 @@ const DemoAppList = () => {
       const data = await response.json();
 
       // Append new applications to existing ones
-if (page === 1) {
-  setJobApplications(data.docs || []);
-} else {
-  setJobApplications((prev) => [...prev, ...(data.docs || [])]);
-}      setHasMore(data.hasNextPage || false);
+      if (page === 1) {
+        setJobApplications(data.docs || []);
+      } else {
+        setJobApplications((prev) => [...prev, ...(data.docs || [])]);
+      }
+      setHasMore(data.hasNextPage || false);
+
+      // If it's the home page, disable infinite scroll after the first fetch
+      if (inHome) {
+        setHasMore(false);
+      }
     } catch (error) {
       console.error("Error fetching job applications:", error);
     }
@@ -110,7 +127,7 @@ if (page === 1) {
 
     if (validIds.length === 0) return;
 
-    console.log("Valid applicantIds :: ", validIds);
+    // console.log("Valid applicantIds :: ", validIds);
     setIsLoadingProfiles(true);
 
     try {
@@ -155,6 +172,10 @@ if (page === 1) {
 
   // Setup Intersection Observer
   useEffect(() => {
+    if (inHome) {
+      return;
+    }
+
     const option = {
       root: null,
       rootMargin: "20px",
@@ -204,7 +225,7 @@ if (page === 1) {
       );
       const data = await response.json();
       setHiringStages(data);
-      console.log("Hiring Stages :: ", data);
+      // console.log("Hiring Stages :: ", data);
     } catch (error) {
       console.error("Error fetching hiring stages :", error);
     }
@@ -217,17 +238,19 @@ if (page === 1) {
   // Transform applicant data
   const transformedApplicants = jobApplications
     .map((application) => {
+      console.log("applicatiosn :: ", application.applicant);
       const profile = applicantProfiles[application.applicant];
       if (!profile) return null;
+      // console.log("profile  ::: ", profile);
 
       const latestStatus =
         application.applicationStatus?.docs?.[0]?.status || "applied";
-              const applicationId =
-                application.applicationStatus?.docs?.[0]?.id;
-
+      const applicationId = application.applicationStatus?.docs?.[0]?.id;
 
       return {
         id: application.id,
+        applicantProfileID: getSafeValue(application.applicant),
+
         name: getSafeValue(profile.name, "N/A"),
         CVScore: getSafeValue(profile.CVScore, profile.cv ? 75 : 0),
         CV: getSafeValue(profile.cv),
@@ -242,8 +265,8 @@ if (page === 1) {
           address: getSafeValue(profile.address),
         },
         applicant: {
-          pictureUrl: getSafeValue(profile.img?.url),
-          websiteUrl: getSafeValue(profile.applicantWebsiteUrl),
+          pictureUrl: getSafeValue(profile?.img?.url),
+          websiteUrl: getSafeValue(profile?.applicantWebsiteUrl),
         },
         jobTitle: getSafeValue(application.jobDetails?.job?.title, "N/A"),
         jobRole: getSafeValue(
@@ -263,9 +286,13 @@ if (page === 1) {
     ?.sort((a, b) => a.order - b.order)
     .map((stage) => stage.title);
 
+  // console.log("Transformed Apps :: ", transformedApplicants);
+
   const filteredApplicants = transformedApplicants.filter((applicant) => {
     // Apply status and step filters
-    if (selectedStatus === "applied") {
+    if (!selectedStatus) {
+      return applicant.applicationStatus === "applied";
+    } else if (selectedStatus === "applied") {
       return applicant.applicationStatus === "applied";
     } else if (selectedStatus === "hired") {
       return applicant.applicationStatus === "hired";
@@ -323,9 +350,21 @@ if (page === 1) {
     return true;
   });
 
-  const handleViewDetails = (id) => {
-    router.push(`/demoAppList/demoAppDetails?id=${id}`);
-  };
+  // const handleViewDetails = (applicantProfileID) => {
+  //   router.push(`/demoAppList/demoAppDetails?id=${applicantProfileID}`);
+  // };
+
+const handleViewDetails = (
+  applicantProfileID,
+  jobApplicationId,
+  applicationStatusId
+) => {
+  // Set the selected IDs
+  setSelectedApplicantId(applicantProfileID);
+  setSelectedJobApplicationId(jobApplicationId);
+  setSelectedApplicationStatusId(applicationStatusId);
+};
+
 
   const handleFilterChange = (filterName, value) => {
     setFilters((prev) => ({
@@ -342,73 +381,92 @@ if (page === 1) {
     });
   };
 
-    const handleUpdateApplication = (updatedApplication) => {
-      // Update the jobApplications state with the new applicant data
-      setJobApplications((prevApplications) => {
-        return prevApplications.map((application) => {
-          if (application.applicant === updatedApplication.id) {
-            return {
-              ...application,
-              applicationStatus: {
-                ...application.applicationStatus,
-                docs: [
-                  {
-                    ...application.applicationStatus?.docs?.[0],
-                    status: updatedApplication.applicationStatus,
-                    hiringStage: updatedApplication.hiringStep.id,
-                  },
-                ],
-              },
-            };
-          }
-          return application;
-        });
+  const handleUpdateApplication = (updatedApplication) => {
+    // Update the jobApplications state with the new applicant data
+    setJobApplications((prevApplications) => {
+      return prevApplications.map((application) => {
+        if (application.applicant === updatedApplication.id) {
+          return {
+            ...application,
+            applicationStatus: {
+              ...application.applicationStatus,
+              docs: [
+                {
+                  ...application.applicationStatus?.docs?.[0],
+                  status: updatedApplication.applicationStatus,
+                  hiringStage: updatedApplication.hiringStep.id,
+                },
+              ],
+            },
+          };
+        }
+        return application;
       });
-    };
+    });
+  };
 
-    console.log("filtered applicants :: ", filteredApplicants)
-    // console.log("transformed Applicants :: ", transformedApplicants)
+
+  if (selectedApplicantId || selectedJobApplicationId || selectedApplicationStatusId) {
+    // Render ApplicantDetails component if an applicant is selected
+    return (
+      <ApplicantDetails
+        applicantId={selectedApplicantId}
+        jobApplicationId={selectedJobApplicationId}
+        applicationStatusId={selectedApplicationStatusId}
+        hiringStages={hiringStages}
+      />
+    );
+  }
+
+  console.log("filtered applicants :: ", filteredApplicants);
+  // console.log("transformed Applicants :: ", transformedApplicants)
 
   return (
     <>
-      <Breadcrumb className="mb-4">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">
-              <House className="h-4 w-4" />
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/demoAppList">Applicants List</BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      {inHome && (
+        <Breadcrumb className="mb-4">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">
+                <House className="h-4 w-4" />
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/demoAppList">
+                Applicants List
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      )}
 
       <div className="space-y-6">
         <div className="flex-1">
-          <div className="flex items-center justify-between mb-4">
-            <ToggleGroupComponent
-              steps={hiringSteps}
-              selectedStep={selectedStep}
-              selectedStatus={selectedStatus}
-              setSelectedStep={setSelectedStep}
-              setSelectedStatus={setSelectedStatus}
-            />
-            <div className="flex items-center gap-2">
-              <ApplicantFilterSheet
-                filters={filters}
-                onFilterChange={handleFilterChange}
-                onReset={handleReset}
+          {inHome && (
+            <div className="flex items-center justify-between mb-4">
+              <ToggleGroupComponent
+                steps={hiringSteps}
+                selectedStep={selectedStep}
+                selectedStatus={selectedStatus}
+                setSelectedStep={setSelectedStep}
+                setSelectedStatus={setSelectedStatus}
               />
-              <div className="mr-2 flex items-center shadow-md">
-                <GridListTooltip
-                  setViewMode={setViewMode}
-                  isListView={viewMode === "list"}
+              <div className="flex items-center gap-2">
+                <ApplicantFilterSheet
+                  filters={filters}
+                  onFilterChange={handleFilterChange}
+                  onReset={handleReset}
                 />
+                <div className="mr-2 flex items-center shadow-md">
+                  <GridListTooltip
+                    setViewMode={setViewMode}
+                    isListView={viewMode === "list"}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {isLoadingProfiles && transformedApplicants.length === 0 ? (
             <div className="text-center p-8">Loading applicant profiles...</div>
