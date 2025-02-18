@@ -76,7 +76,6 @@ export default function SocialSettings({imageId}) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [tempFormData, setTempFormData] = useState({});
   const pathname = usePathname();
-  const pageTitle = FormatTitle(pathname);
   const { data: session } = useSession();
   const accessToken = session?.access_token;
   const organizationId = session?.organizationId;

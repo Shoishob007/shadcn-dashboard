@@ -37,6 +37,8 @@ export default function ProfileOverview() {
   const accessToken = session?.access_token;
   const organizationId = session?.organizationId;
 
+  console.log("Profile ::: ", profileDetails)
+
   useEffect(() => {
     if (accessToken && organizationId) {
       // First fetching industry then profile

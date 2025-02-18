@@ -18,7 +18,7 @@ const ProfileSetting = () => {
   const accessToken = session?.access_token;
   const organizationId = session?.organizationId;
 
-  console.log("session :: ", session);
+  // console.log("session :: ", session);
 
   useEffect(() => {
     const fetchUserCoverPhoto = async () => {

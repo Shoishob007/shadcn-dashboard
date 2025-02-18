@@ -12,6 +12,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import qs from "qs";
+import CreateJobForm from "../../demoJobFormCreate/components/CreateJobForm";
 
 const JobDetailsPage = () => {
   const router = useRouter();
@@ -71,9 +72,16 @@ const JobDetailsPage = () => {
     router.push(`/demoJobList/demoJobApplicants?jobId=${jobId}`);
   };
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
+  if (isEditing) {
+    return (
+      <CreateJobForm
+        jobId={jobId}
+        initialData={currentJobInfo}
+        isEditing={isEditing}
+        onClose={() => setIsEditing(false)}
+      />
+    );
+  }
 
   const job = currentJobInfo;
   console.log("job ", job);
@@ -105,7 +113,7 @@ const JobDetailsPage = () => {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="max-w-5xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+      <div className="max-w-5xl bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
         <div className="flex border-b-2 dark:border-gray-500 items-center justify-between px-4 sm:px-6 py-4">
           <header className="flex items-center text-xs sm:text-sm">
             <Image
@@ -133,7 +141,7 @@ const JobDetailsPage = () => {
           <div className="flex flex-col gap-2">
             <div
               className="flex gap-2 items-center border p-1 rounded-sm dark:border-gray-300 cursor-pointer w-fit"
-              onClick={handleEdit}
+              onClick={() => setIsEditing(true)}
             >
               <SquarePen className="dark:text-gray-300" size={16} />
               <span className="text-xs sm:text-sm font-medium">Edit Job</span>
