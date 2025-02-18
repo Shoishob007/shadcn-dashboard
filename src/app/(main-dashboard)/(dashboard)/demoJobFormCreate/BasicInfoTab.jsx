@@ -23,7 +23,7 @@ export function BasicInfoTab({ form, designations = [], callback }) {
   const currentSubscriptionId = orgSettings.docs[0]?.subscriptionId;
 
   // Job Role state
-  const [jobRoleInputValue, setJobRoleInputValue] = useState("");
+  const [jobRoleInputValue, setJobRoleInputValue] = useState([]);
   const [jobRoleSuggestions, setJobRoleSuggestions] = useState([]);
   const [selectedJobRoles, setSelectedJobRoles] = useState([]);
 

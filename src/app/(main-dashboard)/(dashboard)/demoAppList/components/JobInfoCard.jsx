@@ -28,6 +28,8 @@ const JobInfoCard = ({ job }) => {
   const handleViewJobDetails = (jobId) => {
     router.push(`/demoJobList/demoJobDetails?jobId=${jobId}`);
   };
+
+  console.log("job : ", job)
   return (
     <>
       <Card className="p-6 mb-6 w-full bg-white dark:bg-gray-800 flex justify-between">

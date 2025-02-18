@@ -45,48 +45,90 @@ export function RequirementsTab({ callback }) {
   // Initialize from form default values
   useEffect(() => {
     const defaultValues = formContext.getValues();
+    console.log("Default Values:", defaultValues);
 
+    // Handle skills initialization
     if (defaultValues?.skills?.length > 0) {
+      // Check if the skills are already in object format
       const skills = defaultValues.skills
-        .map((id) => {
-          const skill = allSkills.docs.find((s) => s.id === id);
-          return skill ? { id: skill.id, title: skill.title } : null;
+        .map((skill) => {
+          if (typeof skill === "object" && skill.id) {
+            console.log("Found skill object:", skill);
+            return skill;
+          } else {
+            // If it's just an ID, find the corresponding skill object
+            const foundSkill = allSkills.docs.find((s) => s.id === skill);
+            console.log("Found skill by ID:", foundSkill);
+            return foundSkill
+              ? { id: foundSkill.id, title: foundSkill.title }
+              : null;
+          }
         })
         .filter(Boolean);
+
+      console.log("Setting initial skills:", skills);
       setSelectedSkills(skills);
     }
 
+    // Handle degree levels initialization
     if (defaultValues?.degreeLevel?.length > 0) {
       const degrees = defaultValues.degreeLevel
-        .map((id) => {
-          const degree = degreeLevelData.docs.find((d) => d.id === id);
-          return degree ? { id: degree.id, title: degree.title } : null;
+        .map((degree) => {
+          if (typeof degree === "object" && degree.id) {
+            console.log("Found degree object:", degree);
+            return degree;
+          } else {
+            const foundDegree = degreeLevelData.docs.find(
+              (d) => d.id === degree
+            );
+            console.log("Found degree by ID:", foundDegree);
+            return foundDegree
+              ? { id: foundDegree.id, title: foundDegree.title }
+              : null;
+          }
         })
         .filter(Boolean);
+
+      console.log("Setting initial degrees:", degrees);
       setSelectedDegrees(degrees);
     }
 
+    // Handle fields of study initialization
     if (defaultValues?.fieldOfStudy?.length > 0) {
       const fields = defaultValues.fieldOfStudy
-        .map((id) => {
-          const field = fieldOfStudyData.docs.find((f) => f.id === id);
-          return field ? { id: field.id, title: field.title } : null;
+        .map((field) => {
+          if (typeof field === "object" && field.id) {
+            console.log("Found field object:", field);
+            return field;
+          } else {
+            const foundField = fieldOfStudyData.docs.find(
+              (f) => f.id === field
+            );
+            console.log("Found field by ID:", foundField);
+            return foundField
+              ? { id: foundField.id, title: foundField.title }
+              : null;
+          }
         })
         .filter(Boolean);
+
+      console.log("Setting initial fields:", fields);
       setSelectedFieldsOfStudy(fields);
     }
 
     const requirements = defaultValues?.requirements || "";
-      setRequirementsContent(requirements);
+    setRequirementsContent(requirements);
   }, [formContext]);
 
   // Updating callback with selected values whenever they change
   useEffect(() => {
-    callback({
+    const callbackData = {
       skills: selectedSkills.map((skill) => skill.id),
       degreeLevel: selectedDegrees.map((degree) => degree.id),
       fieldOfStudy: selectedFieldsOfStudy.map((field) => field.id),
-    });
+    };
+    console.log("Sending callback data:", callbackData);
+    callback(callbackData);
   }, [selectedSkills, selectedDegrees, selectedFieldsOfStudy]);
 
   const handleRequirementsChange = (content) => {
@@ -149,28 +191,31 @@ export function RequirementsTab({ callback }) {
   };
 
   const handleSkillSelect = (skill) => {
-    setSelectedSkills([
-      ...selectedSkills,
-      { id: skill.id, title: skill.title },
-    ]);
+    const newSkills = [...selectedSkills, { id: skill.id, title: skill.title }];
+    console.log("Adding skill:", skill, "New skills:", newSkills);
+    setSelectedSkills(newSkills);
     setSkillInputValue("");
     setSkillSuggestions([]);
   };
 
   const handleDegreeSelect = (degree) => {
-    setSelectedDegrees([
+    const newDegrees = [
       ...selectedDegrees,
       { id: degree.id, title: degree.title },
-    ]);
+    ];
+    console.log("Adding degree:", degree, "New degrees:", newDegrees);
+    setSelectedDegrees(newDegrees);
     setDegreeInputValue("");
     setDegreeSuggestions([]);
   };
 
   const handleStudyFieldSelect = (field) => {
-    setSelectedFieldsOfStudy([
+    const newFields = [
       ...selectedFieldsOfStudy,
       { id: field.id, title: field.title },
-    ]);
+    ];
+    console.log("Adding field:", field, "New fields:", newFields);
+    setSelectedFieldsOfStudy(newFields);
     setStudyInputValue("");
     setStudySuggestions([]);
   };
@@ -212,11 +257,18 @@ export function RequirementsTab({ callback }) {
                   <button
                     type="button"
                     className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
-                    onClick={() =>
-                      setSelectedSkills(
-                        selectedSkills.filter((s) => s.id !== skill.id)
-                      )
-                    }
+                    onClick={() => {
+                      const newSkills = selectedSkills.filter(
+                        (s) => s.id !== skill.id
+                      );
+                      console.log(
+                        "Removing skill:",
+                        skill,
+                        "New skills:",
+                        newSkills
+                      );
+                      setSelectedSkills(newSkills);
+                    }}
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -287,11 +339,18 @@ export function RequirementsTab({ callback }) {
                     <button
                       type="button"
                       className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
-                      onClick={() =>
-                        setSelectedDegrees(
-                          selectedDegrees.filter((d) => d.id !== degree.id)
-                        )
-                      }
+                      onClick={() => {
+                        const newDegrees = selectedDegrees.filter(
+                          (d) => d.id !== degree.id
+                        );
+                        console.log(
+                          "Removing degree:",
+                          degree,
+                          "New degrees:",
+                          newDegrees
+                        );
+                        setSelectedDegrees(newDegrees);
+                      }}
                     >
                       <X className="h-4 w-4" />
                     </button>
@@ -340,11 +399,18 @@ export function RequirementsTab({ callback }) {
                     <button
                       type="button"
                       className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
-                      onClick={() =>
-                        setSelectedFieldsOfStudy(
-                          selectedFieldsOfStudy.filter((f) => f.id !== field.id)
-                        )
-                      }
+                      onClick={() => {
+                        const newFields = selectedFieldsOfStudy.filter(
+                          (f) => f.id !== field.id
+                        );
+                        console.log(
+                          "Removing field:",
+                          field,
+                          "New fields:",
+                          newFields
+                        );
+                        setSelectedFieldsOfStudy(newFields);
+                      }}
                     >
                       <X className="h-4 w-4" />
                     </button>
