@@ -36,6 +36,7 @@ import ScheduleModal from "./components/ScheduleModal";
 import { useToast } from "@/hooks/use-toast";
 import { useParams } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import { cva } from "class-variance-authority";
 
 const ApplicantDetails = ({
   inHome,
@@ -44,13 +45,13 @@ const ApplicantDetails = ({
   applicationStatusId,
   hiringStages,
 }) => {
-    console.log("Applicant Profile ID:", applicantId);
-    console.log("Job Application ID:", jobApplicationId);
-    console.log("Application Status ID:", applicationStatusId);
-  console.log("Hiring stages :: ", hiringStages);
+    // console.log("Applicant Profile ID:", applicantId);
+    // console.log("Job Application ID:", jobApplicationId);
+    // console.log("Application Status ID:", applicationStatusId);
+  // console.log("Hiring stages :: ", hiringStages);
   const searchParams = useSearchParams();
   const jobApplication = searchParams.get("id");
-  console.log("jobApplication :: ", jobApplication)
+  // console.log("jobApplication :: ", jobApplication)
   const { data: session } = useSession();
   const accessToken = session?.access_token;
   const { toast } = useToast();
@@ -349,6 +350,8 @@ const ApplicantDetails = ({
   const displayName =
     name || `${firstName} ${lastName}`.trim() || "Anonymous Applicant";
 
+    const customCV = `${process.env.NEXT_PUBLIC_API_URL}${cv?.url}`
+
   return (
     <>
       <Breadcrumb className="mb-4">
@@ -452,7 +455,7 @@ const ApplicantDetails = ({
               className="border shadow-none bg-gray-100 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-100 dark:text-gray-700 dark:hover:bg-gray-300"
               onClick={() => {
                 if (cv) {
-                  window.open(cv, "_blank", "noopener,noreferrer");
+                  window.open(customCV, "_blank", "noopener,noreferrer");
                 } else {
                   alert("No CV available to download");
                 }

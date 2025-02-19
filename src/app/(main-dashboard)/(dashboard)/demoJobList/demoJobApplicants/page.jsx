@@ -141,6 +141,7 @@ const DemoApplicants = () => {
 
   // Function to fetch applicant profiles in chunks
   const fetchApplicantProfiles = async (applicantIds) => {
+    console.log("applicantIds :: ", applicantIds)
     setIsLoadingProfiles(true);
     try {
       const profiles = await Promise.all(
@@ -198,7 +199,7 @@ const DemoApplicants = () => {
       );
       const data = await response.json();
       setHiringStages(data);
-      console.log("Hiring Stages :: ", data);
+      // console.log("Hiring Stages :: ", data);
     } catch (error) {
       console.error("Error fetching hiring stages :", error);
     }
@@ -212,26 +213,27 @@ const DemoApplicants = () => {
   const transformedApplications = jobApplications
     .map((application) => {
 
-      // console.log("application in the scope:: ", application);
-        const profile =
-          application.applicant || applicantProfiles[application.applicant.id];
+      console.log("application in the scope:: ", application);
+        const profile = applicantProfiles[application.applicant];
       if (!profile) return null;
 
-      // console.log("profile :: ", profile);
+      console.log("profile :: ", profile);
       const latestStatus =
         application.applicationStatus?.docs?.[0]?.status || "applied";
       const applicationId = application.applicationStatus?.docs?.[0]?.id;
       // console.log("jobApplication :: ", application.id);
 
       // console.log("latestStatus :: ", latestStatus);
+        const cvUrl = `${process.env.NEXT_PUBLIC_API_URL}${profile?.cv?.url}`;
+
 
       return {
         id: application.id,
         jobId: application.jobDetails.job.id,
-        applicantProfileID : application.applicant.id,
+        applicantProfileID: application.applicant.id,
         name: profile.name || "N/A",
         CVScore: profile.CVScore || (profile.cv ? 75 : 0),
-        CV: profile.cv,
+        CV: cvUrl,
         certifications: profile.trainingAndCertifications || [],
         experiences: profile.experiences || [],
         socialLinks: profile.socialLinks || [],
