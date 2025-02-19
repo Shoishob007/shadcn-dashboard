@@ -52,8 +52,8 @@ const MyAppDetails = ({ params }) => {
                 : "N/A"}
             </h1>
             <p className="text-gray-700 dark:text-gray-300">
-              {appData?.jobDetails?.designation
-                ? appData?.jobDetails?.designation
+              {appData?.jobDetails?.designation?.title
+                ? appData?.jobDetails?.designation?.title
                 : "Designation not found"}
             </p>
             <p className="text-gray-700 dark:text-gray-300">

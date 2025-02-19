@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import AppliedContent from "./AppliedContent";
+import RejectedContent from "./RejectedContent";
 import ShortlistedContent from "./ShortlistedContent";
 
 const ApplicationTabs = () => {
@@ -47,24 +48,24 @@ const ApplicationTabs = () => {
     getJobApplicationData();
   }, [accessToken]);
 
-  //   Applied jobs
-  //   const appliedJobs = myApplications.filter(
-  //     (app) => app?.applicationStatus?.docs?.length === 0
-  //   );
-
   // Applied jobs
   const appliedJobs = myApplications?.filter(
     (myApp) =>
       !myApp?.applicationStatus?.docs ||
       myApp?.applicationStatus?.docs.length === 0
   );
-  //   console.log("Applied Jobs:", appliedJobs);
 
   //   Shortlisted jobs
   const shortlistedJobs = myApplications?.filter(
     (myApp) => myApp?.applicationStatus?.docs?.length > 0
   );
-    console.log("Shortlisted jobs: ", shortlistedJobs)
+
+  // Rejected jobs
+  const rejectedJobs = myApplications?.filter(
+    (myApp) =>
+      myApp?.applicationStatus?.docs?.length > 0 &&
+      myApp?.applicationStatus?.docs[0]?.status === "Rejected"
+  );
 
   if (status === "loading" || loading) {
     return <Skeleton className="h-20 w-full rounded-lg" />;
@@ -109,23 +110,46 @@ const ApplicationTabs = () => {
       </TabsList>
 
       <TabsContent value="Applied">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {appliedJobs?.map((appliedJob) => (
-            <AppliedContent key={appliedJob.id} appliedJob={appliedJob} />
-          ))}
-        </div>
+        {appliedJobs?.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {appliedJobs.map((appliedJob) => (
+              <AppliedContent key={appliedJob.id} appliedJob={appliedJob} />
+            ))}
+          </div>
+        ) : (
+          <p className="font-semibold capitalize">No applied jobs available.</p>
+        )}
       </TabsContent>
 
       <TabsContent value="Shortlisted">
-        <div lassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {
-            shortlistedJobs?.map((shortlistedJob) => <ShortlistedContent key={shortlistedJob.id} shortlistedJob={shortlistedJob} />)
-          }
-        </div>
+        {shortlistedJobs?.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {shortlistedJobs.map((shortlistedJob) => (
+              <ShortlistedContent
+                key={shortlistedJob.id}
+                shortlistedJob={shortlistedJob}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="font-semibold capitalize">
+            No shortlisted jobs available.
+          </p>
+        )}
       </TabsContent>
 
       <TabsContent value="Rejected">
-        {selectedStatus === "Rejected" && "Rejected Content"}
+        {rejectedJobs?.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {rejectedJobs.map((rejectedJob) => (
+              <RejectedContent key={rejectedJob.id} rejectedJob={rejectedJob} />
+            ))}
+          </div>
+        ) : (
+          <p className="font-semibold capitalize">
+            No rejected jobs available.
+          </p>
+        )}
       </TabsContent>
     </Tabs>
   );

@@ -29,7 +29,7 @@ const ShortlistedContent = ({ shortlistedJob }) => {
 
 const applicationStatus = shortlistedJob?.applicationStatus || {}; 
 
-  console.log("Shortlisted jobs: ", shortlistedJob);
+  // console.log("Shortlisted jobs: ", shortlistedJob);
 
   // Organization name
   useEffect(() => {
@@ -58,19 +58,28 @@ const applicationStatus = shortlistedJob?.applicationStatus || {};
     <Link href={`/my-applications/${shortlistedJob.id}`}>
       <Card className="w-full hover:border hover:border-black duration-300 cursor-pointer">
         <CardHeader>
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 font-medium bg-gray-200 rounded-full flex items-center justify-center">
-              <span>{!storeOrgName ? "U" : storeOrgName.slice(0, 1)}</span>
+          <div className="flex justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 font-medium bg-gray-200 rounded-full flex items-center justify-center">
+                <span>{!storeOrgName ? "U" : storeOrgName.slice(0, 1)}</span>
+              </div>
+              <div>
+                <h1 className="text-[15px] font-medium">
+                  {storeOrgName === null
+                    ? "Organization not found"
+                    : storeOrgName}
+                </h1>
+                <p className="text-xs">
+                  {address === null ? "Address not found" : address}
+                </p>
+              </div>
             </div>
             <div>
-              <h1 className="text-[15px] font-medium">
-                {storeOrgName === null
-                  ? "Organization not found"
-                  : storeOrgName}
-              </h1>
-              <p className="text-xs">
-                {address === null ? "Address not found" : address}
-              </p>
+              <span className="text-xs text-yellow-500 bg-yellow-100 p-1 rounded-lg">
+                {status?.length === 0 || status === undefined
+                  ? "applied"
+                  : status[0]?.status}
+              </span>
             </div>
           </div>
         </CardHeader>
@@ -109,13 +118,6 @@ const applicationStatus = shortlistedJob?.applicationStatus || {};
                     {appliedDate
                       ? new Date(appliedDate).toLocaleDateString("en-GB")
                       : "Date not found"}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-xs text-yellow-500 bg-yellow-100 p-1 rounded-lg">
-                    {status?.length === 0 || status === undefined
-                      ? "applied"
-                      : status[0]?.status}
                   </span>
                 </div>
               </div>

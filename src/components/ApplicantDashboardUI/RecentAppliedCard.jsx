@@ -30,6 +30,8 @@ const RecentAppliedCard = ({ app }) => {
       appliedDate = app?.createdAt,
     } = app;
 
+    const applicationStatus = app?.applicationStatus || {}; 
+
     // Organization name
     useEffect(() => {
       const getOrgName = async () => {
@@ -107,7 +109,7 @@ const RecentAppliedCard = ({ app }) => {
                 </div>
                 {/* Hiring steps */}
                 <div className="text-xs">
-                    hiring steps
+                  <HiringSteps applicationStatus={applicationStatus} />
                 </div>
               </div>
             </div>
