@@ -47,7 +47,7 @@ const calculateTotalExperience = (experiences) => {
   return `${years} years ${months} months`;
 };
 
-const DemoAppList = (inHome = false ) => {
+const DemoAppList = (inHome = false) => {
   const router = useRouter();
   const { data: session } = useSession();
   const accessToken = session?.access_token;
@@ -65,9 +65,10 @@ const DemoAppList = (inHome = false ) => {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [selectedApplicantId, setSelectedApplicantId] = useState(null);
-  const [selectedJobApplicationId, setSelectedJobApplicationId] = useState(null);
-  const [selectedApplicationStatusId, setSelectedApplicationStatusId] = useState(null);
-
+  const [selectedJobApplicationId, setSelectedJobApplicationId] =
+    useState(null);
+  const [selectedApplicationStatusId, setSelectedApplicationStatusId] =
+    useState(null);
 
   // UI states
   const [selectedStatus, setSelectedStatus] = useState("applied");
@@ -82,11 +83,7 @@ const DemoAppList = (inHome = false ) => {
     selectedTime: "all",
   });
 
-  // const url = !inHome
-  //   ? `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?where[jobDetails.job.organization][equals]=${orgId}&limit=${ITEMS_PER_PAGE}&page=${page}`
-  //   : `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?where[jobDetails.job.organization][equals]=${orgId}&limit=${HOME_PAGE_ITEMS}&page=${page}`;
-
-  // Fetch job applications
+  // job applications fetch
   const fetchJobApplications = async () => {
     try {
       const response = await fetch(
@@ -119,20 +116,10 @@ const DemoAppList = (inHome = false ) => {
 
   // Function to fetch applicant profiles
   const fetchApplicantProfiles = async (applicantIds) => {
-    const validIds = [];
-    for (const id of applicantIds) {
-      if (id === null) break;
-      validIds.push(id);
-    }
-
-    if (validIds.length === 0) return;
-
-    // console.log("Valid applicantIds :: ", validIds);
     setIsLoadingProfiles(true);
-
     try {
       const profiles = await Promise.all(
-        validIds.map(async (id) => {
+        applicantIds.map(async (id) => {
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/api/applicants/${id}`,
             {
@@ -143,11 +130,11 @@ const DemoAppList = (inHome = false ) => {
             }
           );
           const data = await response.json();
-          console.log("Data :: ", data);
           return { id, profile: data };
         })
       );
 
+      // Update applicantProfiles state
       setApplicantProfiles((prev) => ({
         ...prev,
         ...Object.fromEntries(profiles.map(({ id, profile }) => [id, profile])),
@@ -204,7 +191,7 @@ const DemoAppList = (inHome = false ) => {
   // Fetch applicant profiles for new applications
   useEffect(() => {
     const newApplicantIds = jobApplications
-      .map((app) => app.applicant)
+      .map((app) => app.applicant.id)
       .filter((id) => !applicantProfiles[id]);
 
     if (newApplicantIds.length > 0) {
@@ -238,22 +225,23 @@ const DemoAppList = (inHome = false ) => {
   // Transform applicant data
   const transformedApplicants = jobApplications
     .map((application) => {
-      // console.log("applicatiosn :: ", application);
-      const profile = applicantProfiles[application.applicant];
+      // console.log("applicatiosn :: ", application.applicant?.cv);
+      const profile = applicantProfiles[application.applicant.id];
       if (!profile) return null;
       // console.log("profile  ::: ", profile);
 
       const latestStatus =
         application.applicationStatus?.docs?.[0]?.status || "applied";
       const applicationId = application.applicationStatus?.docs?.[0]?.id;
+      const cvUrl = `${process.env.NEXT_PUBLIC_API_URL}${profile?.cv?.url}`;
 
       return {
         id: application.id,
         applicantProfileID: getSafeValue(application.applicant.id),
 
         name: getSafeValue(profile.name, "N/A"),
-        CVScore: getSafeValue(profile.CVScore, profile.cv ? 75 : 0),
-        CV: getSafeValue(profile.cv),
+        CVScore: getSafeValue(profile.CVScore, profile?.cv ? 75 : 0),
+        CV: getSafeValue(cvUrl),
         certifications: getSafeValue(profile.trainingAndCertifications, []),
         experiences: getSafeValue(profile.experiences, []),
         socialLinks: getSafeValue(profile.socialLinks, []),
@@ -290,8 +278,8 @@ const DemoAppList = (inHome = false ) => {
 
   const filteredApplicants = transformedApplicants.filter((applicant) => {
     // Apply status and step filters
-    console.log("applicant in the filer logic :: ", applicant?.name)
-      let statusMatch = false;
+    console.log("applicant in the filer logic :: ", applicant?.name);
+    let statusMatch = false;
 
     if (!selectedStatus) {
       statusMatch =
@@ -313,16 +301,15 @@ const DemoAppList = (inHome = false ) => {
       if (selectedStep === "all") {
         statusMatch = applicant.applicationStatus === "shortlisted";
       } else {
-        statusMatch = (
+        statusMatch =
           applicant.applicationStatus === "shortlisted" &&
-          applicant.hiringStep?.title === selectedStep
-        );
+          applicant.hiringStep?.title === selectedStep;
       }
     }
 
-      if (!statusMatch) {
-        return false;
-      }
+    if (!statusMatch) {
+      return false;
+    }
 
     // Apply additional filters (search query, job role, time)
     if (
@@ -369,17 +356,16 @@ const DemoAppList = (inHome = false ) => {
   //   router.push(`/demoAppList/demoAppDetails?id=${applicantProfileID}`);
   // };
 
-const handleViewDetails = (
-  applicantProfileID,
-  jobApplicationId,
-  applicationStatusId
-) => {
-  // Set the selected IDs
-  setSelectedApplicantId(applicantProfileID);
-  setSelectedJobApplicationId(jobApplicationId);
-  setSelectedApplicationStatusId(applicationStatusId);
-};
-
+  const handleViewDetails = (
+    applicantProfileID,
+    jobApplicationId,
+    applicationStatusId
+  ) => {
+    // Set the selected IDs
+    setSelectedApplicantId(applicantProfileID);
+    setSelectedJobApplicationId(jobApplicationId);
+    setSelectedApplicationStatusId(applicationStatusId);
+  };
 
   const handleFilterChange = (filterName, value) => {
     setFilters((prev) => ({
@@ -420,8 +406,11 @@ const handleViewDetails = (
     });
   };
 
-
-  if (selectedApplicantId || selectedJobApplicationId || selectedApplicationStatusId) {
+  if (
+    selectedApplicantId ||
+    selectedJobApplicationId ||
+    selectedApplicationStatusId
+  ) {
     // Render ApplicantDetails component if an applicant is selected
     return (
       <ApplicantDetails

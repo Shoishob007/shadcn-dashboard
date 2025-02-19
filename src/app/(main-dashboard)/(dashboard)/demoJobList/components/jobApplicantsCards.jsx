@@ -156,7 +156,7 @@ const JobApplicantsCards = ({
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
-                          onClick={() => handleViewCV(applicant.CV)}
+                          onClick={() => handleViewCV(applicant?.CV)}
                           className="p-2 rounded-full transition-colors border-none"
                           variant="outline"
                         >
