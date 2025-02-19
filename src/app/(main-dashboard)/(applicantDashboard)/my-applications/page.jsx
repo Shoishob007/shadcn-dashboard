@@ -32,3 +32,4 @@ const MyApplicationPage = () => {
 };
 
 export default MyApplicationPage;
+
