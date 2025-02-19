@@ -89,10 +89,10 @@ const ApplicantImgUpload = ({ docId, data }) => {
 
   useEffect(() => {
     const publicUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
-    const getImgUrl = data.img.url;
+    const getImgUrl = data?.img?.url;
     const imgUrl = publicUrl.concat(getImgUrl);
     setImage(imgUrl);
-  }, [data.img.url]);
+  }, [data?.img?.url]);
 
   return (
     <div className="relative ">

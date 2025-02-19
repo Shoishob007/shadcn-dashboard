@@ -27,7 +27,7 @@ const ProfileTabs = ({profileData = []}) => {
           <TabsTrigger className="ml-8" value="skills">
             Skills
           </TabsTrigger>
-          
+
           {/* <TabsTrigger className="ml-8" value="projects">
             Projects
           </TabsTrigger> */}
@@ -39,15 +39,20 @@ const ProfileTabs = ({profileData = []}) => {
         {/* Tabs content */}
         <div className="mt-6 w-full">
           <TabsContent value="overview">
-            {
-                profileData?.map((data) => <ProfileOverview key={data.id} profileData={profileData} data={data} />)
-            }
+            {profileData?.map((data) => (
+              <ProfileOverview
+                key={data.id}
+                profileData={profileData}
+                data={data}
+              />
+            ))}
           </TabsContent>
           <TabsContent value="resume">
-            <Resume/>
+            {profileData?.map((data) => ( <Resume key={data.id} data={data} />
+            ))}
           </TabsContent>
           <TabsContent value="educations">
-            <Educations/>
+            <Educations />
           </TabsContent>
           {/* <TabsContent value="experiences">
             <Experiences/>
@@ -59,7 +64,7 @@ const ProfileTabs = ({profileData = []}) => {
             <Projects />
           </TabsContent> */}
           <TabsContent value="changePassword">
-            <ChangePassword/>
+            <ChangePassword />
           </TabsContent>
         </div>
       </Tabs>

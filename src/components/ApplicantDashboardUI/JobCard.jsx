@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -5,82 +6,82 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import Link from "next/link";
-import SkillsDisplay from "./SkillsDisplay";
+import { BriefcaseBusiness, User } from "lucide-react";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const JobCard = ({ job }) => {
-    const { data: session, status } = useSession();
-    const accessToken = session?.access_token;
-    const [storeOrgName, setStoreOrgName]= useState('');
-    const {
-      id = `${job?.id ? job?.id : "unknown"}`,
-      orgName = `${storeOrgName ? storeOrgName : "Unknown Company"}`,
-      orgId = `${
-        job?.job?.organization?.id
-          ? job?.job?.organization?.id
-          : "Unknown Company"
-      }`,
-      title = `${
-        job?.job?.title ? job?.job?.title : "Job Title Not Available"
-      }`,
-      address = `${
-        job?.address
-          ? job?.address
-          : job?.address === null
-          ? "Address not defined"
-          : "Address Not Specified"
-      }`,
-      skills = `${
-        job?.skills
-          ? job?.skills.map((skill) => <p key={skill.id}>{skill}</p>)
-          : "No Skills Listed"
-      }`,
-      employeeType = `${job?.employeeType ? job?.employeeType : "not found"}`,
-      salary = "0",
-      img = "",
-      yearOfExperience = `${
-        job?.yearOfExperience === null
-          ? "not specified"
-          : job?.yearOfExperience
-          ? job?.yearOfExperience
-          : "not found"
-      }`,
-    } = job || {};
+  const { data: session } = useSession();
+  const accessToken = session?.access_token;
+  const [employeeTypeData, setEmployeeTypeData] = useState("");
+  const [jobTypeData, setJobTypeData] = useState("");
+  console.log("Job Data: ", job);
+  const {
+    id = job?.id,
+    address = job?.address === null ? "address not found" : job?.address,
+    title = job?.job?.title === null ? "title not found" : job?.job?.title,
+    orgName = job?.job?.organization?.orgName === null
+      ? "Organization not found"
+      : job?.job?.organization?.orgName,
+    salary = job?.salary === null ? "salary not found" : job?.salary,
+    employeeTypeId = job?.ememployeeType === null
+      ? "not found"
+      : job?.employeeType,
+    yearOfExperience = job?.yearOfExperience,
+    jobTypeId = job?.jobType,
+    skills = job?.skills.map((skill) => console.log("Skill: ", skill)),
+  } = job;
 
-        useEffect(() => {
-            const getOrgName = async() => {
-                try {
-                  const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${orgId}`,
-                    {
-                      method: "GET",
-                      headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                      },
-                    }
-                  );
-                  const data = await response.json();
-                //   console.log("Org response :: ", data);
-                  setStoreOrgName(data.orgName);
-                //   console.log("Org name :: ", data.orgName);
-                } catch (error) {
-                  console.log(
-                    "Error fetching application details: ",
-                    error.message
-                  );
-                }
-            };
-            getOrgName();
-        }, [orgId, accessToken]);
+  console.log("skills: ", skills);
+  //   Employee type
+  useEffect(() => {
+    const getEmployeeType = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/employee-types/${employeeTypeId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const employeeData = await response.json();
+      if (employeeData?.id) {
+        setEmployeeTypeData(employeeData?.title);
+      }
+      //   console.log("Employee data: ", employeeData?.title);
+    };
+    getEmployeeType();
+  }, [employeeTypeId, accessToken]);
+
+  //   job type
+  useEffect(() => {
+    const getJobType = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/job-types/${jobTypeId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const jobTypeData = await response.json();
+      if (jobTypeData?.id) {
+        setJobTypeData(jobTypeData?.title);
+      }
+      //   console.log("Employee data: ", employeeData?.title);
+    };
+    getJobType();
+  }, [jobTypeId, accessToken]);
   return (
-    <Link href={`/job-detail/${id}`} className="">
+    <Link href={`/job-search/${id}`} className="">
       <Card className="w-full hover:border hover:border-black duration-300 cursor-pointer">
         <CardHeader>
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 font-medium bg-gray-200  rounded-full flex items-center justify-center">
-              <span className="">{orgName.slice(0, 1)}</span>
+            <div className="w-10 h-10 font-medium bg-gray-200 rounded-full flex items-center justify-center">
+              <span>O</span>
             </div>
             <div>
               <h1 className="text-[15px] font-medium">{orgName}</h1>
@@ -91,40 +92,47 @@ const JobCard = ({ job }) => {
         <CardContent>
           <div>
             <h1 className="text-[17px] font-semibold">{title}</h1>
-            <div className="flex items-center mt-3 gap-3">
-              <span
-                className={`text-xs font-semibold capitalize ${
-                  employeeType === "full-time"
-                    ? "text-[#20c997]"
-                    : employeeType === "contractual"
-                    ? "text-[#ffc107]"
-                    : employeeType === "part-time"
-                    ? "text-[#6610f2]"
-                    : "text-black"
-                }`}
-              >
-                {employeeType}
-              </span>
-              <span className="text-xs font-medium">
-                {yearOfExperience}
-              </span>
-              {/* <span className="text-xs font-medium">{jobType}</span> */}
+            <div className="my-3 flex items-center gap-3">
+              <div className="flex items-center gap-1">
+                <span>
+                  <BriefcaseBusiness size={16} />
+                </span>
+                <span className={`text-xs`}>
+                  {!employeeTypeData ? "not found" : employeeTypeData}
+                </span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span>
+                  <User size={16} />
+                </span>
+                <span className={`text-xs`}>
+                  {yearOfExperience === null
+                    ? "experience not found"
+                    : yearOfExperience}
+                </span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span>
+                  <User size={16} />
+                </span>
+                <span className={`text-xs`}>
+                  {jobTypeData === null ? "job type not found" : jobTypeData}
+                </span>
+              </div>
             </div>
-            <div className="mt-3">
-              <SkillsDisplay skills={skills} />
+            <div className="flex items-center gap-1 flex-wrap mt-2 text-sm">
+              skills
             </div>
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">
           <div>
             <div>
-              <span className="font-bold">${salary}</span>
+              <span className="font-bold">BDT {salary}</span>
               <span className="text-sm">/month</span>
             </div>
           </div>
-          <Button variant="outline" size="sm">
-            View Details
-          </Button>
+          <Button size="sm">View Details</Button>
         </CardFooter>
       </Card>
     </Link>

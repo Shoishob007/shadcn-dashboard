@@ -5,10 +5,10 @@ import ApplyJob from "./components/ApplyJob";
 const JobDetailsPage = async ({ params }) => {
   const { detailsId } = params;
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/job-details/${detailsId}`
+    `${process.env.NEXT_PUBLIC_API_URL}/api/job-details/${detailsId}`,
   );
   const data = await response.json();
-  //   console.log("Response data ::::: ", data);
+  console.log("Job Details Response data ::::: ", data);
 
   return (
     <div className=" bg-white dark:bg-gray-800 rounded-lg">
@@ -26,10 +26,10 @@ const JobDetailsPage = async ({ params }) => {
               {data?.job.title || "N/A"}
             </h1>
             <p className="text-gray-700 dark:text-gray-300">
-              {data?.designation || "N/A"}
+              {data?.job?.organization?.orgName || "N/A"}
             </p>
             <p className="text-gray-700 dark:text-gray-300">
-              {data?.location || "N/A"}
+              {data?.address || "N/A"}
             </p>
           </div>
         </header>
@@ -54,6 +54,7 @@ const JobDetailsPage = async ({ params }) => {
                 ))
               : "No requirements specified."}
           </ul> */}
+          <span>{data?.requirements || "Requirements not found"}</span>
         </section>
 
         <section className="mb-4 text-xs sm:text-sm">
@@ -76,6 +77,11 @@ const JobDetailsPage = async ({ params }) => {
                 ))
               : "No benefits listed."}
           </ul> */}
+          <span>{data?.employeeBenefits || 'Employee Benefits not found'}</span>
+        </section>
+
+        <section>
+            
         </section>
 
         {/* Apply form */}

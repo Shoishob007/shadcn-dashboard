@@ -1,18 +1,40 @@
 "use client";
 import { Pencil, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import ResumeUpload from "./ResumeUpload";
 
-const Resume = () => {
+const Resume = ({ data }) => {
+  const { data: session } = useSession();
+  const accessToken = session?.access_token;
   const [isEditing, setIsEditing] = useState(false);
   const [fileURL, setFileURL] = useState("");
+  const [cvUrl, setCvUrl] = useState('');
+  const cvId = data?.cv;
 
-  // Retrieve resume URL from localStorage when the component mounts
+
   useEffect(() => {
-    const storedResume = localStorage.getItem("uploadedResume");
-    if (storedResume) {
-      setFileURL(storedResume);
-    }
+    const getCv = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/media-pdfs/${cvId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const cvData = await response.json();
+      console.log("CV data: ", cvData);
+      if(cvData?.id){
+        const publicUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
+        const cvDataUrl = cvData?.url;
+        const cvUrl = publicUrl.concat(cvDataUrl);
+        console.log(cvUrl)
+        setFileURL(cvUrl);
+      }
+    };
+    getCv();
   }, []);
 
   return (
@@ -39,7 +61,7 @@ const Resume = () => {
         {/* Resume Content */}
         <div className="mt-6">
           {isEditing ? (
-            <ResumeUpload setFileURL={setFileURL} />
+            <ResumeUpload setFileURL={setFileURL} docId={data?.id} />
           ) : fileURL ? (
             <div>
               <h2 className="text-xl">Uploaded Resume:</h2>

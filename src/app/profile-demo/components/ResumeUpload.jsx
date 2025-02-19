@@ -1,18 +1,37 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
 import { Check, CloudUpload, FileText, Loader } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-export default function ResumeUpload({ setFileURL }) {
+export default function ResumeUpload({ setFileURL, docId }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
   const accessToken = session?.access_token;
+//   console.log("Document Id: ", docId);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+
+    // File validation
     if (file) {
+      const allowedTypes = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        alert("Invalid file type. Please upload a PDF or Word document.");
+        return;
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        alert("File size must be less than 10MB.");
+        return;
+      }
+
       setSelectedFile(file);
     }
   };
@@ -23,13 +42,18 @@ export default function ResumeUpload({ setFileURL }) {
       return;
     }
 
+    if (!accessToken) {
+      alert("Authentication error. Please log in again.");
+      return;
+    }
+
     setLoading(true);
     const formData = new FormData();
-    formData.append("cv", selectedFile);
+    formData.append("file", selectedFile);
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/media-images`, // Update the URL accordingly
+        `${process.env.NEXT_PUBLIC_API_URL}/api/media-pdfs`,
         {
           method: "POST",
           headers: {
@@ -45,15 +69,41 @@ export default function ResumeUpload({ setFileURL }) {
       }
 
       const data = await response.json();
-      const uploadedResumeURL = data?.fileURL;
+    //   console.log("cv data: ", data);
+      //   const uploadedResumeURL = data?.fileURL;
+      if (data?.doc?.id) {
+        const cvId = data?.doc;
+        console.log("CV Doc: ",cvId);
 
-      // Store the uploaded resume URL in localStorage
-      localStorage.setItem("uploadedResume", uploadedResumeURL);
+        const setCVResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/applicants/${docId}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({
+              cv: cvId,
+            }),
+          }
+        );
+        const cvResponse = await setCVResponse.json();
+        if(cvResponse?.doc?.cv){
+            toast({
+              title: "Success",
+              description: cvResponse?.message,
+              variant: "success",
+            });
+        }
+        // console.log("CV Response: ", cvResponse);
+      }
 
       // Set the file URL state
-      setFileURL(uploadedResumeURL);
-      alert("File uploaded successfully!");
+      //   setFileURL(uploadedResumeURL);
+      //   alert("File uploaded successfully!");
     } catch (error) {
+      console.error("Upload Error:", error);
       alert(`File upload failed: ${error.message}`);
     } finally {
       setLoading(false);
