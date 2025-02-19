@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import AppliedContent from "./AppliedContent";
+import ShortlistedContent from "./ShortlistedContent";
 
 const ApplicationTabs = () => {
   const { data: session, status } = useSession();
@@ -46,22 +47,24 @@ const ApplicationTabs = () => {
     getJobApplicationData();
   }, [accessToken]);
 
+  //   Applied jobs
+  //   const appliedJobs = myApplications.filter(
+  //     (app) => app?.applicationStatus?.docs?.length === 0
+  //   );
 
-//   Applied jobs
-//   const appliedJobs = myApplications.filter(
-//     (app) => app?.applicationStatus?.docs?.length === 0
-//   );
+  // Applied jobs
+  const appliedJobs = myApplications?.filter(
+    (myApp) =>
+      !myApp?.applicationStatus?.docs ||
+      myApp?.applicationStatus?.docs.length === 0
+  );
+  //   console.log("Applied Jobs:", appliedJobs);
 
-// Applied jobs
-const appliedJobs = myApplications?.filter(
-  (myApp) =>
-    !myApp?.applicationStatus?.docs || myApp?.applicationStatus?.docs.length === 0);
-//   console.log("Applied Jobs:", appliedJobs);
-
-//   Shortlisted jobs
-const shortlistedJobs = myApplications?.filter(
-  (myApp) => myApp?.applicationStatus?.docs?.length > 0);
-//   console.log("Shortlisted jobs: ", shortlistedJobs)
+  //   Shortlisted jobs
+  const shortlistedJobs = myApplications?.filter(
+    (myApp) => myApp?.applicationStatus?.docs?.length > 0
+  );
+    console.log("Shortlisted jobs: ", shortlistedJobs)
 
   if (status === "loading" || loading) {
     return <Skeleton className="h-20 w-full rounded-lg" />;
@@ -114,7 +117,11 @@ const shortlistedJobs = myApplications?.filter(
       </TabsContent>
 
       <TabsContent value="Shortlisted">
-        {selectedStatus === "Shortlisted" && "Shortlisted Content"}
+        <div lassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {
+            shortlistedJobs?.map((shortlistedJob) => <ShortlistedContent key={shortlistedJob.id} shortlistedJob={shortlistedJob} />)
+          }
+        </div>
       </TabsContent>
 
       <TabsContent value="Rejected">

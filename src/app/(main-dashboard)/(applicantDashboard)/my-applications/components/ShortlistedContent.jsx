@@ -12,24 +12,24 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import HiringSteps from "./HiringSteps";
 
-const AppliedContent = ({ appliedJob }) => {
+const ShortlistedContent = ({ shortlistedJob }) => {
   const [storeOrgName, setstoreOrgName] = useState("");
   const { data: session } = useSession();
   const accessToken = session?.access_token;
   const {
-    title = appliedJob?.jobDetails?.job?.title,
-    address = appliedJob?.jobDetails?.address,
-    organizationId = appliedJob?.jobDetails?.job?.organization,
-    jobType = appliedJob?.jobDetails?.jobType?.title,
-    salary = appliedJob?.jobDetails?.salary,
-    yearOfExperience = appliedJob?.jobDetails?.yearOfExperience,
-    appliedDate = appliedJob?.createdAt,
-    status = appliedJob?.applicationStatus?.docs,
-  } = appliedJob;
+    title = shortlistedJob?.jobDetails?.job?.title,
+    address = shortlistedJob?.jobDetails?.address,
+    organizationId = shortlistedJob?.jobDetails?.job?.organization,
+    jobType = shortlistedJob?.jobDetails?.jobType?.title,
+    salary = shortlistedJob?.jobDetails?.salary,
+    yearOfExperience = shortlistedJob?.jobDetails?.yearOfExperience,
+    appliedDate = shortlistedJob?.createdAt,
+    status = shortlistedJob?.applicationStatus?.docs,
+  } = shortlistedJob;
 
-  const applicationStatus = appliedJob?.applicationStatus || {}; 
+const applicationStatus = shortlistedJob?.applicationStatus || {}; 
 
-  // console.log("Applied jobs: ", appliedJob);
+  console.log("Shortlisted jobs: ", shortlistedJob);
 
   // Organization name
   useEffect(() => {
@@ -55,7 +55,7 @@ const AppliedContent = ({ appliedJob }) => {
   }, [organizationId, accessToken]);
 
   return (
-    <Link href={`/my-applications/${appliedJob.id}`}>
+    <Link href={`/my-applications/${shortlistedJob.id}`}>
       <Card className="w-full hover:border hover:border-black duration-300 cursor-pointer">
         <CardHeader>
           <div className="flex items-center gap-2">
@@ -77,7 +77,7 @@ const AppliedContent = ({ appliedJob }) => {
         <CardContent>
           <div>
             <h1 className="text-[17px] font-semibold">
-              {!title ? "Title not found" : title}
+              {title === null ? "Title not found" : title}
             </h1>
             <div className="flex items-center mt-3 gap-3">
               <div className="flex items-center gap-1">
@@ -85,7 +85,7 @@ const AppliedContent = ({ appliedJob }) => {
                   <BriefcaseBusiness size={16} />
                 </span>
                 <span className="text-xs">
-                  {yearOfExperience === null
+                  {yearOfExperience === null || yearOfExperience === null
                     ? "experience not found"
                     : yearOfExperience == 1
                     ? yearOfExperience + "Year"
@@ -112,10 +112,10 @@ const AppliedContent = ({ appliedJob }) => {
                   </span>
                 </div>
                 <div>
-                  <span className="text-xs text-blue-500 bg-blue-100 p-1 rounded-lg">
+                  <span className="text-xs text-yellow-500 bg-yellow-100 p-1 rounded-lg">
                     {status?.length === 0 || status === undefined
                       ? "applied"
-                      : "Status: " + status[0]?.status}
+                      : status[0]?.status}
                   </span>
                 </div>
               </div>
@@ -142,4 +142,4 @@ const AppliedContent = ({ appliedJob }) => {
   );
 };
 
-export default AppliedContent;
+export default ShortlistedContent;
