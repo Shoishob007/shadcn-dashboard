@@ -65,7 +65,7 @@ const DemoAppList = (inHome = false ) => {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [selectedApplicantId, setSelectedApplicantId] = useState(null);
-    const [selectedJobApplicationId, setSelectedJobApplicationId] = useState(null);
+  const [selectedJobApplicationId, setSelectedJobApplicationId] = useState(null);
   const [selectedApplicationStatusId, setSelectedApplicationStatusId] = useState(null);
 
 

@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { House } from "lucide-react";
 import { useSession } from "next-auth/react";
+import ApplicantDetails from "../../demoAppList/demoAppDetails/page";
 
 const APPLICANTS_PER_PAGE = 10;
 
@@ -73,6 +74,9 @@ const DemoApplicants = () => {
   const [viewCount, setViewCount] = useState(
     orgSettings.docs[0]?.numberOfCvViewed
   );
+    const [selectedApplicantId, setSelectedApplicantId] = useState(null);
+    const [selectedJobApplicationId, setSelectedJobApplicationId] = useState(null);
+    const [selectedApplicationStatusId, setSelectedApplicationStatusId] = useState(null);
   const maxViews = orgSettings.docs[0]?.subscriptionId === 1 ? 3 : Infinity;
 
   // Fetch job applications
@@ -179,7 +183,7 @@ const DemoApplicants = () => {
     }
   }, [page, jobApplications]);
 
-  console.log("job Applications :: ", jobApplications);
+  // console.log("job Applications :: ", jobApplications);
 
   // fetching hiring stages for the company
   const fetchHiringStages = async () => {
@@ -207,11 +211,13 @@ const DemoApplicants = () => {
   // Transforming applicant data to match the component's expected format
   const transformedApplications = jobApplications
     .map((application) => {
+
+      // console.log("application in the scope:: ", application);
         const profile =
           application.applicant || applicantProfiles[application.applicant.id];
       if (!profile) return null;
 
-      console.log("profile :: ", profile);
+      // console.log("profile :: ", profile);
       const latestStatus =
         application.applicationStatus?.docs?.[0]?.status || "applied";
       const applicationId = application.applicationStatus?.docs?.[0]?.id;
@@ -221,6 +227,8 @@ const DemoApplicants = () => {
 
       return {
         id: application.id,
+        jobId: application.jobDetails.job.id,
+        applicantProfileID : application.applicant.id,
         name: profile.name || "N/A",
         CVScore: profile.CVScore || (profile.cv ? 75 : 0),
         CV: profile.cv,
@@ -309,9 +317,30 @@ const DemoApplicants = () => {
     };
   };
 
-  const handleViewDetails = (id) => {
-    router.push(`/demoAppList/demoAppDetails?id=${id}`);
-  };
+const handleViewDetails = (
+  applicantProfileID,
+  jobApplicationId,
+  applicationStatusId
+) => {
+  setSelectedApplicantId(applicantProfileID);
+  setSelectedJobApplicationId(jobApplicationId);
+  setSelectedApplicationStatusId(applicationStatusId);
+};
+if (
+  selectedApplicantId ||
+  selectedJobApplicationId ||
+  selectedApplicationStatusId
+) {
+  // Render ApplicantDetails component if an applicant is selected
+  return (
+    <ApplicantDetails
+      applicantId={selectedApplicantId}
+      jobApplicationId={selectedJobApplicationId}
+      applicationStatusId={selectedApplicationStatusId}
+      hiringStages={hiringStages}
+    />
+  );
+}
 
   if (!currentJobInfo || isLoadingOrg) {
     return <div className="text-center p-8">Loading...</div>;
@@ -353,7 +382,7 @@ const DemoApplicants = () => {
   });
 
   const handleUpdateApplication = (updatedApplication) => {
-    // Update the jobApplications state with the new applicant data
+    // Updating the jobApplications state with the new applicant data
     setJobApplications((prevApplications) => {
       return prevApplications.map((application) => {
         if (application.applicant.id === updatedApplication.id) {

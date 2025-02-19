@@ -26,7 +26,7 @@ const JobApplicantsCards = ({
 }) => {
   const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
 
-  // console.log("cuurenmt ::: ", currentPaginatedApplicants)
+  console.log("cuurenmt ::: ", currentPaginatedApplicants)
 
   // Get the latest stage and status for an applicant
   const getLatestStageInfo = (applicant) => {
