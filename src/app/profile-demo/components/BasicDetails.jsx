@@ -49,7 +49,8 @@ const BasicDetails = ({ profileData, data }) => {
               <Label htmlFor="designation">Designation</Label>
               <div className="bg-[#f0f5f7] border border-[#f0f5f7] px-5 py-4 mt-2.5 rounded-lg">
                 <span className="text-[#696969] text-sm">
-                  Frontend Designer
+                  {data?.designation?.title === null
+                    ? "not set" : data?.designation?.title}
                 </span>
               </div>
             </div>
