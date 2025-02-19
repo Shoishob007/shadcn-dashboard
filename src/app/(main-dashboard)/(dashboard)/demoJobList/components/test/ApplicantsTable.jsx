@@ -25,7 +25,7 @@ const ApplicantsTable = ({
   maxViews,
   hiringStages,
 }) => {
-  // console.log("Applicants i got in the appicants table :: ", applications);
+  console.log("Applicants i got in the appicants table :: ", applications);
   const { data: session } = useSession();
   const accessToken = session?.access_token;
   const { toast } = useToast();
@@ -408,12 +408,7 @@ const ApplicantsTable = ({
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Link
-                          href={
-                            viewCount < maxViews
-                              ? `/demoAppList/demoAppDetails?id=${application.id}`
-                              : "#"
-                          }
+                        <div
                           className={`text-blue-500 hover:text-blue-700 inline-block ${
                             viewCount >= maxViews ? "cursor-pointer" : ""
                           }`}
@@ -430,7 +425,7 @@ const ApplicantsTable = ({
                           }}
                         >
                           <Eye className="w-5 h-5" />
-                        </Link>
+                        </div>
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>View Details</p>
