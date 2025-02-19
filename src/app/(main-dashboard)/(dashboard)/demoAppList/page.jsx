@@ -238,7 +238,7 @@ const DemoAppList = (inHome = false ) => {
   // Transform applicant data
   const transformedApplicants = jobApplications
     .map((application) => {
-      console.log("applicatiosn :: ", application.applicant);
+      // console.log("applicatiosn :: ", application);
       const profile = applicantProfiles[application.applicant];
       if (!profile) return null;
       // console.log("profile  ::: ", profile);
@@ -249,7 +249,7 @@ const DemoAppList = (inHome = false ) => {
 
       return {
         id: application.id,
-        applicantProfileID: getSafeValue(application.applicant),
+        applicantProfileID: getSafeValue(application.applicant.id),
 
         name: getSafeValue(profile.name, "N/A"),
         CVScore: getSafeValue(profile.CVScore, profile.cv ? 75 : 0),
@@ -290,29 +290,44 @@ const DemoAppList = (inHome = false ) => {
 
   const filteredApplicants = transformedApplicants.filter((applicant) => {
     // Apply status and step filters
+    console.log("applicant in the filer logic :: ", applicant?.name)
+      let statusMatch = false;
+
     if (!selectedStatus) {
-      return applicant.applicationStatus === "applied";
+      statusMatch =
+        applicant.applicationStatus === "applied" ||
+        applicant.applicationStatus === "hired" ||
+        applicant.applicationStatus === "rejected" ||
+        applicant.applicationStatus === "shortlisted";
     } else if (selectedStatus === "applied") {
-      return applicant.applicationStatus === "applied";
+      statusMatch =
+        applicant.applicationStatus === "applied" ||
+        applicant.applicationStatus === "hired" ||
+        applicant.applicationStatus === "rejected" ||
+        applicant.applicationStatus === "shortlisted";
     } else if (selectedStatus === "hired") {
-      return applicant.applicationStatus === "hired";
+      statusMatch = applicant.applicationStatus === "hired";
     } else if (selectedStatus === "rejected") {
-      return applicant.applicationStatus === "rejected";
+      statusMatch = applicant.applicationStatus === "rejected";
     } else if (selectedStatus === "shortlisted") {
       if (selectedStep === "all") {
-        return applicant.applicationStatus === "shortlisted";
+        statusMatch = applicant.applicationStatus === "shortlisted";
       } else {
-        return (
+        statusMatch = (
           applicant.applicationStatus === "shortlisted" &&
           applicant.hiringStep?.title === selectedStep
         );
       }
     }
 
+      if (!statusMatch) {
+        return false;
+      }
+
     // Apply additional filters (search query, job role, time)
     if (
       filters.searchQuery &&
-      !applicant.name.toLowerCase().includes(filters.searchQuery.toLowerCase())
+      !applicant?.name.toLowerCase().includes(filters.searchQuery.toLowerCase())
     ) {
       return false;
     }

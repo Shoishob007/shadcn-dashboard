@@ -227,9 +227,13 @@ const JobCards = ({
                               })
                             )}
                           /> */}
-                          <p className="text-lg sm:text-base">
+                          {/* <p className="text-lg sm:text-base">
                             {appCount} Applicants For This Job
-                          </p>
+                          </p> */}
+
+                          <AnimatedTooltip
+                            items={applicantProfiles[document.job.id] || []}
+                          />
                         </div>
                       </div>
                     ) : (
