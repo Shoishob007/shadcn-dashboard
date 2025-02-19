@@ -1,55 +1,82 @@
-"use client";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 
-export default function HiringSteps({ dataStore }) {
-  const [currentStep, setCurrentStep] = useState(2); // You can update this based on the current step
-  const [hiringStages, setHiringStages] = useState([]);
+const HiringSteps = ({ applicationStatus }) => {
+  if (!applicationStatus?.docs?.length) {
+    return <p>No hiring steps available.</p>;
+  }
 
-  // Map the dataStore to get hiringOrder and stageTitle
-  const steps = dataStore.map((step) => {
-    return {
-      hiringOrder: step?.hiringStage?.order,
-      stageTitle: step?.hiringStage?.title,
-    };
-  });
-
-  // Find the maximum hiringOrder to determine the number of dots
-  const maxHiringOrder = Math.max(...steps.map((step) => step.hiringOrder));
-
-  const { data: session, status } = useSession();
-  const accessToken = session?.access_token;
+  const steps = applicationStatus?.docs?.map((doc) => doc?.hiringStage);
+  steps.sort((a, b) => a.order - b.order);
 
   return (
     <TooltipProvider>
-      <div className="flex flex-col items-center w-full p-6">
-        <div className="flex items-center gap-2">
-          {/* Render dots based on maxHiringOrder */}
-          {Array.from({ length: maxHiringOrder }, (_, index) => (
-            <div key={index} className="relative flex flex-col items-center">
-              <Tooltip>
-                <TooltipTrigger>
+      {/* w-full p-6 bg-white shadow-md rounded-lg */}
+      <div className="">
+        {/* <h2 className="text-xl font-semibold mb-6 text-center text-gray-800">
+          Hiring Process
+        </h2> */}
+
+        <div className="relative flex flex-col gap-6">
+          {steps.map((step, index) => {
+            const isCompleted =
+              index < steps.findIndex((s) => s.id === applicationStatus.id);
+            const isCurrent = step.id === applicationStatus.id;
+
+            return (
+              <div key={step.id} className="flex items-center relative">
+                {/* Step Indicator with Tooltip */}
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div
+                      className={`w-10 h-10 flex items-center justify-center rounded-full border-2 text-white font-bold cursor-pointer transition-all duration-300 ${
+                        isCompleted
+                          ? "bg-green-500 border-green-500"
+                          : isCurrent
+                          ? "bg-blue-500 border-blue-500 animate-pulse"
+                          : "bg-gray-300 border-gray-400"
+                      }`}
+                    >
+                      {isCompleted ? "✓" : index + 1}
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="font-semibold text-gray-200">{step.title}</p>
+                    <p className="text-sm text-gray-400">{step.description}</p>
+                  </TooltipContent>
+                </Tooltip>
+
+                {/* Step Connector Line */}
+                {index !== steps.length - 1 && (
                   <div
-                    className={`w-2 h-2 rounded-full ${
-                      index < currentStep ? "bg-green-500" : "bg-gray-300"
+                    className={`absolute left-5 top-10 h-10 w-1 ${
+                      isCompleted ? "bg-green-500" : "bg-gray-300"
                     }`}
                   ></div>
-                </TooltipTrigger>
-                {/* Show the stage title if it exists for this index */}
-                <TooltipContent>
-                  {steps[index]?.stageTitle || `Step ${index + 1}`}
-                </TooltipContent>
-              </Tooltip>
-            </div>
-          ))}
+                )}
+
+                {/* Step Details */}
+                {/* <div className="ml-4">
+                  <h3
+                    className={`text-lg font-medium ${
+                      isCurrent ? "text-blue-600" : "text-gray-800"
+                    }`}
+                  >
+                    {step.title}
+                  </h3>
+                  <p className="text-sm text-gray-600">{step.description}</p>
+                </div> */}
+              </div>
+            );
+          })}
         </div>
       </div>
     </TooltipProvider>
   );
-}
+};
+
+export default HiringSteps;
