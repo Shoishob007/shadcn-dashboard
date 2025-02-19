@@ -261,12 +261,6 @@ export function RequirementsTab({ callback }) {
                       const newSkills = selectedSkills.filter(
                         (s) => s.id !== skill.id
                       );
-                      console.log(
-                        "Removing skill:",
-                        skill,
-                        "New skills:",
-                        newSkills
-                      );
                       setSelectedSkills(newSkills);
                     }}
                   >
@@ -343,12 +337,6 @@ export function RequirementsTab({ callback }) {
                         const newDegrees = selectedDegrees.filter(
                           (d) => d.id !== degree.id
                         );
-                        console.log(
-                          "Removing degree:",
-                          degree,
-                          "New degrees:",
-                          newDegrees
-                        );
                         setSelectedDegrees(newDegrees);
                       }}
                     >
@@ -402,12 +390,6 @@ export function RequirementsTab({ callback }) {
                       onClick={() => {
                         const newFields = selectedFieldsOfStudy.filter(
                           (f) => f.id !== field.id
-                        );
-                        console.log(
-                          "Removing field:",
-                          field,
-                          "New fields:",
-                          newFields
                         );
                         setSelectedFieldsOfStudy(newFields);
                       }}

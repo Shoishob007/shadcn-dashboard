@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -60,6 +61,9 @@ const JobList = ({ showFilters = true }) => {
   const [documents, setDocuments] = useState({ docs: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [applicationsCount, setApplicationsCount] = useState({});
+  const [applicantProfiles, setApplicantProfiles] = useState({});
+
   const accessToken = session?.access_token;
 
   useEffect(() => {
@@ -87,6 +91,7 @@ const JobList = ({ showFilters = true }) => {
         }
         const data = await response.json();
         setDocuments(data);
+        fetchApplicationsCount(data.docs);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -98,6 +103,44 @@ const JobList = ({ showFilters = true }) => {
       fetchData();
     }
   }, [accessToken, session?.organizationId]);
+
+  const fetchApplicationsCount = async (jobs) => {
+    const counts = {};
+    const applicantProfiles = {};
+
+    for (const job of jobs) {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?where[jobDetails.job.id][equals]=${job.job.id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        const data = await response.json();
+        console.log("Application Response :: ", data);
+        counts[job.job.id] = data.docs.length;
+        applicantProfiles[job.job.id] = data.docs.slice(0, 5).map((doc) => ({
+          id: doc.applicant.id,
+          name: doc.applicant.name,
+          designation: doc.applicant.designation?.title || "No Designation",
+          applicant: {
+            pictureUrl: doc.applicant.img
+              ? `${process.env.NEXT_PUBLIC_API_URL}${doc.applicant.img.url}`
+              : "",
+          },
+        }));
+      } catch (error) {
+        console.error("Error fetching job applications:", error);
+        counts[job.job.id] = 0;
+        applicantProfiles[job.job.id] = [];
+      }
+    }
+    setApplicationsCount(counts);
+    setApplicantProfiles(applicantProfiles);
+  };
 
   const handleFilterChange = (filterName, value) => {
     setFilters((prev) => ({ ...prev, [filterName]: value }));
@@ -228,6 +271,8 @@ const JobList = ({ showFilters = true }) => {
               handleEditJob={handleEditJob}
               handleDeleteJob={handleDeleteJob}
               handleShareJob={handleShareJob}
+              applicationsCount={applicationsCount}
+              applicantProfiles={applicantProfiles}
             />
             {/* Button to see all jobs */}
             {!showFilters && (

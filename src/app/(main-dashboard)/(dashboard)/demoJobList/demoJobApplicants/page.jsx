@@ -171,7 +171,7 @@ const DemoApplicants = () => {
     const startIndex = (page - 1) * APPLICANTS_PER_PAGE;
     const applicantIdsToFetch = jobApplications
       .slice(startIndex, startIndex + APPLICANTS_PER_PAGE)
-      .map((app) => app.applicant)
+      .map((app) => app.applicant.id)
       .filter((id) => !applicantProfiles[id]);
 
     if (applicantIdsToFetch.length > 0) {
@@ -207,14 +207,15 @@ const DemoApplicants = () => {
   // Transforming applicant data to match the component's expected format
   const transformedApplications = jobApplications
     .map((application) => {
-      const profile = applicantProfiles[application.applicant];
+        const profile =
+          application.applicant || applicantProfiles[application.applicant.id];
       if (!profile) return null;
 
-      // console.log("profile :: ", profile);
+      console.log("profile :: ", profile);
       const latestStatus =
         application.applicationStatus?.docs?.[0]?.status || "applied";
       const applicationId = application.applicationStatus?.docs?.[0]?.id;
-      console.log("jobApplication :: ", application.id);
+      // console.log("jobApplication :: ", application.id);
 
       // console.log("latestStatus :: ", latestStatus);
 
@@ -321,8 +322,19 @@ const DemoApplicants = () => {
     .map((stage) => stage.title);
 
   const filteredApplications = transformedApplications.filter((application) => {
-    if (selectedStatus === "applied") {
-      return application.applicationStatus === "applied";
+    if (!selectedStatus) {
+      statusMatch =
+        application.applicationStatus === "applied" ||
+        application.applicationStatus === "hired" ||
+        application.applicationStatus === "rejected" ||
+        application.applicationStatus === "shortlisted";
+    } else if (selectedStatus === "applied") {
+      return (
+        application.applicationStatus === "applied" ||
+        application.applicationStatus === "shortlisted" ||
+        application.applicationStatus === "hired" ||
+        application.applicationStatus === "rejected"
+      );
     } else if (selectedStatus === "hired") {
       return application.applicationStatus === "hired";
     } else if (selectedStatus === "rejected") {
@@ -344,7 +356,7 @@ const DemoApplicants = () => {
     // Update the jobApplications state with the new applicant data
     setJobApplications((prevApplications) => {
       return prevApplications.map((application) => {
-        if (application.applicant === updatedApplication.id) {
+        if (application.applicant.id === updatedApplication.id) {
           return {
             ...application,
             applicationStatus: {
