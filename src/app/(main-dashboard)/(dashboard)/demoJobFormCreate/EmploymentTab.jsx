@@ -13,8 +13,55 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { allEmploymentTypes, allJobTypes } from "@/stores/job-createStore/component/JobCreateData";
+import { useEffect, useState } from "react";
 
-export function EmploymentTab({ form, jobTypes, employeeTypes }) {
+export function EmploymentTab({ form, callback }) {
+    const [selectedEmployeeType, setSelectedEmployeeType] = useState(null);
+    const [employeeTypeInputValue, setEmployeeTypeInputValue] = useState("");
+    const [employeeTypeSuggestions, setEmployeeTypeSuggestions] = useState([]);
+
+      const [selectedJobType, setSelectedJobType] = useState(null);
+      const [jobTypeInputValue, setJobTypeInputValue] = useState("");
+      const [jobTypeSuggestions, setJobTypeSuggestions] = useState([]);
+
+       // Initialize Job Roles and Designation from Form Values
+        useEffect(() => {
+          const formValues = form.getValues();
+
+          // Initialize employeeType
+          if (formValues?.employeeType) {
+            const initialEmployeeType =
+              typeof formValues.employeeType === "object" &&
+              formValues.employeeType.id
+                ? formValues.employeeType
+                : allEmploymentTypes.docs.find(
+                    (d) => d.id === formValues.employeeType
+                  ) || null;
+            setSelectedEmployeeType(initialEmployeeType);
+            setEmployeeTypeInputValue(initialEmployeeType?.title || "");
+          }
+
+          // Initialize employeeType
+          if (formValues?.jobType) {
+            const initialJobType =
+              typeof formValues.jobType === "object" && formValues.jobType.id
+                ? formValues.employeeType
+                : allJobTypes.docs.find((d) => d.id === formValues.jobType) ||
+                  null;
+            setSelectedJobType(initialJobType);
+            setJobTypeInputValue(initialJobType?.title || "");
+          }
+        }, [form]);
+
+        // useEffect(() => {
+        //   const callbackData = {
+        //     employeeType: selectedEmployeeType?.id || null,
+        //     jobType: selectedJobType?.id || null,
+        //   };
+        //   callback(callbackData);
+        // }, [callback, selectedEmployeeType?.id, selectedJobType?.id]);
+      
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -33,7 +80,7 @@ export function EmploymentTab({ form, jobTypes, employeeTypes }) {
                     <SelectValue placeholder="Select Employment Type" />
                   </SelectTrigger>
                   <SelectContent area-label="employeeType">
-                    {employeeTypes?.map((type) => (
+                    {allEmploymentTypes.docs?.map((type) => (
                       <SelectItem key={type.id} value={type.id}>
                         {type.title}
                       </SelectItem>
@@ -61,7 +108,7 @@ export function EmploymentTab({ form, jobTypes, employeeTypes }) {
                     <SelectValue placeholder="Select Job Type" />
                   </SelectTrigger>
                   <SelectContent>
-                    {jobTypes?.map((type) => (
+                    {allJobTypes.docs?.map((type) => (
                       <SelectItem key={type.id} value={type.id}>
                         {type.title}
                       </SelectItem>

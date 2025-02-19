@@ -21,7 +21,7 @@ export default function StepSelector({
     applicationStatus === "rejected" || applicationStatus === "hired";
 
   return (
-    <div className="flex flex-col gap-2 items-center">
+    <div className="flex gap-2 items-center">
       {isLastStage && !isRejectedOrHired ? (
         <Button
           variant="default"

@@ -54,7 +54,6 @@ const CreateJobForm = ({
   const { toast } = useToast();
   const { data: session } = useSession();
   const accessToken = session?.access_token
-  const [isEditMode, setIsEditMode] = useState(Boolean(jobId));
   const [formData, setFormData] = useState({
     skills: initialData?.skills || [],
     degreeLevel: initialData?.degreeLevel || [],
@@ -64,13 +63,19 @@ const CreateJobForm = ({
   const form = useForm({
     resolver: zodResolver(jobSchema),
     defaultValues: {
+      ...initialData,
+      employeeType: initialData?.employeeType?.id || "",
+      jobType: initialData?.jobType?.id || "",
+      designation: initialData?.designation?.id || "",
+      jobRole: initialData?.jobRole || [],
       employeeType: initialData?.employeeType.id || "",
       skills: initialData?.skills || [],
       degreeLevel: initialData?.degreeLevel || [],
       fieldOfStudy: initialData?.fieldOfStudy || [],
-      ...(initialData || {
-        jobStatus: true,
-      }),
+      responsibilities: initialData?.responsibilities || "",
+      employeeBenefits: initialData?.employeeBenefits || "",
+      requirements: initialData?.requirements || "",
+      jobStatus: initialData?.jobStatus ?? true,
     },
   });
 
@@ -80,148 +85,142 @@ const CreateJobForm = ({
   const [postCount, setPostCount] = useState(
     orgSettings.docs[0]?.numberOfJobPosted
   );
-  const [jobRoles, setJobRoles] = useState([]);
-  const [designations, setDesignations] = useState([]);
-  const [filteredJobRoles, setFilteredJobRoles] = useState([]);
-  const [filteredDesignations, setFilteredDesignations] = useState([]);
-  const [jobTypes, setJobTypes] = useState([]);
-  const [employeeTypes, setEmployeeTypes] = useState([]);
   const maxPost = orgSettings.docs[0]?.subscriptionId === 1 ? 3 : Infinity;
   const industryTypeIds = useMemo(() => {
     return session?.industryType?.map((industry) => industry.id) || [];
   }, [session?.industryType]);
 
-  useEffect(() => {
-    if (!industryTypeIds || !accessToken) return;
+  // useEffect(() => {
+  //   if (!industryTypeIds || !accessToken) return;
 
-    const fetchJobRoles = async () => {
-      try {
-        const query = qs.stringify(
-          {
-            where: {
-              "industryType.id": {
-                $in: industryTypeIds,
-              },
-            },
-          },
-          { encode: false }
-        );
+  //   const fetchJobRoles = async () => {
+  //     try {
+  //       const query = qs.stringify(
+  //         {
+  //           where: {
+  //             "industryType.id": {
+  //               $in: industryTypeIds,
+  //             },
+  //           },
+  //         },
+  //         { encode: false }
+  //       );
 
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/job-roles?${query}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
+  //       const response = await fetch(
+  //         `${process.env.NEXT_PUBLIC_API_URL}/api/job-roles?${query}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${accessToken}`,
+  //           },
+  //         }
+  //       );
 
-        const data = await response.json();
-        if (data.docs) {
-          setJobRoles(data.docs);
-          const filteredRoles = data.docs.filter((role) =>
-            role.industryTypeId.some((industry) =>
-              industryTypeIds.includes(industry.id)
-            )
-          );
-          setFilteredJobRoles(filteredRoles);
-        }
-      } catch (error) {
-        console.error("Failed to fetch job roles:", error);
-      }
-    };
+  //       const data = await response.json();
+  //       if (data.docs) {
+  //         setJobRoles(data.docs);
+  //         const filteredRoles = data.docs.filter((role) =>
+  //           role.industryTypeId.some((industry) =>
+  //             industryTypeIds.includes(industry.id)
+  //           )
+  //         );
+  //         setFilteredJobRoles(filteredRoles);
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to fetch job roles:", error);
+  //     }
+  //   };
 
-    const fetchDesignations = async () => {
-      try {
-        const query = qs.stringify(
-          {
-            where: {
-              "industryType.id": {
-                $in: industryTypeIds,
-              },
-            },
-          },
-          { encode: false }
-        );
+  //   const fetchDesignations = async () => {
+  //     try {
+  //       const query = qs.stringify(
+  //         {
+  //           where: {
+  //             "industryType.id": {
+  //               $in: industryTypeIds,
+  //             },
+  //           },
+  //         },
+  //         { encode: false }
+  //       );
 
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/designations?${query}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
+  //       const response = await fetch(
+  //         `${process.env.NEXT_PUBLIC_API_URL}/api/designations?${query}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${accessToken}`,
+  //           },
+  //         }
+  //       );
 
-        const data = await response.json();
-        if (data.docs) {
-          setDesignations(data.docs);
-          const filteredDesignations = data.docs.filter((designation) =>
-            designation.industryTypeId.some((industry) =>
-              industryTypeIds.includes(industry.id)
-            )
-          );
-          setFilteredDesignations(filteredDesignations);
-        }
-      } catch (error) {
-        console.error("Failed to fetch designations:", error);
-      }
-    };
+  //       const data = await response.json();
+  //       if (data.docs) {
+  //         setDesignations(data.docs);
+  //         const filteredDesignations = data.docs.filter((designation) =>
+  //           designation.industryTypeId.some((industry) =>
+  //             industryTypeIds.includes(industry.id)
+  //           )
+  //         );
+  //         setFilteredDesignations(filteredDesignations);
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to fetch designations:", error);
+  //     }
+  //   };
 
-    const fetchJobTypes = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/job-types`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        const data = await response.json();
-        if (data.docs) {
-          setJobTypes(
-            data.docs.map((jobType) => ({
-              id: jobType.id,
-              title: jobType.title,
-            }))
-          );
-        }
-      } catch (error) {
-        console.error("Failed to fetch job types:", error);
-      }
-    };
+  //   const fetchJobTypes = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `${process.env.NEXT_PUBLIC_API_URL}/api/job-types`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${accessToken}`,
+  //           },
+  //         }
+  //       );
+  //       const data = await response.json();
+  //       if (data.docs) {
+  //         setJobTypes(
+  //           data.docs.map((jobType) => ({
+  //             id: jobType.id,
+  //             title: jobType.title,
+  //           }))
+  //         );
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to fetch job types:", error);
+  //     }
+  //   };
 
-    const fetchEmployeeTypes = async () => {
-      // console.log("Access Token : ", accessToken);
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/employee-types`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        const data = await response.json();
-        if (data.docs) {
-          setEmployeeTypes(
-            data.docs.map((employeeType) => ({
-              id: employeeType.id,
-              title: employeeType.title,
-            }))
-          );
-        }
-      } catch (error) {
-        console.error("Failed to fetch employee types:", error);
-      }
-    };
+  //   const fetchEmployeeTypes = async () => {
+  //     // console.log("Access Token : ", accessToken);
+  //     try {
+  //       const response = await fetch(
+  //         `${process.env.NEXT_PUBLIC_API_URL}/api/employee-types`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${accessToken}`,
+  //           },
+  //         }
+  //       );
+  //       const data = await response.json();
+  //       if (data.docs) {
+  //         setEmployeeTypes(
+  //           data.docs.map((employeeType) => ({
+  //             id: employeeType.id,
+  //             title: employeeType.title,
+  //           }))
+  //         );
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to fetch employee types:", error);
+  //     }
+  //   };
 
-    fetchJobRoles();
-    fetchDesignations();
-    fetchJobTypes();
-    fetchEmployeeTypes();
-  }, [industryTypeIds, accessToken]);
+  //   fetchJobRoles();
+  //   fetchDesignations();
+  //   fetchJobTypes();
+  //   fetchEmployeeTypes();
+  // }, [industryTypeIds, accessToken]);
 
   const nextTab = () =>
     setCurrentTab((prev) => (prev < tabs.length - 1 ? prev + 1 : prev));
@@ -314,20 +313,11 @@ const CreateJobForm = ({
         const responseData = await response.json();
         console.log("Response data :: ", responseData)
 
-        if (isEditMode) {
-          toast({
-            title: "Success!",
-            description: "Job updated successfully!",
-            variant: "ourSuccess",
-          });
-        } else {
-          toast({
-            title: "Success",
-            description: "Job created successfully!",
-            variant: "ourSuccess",
-          });
-          setPostCount((prev) => prev + 1);
-        }
+        toast({
+          title: "Success!",
+          description: "Job updated successfully!",
+          variant: "ourSuccess",
+        });
 
         handleFormReset();
         onClose?.();
@@ -348,7 +338,10 @@ const CreateJobForm = ({
       skills: [],
       degreeLevel: [],
       fieldOfStudy: [],
+      jobRole:[],
+      employeeBenefits: "",
       requirements: "",
+      responsibilities:"",
       address: "",
       email: "",
     });
@@ -356,12 +349,13 @@ const CreateJobForm = ({
       skills: [],
       degreeLevel: [],
       fieldOfStudy: [],
+      jobRole:[],
       employeeType: "",
+      jobType:"",
     });
   };
 
   const handleDiscardEditing = () => {
-    setIsEditMode(false);
     onClose?.();
     handleFormReset();
   };
@@ -379,7 +373,7 @@ const handleStepCallback = useCallback((data) => {
 
   return (
     <>
-      {!isDialogOpen && !isEditMode && (
+      {!isDialogOpen  && (
         <Breadcrumb className="mb-4">
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -399,7 +393,7 @@ const handleStepCallback = useCallback((data) => {
       <Card className="w-full max-w-5xl mx-auto p-6 overflow-y-auto">
         <CardHeader className="text-center p-4">
           <CardTitle className="text-lg sm:text-2xl font-semibold">
-            {isEditMode ? "Edit Your Job" : "Create New Job"}
+            {"Edit Your Job"}
           </CardTitle>
           <CardDescription className="text-xs sm:text-sm">
             Fill the job details across all sections below to create a job
@@ -438,8 +432,6 @@ const handleStepCallback = useCallback((data) => {
                 <TabsContent value="Basic Info">
                   <BasicInfoTab
                     form={form}
-                    jobRoles={filteredJobRoles}
-                    designations={filteredDesignations}
                     callback={(x) => handleStepCallback(x)}
                   />
                 </TabsContent>
@@ -447,8 +439,7 @@ const handleStepCallback = useCallback((data) => {
                 <TabsContent value="Employment">
                   <EmploymentTab
                     form={form}
-                    jobTypes={jobTypes}
-                    employeeTypes={employeeTypes}
+                    callback={(x) => handleCallback(x)}
                   />
                 </TabsContent>
 
@@ -488,10 +479,6 @@ const handleStepCallback = useCallback((data) => {
                   >
                     Next
                   </Button>
-                ) : isEditMode ? (
-                  <Button className="px-3 py-1" type="submit">
-                    Update
-                  </Button>
                 ) : (
                   <Button
                     className="px-3 py-1"
@@ -504,7 +491,7 @@ const handleStepCallback = useCallback((data) => {
                       }
                     }}
                   >
-                    Create
+                    Update
                   </Button>
                 )}
               </div>
