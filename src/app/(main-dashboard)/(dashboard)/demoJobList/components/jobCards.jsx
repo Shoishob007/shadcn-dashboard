@@ -29,6 +29,8 @@ const JobCards = ({
   handleDeleteJob,
   handleViewApplicantList,
   handleViewJobDetails,
+  applicationsCount,
+  applicantProfiles,
 }) => {
   console.log("jobs :: ", jobs);
   return (
@@ -39,6 +41,8 @@ const JobCards = ({
           const currentDate = new Date();
           const isPastDeadline = currentDate > deadlineDate;
           const diff = formatRelativeDate(document.createdAt);
+          const appCount = applicationsCount[document.job.id] || 0;
+          // console.log("appCount :: ", appCount);
 
           return (
             <React.Fragment key={document.id}>
@@ -71,23 +75,21 @@ const JobCards = ({
                     <div className="flex space-x-3 md:space-x-3 items-start">
                       <Avatar className="h-16 md:h-16 w-16 md:w-16">
                         <AvatarImage
-                          src={
-                            document.job.organization?.img?.sizes?.thumbnail
-                              ?.url || ""
-                          } // Adjust based on fetched data
+                          src={document.job.organization?.img?.url || ""}
                           alt={
-                            document.job.organization?.orgName || "Organization"
+                            document.job.organization?.orgName[0] ||
+                            "Unknown Organization"
                           }
                         />
                         <AvatarFallback className="font-semibold text-base sm:text-xs text-yellow-600 bg-yellow-100">
-                          {document.title}
+                          {document.job.organization?.orgName[0]}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex gap-4 md:gap-0 items-center md:flex-col dark:text-gray-200">
                         <div className="flex flex-col md:flex-row gap-1 md:gap-3 items-start md:items-start">
                           <div className="flex flex-col">
                             <h3 className="text-sm sm:text-base font-semibold">
-                              {document.title}
+                              {document.job?.title}
                             </h3>
                             <p className="text-gray-500 text-xs font-medium dark:text-gray-300">
                               {document.job.organization?.orgName ||
@@ -153,7 +155,7 @@ const JobCards = ({
                             <div className="flex items-center gap-2">
                               <UserCog className="h-4 w-4" />
                               {capitalizeText(
-                                document.jobRole?.[0]?.title || "Job Role"
+                                document.jobRole?.[0]?.title || "Job Role N/A"
                               )}
                             </div>
                           </Badge>
@@ -163,7 +165,7 @@ const JobCards = ({
                         <div className="items-center gap-1 flex">
                           <BriefcaseBusiness size={12} />
                           <p className="font-medium text-gray-600 dark:text-gray-300">
-                            {document.applicantCount || 0} applications
+                            {appCount} applications
                           </p>
                         </div>
                         <div className="flex items-center gap-1">
@@ -185,7 +187,7 @@ const JobCards = ({
                       <div className="items-center gap-1 flex">
                         <BriefcaseBusiness size={12} />
                         <p className="font-medium text-gray-600 dark:text-gray-300">
-                          {document.applicantCount || 0} applications
+                          {appCount} applications
                         </p>
                       </div>
                       <div className="flex items-center gap-1">
@@ -205,16 +207,37 @@ const JobCards = ({
                 <div className="flex items-center gap-6 md:gap-0 px-2 md:px-0">
                   <div className="flex flex-col gap-5 justify-center mt-2">
                     {/* Applicants Section (if available) */}
-                    {document.job.applicants ? (
+                    {appCount > 0 ? (
                       <div className="flex justify-center md:justify-start sm:flex-row text-emerald-600 font-semibold">
                         <div className="flex flex-row items-center justify-center w-full sm:mr-4">
-                          <AnimatedTooltip items={document.job.applicants} />
+                          {/* <AnimatedTooltip items={document.job.applicants} /> */}
+                          {/* <AnimatedTooltip
+                            items={applicantProfiles[document.job.id].map(
+                              (profile) => ({
+                                id: profile.id,
+                                name: profile.name,
+                                designation:
+                                  profile.designation?.title ||
+                                  "No Designation",
+                                applicant: {
+                                  pictureUrl:
+                                    profile.pictureUrl ||
+                                    "/default-profile.png",
+                                },
+                              })
+                            )}
+                          /> */}
+                          <p className="text-lg sm:text-base">
+                            {appCount} Applicants For This Job
+                          </p>
                         </div>
                       </div>
                     ) : (
                       <div className="flex justify-center md:justify-start sm:flex-row font-semibold">
                         <div className="flex flex-row items-center justify-center w-full sm:mr-4">
-                          <p>No Applicants For This Job</p>
+                          <p className="text-lg sm:text-base">
+                            No Applicants For This Job
+                          </p>
                         </div>
                       </div>
                     )}
@@ -257,8 +280,7 @@ const JobCards = ({
                             handleViewApplicantList(document.job.id)
                           }
                         >
-                          View All Applicants (
-                          {document.job.applicants?.length || 0})
+                          View All Applicants ({appCount})
                         </Button>
                         <Button
                           variant="ghost"
