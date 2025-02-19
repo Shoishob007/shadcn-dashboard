@@ -4,7 +4,7 @@ export const basicInfoSchema = z.object({
     description: z.string().min(10, "Description must be at least 10 characters"),
     jobRole: z.array(z.string()).optional(),
     designation: z.string().optional(),
-    responsibilities: z.array(z.string()).min(1, "At least one responsibility is required"),
+    responsibilities: z.string().optional(),
     employeeBenefits: z.string().optional(),
     hiringStages: z.array(z.string()).optional(),
 });
@@ -45,7 +45,7 @@ export const jobSchema = z.object({
     description: z.string().min(10, "Description must be at least 10 characters"),
     jobRole: z.array(z.string()).optional(),
     designation: z.string().optional(),
-    responsibilities: z.array(z.string()).min(1, "At least one responsibility is required"),
+    responsibilities: z.string().optional(),
     employeeBenefits: z.string().optional(),
     requirements: z.string().optional(),
     skills: z.array(z.string()).optional(),

@@ -129,7 +129,7 @@ export function RequirementsTab({ callback }) {
     };
     console.log("Sending callback data:", callbackData);
     callback(callbackData);
-  }, [selectedSkills, selectedDegrees, selectedFieldsOfStudy]);
+  }, []);
 
   const handleRequirementsChange = (content) => {
     setRequirementsContent(content);

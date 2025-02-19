@@ -10,25 +10,28 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
-import { useEffect, useState } from "react";
-import { StepsList } from "./components/List";
+import { useEffect, useState, useCallback } from "react";
 import { orgSettings } from "@/app/(main-dashboard)/(dashboard)/demoAppList/components/org-settings";
 import { X } from "lucide-react";
+import {
+  allDesignation,
+  allJobRoles,
+} from "@/stores/job-createStore/component/JobCreateData";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
-export function BasicInfoTab({ form, designations = [], callback }) {
+export function BasicInfoTab({ form, callback }) {
   const [responsibilitiesContent, setResponsibilitiesContent] = useState("");
   const [benefitsContent, setBenefitsContent] = useState("");
   const currentSubscriptionId = orgSettings.docs[0]?.subscriptionId;
 
   // Job Role state
-  const [jobRoleInputValue, setJobRoleInputValue] = useState([]);
+  const [jobRoleInputValue, setJobRoleInputValue] = useState("");
   const [jobRoleSuggestions, setJobRoleSuggestions] = useState([]);
   const [selectedJobRoles, setSelectedJobRoles] = useState([]);
 
   // Designation state
-  const [selectedDesignation, setSelectedDesignation] = useState("");
+  const [selectedDesignation, setSelectedDesignation] = useState(null);
   const [designationInputValue, setDesignationInputValue] = useState("");
   const [designationSuggestions, setDesignationSuggestions] = useState([]);
 
@@ -41,69 +44,52 @@ export function BasicInfoTab({ form, designations = [], callback }) {
     ],
   };
 
-  // useEffect(() => {
-  //   const fetchHiringStages = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages`
-  //       );
-  //       const data = await response.json();
-  //       const steps = data.docs.map((step) => ({
-  //         id: step.id,
-  //         title: step.title,
-  //       }));
-  //       setStepsData(steps);
-
-  //       console.log("steps ::", data);
-  //     } catch (error) {
-  //       console.error("Error fetching hiring stages:", error);
-  //     }
-  //   };
-
-  //   fetchHiringStages();
-  // }, []);
-
+  // Initialize Job Roles and Designation from Form Values
   useEffect(() => {
     const formValues = form.getValues();
 
     // Initialize job roles
-    if (formValues.jobRole?.length > 0) {
-      const initialJobRoles = formValues?.jobRole
-        .map((roleId) => {
-          const role = jobRoles.find((r) => r.id === roleId);
-          return role ? { id: role.id, title: role.title } : null;
+    if (formValues?.jobRole && Array.isArray(formValues.jobRole)) {
+      const initialJobRoles = formValues.jobRole
+        .map((jobRole) => {
+          if (typeof jobRole === "object" && jobRole.id) {
+            return jobRole;
+          } else {
+            const foundJobRole = allJobRoles.docs.find((j) => j.id === jobRole);
+            return foundJobRole
+              ? { id: foundJobRole.id, title: foundJobRole.title }
+              : null;
+          }
         })
         .filter(Boolean);
       setSelectedJobRoles(initialJobRoles);
     }
 
     // Initialize designation
-    if (formValues.designation) {
-      const designation = designations.find(
-        (d) => d.id === formValues.designation
-      );
-      if (designation) {
-        setSelectedDesignation({
-          id: designation.id,
-          title: designation.title,
-        });
-        setDesignationInputValue(designation.title);
-      }
+    if (formValues?.designation) {
+      const initialDesignation =
+        typeof formValues.designation === "object" && formValues.designation.id
+          ? formValues.designation
+          : allDesignation.docs.find((d) => d.id === formValues.designation) ||
+            null;
+      setSelectedDesignation(initialDesignation);
+      setDesignationInputValue(initialDesignation?.title || "");
     }
+  }, [form]);
 
-  }, [form, designations]);
+  // Update Callback when Job Roles or Designation change
+  // useEffect(() => {
+  //   const callbackData = {
+  //     jobRole: selectedJobRoles.map((jobRole) => jobRole.id),
+  //     designation: selectedDesignation?.id || null,
+  //   };
+  //   callback(callbackData);
+  // }, []);
 
+  // Initialize Responsibilities and Benefits content from Form Values
   useEffect(() => {
-    const responsibilities = form.getValues("responsibilities") || [];
-    const employeeBenefits = form.getValues("employeeBenefits") || "";
-
-    if (Array.isArray(responsibilities)) {
-      const content = responsibilities.map((item) => `<p>${item}</p>`).join("");
-      setResponsibilitiesContent(content);
-    }
-
-    setBenefitsContent(employeeBenefits);
-
+    setResponsibilitiesContent(form.getValues("responsibilities") || "");
+    setBenefitsContent(form.getValues("employeeBenefits") || "");
   }, [form]);
 
   const handleJobRoleInputChange = (e) => {
@@ -111,15 +97,13 @@ export function BasicInfoTab({ form, designations = [], callback }) {
     setJobRoleInputValue(value);
 
     if (value) {
-      const filtered = jobRoles
+      const filtered = allJobRoles.docs
         .filter(
           (role) =>
             role.title.toLowerCase().includes(value.toLowerCase()) &&
-            !selectedJobRoles.includes(role.title)
+            !selectedJobRoles.some((r) => r.id === role.id)
         )
         .slice(0, 5);
-      console.log("Filtered roles:", filtered);
-
       setJobRoleSuggestions(filtered);
     } else {
       setJobRoleSuggestions([]);
@@ -131,77 +115,46 @@ export function BasicInfoTab({ form, designations = [], callback }) {
     setDesignationInputValue(value);
 
     if (value) {
-      const filtered = designations
+      const filtered = allDesignation.docs
         .filter(
           (designation) =>
             designation.title.toLowerCase().includes(value.toLowerCase()) &&
-            !selectedDesignation.includes(role.title)
+            (!selectedDesignation || selectedDesignation.id !== designation.id)
         )
         .slice(0, 5);
-      console.log("Filtered Designations:", filtered);
       setDesignationSuggestions(filtered);
     } else {
       setDesignationSuggestions([]);
     }
   };
 
-const handleJobRoleSelect = (role) => {
-  if (!selectedJobRoles.some((r) => r.id === role.id)) {
-    const newRole = { id: role.id, title: role.title };
-    setSelectedJobRoles([...selectedJobRoles, newRole]);
-    form.setValue(
-      "jobRole",
-      [...selectedJobRoles, newRole].map((r) => r.id)
+  const handleJobRoleSelect = (role) => {
+    setSelectedJobRoles((prevRoles) => [...prevRoles, role]);
+    setJobRoleInputValue("");
+    setJobRoleSuggestions([]);
+  };
+
+  const handleDesignationSelect = (designation) => {
+    setSelectedDesignation(designation);
+    setDesignationInputValue(designation.title);
+    setDesignationSuggestions([]);
+  };
+
+  const removeJobRole = (roleId) => {
+    setSelectedJobRoles((prevRoles) =>
+      prevRoles.filter((role) => role.id !== roleId)
     );
-  }
-  setJobRoleInputValue("");
-  setJobRoleSuggestions([]);
-};
-
-const handleDesignationSelect = (designation) => {
-  setSelectedDesignation({ id: designation.id, title: designation.title });
-  form.setValue("designation", designation.id);
-  setDesignationInputValue(designation.title);
-  setDesignationSuggestions([]);
-};
-
-const removeJobRole = (roleId) => {
-  const updatedRoles = selectedJobRoles.filter((role) => role.id !== roleId);
-  setSelectedJobRoles(updatedRoles);
-  form.setValue(
-    "jobRole",
-    updatedRoles.map((r) => r.id)
-  );
-};
+  };
 
   const handleResponsibilitiesChange = (content) => {
     setResponsibilitiesContent(content);
-
-    const items = content
-      .split("</p>")
-      .map((item) => item.replace(/<p>|<br>/g, "").trim())
-      .filter(Boolean);
-
-    form.setValue("responsibilities", items);
+    form.setValue("responsibilities", content);
   };
 
   const handleBenefitsChange = (content) => {
     setBenefitsContent(content);
     form.setValue("employeeBenefits", content);
   };
-
-//   const handleStepsChange = (steps) => {
-//     const selectedIds = steps.map((step) => step.id);
-//     setStepsIds(selectedIds);
-//     form.setValue("steps", steps);
-//   };
-
-// useEffect(() => {
-//   callback({
-//     steps: stepsIds,
-//   });
-// }, [stepsIds]);
-
 
   return (
     <div className="space-y-4">
@@ -227,9 +180,9 @@ const removeJobRole = (roleId) => {
         control={form.control}
         name="jobRole"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Job Role</FormLabel>
-            <div className="flex flex-wrap gap-2 mb-2">
+          <div>
+            <FormLabel className="font-medium">Required Job Roles</FormLabel>
+            <div className="flex flex-wrap gap-2 mt-1">
               {selectedJobRoles.map((role) => (
                 <div
                   key={role.id}
@@ -246,20 +199,19 @@ const removeJobRole = (roleId) => {
                 </div>
               ))}
             </div>
-            <div className="relative">
-              <FormControl>
-                <Input
-                  value={jobRoleInputValue}
-                  onChange={handleJobRoleInputChange}
-                  placeholder="Type to search job roles..."
-                  className="dark:border-gray-400"
-                />
-              </FormControl>
+            <div className="relative mt-2">
+              <Input
+                type="text"
+                value={jobRoleInputValue}
+                onChange={handleJobRoleInputChange}
+                placeholder="Type to search job roles..."
+                className="border text-sm w-full rounded-md px-3 py-2"
+              />
               {jobRoleSuggestions.length > 0 && (
-                <ul className="absolute z-10 w-full bg-white dark:bg-gray-800 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto">
-                  {jobRoleSuggestions.map((role, index) => (
+                <ul className="absolute bg-white dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
+                  {jobRoleSuggestions.map((role) => (
                     <li
-                      key={index}
+                      key={role.id}
                       onClick={() => handleJobRoleSelect(role)}
                       className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
                     >
@@ -269,8 +221,7 @@ const removeJobRole = (roleId) => {
                 </ul>
               )}
             </div>
-            <FormMessage />
-          </FormItem>
+          </div>
         )}
       />
 
@@ -278,22 +229,21 @@ const removeJobRole = (roleId) => {
         control={form.control}
         name="designation"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Designation</FormLabel>
-            <div className="relative">
-              <FormControl>
-                <Input
-                  value={designationInputValue}
-                  onChange={handleDesignationInputChange}
-                  placeholder="Type to search designations..."
-                  className="dark:border-gray-400"
-                />
-              </FormControl>
+          <div>
+            <FormLabel className="font-medium">Designation</FormLabel>
+            <div className="relative mt-2">
+              <Input
+                type="text"
+                value={designationInputValue}
+                onChange={handleDesignationInputChange}
+                placeholder="Type to search designations..."
+                className="border text-sm w-full rounded-md px-3 py-2"
+              />
               {designationSuggestions.length > 0 && (
-                <ul className="absolute z-10 w-full bg-white dark:bg-gray-800 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto">
-                  {designationSuggestions.map((designation, index) => (
+                <ul className="absolute bg-white dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
+                  {designationSuggestions.map((designation) => (
                     <li
-                      key={index}
+                      key={designation.id}
                       onClick={() => handleDesignationSelect(designation)}
                       className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
                     >
@@ -303,8 +253,24 @@ const removeJobRole = (roleId) => {
                 </ul>
               )}
             </div>
-            <FormMessage />
-          </FormItem>
+            {selectedDesignation && (
+              <div className="flex flex-wrap gap-2 mt-1">
+                <div
+                  key={selectedDesignation.id}
+                  className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center"
+                >
+                  {selectedDesignation.title}
+                  <button
+                    type="button"
+                    className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
+                    onClick={() => setSelectedDesignation(null)}
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         )}
       />
 
@@ -349,26 +315,6 @@ const removeJobRole = (roleId) => {
           </FormItem>
         )}
       />
-
-      {/* {currentSubscriptionId !== 1 && (
-        <FormField
-          control={form.control}
-          name="steps"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Recruiting Steps</FormLabel>
-              <FormControl>
-                <StepsList
-                  availableSteps={stepsData}
-                  selectedSteps={form.getValues("steps") || []}
-                  onStepsChange={handleStepsChange}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      )} */}
     </div>
   );
 }

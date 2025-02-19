@@ -425,3 +425,108 @@ export const fieldOfStudyData = {
         }
     ],
 }
+
+export const allJobRoles = {
+    "docs": [
+        {
+            "id": "ddcc16e7-67d1-4094-998d-25497543ec0f",
+            "title": "Test job role",
+            "industryTypeId": [
+                {
+                    "id": "02c39e58-cb1c-49f7-97ab-1a93a29619f8",
+                    "title": "test industry type",
+                    "description": null,
+                    "updatedAt": "2025-01-21T10:57:51.191Z",
+                    "createdAt": "2025-01-21T10:57:51.191Z"
+                },
+                {
+                    "id": "7143c546-dcfb-433e-aa24-7e5376446026",
+                    "title": "test industry",
+                    "description": "test description",
+                    "updatedAt": "2025-01-21T11:40:28.880Z",
+                    "createdAt": "2025-01-21T11:40:28.880Z"
+                }
+            ],
+            "updatedAt": "2025-01-21T11:41:08.329Z",
+            "createdAt": "2025-01-21T11:41:08.329Z"
+        }
+    ],
+    "hasNextPage": false,
+    "hasPrevPage": false,
+    "limit": 10,
+    "nextPage": null,
+    "page": 1,
+    "pagingCounter": 1,
+    "prevPage": null,
+    "totalDocs": 1,
+    "totalPages": 1
+}
+
+export const allDesignation = {
+    "docs": [
+        {
+            "id": "437543c8-1be8-41ad-bcf9-484346ba13ff",
+            "title": "test designation",
+            "industryTypeId": [
+                {
+                    "id": "7143c546-dcfb-433e-aa24-7e5376446026",
+                    "title": "test industry",
+                    "description": "test description",
+                    "updatedAt": "2025-01-21T11:40:28.880Z",
+                    "createdAt": "2025-01-21T11:40:28.880Z"
+                }
+            ],
+            "updatedAt": "2025-01-23T09:52:24.647Z",
+            "createdAt": "2025-01-23T09:52:17.261Z"
+        }
+    ],
+    "hasNextPage": false,
+    "hasPrevPage": false,
+    "limit": 10,
+    "nextPage": null,
+    "page": 1,
+    "pagingCounter": 1,
+    "prevPage": null,
+    "totalDocs": 1,
+    "totalPages": 1
+}
+
+export const allJobTypes = {
+    "docs": [
+        {
+            "id": "86505c23-f08b-4cdf-8b76-3cab17ad6750",
+            "title": "test job type",
+            "updatedAt": "2025-01-23T09:53:33.106Z",
+            "createdAt": "2025-01-23T09:53:33.106Z"
+        }
+    ],
+    "hasNextPage": false,
+    "hasPrevPage": false,
+    "limit": 10,
+    "nextPage": null,
+    "page": 1,
+    "pagingCounter": 1,
+    "prevPage": null,
+    "totalDocs": 1,
+    "totalPages": 1
+}
+
+export const allEmploymentTypes = {
+    "docs": [
+        {
+            "id": "e39afd34-dad9-4f0d-a6a0-4e29332f6944",
+            "title": "test employee type",
+            "updatedAt": "2025-01-23T09:53:50.176Z",
+            "createdAt": "2025-01-23T09:53:50.176Z"
+        }
+    ],
+    "hasNextPage": false,
+    "hasPrevPage": false,
+    "limit": 10,
+    "nextPage": null,
+    "page": 1,
+    "pagingCounter": 1,
+    "prevPage": null,
+    "totalDocs": 1,
+    "totalPages": 1
+}

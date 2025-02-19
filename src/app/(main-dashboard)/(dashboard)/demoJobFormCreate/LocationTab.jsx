@@ -97,15 +97,6 @@ export function LocationTab({ form }) {
                     width: "45px",
                     height: "35px",
                   }}
-                  // dropdownStyle={{
-                  //   backgroundColor: document.documentElement.classList.contains("dark")
-                  //     ? "#374151"
-                  //     : "#ffffff", 
-                  //   color: document.documentElement.classList.contains("dark")
-                  //     ? "#d1d5db"
-                  //     : "#000000",
-                  //   border: "1px solid #ccc",
-                  // }}
                 />
               </FormControl>
               <FormMessage />
