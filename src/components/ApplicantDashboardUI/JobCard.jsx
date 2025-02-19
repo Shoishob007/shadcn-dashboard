@@ -16,7 +16,8 @@ const JobCard = ({ job }) => {
   const accessToken = session?.access_token;
   const [employeeTypeData, setEmployeeTypeData] = useState("");
   const [jobTypeData, setJobTypeData] = useState("");
-  console.log("Job Data: ", job);
+  const [showSkills, setShowSkills] = useState("");
+  //   console.log("Job Data: ", job);
   const {
     id = job?.id,
     address = job?.address === null ? "address not found" : job?.address,
@@ -30,10 +31,10 @@ const JobCard = ({ job }) => {
       : job?.employeeType,
     yearOfExperience = job?.yearOfExperience,
     jobTypeId = job?.jobType,
-    skills = job?.skills.map((skill) => console.log("Skill: ", skill)),
+    skills = job?.skills?.map((skill) => skill),
   } = job;
 
-  console.log("skills: ", skills);
+  //   console.log("skills: ", skills);
   //   Employee type
   useEffect(() => {
     const getEmployeeType = async () => {
@@ -55,6 +56,43 @@ const JobCard = ({ job }) => {
     getEmployeeType();
   }, [employeeTypeId, accessToken]);
 
+  //   skills
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        if (!skills || skills.length === 0) {
+          console.error("Skills data missing.");
+          return;
+        }
+
+        const skillIds = skills.join(",");
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/skills/${skillIds}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const skillsResponse = await response.json();
+        if (skillsResponse?.id) {
+          setShowSkills(skillsResponse?.title);
+        }
+        // console.log("Skills from skills response: ", skillsResponse);
+      } catch (error) {
+        console.error("Error fetching skills:", error.message);
+      }
+    };
+    fetchSkills();
+  }, [skills, accessToken]);
+
   //   job type
   useEffect(() => {
     const getJobType = async () => {
@@ -75,23 +113,24 @@ const JobCard = ({ job }) => {
     };
     getJobType();
   }, [jobTypeId, accessToken]);
+
   return (
     <Link href={`/job-search/${id}`} className="">
       <Card className="w-full hover:border hover:border-black duration-300 cursor-pointer">
         <CardHeader>
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 font-medium bg-gray-200 rounded-full flex items-center justify-center">
-              <span>O</span>
+              <h1>{!orgName ? 'U' : orgName.slice(0,1)}</h1>
             </div>
             <div>
-              <h1 className="text-[15px] font-medium">{orgName}</h1>
-              <p className="text-xs">{address}</p>
+              <h1 className="text-[15px] font-medium">{!orgName ? 'Org not found' : orgName}</h1>
+              <p className="text-xs">{!address ? 'Address not provided' : address}</p>
             </div>
           </div>
         </CardHeader>
         <CardContent>
           <div>
-            <h1 className="text-[17px] font-semibold">{title}</h1>
+            <h1 className="text-[17px] font-semibold">{!title ? 'Title not provided' : title}</h1>
             <div className="my-3 flex items-center gap-3">
               <div className="flex items-center gap-1">
                 <span>
@@ -116,19 +155,21 @@ const JobCard = ({ job }) => {
                   <User size={16} />
                 </span>
                 <span className={`text-xs`}>
-                  {jobTypeData === null ? "job type not found" : jobTypeData}
+                  {!jobTypeData ? "job type not found" : jobTypeData}
                 </span>
               </div>
             </div>
             <div className="flex items-center gap-1 flex-wrap mt-2 text-sm">
-              skills
+              <span className="border border-black p-1 rounded-lg">
+                {!showSkills ? "skills not found" : showSkills}
+              </span>
             </div>
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">
           <div>
             <div>
-              <span className="font-bold">BDT {salary}</span>
+              <span className="font-bold">BDT {!salary ? '0' : salary}</span>
               <span className="text-sm">/month</span>
             </div>
           </div>

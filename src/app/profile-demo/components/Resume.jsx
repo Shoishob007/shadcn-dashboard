@@ -1,41 +1,19 @@
 "use client";
 import { Pencil, X } from "lucide-react";
-import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import ResumeUpload from "./ResumeUpload";
 
 const Resume = ({ data }) => {
-  const { data: session } = useSession();
-  const accessToken = session?.access_token;
   const [isEditing, setIsEditing] = useState(false);
   const [fileURL, setFileURL] = useState("");
-  const [cvUrl, setCvUrl] = useState('');
-  const cvId = data?.cv;
-
 
   useEffect(() => {
-    const getCv = async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/media-pdfs/${cvId}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-      const cvData = await response.json();
-      console.log("CV data: ", cvData);
-      if(cvData?.id){
-        const publicUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
-        const cvDataUrl = cvData?.url;
-        const cvUrl = publicUrl.concat(cvDataUrl);
-        console.log(cvUrl)
-        setFileURL(cvUrl);
-      }
-    };
-    getCv();
-  }, []);
+    const cvDataUrl = data?.cv?.url;
+    const publicUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
+    const cv = publicUrl.concat(cvDataUrl);
+    setFileURL(cv);
+  }, [fileURL]);
 
   return (
     <section className="bg-white dark:bg-gray-800 rounded-lg dark:text-gray-200">
@@ -65,14 +43,14 @@ const Resume = ({ data }) => {
           ) : fileURL ? (
             <div>
               <h2 className="text-xl">Uploaded Resume:</h2>
-              <a
+              <Link
                 href={fileURL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-500 hover:underline"
               >
                 View Your Resume
-              </a>
+              </Link>
             </div>
           ) : (
             <p>No resume uploaded yet. Click to edit and upload one.</p>
