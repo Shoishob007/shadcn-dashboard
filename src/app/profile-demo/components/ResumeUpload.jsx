@@ -72,8 +72,9 @@ export default function ResumeUpload({ setFileURL, docId }) {
     //   console.log("cv data: ", data);
       //   const uploadedResumeURL = data?.fileURL;
       if (data?.doc?.id) {
-        const cvId = data?.doc;
-        console.log("CV Doc: ",cvId);
+        // const cvId = data?.doc;
+        const cvFilename = data?.doc;
+        console.log("CV filename : ",cvFilename);
 
         const setCVResponse = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/applicants/${docId}`,
@@ -84,7 +85,7 @@ export default function ResumeUpload({ setFileURL, docId }) {
               Authorization: `Bearer ${accessToken}`,
             },
             body: JSON.stringify({
-              cv: cvId,
+              cv: cvFilename,
             }),
           }
         );
