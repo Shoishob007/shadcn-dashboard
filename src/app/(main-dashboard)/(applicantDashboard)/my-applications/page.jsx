@@ -20,7 +20,7 @@ const MyApplicationPage = () => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/profile">My Applications</BreadcrumbLink>
+            <BreadcrumbLink href="/my-applications">My Applications</BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
