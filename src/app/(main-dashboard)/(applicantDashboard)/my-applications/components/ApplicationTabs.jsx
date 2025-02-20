@@ -7,10 +7,10 @@ import AppliedContent from "./AppliedContent";
 import RejectedContent from "./RejectedContent";
 import ShortlistedContent from "./ShortlistedContent";
 
-const ApplicationTabs = () => {
+const ApplicationTabs = ({ activeTab }) => {
   const { data: session, status } = useSession();
   const accessToken = session?.access_token;
-  const [selectedStatus, setSelectedStatus] = useState("Applied");
+  const [selectedStatus, setSelectedStatus] = useState(activeTab);
   const [myApplications, setMyApplications] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,7 +22,7 @@ const ApplicationTabs = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?limit=100`,
           {
             method: "GET",
             headers: {

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,8 +9,12 @@ import {
 } from "@/components/ui/breadcrumb";
 import { House } from "lucide-react";
 import ApplicationTabs from "./components/ApplicationTabs";
+import { useSearchParams } from "next/navigation";
 
 const MyApplicationPage = () => {
+  const searchParams = useSearchParams();
+  const activeTab = searchParams.get("tab") || "applied";
+  
   return (
     <div>
       <Breadcrumb className="mb-4">
@@ -20,13 +26,15 @@ const MyApplicationPage = () => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/my-applications">My Applications</BreadcrumbLink>
+            <BreadcrumbLink href="/my-applications">
+              My Applications
+            </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
 
       {/* Tab section */}
-      <ApplicationTabs />
+      <ApplicationTabs activeTab={activeTab} />
     </div>
   );
 };
