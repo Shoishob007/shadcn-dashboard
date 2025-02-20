@@ -91,6 +91,7 @@ const JobList = ({ showFilters = true }) => {
         }
         const data = await response.json();
         setDocuments(data);
+        console.log("Response from job details :: ", data);
         fetchApplicationsCount(data.docs);
       } catch (error) {
         setError(error.message);
@@ -203,6 +204,8 @@ const JobList = ({ showFilters = true }) => {
   }
 
   let filteredJobs = filterJobs(documents.docs, filters);
+
+  console.log("filteredJobs :: ", filteredJobs);
 
   // Sorting jobs
   if (filters.sortBy === "latest") {

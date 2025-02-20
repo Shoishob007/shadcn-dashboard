@@ -45,9 +45,9 @@ const ApplicantDetails = ({
   applicationStatusId,
   hiringStages,
 }) => {
-    // console.log("Applicant Profile ID:", applicantId);
-    // console.log("Job Application ID:", jobApplicationId);
-    // console.log("Application Status ID:", applicationStatusId);
+  // console.log("Applicant Profile ID:", applicantId);
+  // console.log("Job Application ID:", jobApplicationId);
+  // console.log("Application Status ID:", applicationStatusId);
   // console.log("Hiring stages :: ", hiringStages);
   const searchParams = useSearchParams();
   const jobApplication = searchParams.get("id");
@@ -350,7 +350,9 @@ const ApplicantDetails = ({
   const displayName =
     name || `${firstName} ${lastName}`.trim() || "Anonymous Applicant";
 
-    const customCV = `${process.env.NEXT_PUBLIC_API_URL}${cv?.url}`
+  const customCV = `${process.env.NEXT_PUBLIC_API_URL}${cv?.url}`;
+  console.log("Applicant Details :: ", applicant?.img?.url);
+  const profilePicture = `${process.env.NEXT_PUBLIC_API_URL}${applicant?.img?.url}`;
 
   return (
     <>
@@ -382,6 +384,8 @@ const ApplicantDetails = ({
           <div className="flex flex-col items-center">
             <div className="flex items-start sm:items-center gap-4">
               <Avatar className="h-16 sm:h-24 w-16 sm:w-24 border-4 border-emerald-300 dark:border-emerald-400">
+                <AvatarImage src={profilePicture} alt={"Unknown Applicant"} />
+
                 <AvatarFallback className="text-xl sm:text-2xl md:text-4xl bg-emerald-400 dark:bg-emerald-500 text-white">
                   {displayName.charAt(0)}
                 </AvatarFallback>
@@ -412,7 +416,7 @@ const ApplicantDetails = ({
               </p>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-4">
               <div className="flex sm:flex-col gap-2">
                 <p className="text-xs sm:text-sm dark:text-gray-300">
                   📍 {address}
@@ -425,7 +429,7 @@ const ApplicantDetails = ({
                 <p className="text-xs sm:text-sm dark:text-gray-300">
                   ✉️ {email}
                 </p>
-                <div className="flex gap-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300 justify-center">
+                <div className="flex mb-3 gap-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300 justify-center">
                   {socialLinks.length > 0 ? (
                     socialLinks.map((link, index) => (
                       <a
@@ -448,11 +452,11 @@ const ApplicantDetails = ({
             </div>
           </div>
 
-          <div className="flex flex-col items-center gap-2 mt-4 sm:mt-0 capitalize">
+          <div className="flex items-center gap-2 mt-6 sm:mt-0 capitalize">
             <Button
               variant="outline"
               size="xs"
-              className="border shadow-none bg-gray-100 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-100 dark:text-gray-700 dark:hover:bg-gray-300"
+              className="border shadow-none text-gray-700 bg-gray-300 hover:bg-gray-400 dark:border-gray-600 dark:bg-gray-100 dark:text-gray-700 dark:hover:bg-gray-300"
               onClick={() => {
                 if (cv) {
                   window.open(customCV, "_blank", "noopener,noreferrer");
@@ -671,20 +675,20 @@ const ApplicantDetails = ({
       </Card>
 
       {/* Schedule Modal */}
-            <ScheduleModal
-              isOpen={scheduleModal.isOpen}
-              onClose={() =>
-                setScheduleModal({
-                  isOpen: false,
-                  applicantId: null,
-                  applicationId: null,
-                  step: null,
-                })
-              }
-              step={scheduleModal.step}
-              onSchedule={handleSchedule}
-              hiringStages={hiringStages.docs}
-            />
+      <ScheduleModal
+        isOpen={scheduleModal.isOpen}
+        onClose={() =>
+          setScheduleModal({
+            isOpen: false,
+            applicantId: null,
+            applicationId: null,
+            step: null,
+          })
+        }
+        step={scheduleModal.step}
+        onSchedule={handleSchedule}
+        hiringStages={hiringStages.docs}
+      />
     </>
   );
 };

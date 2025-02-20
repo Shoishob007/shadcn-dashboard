@@ -214,7 +214,7 @@ const DemoApplicants = () => {
     .map((application) => {
 
       console.log("application in the scope:: ", application);
-        const profile = applicantProfiles[application.applicant];
+        const profile = applicantProfiles[application.applicant.id];
       if (!profile) return null;
 
       console.log("profile :: ", profile);
@@ -225,6 +225,8 @@ const DemoApplicants = () => {
 
       // console.log("latestStatus :: ", latestStatus);
         const cvUrl = `${process.env.NEXT_PUBLIC_API_URL}${profile?.cv?.url}`;
+              const profilePicture = `${process.env.NEXT_PUBLIC_API_URL}${profile?.img?.url}`;
+
 
 
       return {
@@ -245,7 +247,7 @@ const DemoApplicants = () => {
           address: profile.address,
         },
         applicant: {
-          pictureUrl: profile.img?.url || null,
+          pictureUrl: profilePicture || null,
           websiteUrl: profile.applicantWebsiteUrl || null,
         },
         applicationStatus: latestStatus,
@@ -277,7 +279,7 @@ const DemoApplicants = () => {
   const transformJobInfo = (jobDetails) => {
     if (!jobDetails) return null;
 
-    console.log("job details ::: ", jobDetails)
+    // console.log("job details ::: ", jobDetails)
 
     return {
       title: jobDetails.job.title,

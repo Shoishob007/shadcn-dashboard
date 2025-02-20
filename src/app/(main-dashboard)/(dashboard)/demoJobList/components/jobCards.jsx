@@ -75,7 +75,7 @@ const JobCards = ({
                     <div className="flex space-x-3 md:space-x-3 items-start">
                       <Avatar className="h-16 md:h-16 w-16 md:w-16">
                         <AvatarImage
-                          src={document.job.organization?.img?.url || ""}
+                          src={`${process.env.NEXT_PUBLIC_API_URL}${document.job.organization?.img?.url}` || ""}
                           alt={
                             document.job.organization?.orgName[0] ||
                             "Unknown Organization"

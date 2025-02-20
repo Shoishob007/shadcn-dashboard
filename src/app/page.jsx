@@ -14,46 +14,15 @@ import { Briefcase, CalendarDays, House, Users } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ApplicantsList from "./(main-dashboard)/(dashboard)/demoAppList/page";
 import { documents as jobApplicants } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobApplicants";
 import { documents as jobData } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobData";
 import JobList from "./(main-dashboard)/(dashboard)/demoJobList/page";
 
-const allApplicants = jobApplicants.docs.flatMap((doc) =>
-  doc.applicants.map((applicant) => ({
-    ...applicant,
-    job: doc.job,
-  }))
-);
-
 const totalSchedules = applicantsData.filter(
   (applicant) => applicant.schedule
 ).length;
-
-const cardData = [
-  {
-    label: "Total Openings",
-    amount: jobData.docs.length,
-    discription: "+2 from last three months",
-    icon: Briefcase,
-    href: "/demoJobList",
-  },
-  {
-    label: "Total Applicants",
-    amount: allApplicants.length,
-    discription: "+5 from last three months",
-    icon: Users,
-    href: "/demoAppList",
-  },
-  {
-    label: "Upcoming Schedule",
-    amount: totalSchedules,
-    discription: "+3 since last month",
-    icon: CalendarDays,
-    href: "/demoSchedule",
-  },
-];
 
 export default function Home() {
   const router = useRouter();
@@ -61,11 +30,102 @@ export default function Home() {
   const { data: session } = useSession();
   const [showFilters, setShowFilters] = useState(false);
   const [limitToThree, setLimitToThree] = useState(true);
-const [inHome, setInHome] = useState(true);
+  const [inHome, setInHome] = useState(true);
+  const [jobDetailsData, setJobDetailsData] = useState([]);
+  const [allApplicantions, setAllApplicantions] = useState([]);
+  const [shortlistedCount, setShortlistedCount] = useState(2);
+
+  // const [totalSchedules, setTotalSchedules] = useState(0);
+
+  useEffect(() => {
+    const fetchJobData = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/job-details`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${session?.access_token}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setJobDetailsData(data.docs);
+      } catch (error) {
+        console.error("Error fetching job data:", error);
+      }
+    };
+
+    const fetchApplicantsData = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${session?.access_token}`,
+            },
+          }
+        );
+        const data = await response.json();
+        console.log("Applicants data fetched:", data);
+
+        setAllApplicantions(data.docs);
+        console.log("data.docs :: ", data.docs);
+
+        const count = data.docs.reduce((acc, applicant) => {
+          if (
+            applicant.applicationStatus &&
+            applicant.applicationStatus.docs[0].status === "shortlisted"
+          ) {
+            return acc + 1;
+          }
+          return acc;
+        }, 0);
+
+        setShortlistedCount(count);
+      } catch (error) {
+        console.error("Error fetching applicants data:", error);
+      }
+    };
+
+    if (session) {
+      fetchJobData();
+      fetchApplicantsData();
+    } else {
+      console.warn("Session is not available");
+    }
+  }, [session]);
 
   const handleClick = () => {
     router.push("/demoBillings/pricing");
   };
+
+  console.log("shortlistedCount :: ", shortlistedCount);
+
+  const cardData = [
+    {
+      label: "Total Openings",
+      amount: jobDetailsData.length,
+      discription: "+2 from last three months",
+      icon: Briefcase,
+      href: "/demoJobList",
+    },
+    {
+      label: "Total Applicants",
+      amount: allApplicantions.length,
+      discription: "+5 from last three months",
+      icon: Users,
+      href: "/demoAppList",
+    },
+    {
+      label: "Upcoming Schedule",
+      amount: shortlistedCount,
+      discription: "+3 since last month",
+      icon: CalendarDays,
+      href: "/demoSchedule",
+    },
+  ];
 
   return (
     <div className="flex flex-col w-full">
@@ -119,7 +179,11 @@ const [inHome, setInHome] = useState(true);
                   Recent Applications
                 </p>
               </section>
-              <ApplicantsList limitToThree={limitToThree} inHome={inHome} setInHome={setInHome} />
+              <ApplicantsList
+                limitToThree={limitToThree}
+                inHome={inHome}
+                setInHome={setInHome}
+              />
             </CardContent>
           </section>
         </div>

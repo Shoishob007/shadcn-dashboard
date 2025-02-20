@@ -79,6 +79,9 @@ const JobApplicantsCards = ({
     }
   };
 
+  // const profilePicture = `${process.env.NEXT_PUBLIC_API_URL}${applicant?.img?.url}`;
+  console.log("currentPaginatedApplicants :::: ", currentPaginatedApplicants);
+
   return (
     <>
       <div className="applicantsListGrid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -99,8 +102,9 @@ const JobApplicantsCards = ({
                 <Avatar className="md:h-12 h-16 w-16 md:w-12 border border-emerald-500 text-sm">
                   <AvatarImage
                     src={applicant.applicant?.pictureUrl}
-                    alt={applicant.name}
+                    alt={applicant?.name || "Applicant Image"}
                   />
+
                   <AvatarFallback className="bg-gray-300 text-xs font-bold text-gray-700">
                     {applicant.name.charAt(0)}
                   </AvatarFallback>
@@ -203,7 +207,11 @@ const JobApplicantsCards = ({
                       setIsPricingDialogOpen(true);
                     } else {
                       setViewCount((prev) => prev + 1);
-                      handleViewDetails(applicant.applicantProfileID , applicant.id, applicant.applicationId);
+                      handleViewDetails(
+                        applicant.applicantProfileID,
+                        applicant.id,
+                        applicant.applicationId
+                      );
                     }
                   }}
                 >
