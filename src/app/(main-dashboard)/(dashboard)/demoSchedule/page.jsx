@@ -56,7 +56,7 @@ const Scheduler = () => {
         const transformedEvents = await Promise.all(
           data.docs.map(async (application) => {
             const applicantDetails = await fetchApplicantDetails(
-              application.applicant
+              application.applicant.id
             );
             const status = application.applicationStatus.docs[0];
             if (!status) {

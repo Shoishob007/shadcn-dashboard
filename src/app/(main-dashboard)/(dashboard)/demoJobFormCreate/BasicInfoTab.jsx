@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {
   FormField,
   FormItem,
@@ -78,13 +77,13 @@ export function BasicInfoTab({ form, callback }) {
   }, [form]);
 
   // Update Callback when Job Roles or Designation change
-  // useEffect(() => {
-  //   const callbackData = {
-  //     jobRole: selectedJobRoles.map((jobRole) => jobRole.id),
-  //     designation: selectedDesignation?.id || null,
-  //   };
-  //   callback(callbackData);
-  // }, []);
+  useEffect(() => {
+    const callbackData = {
+      jobRole: selectedJobRoles.map((jobRole) => jobRole.id),
+      designation: selectedDesignation?.id || null,
+    };
+    callback(callbackData);
+  }, [callback, selectedDesignation?.id, selectedJobRoles]);
 
   // Initialize Responsibilities and Benefits content from Form Values
   useEffect(() => {

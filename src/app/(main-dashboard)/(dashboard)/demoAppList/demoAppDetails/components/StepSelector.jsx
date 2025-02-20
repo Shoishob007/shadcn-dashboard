@@ -25,7 +25,7 @@ export default function StepSelector({
       {isLastStage && !isRejectedOrHired ? (
         <Button
           variant="default"
-          size="sm"
+          size="xs"
           className="border border-green-600 bg-green-100 text-green-600 hover:bg-green-200"
           onClick={onHire}
         >
@@ -34,7 +34,7 @@ export default function StepSelector({
       ) : !applicationId ? (
         <Button
           variant="default"
-          size="sm"
+          size="xs"
           className="border border-yellow-600 bg-yellow-100 text-yellow-600 hover:bg-yellow-200"
           onClick={() => onStepChange(hiringStages[0])}
           disabled={isRejectedOrHired}
@@ -44,7 +44,7 @@ export default function StepSelector({
       ) : (
         <Button
           variant="default"
-          size="sm"
+          size="xs"
           className="border border-blue-600 bg-blue-100 text-blue-600 hover:bg-blue-200"
           onClick={() => onStepChange()}
           disabled={isRejectedOrHired}
@@ -55,7 +55,7 @@ export default function StepSelector({
 
       <Button
         variant="destructive"
-        size="sm"
+        size="xs"
         className="border border-red-600 bg-red-100 text-red-600 hover:bg-red-200"
         onClick={onReject}
         disabled={isRejectedOrHired}

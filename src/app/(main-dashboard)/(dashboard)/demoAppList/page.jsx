@@ -20,6 +20,7 @@ import JobApplicantsCards from "../demoJobList/components/jobApplicantsCards";
 import { ApplicantFilterSheet } from "@/components/filters/ApplicantFilterSheet";
 import { getSafeValue } from "@/lib/helper";
 import ApplicantDetails from "./demoAppDetails/page";
+import { Button } from "@/components/ui/button";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -47,7 +48,7 @@ const calculateTotalExperience = (experiences) => {
   return `${years} years ${months} months`;
 };
 
-const DemoAppList = (inHome = false) => {
+const DemoAppList = ({inHome = false}) => {
   const router = useRouter();
   const { data: session } = useSession();
   const accessToken = session?.access_token;
@@ -234,6 +235,7 @@ const DemoAppList = (inHome = false) => {
         application.applicationStatus?.docs?.[0]?.status || "applied";
       const applicationId = application.applicationStatus?.docs?.[0]?.id;
       const cvUrl = `${process.env.NEXT_PUBLIC_API_URL}${profile?.cv?.url}`;
+      const profilePicture = `${process.env.NEXT_PUBLIC_API_URL}${profile?.img?.url}`;
 
       return {
         id: application.id,
@@ -253,7 +255,7 @@ const DemoAppList = (inHome = false) => {
           address: getSafeValue(profile.address),
         },
         applicant: {
-          pictureUrl: getSafeValue(profile?.img?.url),
+          pictureUrl: getSafeValue(profilePicture),
           websiteUrl: getSafeValue(profile?.applicantWebsiteUrl),
         },
         jobTitle: getSafeValue(application.jobDetails?.job?.title, "N/A"),
@@ -427,7 +429,7 @@ const DemoAppList = (inHome = false) => {
 
   return (
     <>
-      {inHome && (
+      {!inHome && (
         <Breadcrumb className="mb-4">
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -447,7 +449,7 @@ const DemoAppList = (inHome = false) => {
 
       <div className="space-y-6">
         <div className="flex-1">
-          {inHome && (
+          {!inHome && (
             <div className="flex items-center justify-between mb-4">
               <ToggleGroupComponent
                 steps={hiringSteps}
@@ -488,8 +490,13 @@ const DemoAppList = (inHome = false) => {
                   hiringStages={hiringStages}
                 />
               ) : (
+                <>
                 <JobApplicantsCards
-                  currentPaginatedApplicants={filteredApplicants}
+                  currentPaginatedApplicants={
+                    inHome
+                      ? filteredApplicants.slice(0, HOME_PAGE_ITEMS)
+                      : filteredApplicants
+                  }
                   calculateTotalExperience={calculateTotalExperience}
                   handleViewDetails={handleViewDetails}
                   socialMediaIcons={socialMediaIcons}
@@ -498,6 +505,18 @@ const DemoAppList = (inHome = false) => {
                   maxViews={Infinity}
                   hiringStages={hiringStages}
                 />
+
+                {/* Button to see all apps */}
+                            {inHome && (
+                              <Button
+                                onClick={() => router.push("/demoAppList")}
+                                className="!mt-4 float-right"
+                                size="sm"
+                              >
+                                See All Applications
+                              </Button>
+                            )}
+                            </>
               )}
 
               {/* Loading indicator and observer target */}

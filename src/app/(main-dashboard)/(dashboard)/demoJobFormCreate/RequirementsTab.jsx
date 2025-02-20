@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import {
   FormField,
@@ -129,7 +128,7 @@ export function RequirementsTab({ callback }) {
     };
     console.log("Sending callback data:", callbackData);
     callback(callbackData);
-  }, []);
+  }, [callback, selectedDegrees, selectedFieldsOfStudy, selectedSkills]);
 
   const handleRequirementsChange = (content) => {
     setRequirementsContent(content);
