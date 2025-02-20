@@ -6,7 +6,8 @@ import {
 } from "@/components/ui/tooltip";
 
 const HiringSteps = ({ applicationStatus }) => {
-  if (!applicationStatus?.docs?.length) {
+  console.log("application status: ", applicationStatus)
+    if (!applicationStatus?.docs?.length) {
     return <p>No hiring steps available.</p>;
   }
 
@@ -38,7 +39,7 @@ const HiringSteps = ({ applicationStatus }) => {
                           : "bg-gray-300 border-gray-400"
                       }`}
                     >
-                      {isCompleted ? "✓" : index + 1}
+                      {isCompleted ? "✓" : index + 3}
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>
