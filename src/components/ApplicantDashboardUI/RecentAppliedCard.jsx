@@ -28,6 +28,7 @@ const RecentAppliedCard = ({ app }) => {
       salary = app?.jobDetails?.salary,
       yearOfExperience = app?.jobDetails?.yearOfExperience,
       appliedDate = app?.createdAt,
+      status = app?.applicationStatus?.docs,
     } = app;
 
     const applicationStatus = app?.applicationStatus || {}; 
@@ -59,15 +60,30 @@ const RecentAppliedCard = ({ app }) => {
       <Card className="1w-full hover:border hover:border-black duration-300 cursor-pointer">
         <Link href={`/my-applications/${id}`}>
           <CardHeader>
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 font-medium bg-gray-200 rounded-full flex items-center justify-center">
-                <span>{!storeOrgName ? "U" : storeOrgName.slice(0, 1)}</span>
+            <div className="flex justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 font-medium bg-gray-200 rounded-full flex items-center justify-center">
+                  <span>{!storeOrgName ? "U" : storeOrgName.slice(0, 1)}</span>
+                </div>
+                <div>
+                  <h1 className="text-[15px] font-medium">{storeOrgName}</h1>
+                  <p className="text-xs">
+                    {address === null ? "Address not found" : address}
+                  </p>
+                </div>
               </div>
               <div>
-                <h1 className="text-[15px] font-medium">{storeOrgName}</h1>
-                <p className="text-xs">
-                  {address === null ? "Address not found" : address}
-                </p>
+                <span>
+                  {status?.length === 0 || status === undefined ? (
+                    <span className="text-xs text-blue-500 bg-blue-100 p-1 rounded-lg">
+                      applied
+                    </span>
+                  ) : (
+                    <span className="text-xs text-yellow-500 bg-yellow-100 p-1 rounded-lg">
+                      {status[0]?.status}
+                    </span>
+                  )}
+                </span>
               </div>
             </div>
           </CardHeader>
