@@ -1,11 +1,11 @@
-import ImageUp from "./components/ImageUp";
+import NotificationComponent from "@/components/comp-382";
 
-const TestPage2 = () => {
+const NotificationPage = () => {
   return (
     <div>
-      <ImageUp />
+      <NotificationComponent />
     </div>
   );
 };
 
-export default TestPage2;
+export default NotificationPage;
