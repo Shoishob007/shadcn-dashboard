@@ -1,4 +1,4 @@
-import NotificationComponent from "@/components/comp-382";
+import NotificationComponent from "@/components/NotificationComponent";
 
 const NotificationPage = () => {
   return (
