@@ -2,17 +2,7 @@
 "use client";
 
 import { useWindowWidth } from "@react-hook/window-size";
-import {
-  Bell,
-  KeyRound,
-  LogOut,
-  Menu,
-  Ticket,
-  UserCog,
-  UserRound,
-  Wrench,
-  X,
-} from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { cn } from "../lib/utils";
 // import SearchComponent from "./SearchComponent";
@@ -25,18 +15,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { ThemeToggle } from "@/components/theme-toggle.jsx";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import useRoleStore from "@/stores/roleStore/useRoleStore";
 import useLayoutStore from "@/stores/useLayoutStore";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import ThemeToggleComponent from "./ThemeToggleComponent";
+import ProfileAvater from "./comp-377";
+import NotificationComponent from "./comp-382";
 import { Button } from "./ui/button";
 
 const VerticalNavbar = () => {
@@ -138,99 +122,22 @@ const VerticalNavbar = () => {
         </div>
 
         <div className="w-full flex items-center">
-          <ThemeToggle
+          {/* <ThemeToggle
             className="w-4 h-4 sm:w-6 sm:h-5 p-0 m-0"
             strokeWidth={3}
-          />
+          /> */}
         </div>
+        <section>
+          <ThemeToggleComponent />
+        </section>
 
         {/* Notification dropdown */}
         <section>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <div className="relative w-5 h-5 flex items-center justify-center">
-                <Bell className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0 hover:text-gray-900" />
-                <div className="absolute bg-black dark:bg-gray-200 rounded-full w-5 text-white dark:text-black -top-3 -right-2 flex items-center justify-center">
-                  <span className="">7</span>
-                </div>
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="mr-4">
-              <DropdownMenuLabel>Notification</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex items-center gap-2">
-                <Bell className="h-4 w-4 text-gray-800 dark:text-gray-300" />
-                <Link href="#">View Notifications</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2">
-                <Wrench className="h-4 w-4 text-gray-800 dark:text-gray-300" />
-                <Link href="#">Notification Settings</Link>
-              </DropdownMenuItem>
-              {/* <DropdownMenuItem>View Notifications</DropdownMenuItem>
-              <DropdownMenuItem>Notification Settings</DropdownMenuItem> */}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <NotificationComponent />
         </section>
 
         <section>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <div className=" w-5 h-5 flex items-center justify-center cursor-pointer">
-                <UserRound className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" />
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="mr-6">
-              <DropdownMenuLabel>User Profile</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex items-center gap-2">
-                <UserCog className="h-4 w-4 text-gray-800 dark:text-gray-300" />
-                <Link
-                  href={`${
-                    currentRole === "organization"
-                      ? "/profile-settings"
-                      : "/profile"
-                  }`}
-                >
-                  {currentRole === "organization"
-                    ? "View Profile Settings"
-                    : "View Profile"}
-                </Link>
-              </DropdownMenuItem>
-              {currentRole === "organization" && (
-                <DropdownMenuItem className="flex items-center gap-2">
-                  <KeyRound className="h-4 w-4 text-gray-800 dark:text-gray-300" />
-                  <Link
-                    href={`${
-                      currentRole === "organization"
-                        ? "/profile-settings/password"
-                        : null
-                    }`}
-                  >
-                    Change password
-                  </Link>
-                </DropdownMenuItem>
-              )}
-              {currentRole === "organization" && (
-                <DropdownMenuItem className="flex items-center gap-2">
-                  <Ticket className="h-4 w-4 text-gray-800 dark:text-gray-300" />
-                  <Link href="/demoBillings/pricing">Try Enterprize</Link>
-                </DropdownMenuItem>
-              )}
-              <DropdownMenuItem className="flex items-center gap-2">
-                <LogOut className="h-4 w-4 text-gray-800 dark:text-gray-300 rotate-180" />
-                <Button
-                  className="h-5 p-0 shadow-none border-none hover:!bg-transparent text-black dark:text-gray-300 font-normal"
-                  variant="outline"
-                  onClick={() => {
-                    signOut();
-                  }}
-                  disabled={status === "unauthenticated"}
-                >
-                  Logout
-                </Button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <ProfileAvater />
         </section>
       </div>
 
@@ -243,3 +150,62 @@ const VerticalNavbar = () => {
 };
 
 export default VerticalNavbar;
+
+// {/* <DropdownMenu>
+//   <DropdownMenuTrigger asChild>
+//     <div className=" w-5 h-5 flex items-center justify-center cursor-pointer">
+//       {/* <UserRound className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" /> */}
+//       <Avatar>
+//         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+//         <AvatarFallback>CN</AvatarFallback>
+//       </Avatar>
+//     </div>
+//   </DropdownMenuTrigger>
+//   <DropdownMenuContent className="mr-6">
+//     <DropdownMenuLabel>User Profile</DropdownMenuLabel>
+//     <DropdownMenuSeparator />
+//     <DropdownMenuItem className="flex items-center gap-2">
+//       <UserCog className="h-4 w-4 text-gray-800 dark:text-gray-300" />
+//       <Link
+//         href={`${
+//           currentRole === "organization" ? "/profile-settings" : "/profile"
+//         }`}
+//       >
+//         {currentRole === "organization"
+//           ? "View Profile Settings"
+//           : "View Profile"}
+//       </Link>
+//     </DropdownMenuItem>
+//     {currentRole === "organization" && (
+//       <DropdownMenuItem className="flex items-center gap-2">
+//         <KeyRound className="h-4 w-4 text-gray-800 dark:text-gray-300" />
+//         <Link
+//           href={`${
+//             currentRole === "organization" ? "/profile-settings/password" : null
+//           }`}
+//         >
+//           Change password
+//         </Link>
+//       </DropdownMenuItem>
+//     )}
+//     {currentRole === "organization" && (
+//       <DropdownMenuItem className="flex items-center gap-2">
+//         <Ticket className="h-4 w-4 text-gray-800 dark:text-gray-300" />
+//         <Link href="/demoBillings/pricing">Try Enterprize</Link>
+//       </DropdownMenuItem>
+//     )}
+//     <DropdownMenuItem className="flex items-center gap-2">
+//       <LogOut className="h-4 w-4 text-gray-800 dark:text-gray-300 rotate-180" />
+//       <Button
+//         className="h-5 p-0 shadow-none border-none hover:!bg-transparent text-black dark:text-gray-300 font-normal"
+//         variant="outline"
+//         onClick={() => {
+//           signOut();
+//         }}
+//         disabled={status === "unauthenticated"}
+//       >
+//         Logout
+//       </Button>
+//     </DropdownMenuItem>
+//   </DropdownMenuContent>
+// </DropdownMenu>; */}
