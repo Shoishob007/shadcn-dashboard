@@ -18,9 +18,9 @@ import {
 import useRoleStore from "@/stores/roleStore/useRoleStore";
 import useLayoutStore from "@/stores/useLayoutStore";
 import { useSession } from "next-auth/react";
+import ProfileAvater from "./ProfileAvater";
+import NotificationComponent from "./NotificationComponent";
 import ThemeToggleComponent from "./ThemeToggleComponent";
-import ProfileAvater from "./comp-377";
-import NotificationComponent from "./comp-382";
 import { Button } from "./ui/button";
 
 const VerticalNavbar = () => {
@@ -150,62 +150,3 @@ const VerticalNavbar = () => {
 };
 
 export default VerticalNavbar;
-
-// {/* <DropdownMenu>
-//   <DropdownMenuTrigger asChild>
-//     <div className=" w-5 h-5 flex items-center justify-center cursor-pointer">
-//       {/* <UserRound className="w-4 h-4 sm:w-5 sm:h-5 p-0 m-0" /> */}
-//       <Avatar>
-//         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-//         <AvatarFallback>CN</AvatarFallback>
-//       </Avatar>
-//     </div>
-//   </DropdownMenuTrigger>
-//   <DropdownMenuContent className="mr-6">
-//     <DropdownMenuLabel>User Profile</DropdownMenuLabel>
-//     <DropdownMenuSeparator />
-//     <DropdownMenuItem className="flex items-center gap-2">
-//       <UserCog className="h-4 w-4 text-gray-800 dark:text-gray-300" />
-//       <Link
-//         href={`${
-//           currentRole === "organization" ? "/profile-settings" : "/profile"
-//         }`}
-//       >
-//         {currentRole === "organization"
-//           ? "View Profile Settings"
-//           : "View Profile"}
-//       </Link>
-//     </DropdownMenuItem>
-//     {currentRole === "organization" && (
-//       <DropdownMenuItem className="flex items-center gap-2">
-//         <KeyRound className="h-4 w-4 text-gray-800 dark:text-gray-300" />
-//         <Link
-//           href={`${
-//             currentRole === "organization" ? "/profile-settings/password" : null
-//           }`}
-//         >
-//           Change password
-//         </Link>
-//       </DropdownMenuItem>
-//     )}
-//     {currentRole === "organization" && (
-//       <DropdownMenuItem className="flex items-center gap-2">
-//         <Ticket className="h-4 w-4 text-gray-800 dark:text-gray-300" />
-//         <Link href="/demoBillings/pricing">Try Enterprize</Link>
-//       </DropdownMenuItem>
-//     )}
-//     <DropdownMenuItem className="flex items-center gap-2">
-//       <LogOut className="h-4 w-4 text-gray-800 dark:text-gray-300 rotate-180" />
-//       <Button
-//         className="h-5 p-0 shadow-none border-none hover:!bg-transparent text-black dark:text-gray-300 font-normal"
-//         variant="outline"
-//         onClick={() => {
-//           signOut();
-//         }}
-//         disabled={status === "unauthenticated"}
-//       >
-//         Logout
-//       </Button>
-//     </DropdownMenuItem>
-//   </DropdownMenuContent>
-// </DropdownMenu>; */}
