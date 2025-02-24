@@ -141,7 +141,7 @@ const DemoApplicants = () => {
 
   // Function to fetch applicant profiles in chunks
   const fetchApplicantProfiles = async (applicantIds) => {
-    console.log("applicantIds :: ", applicantIds)
+    // console.log("applicantIds :: ", applicantIds)
     setIsLoadingProfiles(true);
     try {
       const profiles = await Promise.all(

@@ -5,8 +5,6 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
-  Linkedin,
-  Facebook,
   Globe,
   GraduationCap,
   CirclePlus,
@@ -50,7 +48,7 @@ const ApplicantDetails = ({
   // console.log("Application Status ID:", applicationStatusId);
   // console.log("Hiring stages :: ", hiringStages);
   const searchParams = useSearchParams();
-  const jobApplication = searchParams.get("id");
+  // const jobApplication = searchParams.get("jobId");
   // console.log("jobApplication :: ", jobApplication)
   const { data: session } = useSession();
   const accessToken = session?.access_token;
@@ -97,7 +95,7 @@ const ApplicantDetails = ({
     }
   }, [applicantId, accessToken]);
 
-  const handleStepChange = async (newStage) => {
+  const handleStepChange = async (jobApplicationId, applicationStatusId, newStage) => {
     if (!applicationStatusId) {
       try {
         const response = await fetch(
@@ -109,7 +107,7 @@ const ApplicantDetails = ({
               Authorization: `Bearer ${accessToken}`,
             },
             body: JSON.stringify({
-              jobApplication: jobApplication,
+              jobApplication: jobApplicationId,
               hiringStage: hiringStages.docs[0].id,
               status: "shortlisted",
               timeStamp: new Date().toISOString(),
@@ -146,7 +144,7 @@ const ApplicantDetails = ({
     }
   };
 
-  const handleReject = async () => {
+  const handleReject = async (jobApplicationId, applicationStatusId) => {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status/${applicationStatusId}`,
@@ -168,7 +166,7 @@ const ApplicantDetails = ({
         toast({
           title: "Success",
           description: "Applicant rejected successfully.",
-          variant: "success",
+          variant: "ourSuccess",
         });
       } else {
         throw new Error("Failed to reject applicant");
@@ -178,12 +176,12 @@ const ApplicantDetails = ({
       toast({
         title: "Error",
         description: "Failed to reject applicant. Please try again.",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
     }
   };
 
-  const handleHire = async () => {
+  const handleHire = async (jobApplicationId, applicationStatusId) => {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status/${applicationStatusId}`,
@@ -226,7 +224,7 @@ const ApplicantDetails = ({
       toast({
         title: "Error",
         description: "Invalid date selected.",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
       return;
     }
@@ -251,7 +249,7 @@ const ApplicantDetails = ({
       toast({
         title: "Error",
         description: "Invalid time format. Please use HH:MM AM/PM.",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
       return;
     }
@@ -283,7 +281,7 @@ const ApplicantDetails = ({
         toast({
           title: "Success",
           description: "Applicant schedule updated successfully.",
-          variant: "success",
+          variant: "ourSuccess",
         });
         setScheduleModal({
           isOpen: false,
@@ -299,7 +297,7 @@ const ApplicantDetails = ({
       toast({
         title: "Error",
         description: "Failed to update hiring stage. Please try again.",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
     }
   };
@@ -351,7 +349,7 @@ const ApplicantDetails = ({
     name || `${firstName} ${lastName}`.trim() || "Anonymous Applicant";
 
   const customCV = `${process.env.NEXT_PUBLIC_API_URL}${cv?.url}`;
-  console.log("Applicant Details :: ", applicant?.img?.url);
+  // console.log("Applicant Details :: ", applicant?.img?.url);
   const profilePicture = `${process.env.NEXT_PUBLIC_API_URL}${applicant?.img?.url}`;
 
   return (
@@ -409,7 +407,7 @@ const ApplicantDetails = ({
                 {displayName}
               </h2>
               <p className="text-sm text-gray-600 dark:text-gray-300">
-                {designation.title}
+                {designation?.title}
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 🩸 {bloodGroup}
@@ -470,11 +468,13 @@ const ApplicantDetails = ({
 
             <StepSelector
               selectedStep={selectedStep}
-              onStepChange={handleStepChange}
-              onReject={handleReject}
-              onHire={handleHire}
-              hiringStages={hiringStages}
-              applicationId={jobApplicationId}
+              onStepChange={(newStage) =>
+                handleStepChange(jobApplicationId, applicationStatusId, newStage)
+              }
+              onReject={() => handleReject(jobApplicationId, applicationStatusId)}
+              onHire={() => handleHire(jobApplicationId, applicationStatusId)}
+              hiringStages={hiringStages.docs}
+              applicationId={applicationStatusId}
               applicationStatus={status}
             />
           </div>
