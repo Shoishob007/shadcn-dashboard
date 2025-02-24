@@ -98,7 +98,7 @@ const ApplicantsTable = ({
       toast({
         title: "Error",
         description: "Invalid date selected.",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
       return;
     }
@@ -124,7 +124,7 @@ const ApplicantsTable = ({
       toast({
         title: "Error",
         description: "Invalid time format. Please use HH:MM AM/PM.",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
       return;
     }
@@ -163,7 +163,7 @@ const ApplicantsTable = ({
         toast({
           title: "Success",
           description: "Applicant schedule updated successfully.",
-          variant: "success",
+          variant: "ourSuccess",
         });
 
         setScheduleModal({
@@ -180,7 +180,7 @@ const ApplicantsTable = ({
       toast({
         title: "Error",
         description: "Failed to update hiring stage. Please try again.",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
     }
   };
@@ -213,7 +213,7 @@ const ApplicantsTable = ({
         toast({
           title: "Success",
           description: "Applicant rejected successfully.",
-          variant: "success",
+          variant: "ourSuccess",
         });
       } else {
         throw new Error("Failed to reject applicant");
@@ -223,7 +223,7 @@ const ApplicantsTable = ({
       toast({
         title: "Error",
         description: "Failed to reject applicant. Please try again.",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
     }
   };
@@ -285,7 +285,7 @@ const ApplicantsTable = ({
     );
   };
 
-  console.log("applications :: ", applications);
+  // console.log("applications :: ", applications);
 
   return (
     <>

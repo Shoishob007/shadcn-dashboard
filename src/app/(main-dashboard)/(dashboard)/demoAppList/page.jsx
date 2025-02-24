@@ -280,7 +280,7 @@ const DemoAppList = ({inHome = false}) => {
 
   const filteredApplicants = transformedApplicants.filter((applicant) => {
     // Apply status and step filters
-    console.log("applicant in the filer logic :: ", applicant?.name);
+    // console.log("applicant in the filer logic :: ", applicant?.name);
     let statusMatch = false;
 
     if (!selectedStatus) {
