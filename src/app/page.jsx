@@ -109,6 +109,7 @@ export default function Home() {
       amount: jobDetailsData.length,
       discription: "+2 from last three months",
       icon: Briefcase,
+      header: "Total number of active jobs:",
       href: "/demoJobList",
     },
     {
@@ -116,6 +117,7 @@ export default function Home() {
       amount: allApplicantions.length,
       discription: "+5 from last three months",
       icon: Users,
+      header: "Total number of applicants:",
       href: "/demoAppList",
     },
     {
@@ -123,6 +125,7 @@ export default function Home() {
       amount: shortlistedCount,
       discription: "+3 since last month",
       icon: CalendarDays,
+      header: "Total events for shortlisted applicants:",
       href: "/demoSchedule",
     },
   ];
@@ -161,6 +164,7 @@ export default function Home() {
               <Link href={d.href || "#"} key={i}>
                 <Card
                   amount={d.amount}
+                  header={d.header}
                   discription={d.discription}
                   icon={d.icon}
                   label={d.label}
@@ -169,7 +173,7 @@ export default function Home() {
             ))}
           </section>
           <section className="grid grid-cols-1 gap-4 transition-all dark:text-gray-200">
-            <CardContent className="bg-white dark:bg-gray-800 hover:shadow-md ">
+            <CardContent className="bg-white gap-4 dark:bg-gray-800 hover:shadow-md ">
               <p className="text-xl font-semibold text-center">Recent Jobs</p>
               <JobList showFilters={showFilters} className="shadow-none" />
             </CardContent>

@@ -33,6 +33,7 @@ const ProfileSetting = () => {
             }
           );
 
+
           if (response.ok) {
             const userData = await response.json();
             const fullImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${userData?.img?.url}`;

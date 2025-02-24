@@ -75,6 +75,7 @@ const HiringStages = () => {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages?where[organization.id][equals]=${orgId}`,
+        // `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -87,13 +88,22 @@ const HiringStages = () => {
       }
 
       const data = await response.json();
+      console.log("Hiring Stage Data :: ", data);
       setHiringStages(data.docs || []);
     } catch (error) {
+      if (data.doc.length === 0) {
+        console.error("No Hiring Stage found:", error);
+        toast({
+          title: "Error!",
+          description: "No hiring stage for this organization",
+          variant: "ourDestructive",
+        });
+      }
       console.error("Error fetching hiring stages:", error);
       toast({
         title: "Error",
         description: "Failed to fetch hiring stages",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
     } finally {
       setIsLoading(false);
@@ -166,45 +176,45 @@ const HiringStages = () => {
     }
   };
 
-  // const handleDelete = async (id) => {
-  //   setIsDeleting(true);
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages/${id}`,
-  //       {
-  //         method: "DELETE",
-  //         headers: {
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //       }
-  //     );
+  const handleDelete = async (id) => {
+    setIsDeleting(true);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
 
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! Status: ${response.status}`);
-  //     }
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-  //     setHiringStages((prev) => prev.filter((stage) => stage.id !== id));
-  //     toast({
-  //       title: "Success",
-  //       description: "Hiring stage deleted successfully",
-  //       variant: "ourSuccess",
-  //     });
-  //   } catch (error) {
-  //     console.error("Error deleting hiring stage:", error);
-  //     toast({
-  //       title: "Failed!",
-  //       description: "Error deleting hiring stage.",
-  //       variant: "ourDestructive",
-  //     });
-  //   } finally {
-  //     setIsDeleting(false);
-  //   }
-  // };
+      setHiringStages((prev) => prev.filter((stage) => stage.id !== id));
+      toast({
+        title: "Success",
+        description: "Hiring stage deleted successfully",
+        variant: "ourSuccess",
+      });
+    } catch (error) {
+      console.error("Error deleting hiring stage:", error);
+      toast({
+        title: "Failed!",
+        description: "Error deleting hiring stage.",
+        variant: "ourDestructive",
+      });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
-  // const handleEdit = (stage) => {
-  //   setEditingStage(stage);
-  //   setIsDialogOpen(true);
-  // };
+  const handleEdit = (stage) => {
+    setEditingStage(stage);
+    setIsDialogOpen(true);
+  };
 
   if (isLoading) {
     return (
@@ -292,9 +302,7 @@ const HiringStages = () => {
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Description</label>
                     <Textarea
-                      {...register("description", {
-                        required: "Description is required",
-                      })}
+                      {...register("description")}
                       placeholder="Describe the purpose of this stage..."
                       className="min-h-[100px]"
                     />
@@ -370,7 +378,7 @@ const HiringStages = () => {
                   <div className="text-sm font-medium text-muted-foreground hidden md:block">
                     Description
                   </div>
-                  <div className="text-sm font-medium text-muted-foreground text-right md:text-left">
+                  <div className="text-sm font-medium text-muted-foreground md:text-left text-center items-center mx-auto">
                     Actions
                   </div>
                 </div>
@@ -404,10 +412,10 @@ const HiringStages = () => {
                               <div className="hidden md:flex items-center">
                                 <Badge variant="secondary">{stage.order}</Badge>
                               </div>
-                              <div className="hidden md:block text-muted-foreground truncate">
+                              <div className="hidden md:block text-muted-foreground truncate text-[14px]">
                                 {stage.description}
                               </div>
-                              <div className="flex justify-end md:justify-start items-center gap-2">
+                              <div className="flex justify-end md:justify-center items-center gap-2">
                                 <DropdownMenu>
                                   <DropdownMenuTrigger asChild>
                                     <Button
@@ -446,7 +454,7 @@ const HiringStages = () => {
                               </div>
                             </div>
                             <div className="md:hidden mt-2">
-                              <p className="text-sm text-muted-foreground">
+                              <p className="text-[15px] text-muted-foreground">
                                 {stage.description}
                               </p>
                             </div>

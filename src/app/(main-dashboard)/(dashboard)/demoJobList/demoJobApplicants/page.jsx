@@ -190,7 +190,7 @@ const DemoApplicants = () => {
   const fetchHiringStages = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages?where[organization.id]=${organizationID}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages?where[organization.id][equals]=${organizationID}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
