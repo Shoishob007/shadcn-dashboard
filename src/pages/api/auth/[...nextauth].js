@@ -203,7 +203,7 @@ export const authOptions = {
                 session.user.image = token.image;
                 session.access_token = token.access_token;
                 session.organizationId = token.organizationId;
-                session.industryType = token.industryType;
+                // session.industryType = token.industryType;
 
 
                 console.log("Current Server Session :", session);

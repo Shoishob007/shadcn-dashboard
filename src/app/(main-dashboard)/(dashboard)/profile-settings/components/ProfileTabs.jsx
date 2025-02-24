@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProfileOverview from "./ProfileOverview.jsx";
 import Socials from "./Socials.jsx";
@@ -11,34 +10,31 @@ import User from "./User.jsx";
 import Delete from "./Delete.jsx";
 
 const ProfileTabs = () => {
-  const { data: session } = useSession();
-  const accessToken = session?.access_token;
-  const orgId = session?.organizationId;
   const [imageId, setImageId] = useState(null);
 
   return (
     <div>
       <Tabs defaultValue="overview" className="">
-        <TabsList className="bg-transparent">
+        <TabsList className="bg-transparent flex gap-8 justify-start px-6 py-2">
           <TabsTrigger className="" value="overview">
             Account Details
           </TabsTrigger>
-          <TabsTrigger className="ml-8" value="password">
+          <TabsTrigger className="" value="password">
             Change Password
           </TabsTrigger>
-          <TabsTrigger className="ml-8" value="socials">
+          <TabsTrigger className="" value="socials">
             Our Social Media
           </TabsTrigger>
-          {/* <TabsTrigger className="ml-8" value="branches">
+          {/* <TabsTrigger className="" value="branches">
             Branches
           </TabsTrigger> */}
-          <TabsTrigger className="ml-8" value="hiringStages">
+          <TabsTrigger className="" value="hiringStages">
             Hiring Stages
           </TabsTrigger>
-          <TabsTrigger className="ml-8" value="user">
+          <TabsTrigger className="" value="user">
             User Management
           </TabsTrigger>
-          <TabsTrigger className="ml-8" value="delete">
+          <TabsTrigger className="" value="delete">
             Delete Account
           </TabsTrigger>
         </TabsList>

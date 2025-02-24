@@ -126,7 +126,7 @@ const Scheduler = () => {
   const fetchHiringStages = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages?where[organization.id]=${orgId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages?where[organization.id][equals]=${orgId}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

@@ -67,7 +67,7 @@ const Scheduler = () => {
             const scheduleDate = new Date(timeStamp);
             return {
               Id: application.id,
-              Subject: `${applicantDetails?.name || "Unknown Applicant"} - ${
+              Subject: `${applicantDetails?.name || "Unknown"} - ${
                 application.jobDetails.job.title
               }`,
               Description: `${

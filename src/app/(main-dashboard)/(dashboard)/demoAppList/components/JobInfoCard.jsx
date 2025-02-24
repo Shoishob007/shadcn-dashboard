@@ -29,17 +29,18 @@ const JobInfoCard = ({ job }) => {
     router.push(`/demoJobList/demoJobDetails?jobId=${jobId}`);
   };
 
+  const customImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${job.job.organization?.img?.url}`;
   console.log("job : ", job)
   return (
     <>
       <Card className="p-6 mb-6 w-full bg-white dark:bg-gray-800 flex justify-between">
         <div className="flex flex-col gap-4 w-full">
           <div className="flex justify-between">
-            <div className="flex gap-1">
+            <div className="flex gap-2">
               <div>
                 <Avatar className="h-12 w-12 ">
                   <AvatarImage
-                    src={job.job.organization?.img}
+                    src={customImageUrl}
                     alt={job.job.organization.orgName}
                   />
                   <AvatarFallback className="font-semibold text-base sm:text-xs text-yellow-600 bg-yellow-100">

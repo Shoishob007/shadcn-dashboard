@@ -328,8 +328,6 @@ const ApplicantDetails = ({
 
   const {
     name = "N/A",
-    firstName = "",
-    lastName = "",
     email = "Not provided",
     phone = "Not provided",
     address = "Not provided",
@@ -346,9 +344,10 @@ const ApplicantDetails = ({
   } = applicant;
 
   const displayName =
-    name || `${firstName} ${lastName}`.trim() || "Anonymous Applicant";
+    name || "Anonymous Applicant";
+    console.log("Display Name :: ", displayName)
 
-  const customCV = `${process.env.NEXT_PUBLIC_API_URL}${cv?.url}`;
+  const customCV = `${process.env.NEXT_PUBLIC_API_URL}${applicant?.cv?.url}`;
   // console.log("Applicant Details :: ", applicant?.img?.url);
   const profilePicture = `${process.env.NEXT_PUBLIC_API_URL}${applicant?.img?.url}`;
 
@@ -394,10 +393,10 @@ const ApplicantDetails = ({
                   {displayName}
                 </h2>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
-                  {designation?.title || "Not Provided"}
+                  💼 {designation?.title || "Not Provided"}
                 </p>
                 <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 items-center">
-                  🩸 {bloodGroup}
+                  🩸 {bloodGroup || "Not Specified"}
                 </p>
               </div>
             </div>
@@ -407,25 +406,25 @@ const ApplicantDetails = ({
                 {displayName}
               </h2>
               <p className="text-sm text-gray-600 dark:text-gray-300">
-                {designation?.title}
+                💼 {designation?.title || "No Designation"}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                🩸 {bloodGroup}
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                🩸 {bloodGroup || "Not Provided"}
               </p>
             </div>
 
             <div className="space-y-4">
-              <div className="flex sm:flex-col gap-2">
-                <p className="text-xs sm:text-sm dark:text-gray-300">
-                  📍 {address}
+              <div className="flex sm:flex-col items-center justify-center">
+                <p className="text-xs text-gray-600 sm:text-sm dark:text-gray-300">
+                  📍 {address || "Not Provided"}
                 </p>
-                <p className="text-xs sm:text-sm dark:text-gray-300">
-                  📞 {phone}
+                <p className="text-xs text-gray-600 sm:text-sm dark:text-gray-300">
+                  📞 {phone || "Not Provided"}
                 </p>
               </div>
-              <div className="flex sm:flex-col gap-2">
+              <div className="flex sm:flex-col justify-center items-center gap-2">
                 <p className="text-xs sm:text-sm dark:text-gray-300">
-                  ✉️ {email}
+                  ✉️ {email || "Not Provided"}
                 </p>
                 <div className="flex mb-3 gap-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300 justify-center">
                   {socialLinks.length > 0 ? (
@@ -469,9 +468,15 @@ const ApplicantDetails = ({
             <StepSelector
               selectedStep={selectedStep}
               onStepChange={(newStage) =>
-                handleStepChange(jobApplicationId, applicationStatusId, newStage)
+                handleStepChange(
+                  jobApplicationId,
+                  applicationStatusId,
+                  newStage
+                )
               }
-              onReject={() => handleReject(jobApplicationId, applicationStatusId)}
+              onReject={() =>
+                handleReject(jobApplicationId, applicationStatusId)
+              }
               onHire={() => handleHire(jobApplicationId, applicationStatusId)}
               hiringStages={hiringStages.docs}
               applicationId={applicationStatusId}
