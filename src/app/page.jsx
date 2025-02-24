@@ -68,10 +68,10 @@ export default function Home() {
           }
         );
         const data = await response.json();
-        console.log("Applicants data fetched:", data);
+        // console.log("Applicants data fetched:", data);
 
         setAllApplicantions(data.docs);
-        console.log("data.docs :: ", data.docs);
+        // console.log("data.docs :: ", data.docs);
 
         const count = data.docs.reduce((acc, applicant) => {
           if (
@@ -101,7 +101,7 @@ export default function Home() {
     router.push("/demoBillings/pricing");
   };
 
-  console.log("shortlistedCount :: ", shortlistedCount);
+//   console.log("shortlistedCount :: ", shortlistedCount);
 
   const cardData = [
     {

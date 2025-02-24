@@ -17,7 +17,7 @@ const JobSearchCard = ({ job }) => {
   const [employeeTypeData, setEmployeeTypeData] = useState("");
   const [jobTypeData, setJobTypeData] = useState("");
   const [showSkills, setShowSkills] = useState("");
-  console.log("Job Data: ", job);
+//   console.log("Job Data: ", job);
   const {
     id = job?.id,
     address = job?.address === null ? "address not found" : job?.address,

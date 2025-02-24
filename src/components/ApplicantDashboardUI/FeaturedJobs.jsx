@@ -14,7 +14,7 @@ const FeaturedJobs = () => {
         );
         const data = await response.json();
         setJobs(data?.docs);
-        console.log("Job Data: ", data?.docs);
+        // console.log("Job Data: ", data?.docs);
     };
     getJobs();
   }, [])

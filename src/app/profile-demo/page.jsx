@@ -30,13 +30,13 @@ const ProfileDemo = () => {
           }
         );
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+        // if (!response.ok) {
+        //   throw new Error(`HTTP error! Status: ${response.status}`);
+        // }
 
         const data = await response.json();
         setProfileData(data?.docs);
-        console.log("Profile data: ", data.docs);
+        // console.log("Profile data: ", data.docs);
       } catch (error) {
         console.error("Error fetching profile data:", error);
       }
