@@ -36,7 +36,7 @@ const ApplicationTabs = ({ activeTab }) => {
         }
 
         const responseData = await response.json();
-        console.log("Job Applications data: ", responseData);
+        // console.log("Job Applications data: ", responseData);
         setMyApplications(responseData?.docs || []);
       } catch (error) {
         console.error("Error fetching job applications:", error.message);

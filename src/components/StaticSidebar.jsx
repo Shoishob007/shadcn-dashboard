@@ -11,7 +11,8 @@ export default function StaticSidebar() {
           alt="Logo"
           width={120}
           height={120}
-          className={`rounded-lg items-center text-center inline`}
+          className={`rounded-lg items-center text-center inline w-auto h-auto`}
+          priority
         />
       </Link>
     </div>

@@ -17,7 +17,7 @@ const RecentAppliedCard = ({ app }) => {
   const { data: session } = useSession();
   const accessToken = session?.access_token;
  
-    console.log("Recent Applied job data: ", app);
+    // console.log("Recent Applied job data: ", app);
     const {
       id = app?.id,
       jobDetailsId = app?.jobDetails?.id,

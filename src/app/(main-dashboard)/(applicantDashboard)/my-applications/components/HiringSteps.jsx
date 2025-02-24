@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/tooltip";
 
 const HiringSteps = ({ applicationStatus }) => {
-  console.log("application status: ", applicationStatus)
+//   console.log("application status: ", applicationStatus)
     if (!applicationStatus?.docs?.length) {
     return <p>No hiring steps available.</p>;
   }

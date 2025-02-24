@@ -9,34 +9,45 @@ const RecentApplied = () => {
   const accessToken = session?.access_token;
   const [application, setApplication] = useState([]);
 
-  useEffect(() => {
-    const getJobApplications = async () => {
-      if (status !== "authenticated" || !accessToken) {
-        console.error("Access Token Missing or Session not authenticated!");
-        return;
-      }
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?limit=3`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+useEffect(() => {
+  const getJobApplications = async () => {
+    if (status !== "authenticated") {
+      console.error("User not authenticated!");
+      return;
+    }
+
+    if (!accessToken) {
+      console.error("Access Token Missing!");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?limit=3`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         }
-        const data = await response.json();
-        setApplication(data.docs);
-        // console.log("Job data:: ", data);
-      } catch (error) {
-        console.log("Error fetching job applications:: ", error.message);
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    };
+
+      const data = await response.json();
+      setApplication(data.docs);
+    } catch (error) {
+      console.log("Error fetching job applications:: ", error.message);
+    }
+  };
+
+  if (status === "authenticated" && accessToken) {
     getJobApplications();
-  }, [accessToken, status]);
+  }
+}, [accessToken, status]);
+
 
   return (
     <div className="mt-6 flex flex-col gap-4">
