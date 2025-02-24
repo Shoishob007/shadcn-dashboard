@@ -5,6 +5,8 @@ import { useToast } from "@/hooks/use-toast";
 
 const EventEditor = ({ props, hiringStages, accessToken, onClose }) => {
   const { toast } = useToast();
+  // console.log("passed hiring stages :: ", hiringStages);
+  // console.log("passed hiring stages array :: ", hiringStages.docs);
 
   const [selectedHiringStage, setSelectedHiringStage] = useState(
     props.applicationData?.applicationStatus?.docs[0]?.hiringStage?.id || ""
@@ -15,21 +17,35 @@ const EventEditor = ({ props, hiringStages, accessToken, onClose }) => {
       : ""
   );
 
+  const currentStatus =
+    props.applicationData?.applicationStatus?.docs[0]?.status;
+  const currentStageOrder =
+    props.applicationData?.applicationStatus?.docs[0]?.hiringStage?.order;
+  const isLastStage = currentStageOrder === hiringStages?.length;
+  const isDisabled = currentStatus === "rejected" || currentStatus === "hired";
+
   const handleScheduleHire = async () => {
     const statusId = props.applicationData?.applicationStatus?.docs[0]?.id;
     const jobApplicationId = props.applicationData?.id;
-    const status =
-      props.applicationData?.applicationStatus?.docs[0]?.hiringStage?.order ===
-      5
-        ? "hired"
-        : "shortlisted";
+    const status = isLastStage ? "hired" : "shortlisted";
 
-    const requestBody = {
-      jobApplication: jobApplicationId,
-      hiringStage: selectedHiringStage,
-      status: status,
-      timeStamp: dateTime,
-    };
+    let requestBody;
+    if (status === "hired") {
+      requestBody = {
+        jobApplication: jobApplicationId,
+        status: status,
+        timeStamp: dateTime,
+      };
+    } else {
+      requestBody = {
+        jobApplication: jobApplicationId,
+        hiringStage: selectedHiringStage,
+        status: status,
+        timeStamp: dateTime,
+      };
+    }
+
+    console.log("Request Body:", requestBody);
 
     try {
       const response = await fetch(
@@ -61,6 +77,7 @@ const EventEditor = ({ props, hiringStages, accessToken, onClose }) => {
         });
       }
     } catch (error) {
+      console.error("Error updating applicant status:", error);
       toast({
         title: "Error!",
         description: "An error occurred while updating the applicant status.",
@@ -78,6 +95,8 @@ const EventEditor = ({ props, hiringStages, accessToken, onClose }) => {
       status: "rejected",
       timeStamp: dateTime,
     };
+
+    console.log("Reject Request Body:", requestBody);
 
     try {
       const response = await fetch(
@@ -107,6 +126,7 @@ const EventEditor = ({ props, hiringStages, accessToken, onClose }) => {
         });
       }
     } catch (error) {
+      console.error("Error rejecting applicant:", error);
       toast({
         title: "Error!",
         description: "An error occurred while rejecting the applicant.",
@@ -186,14 +206,21 @@ const EventEditor = ({ props, hiringStages, accessToken, onClose }) => {
       </div>
 
       <div className="flex justify-end gap-2 mt-6">
-        <Button type="button" variant="destructive" onClick={handleReject}>
+        <Button
+          type="button"
+          variant="destructive"
+          onClick={handleReject}
+          disabled={isDisabled}
+        >
           Reject
         </Button>
-        <Button type="button" variant="default" onClick={handleScheduleHire}>
-          {props.applicationData?.applicationStatus?.docs[0]?.hiringStage
-            ?.order === 5
-            ? "Hire"
-            : "Schedule"}
+        <Button
+          type="button"
+          variant="default"
+          onClick={handleScheduleHire}
+          disabled={isDisabled}
+        >
+          {isLastStage ? "Hire" : "Schedule"}
         </Button>
       </div>
     </div>
