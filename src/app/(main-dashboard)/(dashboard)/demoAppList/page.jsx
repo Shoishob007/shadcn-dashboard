@@ -48,7 +48,7 @@ const calculateTotalExperience = (experiences) => {
   return `${years} years ${months} months`;
 };
 
-const DemoAppList = ({inHome = false}) => {
+const DemoAppList = ({ inHome = false }) => {
   const router = useRouter();
   const { data: session } = useSession();
   const accessToken = session?.access_token;
@@ -69,6 +69,8 @@ const DemoAppList = ({inHome = false}) => {
   const [selectedJobApplicationId, setSelectedJobApplicationId] =
     useState(null);
   const [selectedApplicationStatusId, setSelectedApplicationStatusId] =
+    useState(null);
+  const [selectedApplicationStatus, setSelectedApplicationStatus] =
     useState(null);
 
   // UI states
@@ -361,12 +363,14 @@ const DemoAppList = ({inHome = false}) => {
   const handleViewDetails = (
     applicantProfileID,
     jobApplicationId,
-    applicationStatusId
+    applicationStatusId,
+    applicationStatus
   ) => {
     // Set the selected IDs
     setSelectedApplicantId(applicantProfileID);
     setSelectedJobApplicationId(jobApplicationId);
     setSelectedApplicationStatusId(applicationStatusId);
+    setSelectedApplicationStatus(applicationStatus)
   };
 
   const handleFilterChange = (filterName, value) => {
@@ -418,6 +422,7 @@ const DemoAppList = ({inHome = false}) => {
       <ApplicantDetails
         applicantId={selectedApplicantId}
         jobApplicationId={selectedJobApplicationId}
+        applicationStatus={selectedApplicationStatus}
         applicationStatusId={selectedApplicationStatusId}
         hiringStages={hiringStages}
       />
@@ -491,32 +496,32 @@ const DemoAppList = ({inHome = false}) => {
                 />
               ) : (
                 <>
-                <JobApplicantsCards
-                  currentPaginatedApplicants={
-                    inHome
-                      ? filteredApplicants.slice(0, HOME_PAGE_ITEMS)
-                      : filteredApplicants
-                  }
-                  calculateTotalExperience={calculateTotalExperience}
-                  handleViewDetails={handleViewDetails}
-                  socialMediaIcons={socialMediaIcons}
-                  viewCount={viewCount}
-                  setViewCount={setViewCount}
-                  maxViews={Infinity}
-                  hiringStages={hiringStages}
-                />
+                  <JobApplicantsCards
+                    currentPaginatedApplicants={
+                      inHome
+                        ? filteredApplicants.slice(0, HOME_PAGE_ITEMS)
+                        : filteredApplicants
+                    }
+                    calculateTotalExperience={calculateTotalExperience}
+                    handleViewDetails={handleViewDetails}
+                    socialMediaIcons={socialMediaIcons}
+                    viewCount={viewCount}
+                    setViewCount={setViewCount}
+                    maxViews={Infinity}
+                    hiringStages={hiringStages}
+                  />
 
-                {/* Button to see all apps */}
-                            {inHome && (
-                              <Button
-                                onClick={() => router.push("/demoAppList")}
-                                className="!mt-4 float-right"
-                                size="sm"
-                              >
-                                See All Applications
-                              </Button>
-                            )}
-                            </>
+                  {/* Button to see all apps */}
+                  {inHome && (
+                    <Button
+                      onClick={() => router.push("/demoAppList")}
+                      className="!mt-4 float-right"
+                      size="sm"
+                    >
+                      See All Applications
+                    </Button>
+                  )}
+                </>
               )}
 
               {/* Loading indicator and observer target */}
