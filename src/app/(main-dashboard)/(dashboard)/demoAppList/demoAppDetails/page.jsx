@@ -17,12 +17,6 @@ import {
 import { Button } from "@/components/ui/button";
 import StepSelector from "./components/StepSelector";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -34,19 +28,20 @@ import ScheduleModal from "./components/ScheduleModal";
 import { useToast } from "@/hooks/use-toast";
 import { useParams } from "next/navigation";
 import { useSearchParams } from "next/navigation";
-import { cva } from "class-variance-authority";
 
 const ApplicantDetails = ({
-  inHome,
   applicantId,
   jobApplicationId,
+  applicationStatus,
   applicationStatusId,
   hiringStages,
+  jobComponent,
 }) => {
   // console.log("Applicant Profile ID:", applicantId);
   // console.log("Job Application ID:", jobApplicationId);
   // console.log("Application Status ID:", applicationStatusId);
   // console.log("Hiring stages :: ", hiringStages);
+  console.log("Application Status :: ", applicationStatus)
   const searchParams = useSearchParams();
   // const jobApplication = searchParams.get("jobId");
   // console.log("jobApplication :: ", jobApplication)
@@ -81,7 +76,8 @@ const ApplicantDetails = ({
         }
         const data = await response.json();
         setApplicant(data);
-        setStatus(data?.status || "applied");
+        // console.log("Applicants status :: ", data)
+        setStatus(applicationStatus || "applied");
         setSelectedStep(data?.steps || "");
       } catch (err) {
         setError(err.message);
@@ -93,9 +89,13 @@ const ApplicantDetails = ({
     if (applicantId) {
       fetchApplicantData();
     }
-  }, [applicantId, accessToken]);
+  }, [applicantId, accessToken, applicationStatus]);
 
-  const handleStepChange = async (jobApplicationId, applicationStatusId, newStage) => {
+  const handleStepChange = async (
+    jobApplicationId,
+    applicationStatusId,
+    newStage
+  ) => {
     if (!applicationStatusId) {
       try {
         const response = await fetch(
@@ -343,9 +343,8 @@ const ApplicantDetails = ({
     extracurricularActivity = [],
   } = applicant;
 
-  const displayName =
-    name || "Anonymous Applicant";
-    console.log("Display Name :: ", displayName)
+  const displayName = name || "Anonymous Applicant";
+  // console.log("Display Name :: ", displayName)
 
   const customCV = `${process.env.NEXT_PUBLIC_API_URL}${applicant?.cv?.url}`;
   // console.log("Applicant Details :: ", applicant?.img?.url);
@@ -353,27 +352,59 @@ const ApplicantDetails = ({
 
   return (
     <>
-      <Breadcrumb className="mb-4">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">
-              <House className="h-4 w-4" />
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/demoAppList">Applicants List</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              href={`/demoAppList/demoAppDetails?id=${applicantId}`}
-            >
-              {displayName}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      {!jobComponent ? (
+        <Breadcrumb className="mb-4">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">
+                <House className="h-4 w-4" />
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/demoAppList">
+                Applicants List
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                href={`/demoAppList/demoAppDetails?id=${applicantId}`}
+              >
+                {displayName}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      ) : (
+        <Breadcrumb className="mb-4">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">
+                <House className="h-4 w-4" />
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/demoJobList">Job List</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/demoJobList/demoJobApplicants">
+                Job Applicants
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                href={`/demoJobList/demoJobApplicants?id=${applicantId}`}
+              >
+                {displayName}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      )}
 
       <Card className="w-full max-w-5xl mx-auto p-5 rounded-lg bg-white dark:bg-gray-800 grid grid-col-1 sm:grid-cols-3 gap-4 sm:gap-0 md:gap-4 overflow-hidden">
         {/* Left Section */}

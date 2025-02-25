@@ -46,6 +46,7 @@ const calculateTotalExperience = (experiences) => {
 };
 
 const DemoApplicants = () => {
+  const [jobComponent, setJobComponent] = useState(true)
   const router = useRouter();
   const searchParams = useSearchParams();
   const jobId = searchParams.get("jobId");
@@ -74,9 +75,13 @@ const DemoApplicants = () => {
   const [viewCount, setViewCount] = useState(
     orgSettings.docs[0]?.numberOfCvViewed
   );
-    const [selectedApplicantId, setSelectedApplicantId] = useState(null);
-    const [selectedJobApplicationId, setSelectedJobApplicationId] = useState(null);
-    const [selectedApplicationStatusId, setSelectedApplicationStatusId] = useState(null);
+  const [selectedApplicantId, setSelectedApplicantId] = useState(null);
+  const [selectedJobApplicationId, setSelectedJobApplicationId] =
+    useState(null);
+    const [selectedApplicationStatus, setSelectedApplicationStatus] =
+      useState(null);
+  const [selectedApplicationStatusId, setSelectedApplicationStatusId] =
+    useState(null);
   const maxViews = orgSettings.docs[0]?.subscriptionId === 1 ? 3 : Infinity;
 
   // Fetch job applications
@@ -212,9 +217,8 @@ const DemoApplicants = () => {
   // Transforming applicant data to match the component's expected format
   const transformedApplications = jobApplications
     .map((application) => {
-
       console.log("application in the scope:: ", application);
-        const profile = applicantProfiles[application.applicant.id];
+      const profile = applicantProfiles[application.applicant.id];
       if (!profile) return null;
 
       console.log("profile :: ", profile);
@@ -224,10 +228,8 @@ const DemoApplicants = () => {
       // console.log("jobApplication :: ", application.id);
 
       // console.log("latestStatus :: ", latestStatus);
-        const cvUrl = `${process.env.NEXT_PUBLIC_API_URL}${profile?.cv?.url}`;
-              const profilePicture = `${process.env.NEXT_PUBLIC_API_URL}${profile?.img?.url}`;
-
-
+      const cvUrl = `${process.env.NEXT_PUBLIC_API_URL}${profile?.cv?.url}`;
+      const profilePicture = `${process.env.NEXT_PUBLIC_API_URL}${profile?.img?.url}`;
 
       return {
         id: application.id,
@@ -321,30 +323,34 @@ const DemoApplicants = () => {
     };
   };
 
-const handleViewDetails = (
-  applicantProfileID,
-  jobApplicationId,
-  applicationStatusId
-) => {
-  setSelectedApplicantId(applicantProfileID);
-  setSelectedJobApplicationId(jobApplicationId);
-  setSelectedApplicationStatusId(applicationStatusId);
-};
-if (
-  selectedApplicantId ||
-  selectedJobApplicationId ||
-  selectedApplicationStatusId
-) {
-  // Render ApplicantDetails component if an applicant is selected
-  return (
-    <ApplicantDetails
-      applicantId={selectedApplicantId}
-      jobApplicationId={selectedJobApplicationId}
-      applicationStatusId={selectedApplicationStatusId}
-      hiringStages={hiringStages}
-    />
-  );
-}
+  const handleViewDetails = (
+    applicantProfileID,
+    jobApplicationId,
+    applicationStatusId,
+    applicationStatus
+  ) => {
+    setSelectedApplicantId(applicantProfileID);
+    setSelectedJobApplicationId(jobApplicationId);
+    setSelectedApplicationStatusId(applicationStatusId);
+    setSelectedApplicationStatus(applicationStatus);
+  };
+  if (
+    selectedApplicantId ||
+    selectedJobApplicationId ||
+    selectedApplicationStatusId
+  ) {
+    // Render ApplicantDetails component if an applicant is selected
+    return (
+      <ApplicantDetails
+        applicantId={selectedApplicantId}
+        jobApplicationId={selectedJobApplicationId}
+        applicationStatus={selectedApplicationStatus}
+        applicationStatusId={selectedApplicationStatusId}
+        hiringStages={hiringStages}
+        jobComponent={jobComponent}
+      />
+    );
+  }
 
   if (!currentJobInfo || isLoadingOrg) {
     return <div className="text-center p-8">Loading...</div>;

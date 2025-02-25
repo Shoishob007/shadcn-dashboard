@@ -89,7 +89,7 @@ const JobApplicantsCards = ({
           const totalExperience = calculateTotalExperience(
             applicant.experiences
           );
-          const latestStatus = applicant?.applicationStatus ?? "pending";
+          const latestStatus = applicant?.applicationStatus ?? "applied";
           const { bgColor, textColor } = getStatusBadgeProps(latestStatus);
           console.log("Applicant ::::: ", applicant)
 
@@ -210,7 +210,8 @@ const JobApplicantsCards = ({
                       handleViewDetails(
                         applicant.applicantProfileID,
                         applicant.id,
-                        applicant.applicationId
+                        applicant.applicationId,
+                        applicant.applicationStatus
                       );
                     }
                   }}
