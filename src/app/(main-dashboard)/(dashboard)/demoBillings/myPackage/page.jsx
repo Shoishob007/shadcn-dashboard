@@ -46,7 +46,7 @@ const MyPackage = () => {
   };
 
   return (
-    <div className="mx-auto max-w-5xl flex flex-col items-center bg-white dark:bg-gray-800">
+    <div className="max-w-6xl flex flex-col items-center bg-white dark:bg-gray-800">
       <Card className="grid grid-cols-1 sm:grid-cols-3 gap-2 shadow-none border-none">
         {/* Left Section */}
         <div className="col-span-1 flex flex-col space-y-2 p-4">

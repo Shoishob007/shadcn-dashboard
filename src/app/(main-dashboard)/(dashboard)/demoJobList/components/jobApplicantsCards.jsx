@@ -61,6 +61,8 @@ const JobApplicantsCards = ({
   const handleViewCV = (cvUrl) => {
     if (cvUrl) {
       window.open(cvUrl, "_blank");
+    } else {
+      alert("No CV available to download");
     }
   };
 
@@ -91,7 +93,7 @@ const JobApplicantsCards = ({
           );
           const latestStatus = applicant?.applicationStatus ?? "applied";
           const { bgColor, textColor } = getStatusBadgeProps(latestStatus);
-          console.log("Applicant ::::: ", applicant)
+          // console.log("Applicant ::::: ", applicant)
 
           return (
             <Card

@@ -228,7 +228,7 @@ const HiringStages = () => {
   }
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-6 max-w-5xl">
       <Card className="border-none shadow-none bg-transparent">
         <CardHeader className="px-0 p-0">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
@@ -246,10 +246,10 @@ const HiringStages = () => {
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button
-                  size="lg"
+                  size="md"
                   className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-200"
                 >
-                  <Plus className="mr-2 h-4 w-4" /> Add Hiring Stage
+                  <Plus className="h-4 w-4" /> Add Hiring Stage
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-md">
