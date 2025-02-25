@@ -27,7 +27,8 @@ const JobCard = ({ job }) => {
     employeeTypeId = job?.employeeType || null,
     yearOfExperience = job?.yearOfExperience || "Experience not found",
     jobTypeId = job?.jobType || null,
-    skills = job?.skills?.filter((skill) => skill) || [],
+    // skills = job?.skills?.filter((skill) => skill) || [],
+    skills = job?.skills?.map((skill) => skill),
   } = job;
 
   // Employee Type Fetch
@@ -139,7 +140,7 @@ const JobCard = ({ job }) => {
             </div>
             <div className="flex items-center gap-1 flex-wrap mt-2 text-sm">
               <span className="border border-black p-1 rounded-lg">
-                {showSkills}
+                {!showSkills ? "skills not found" : showSkills}
               </span>
             </div>
           </div>
