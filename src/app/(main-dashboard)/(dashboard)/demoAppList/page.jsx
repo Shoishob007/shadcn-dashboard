@@ -236,7 +236,9 @@ const DemoAppList = ({ inHome = false }) => {
       const latestStatus =
         application.applicationStatus?.docs?.[0]?.status || "applied";
       const applicationId = application.applicationStatus?.docs?.[0]?.id;
-      const cvUrl = `${process.env.NEXT_PUBLIC_API_URL}${profile?.cv?.url}`;
+      const cvUrl = profile?.cv?.url
+        ? `${process.env.NEXT_PUBLIC_API_URL}${profile?.cv?.url}`
+        : null;
       const profilePicture = `${process.env.NEXT_PUBLIC_API_URL}${profile?.img?.url}`;
 
       return {
@@ -245,7 +247,7 @@ const DemoAppList = ({ inHome = false }) => {
 
         name: getSafeValue(profile.name, "N/A"),
         CVScore: getSafeValue(profile.CVScore, profile?.cv ? 75 : 0),
-        CV: getSafeValue(cvUrl),
+        CV: cvUrl,
         certifications: getSafeValue(profile.trainingAndCertifications, []),
         experiences: getSafeValue(profile.experiences, []),
         socialLinks: getSafeValue(profile.socialLinks, []),
@@ -370,7 +372,7 @@ const DemoAppList = ({ inHome = false }) => {
     setSelectedApplicantId(applicantProfileID);
     setSelectedJobApplicationId(jobApplicationId);
     setSelectedApplicationStatusId(applicationStatusId);
-    setSelectedApplicationStatus(applicationStatus)
+    setSelectedApplicationStatus(applicationStatus);
   };
 
   const handleFilterChange = (filterName, value) => {

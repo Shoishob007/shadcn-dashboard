@@ -19,9 +19,9 @@ const ProfileTabs = () => {
           <TabsTrigger className="" value="overview">
             Account Details
           </TabsTrigger>
-          <TabsTrigger className="" value="password">
+          {/* <TabsTrigger className="" value="password">
             Change Password
-          </TabsTrigger>
+          </TabsTrigger> */}
           <TabsTrigger className="" value="socials">
             Our Social Media
           </TabsTrigger>
@@ -44,9 +44,9 @@ const ProfileTabs = () => {
           <TabsContent value="overview">
             <ProfileOverview />
           </TabsContent>
-          <TabsContent value="password">
+          {/* <TabsContent value="password">
             <Password />
-          </TabsContent>
+          </TabsContent> */}
           <TabsContent value="socials">
             <Socials imageId={imageId} />
           </TabsContent>

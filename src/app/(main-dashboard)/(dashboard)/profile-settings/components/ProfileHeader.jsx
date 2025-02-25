@@ -122,7 +122,7 @@ const ProfileSetting = () => {
               <Skeleton className="w-full h-48 md:h-64 lg:h-72" />
             ) : (
               <Image
-                src={coverPhoto || "/default-cover.jpg"}
+                src={coverPhoto}
                 alt="cover photo"
                 width={1200}
                 height={360}
@@ -153,7 +153,7 @@ const ProfileSetting = () => {
           {/* Profile Logo */}
           <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 md:left-16 md:translate-x-0 flex flex-col items-center">
             <Avatar className="w-24 h-24 border-2">
-              <AvatarImage src={profileImage} alt="Profile logo" />
+              <AvatarImage src={coverPhoto} alt="Profile logo" />
               <AvatarFallback>
                 {session?.user?.name?.charAt(0) || "U"}
               </AvatarFallback>
@@ -180,7 +180,7 @@ const ProfileSetting = () => {
                 <h1 className="font-semibold text-base md:text-lg">
                   {session?.user?.name || "Your"} / Settings
                 </h1>
-                <p className="text-sm">Update your profile information</p>
+                <p className="text-sm">Manage your profile profile information and settings</p>
               </div>
             </div>
             <div

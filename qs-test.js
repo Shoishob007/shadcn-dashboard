@@ -1,4 +1,4 @@
-import qs from 'qs'   // qs-esm
+import qs from 'qs'
 const query = {
 
     "job.organization.organization": {

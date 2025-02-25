@@ -118,7 +118,7 @@ export default function ProfileOverview() {
             Organization Profile
           </h2>
           <p className="text-sm text-muted-foreground">
-            Update your profile information as per choice.
+            View and Update your profile information as per choice.
           </p>
         </div>
 
