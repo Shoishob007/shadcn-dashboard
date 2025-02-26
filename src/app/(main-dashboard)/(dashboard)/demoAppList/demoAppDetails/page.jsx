@@ -28,8 +28,10 @@ import ScheduleModal from "./components/ScheduleModal";
 import { useToast } from "@/hooks/use-toast";
 import { useParams } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import HiringProgress from "../../demoJobList/components/HiringProgressBar";
 
 const ApplicantDetails = ({
+  currentApplicant,
   applicantId,
   jobApplicationId,
   applicationStatus,
@@ -41,7 +43,7 @@ const ApplicantDetails = ({
   // console.log("Job Application ID:", jobApplicationId);
   // console.log("Application Status ID:", applicationStatusId);
   // console.log("Hiring stages :: ", hiringStages);
-  console.log("Application Status :: ", applicationStatus)
+  console.log("Application Status :: ", applicationStatus);
   const searchParams = useSearchParams();
   // const jobApplication = searchParams.get("jobId");
   // console.log("jobApplication :: ", jobApplication)
@@ -90,6 +92,39 @@ const ApplicantDetails = ({
       fetchApplicantData();
     }
   }, [applicantId, accessToken, applicationStatus]);
+
+  console.log("Applicants i am sending :: ", applicant)
+
+  // Get the latest stage and status for an applicant
+  const getLatestStageInfo = (applicant) => {
+    const latestStatus = applicant.applicationStatus;
+    const latestHiringStage = applicant.hiringStep?.title;
+    const latestHiringStageOrder = applicant.hiringStep?.order;
+
+    return {
+      status: latestStatus,
+      stage: latestHiringStage,
+      order: latestHiringStageOrder,
+    };
+  };
+
+  // Render the hiring stages progress bar with circular indicators
+  const renderHiringStages = (applicant) => {
+    const {
+      stage: latestStage,
+      order: latestStageOrder,
+      status: latestStatus,
+    } = getLatestStageInfo(applicant);
+
+    return (
+      <HiringProgress
+        currentStage={latestStageOrder}
+        totalStages={hiringStages.docs.length}
+        stages={hiringStages.docs}
+        status={latestStatus}
+      />
+    );
+  };
 
   const handleStepChange = async (
     jobApplicationId,
@@ -328,9 +363,9 @@ const ApplicantDetails = ({
 
   const {
     name = "N/A",
-    email = "Not provided",
-    phone = "Not provided",
-    address = "Not provided",
+    email = "Email not provided",
+    phone = "Phone not provided",
+    address = "Address not provided",
     cv = null,
     experiences = [],
     educations = [],
@@ -406,10 +441,10 @@ const ApplicantDetails = ({
         </Breadcrumb>
       )}
 
-      <Card className="w-full max-w-5xl mx-auto p-5 rounded-lg bg-white dark:bg-gray-800 grid grid-col-1 sm:grid-cols-3 gap-4 sm:gap-0 md:gap-4 overflow-hidden">
+      <Card className="w-full max-w-screen p-6 rounded-lg bg-white dark:bg-gray-800 grid grid-col-1 sm:grid-cols-3 gap-4 sm:gap-0 md:gap-4 overflow-hidden">
         {/* Left Section */}
         <div className="col-span-2 sm:col-span-1 bg-gray-50 dark:bg-gray-700 flex flex-col items-center justify-between py-4 rounded-lg">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center space-y-2">
             <div className="flex items-start sm:items-center gap-4">
               <Avatar className="h-16 sm:h-24 w-16 sm:w-24 border-4 border-emerald-300 dark:border-emerald-400">
                 <AvatarImage src={profilePicture} alt={"Unknown Applicant"} />
@@ -424,40 +459,40 @@ const ApplicantDetails = ({
                   {displayName}
                 </h2>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
-                  💼 {designation?.title || "Not Provided"}
+                  💼 {designation?.title || "Designation not specified"}
                 </p>
                 <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 items-center">
-                  🩸 {bloodGroup || "Not Specified"}
+                  🩸 {bloodGroup || "Blood group not provided"}
                 </p>
               </div>
             </div>
 
-            <div className="hidden sm:flex flex-col items-center justify-center">
+            <div className="hidden sm:flex flex-col items-center justify-center space-y-2">
               <h2 className="text-lg text-center font-semibold sm:mt-4 dark:text-white">
                 {displayName}
               </h2>
               <p className="text-sm text-gray-600 dark:text-gray-300">
-                💼 {designation?.title || "No Designation"}
+                💼 {designation?.title || "Designation not specified"}
               </p>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                🩸 {bloodGroup || "Not Provided"}
+                🩸 {bloodGroup || "Blood group not provided"}
               </p>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex sm:flex-col items-center justify-center">
+            <div className="space-y-2">
+              <div className="flex sm:flex-col items-center justify-center gap-2">
                 <p className="text-xs text-gray-600 sm:text-sm dark:text-gray-300">
-                  📍 {address || "Not Provided"}
+                  📍 {address || "Address not Provided"}
                 </p>
                 <p className="text-xs text-gray-600 sm:text-sm dark:text-gray-300">
-                  📞 {phone || "Not Provided"}
+                  📞 {phone || "Phone not provided"}
                 </p>
               </div>
               <div className="flex sm:flex-col justify-center items-center gap-2">
-                <p className="text-xs sm:text-sm dark:text-gray-300">
-                  ✉️ {email || "Not Provided"}
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                  ✉️ {email || "Email not provided"}
                 </p>
-                <div className="flex mb-3 gap-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300 justify-center">
+                <div className="flex gap-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300 justify-center">
                   {socialLinks.length > 0 ? (
                     socialLinks.map((link, index) => (
                       <a
@@ -480,39 +515,45 @@ const ApplicantDetails = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-2 mt-6 sm:mt-0 capitalize">
-            <Button
-              variant="outline"
-              size="xs"
-              className="border shadow-none text-gray-700 bg-gray-300 hover:bg-gray-400 dark:border-gray-600 dark:bg-gray-100 dark:text-gray-700 dark:hover:bg-gray-300"
-              onClick={() => {
-                if (cv) {
-                  window.open(customCV, "_blank", "noopener,noreferrer");
-                } else {
-                  alert("No CV available to download");
-                }
-              }}
-            >
-              View Resume
-            </Button>
+          <div className="flex flex-col-reverse items-center gap-2 mt-5 sm:mt-3">
+            <div className="flex items-center gap-2 capitalize">
+              <Button
+                variant="outline"
+                size="xs"
+                className="border shadow-none text-gray-700 bg-gray-300 hover:bg-gray-400 dark:border-gray-600 dark:bg-gray-100 dark:text-gray-700 dark:hover:bg-gray-300"
+                onClick={() => {
+                  if (cv) {
+                    window.open(customCV, "_blank", "noopener,noreferrer");
+                  } else {
+                    alert("No CV available to download");
+                  }
+                }}
+              >
+                View Resume
+              </Button>
 
-            <StepSelector
-              selectedStep={selectedStep}
-              onStepChange={(newStage) =>
-                handleStepChange(
-                  jobApplicationId,
-                  applicationStatusId,
-                  newStage
-                )
-              }
-              onReject={() =>
-                handleReject(jobApplicationId, applicationStatusId)
-              }
-              onHire={() => handleHire(jobApplicationId, applicationStatusId)}
-              hiringStages={hiringStages.docs}
-              applicationId={applicationStatusId}
-              applicationStatus={status}
-            />
+              <StepSelector
+                selectedStep={selectedStep}
+                onStepChange={(newStage) =>
+                  handleStepChange(
+                    jobApplicationId,
+                    applicationStatusId,
+                    newStage
+                  )
+                }
+                onReject={() =>
+                  handleReject(jobApplicationId, applicationStatusId)
+                }
+                onHire={() => handleHire(jobApplicationId, applicationStatusId)}
+                hiringStages={hiringStages.docs}
+                applicationId={applicationStatusId}
+                applicationStatus={status}
+              />
+            </div>
+            <div className="">
+              {/* Render hiring stages */}
+              {renderHiringStages(currentApplicant)}
+            </div>
           </div>
         </div>
 

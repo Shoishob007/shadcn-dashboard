@@ -76,6 +76,7 @@ const DemoApplicants = () => {
     orgSettings.docs[0]?.numberOfCvViewed
   );
   const [selectedApplicantId, setSelectedApplicantId] = useState(null);
+  const [currentApplicant, setCurrentApplicant] = useState(null)
   const [selectedJobApplicationId, setSelectedJobApplicationId] =
     useState(null);
     const [selectedApplicationStatus, setSelectedApplicationStatus] =
@@ -322,11 +323,13 @@ const DemoApplicants = () => {
   };
 
   const handleViewDetails = (
+    application,
     applicantProfileID,
     jobApplicationId,
     applicationStatusId,
     applicationStatus
   ) => {
+    setCurrentApplicant(application);
     setSelectedApplicantId(applicantProfileID);
     setSelectedJobApplicationId(jobApplicationId);
     setSelectedApplicationStatusId(applicationStatusId);
@@ -340,6 +343,7 @@ const DemoApplicants = () => {
     // Render ApplicantDetails component if an applicant is selected
     return (
       <ApplicantDetails
+      currentApplicant={currentApplicant}
         applicantId={selectedApplicantId}
         jobApplicationId={selectedJobApplicationId}
         applicationStatus={selectedApplicationStatus}

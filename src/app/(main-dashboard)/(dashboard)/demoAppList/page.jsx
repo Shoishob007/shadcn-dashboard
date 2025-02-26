@@ -64,6 +64,7 @@ const DemoAppList = ({ inHome = false }) => {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [selectedApplicantId, setSelectedApplicantId] = useState(null);
+  const [currentApplicant, setCurrentApplicant] = useState(null)
   const [selectedJobApplicationId, setSelectedJobApplicationId] =
     useState(null);
   const [selectedApplicationStatusId, setSelectedApplicationStatusId] =
@@ -360,12 +361,14 @@ const DemoAppList = ({ inHome = false }) => {
   // };
 
   const handleViewDetails = (
+    applicant,
     applicantProfileID,
     jobApplicationId,
     applicationStatusId,
     applicationStatus
   ) => {
     // Set the selected IDs
+    setCurrentApplicant(applicant)
     setSelectedApplicantId(applicantProfileID);
     setSelectedJobApplicationId(jobApplicationId);
     setSelectedApplicationStatusId(applicationStatusId);
@@ -380,6 +383,7 @@ const DemoAppList = ({ inHome = false }) => {
     // Render ApplicantDetails component if an applicant is selected
     return (
       <ApplicantDetails
+      currentApplicant = {currentApplicant}
         applicantId={selectedApplicantId}
         jobApplicationId={selectedJobApplicationId}
         applicationStatus={selectedApplicationStatus}

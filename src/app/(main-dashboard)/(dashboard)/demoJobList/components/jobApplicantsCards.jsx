@@ -255,6 +255,7 @@ const JobApplicantsCards = ({
                       } else {
                         setViewCount((prev) => prev + 1);
                         handleViewDetails(
+                          applicant,
                           applicant.applicantProfileID,
                           applicant.id,
                           applicant.applicationId,
