@@ -46,7 +46,7 @@ const JobCards = ({
 
           return (
             <React.Fragment key={document.id}>
-              <Card className="flex flex-col dark:border dark:border-gray-500 relative mx-auto md:flex-row items-center justify-between py-6 md:p-6 px-2 rounded-lg transition-shadow gap-6 md:gap-4 max-w-5xl">
+              <Card className="flex flex-col border dark:border dark:border-gray-500 relative mx-auto md:flex-row items-center justify-between hover:shadow-lg py-6 md:p-6 px-2 rounded-lg transition-shadow gap-6 md:gap-4 max-w-5xl">
                 {/* Dropdown Menu */}
                 <div className="absolute top-2 right-2">
                   <DropdownMenu>

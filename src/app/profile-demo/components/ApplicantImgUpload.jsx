@@ -34,7 +34,7 @@ const ApplicantImgUpload = ({ docId, data }) => {
       toast({
         title: "Warning",
         description: "Please select an image first!",
-        variant: "warning",
+        variant: "ourWarning",
       });
       return;
     }
@@ -76,7 +76,7 @@ const ApplicantImgUpload = ({ docId, data }) => {
         toast({
           title: "Success",
           description: imageData?.message,
-          variant: "success",
+          variant: "ourSuccess",
         });
         const publicUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
         const imgUrl = publicUrl.concat(imgUploadData.doc.img.url);

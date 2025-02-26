@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/tooltip";
 import { FileText } from "lucide-react";
 import HiringProgress from "./HiringProgressBar";
+import { useToast } from "@/hooks/use-toast";
 
 const JobApplicantsCards = ({
   currentPaginatedApplicants,
@@ -21,10 +22,12 @@ const JobApplicantsCards = ({
   setViewCount,
   maxViews,
   hiringStages,
+  inHome
 }) => {
+  const { toast } = useToast();
   const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
 
-  console.log("cuurenmt ::: ", currentPaginatedApplicants);
+  // console.log("cuurenmt ::: ", currentPaginatedApplicants);
 
   // Get the latest stage and status for an applicant
   const getLatestStageInfo = (applicant) => {
@@ -80,7 +83,7 @@ const JobApplicantsCards = ({
   };
 
   // const profilePicture = `${process.env.NEXT_PUBLIC_API_URL}${applicant?.img?.url}`;
-  console.log("currentPaginatedApplicants :::: ", currentPaginatedApplicants);
+  // console.log("currentPaginatedApplicants :::: ", currentPaginatedApplicants);
 
   return (
     <>
@@ -96,7 +99,7 @@ const JobApplicantsCards = ({
           return (
             <Card
               key={applicant.id}
-              className="flex flex-col justify-between p-6 rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg bg-white dark:bg-gray-800"
+              className="flex flex-col justify-between p-6 rounded-lg transition-transform transform hover:shadow-lg bg-white dark:bg-gray-800"
             >
               <div className="flex flex-col sm:flex-row gap-4 items-center mb-4">
                 <Avatar className="md:h-12 h-16 w-16 md:w-12 border border-emerald-500 text-sm">
@@ -119,7 +122,8 @@ const JobApplicantsCards = ({
 
                     <div className="flex items-center gap-4 w-full justify-between">
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {applicant?.experiences?.[0]?.position || "N/A"}
+                        {applicant?.experiences?.[0]?.position ||
+                          "No Designation"}
                       </p>
                     </div>
                   </div>
@@ -172,7 +176,7 @@ const JobApplicantsCards = ({
                     {applicant.certifications?.length !== 0 ? (
                       <p>
                         <span className="font-semibold">Certification : </span>
-                        {applicant.certifications?.length}
+                        {applicant.certifications?.length}{" "}
                       </p>
                     ) : (
                       <span>
@@ -181,28 +185,30 @@ const JobApplicantsCards = ({
                       </span>
                     )}
                   </p>
-                  <div className="flex gap-2 items-center">
-                    <p>Resume:</p>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            onClick={() => handleViewCV(applicant?.CV)}
-                            className="rounded-full transition-colors border-none p-0"
-                            variant="outline"
-                          >
-                            <FileText className="h-5 w-5 text-gray-600" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>View CV</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-                  <div className="w-full">
-                    {/* Render hiring stages */}
-                    {renderHiringStages(applicant)}
+                  <div className="w-full flex items-center justify-between">
+                    <div className="flex gap-2 items-center">
+                      <p>Resume:</p>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              onClick={() => handleViewCV(applicant?.CV)}
+                              className="rounded-full transition-colors border-none p-0"
+                              variant="outline"
+                            >
+                              <FileText className="h-5 w-5 text-gray-600" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>View CV</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
+                    <div className="">
+                      {/* Render hiring stages */}
+                      {renderHiringStages(applicant)}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -235,16 +241,26 @@ const JobApplicantsCards = ({
                     viewCount >= maxViews ? "cursor-pointer" : ""
                   }`}
                   onClick={() => {
-                    if (viewCount >= maxViews) {
-                      setIsPricingDialogOpen(true);
+                    if (inHome) {
+                      toast({
+                        variant: "ourWarning",
+                        title: "Notice",
+                        description:
+                          "You need to visit the applicants page to see the details.",
+                        status: "info",
+                      });
                     } else {
-                      setViewCount((prev) => prev + 1);
-                      handleViewDetails(
-                        applicant.applicantProfileID,
-                        applicant.id,
-                        applicant.applicationId,
-                        applicant.applicationStatus
-                      );
+                      if (viewCount >= maxViews) {
+                        setIsPricingDialogOpen(true);
+                      } else {
+                        setViewCount((prev) => prev + 1);
+                        handleViewDetails(
+                          applicant.applicantProfileID,
+                          applicant.id,
+                          applicant.applicationId,
+                          applicant.applicationStatus
+                        );
+                      }
                     }
                   }}
                 >
