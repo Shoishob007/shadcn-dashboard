@@ -170,14 +170,14 @@ const JobList = ({ showFilters = true }) => {
   };
 
   const handleEditJob = (job) => {
-    console.log(job);
+    // console.log(job);
     setId(job.job.id);
     setJob(job);
     setIsEditing(true);
   };
 
   const handleShareJob = () => {
-    console.log("Share Job clicked");
+    // console.log("Share Job clicked");
   };
 
   const handleDeleteJob = (job) => {
@@ -205,13 +205,13 @@ const JobList = ({ showFilters = true }) => {
 
   let filteredJobs = filterJobs(documents.docs, filters);
 
-  console.log("filteredJobs :: ", filteredJobs);
+  // console.log("filteredJobs :: ", filteredJobs);
 
   // Sorting jobs
   if (filters.sortBy === "latest") {
-    filteredJobs.sort((a, b) => new Date(b.published) - new Date(a.published));
+    filteredJobs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   } else if (filters.sortBy === "oldest") {
-    filteredJobs.sort((a, b) => new Date(a.published) - new Date(b.published));
+    filteredJobs.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   }
 
   if (!showFilters) {

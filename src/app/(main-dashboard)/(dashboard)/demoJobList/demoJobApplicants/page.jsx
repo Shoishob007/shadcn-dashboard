@@ -217,17 +217,15 @@ const DemoApplicants = () => {
   // Transforming applicant data to match the component's expected format
   const transformedApplications = jobApplications
     .map((application) => {
-      console.log("application in the scope:: ", application);
+      // console.log("application in the scope:: ", application);
       const profile = applicantProfiles[application.applicant.id];
       if (!profile) return null;
 
-      console.log("profile :: ", profile);
+      // console.log("profile :: ", profile);
       const latestStatus =
         application.applicationStatus?.docs?.[0]?.status || "applied";
       const applicationId = application.applicationStatus?.docs?.[0]?.id;
-      // console.log("jobApplication :: ", application.id);
 
-      // console.log("latestStatus :: ", latestStatus);
       const cvUrl = `${process.env.NEXT_PUBLIC_API_URL}${profile?.cv?.url}`;
       const profilePicture = `${process.env.NEXT_PUBLIC_API_URL}${profile?.img?.url}`;
 
@@ -415,7 +413,7 @@ const DemoApplicants = () => {
     });
   };
 
-  console.log("filteredApplications :: ", filteredApplications);
+  // console.log("filteredApplications :: ", filteredApplications);
   // console.log("Hiring stages :: ",hiringStages)
 
   return (

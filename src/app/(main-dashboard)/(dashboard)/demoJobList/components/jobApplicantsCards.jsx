@@ -213,7 +213,7 @@ const JobApplicantsCards = ({
                         applicant.applicantProfileID,
                         applicant.id,
                         applicant.applicationId,
-                        applicant.applicationStatus
+                        applicant.applicationStatus,
                       );
                     }
                   }}

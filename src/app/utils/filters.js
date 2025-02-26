@@ -5,11 +5,11 @@ export const isJobOpen = (deadline) => {
 export const matchesSearchQuery = (searchQuery, job) => {
     const searchLower = searchQuery.toLowerCase();
     return (
-        job.title?.toLowerCase().includes(searchLower) ||
-        job.location?.toLowerCase().includes(searchLower) ||
+        job?.job?.title?.toLowerCase().includes(searchLower) ||
+        job?.location?.toLowerCase().includes(searchLower) ||
         job.email?.toLowerCase().includes(searchLower) ||
-        job.organization?.orgName?.toLowerCase().includes(searchLower) ||
-        job.description?.toLowerCase().includes(searchLower)
+        job?.job?.organization?.orgName?.toLowerCase().includes(searchLower) ||
+        job?.description?.toLowerCase().includes(searchLower)
     );
 };
 
@@ -38,7 +38,7 @@ export const filterJobs = (jobs, filters) => {
 
         // Experience filter
         if (filters.experienceRange !== 'all') {
-            const experience = job.yearOfExperience || 0;
+            const experience = job?.yearOfExperience || 0;
             const [min, max] = filters.experienceRange.split('-').map(Number);
             if (experience < min || (max && experience > max)) return false;
         }

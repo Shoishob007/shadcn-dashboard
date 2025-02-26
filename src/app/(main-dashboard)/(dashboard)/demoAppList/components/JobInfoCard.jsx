@@ -29,8 +29,9 @@ const JobInfoCard = ({ job }) => {
     router.push(`/demoJobList/demoJobDetails?jobId=${jobId}`);
   };
 
-  const customImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${job.job.organization?.img?.url}`;
-  console.log("job : ", job)
+  const customImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${job?.job?.organization?.img?.url}`;
+  // console.log("jobbbbbbb : ", job)
+
   return (
     <>
       <Card className="p-6 mb-6 w-full bg-white dark:bg-gray-800 flex justify-between">
@@ -41,19 +42,19 @@ const JobInfoCard = ({ job }) => {
                 <Avatar className="h-12 w-12 ">
                   <AvatarImage
                     src={customImageUrl}
-                    alt={job.job.organization.orgName}
+                    alt={job?.job?.organization?.orgName}
                   />
                   <AvatarFallback className="font-semibold text-base sm:text-xs text-yellow-600 bg-yellow-100">
-                    {job.job.organization.orgName.charAt(0)}
+                    {job?.job?.organization?.orgName?.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
               </div>
               <div>
                 <h2 className="text-xl font-semibold dark:text-white">
-                  {job.title}
+                  {job?.title}
                 </h2>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  {job.job.organization?.orgName}
+                  {job?.job?.organization?.orgName}
                 </p>
               </div>
             </div>

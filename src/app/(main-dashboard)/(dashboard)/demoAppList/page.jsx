@@ -244,7 +244,6 @@ const DemoAppList = ({ inHome = false }) => {
       return {
         id: application.id,
         applicantProfileID: getSafeValue(application.applicant.id),
-
         name: getSafeValue(profile.name, "N/A"),
         CVScore: getSafeValue(profile.CVScore, profile?.cv ? 75 : 0),
         CV: cvUrl,
@@ -375,6 +374,23 @@ const DemoAppList = ({ inHome = false }) => {
     setSelectedApplicationStatus(applicationStatus);
   };
 
+  if (
+    selectedApplicantId ||
+    selectedJobApplicationId ||
+    selectedApplicationStatusId
+  ) {
+    // Render ApplicantDetails component if an applicant is selected
+    return (
+      <ApplicantDetails
+        applicantId={selectedApplicantId}
+        jobApplicationId={selectedJobApplicationId}
+        applicationStatus={selectedApplicationStatus}
+        applicationStatusId={selectedApplicationStatusId}
+        hiringStages={hiringStages}
+      />
+    );
+  }
+
   const handleFilterChange = (filterName, value) => {
     setFilters((prev) => ({
       ...prev,
@@ -413,23 +429,6 @@ const DemoAppList = ({ inHome = false }) => {
       });
     });
   };
-
-  if (
-    selectedApplicantId ||
-    selectedJobApplicationId ||
-    selectedApplicationStatusId
-  ) {
-    // Render ApplicantDetails component if an applicant is selected
-    return (
-      <ApplicantDetails
-        applicantId={selectedApplicantId}
-        jobApplicationId={selectedJobApplicationId}
-        applicationStatus={selectedApplicationStatus}
-        applicationStatusId={selectedApplicationStatusId}
-        hiringStages={hiringStages}
-      />
-    );
-  }
 
   console.log("filtered applicants :: ", filteredApplicants);
   // console.log("transformed Applicants :: ", transformedApplicants)
