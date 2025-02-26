@@ -423,6 +423,7 @@ const ApplicantsTable = ({
                             } else {
                               setViewCount((prev) => prev + 1);
                               handleViewDetails(
+                                application,
                                 application.applicantProfileID,
                                 application.id,
                                 application.applicationId,
