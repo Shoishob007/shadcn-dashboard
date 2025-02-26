@@ -22,8 +22,6 @@ import { getSafeValue } from "@/lib/helper";
 import ApplicantDetails from "./demoAppDetails/page";
 import { Button } from "@/components/ui/button";
 
-const ITEMS_PER_PAGE = 10;
-
 const HOME_PAGE_ITEMS = 6;
 
 const socialMediaIcons = {
@@ -510,6 +508,7 @@ const DemoAppList = ({ inHome = false }) => {
                     setViewCount={setViewCount}
                     maxViews={Infinity}
                     hiringStages={hiringStages}
+                    inHome={inHome}
                   />
 
                   {/* Button to see all apps */}

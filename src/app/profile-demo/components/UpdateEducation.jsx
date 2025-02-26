@@ -102,7 +102,7 @@ const onSubmit = async (data) => {
   toast({
     title: "Success",
     description: "Your education details have been saved successfully!",
-    variant: "success",
+    variant: "ourSuccess",
   });
 };
 

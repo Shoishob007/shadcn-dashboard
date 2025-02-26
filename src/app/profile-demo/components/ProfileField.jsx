@@ -88,7 +88,7 @@ const ProfileField = ({ data }) => {
         toast({
           title: "Success",
           description: profileResponse?.message,
-          variant: "success",
+          variant: "ourSuccess",
         });
       }
     } catch (error) {

@@ -18,7 +18,7 @@ const ApplyJob = ({ id }) => {
       toast({
         title: "Error",
         description: "No access token found! Please log in first.",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
       return;
     }
@@ -46,7 +46,7 @@ const ApplyJob = ({ id }) => {
         toast({
           title: "Success",
           description: responseData?.message,
-          variant: "success",
+          variant: "ourSuccess",
         });
       } else {
         if (
@@ -57,14 +57,14 @@ const ApplyJob = ({ id }) => {
           toast({
             title: "Error",
             description: responseData.errors[0]?.message,
-            variant: "destructive",
+            variant: "ourDestructive",
           });
           setIsApply(true);
         } else {
           toast({
             title: "Error",
             description: "Failed to apply job",
-            variant: "destructive",
+            variant: "ourDestructive",
           });
         }
       }
@@ -73,7 +73,7 @@ const ApplyJob = ({ id }) => {
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
-        variant: "destructive",
+        variant: "ourDestructive",
       });
     } finally {
       setIsLoading(false);

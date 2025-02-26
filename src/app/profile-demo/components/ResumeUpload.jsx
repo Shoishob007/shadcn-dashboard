@@ -94,7 +94,7 @@ export default function ResumeUpload({ setFileURL, docId }) {
             toast({
               title: "Success",
               description: cvResponse?.message,
-              variant: "success",
+              variant: "ourSuccess",
             });
         }
         // console.log("CV Response: ", cvResponse);
