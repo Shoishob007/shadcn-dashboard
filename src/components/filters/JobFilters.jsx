@@ -11,12 +11,12 @@ const statusOptions = [
   { label: "Expired", value: "expired" },
 ];
 
-const jobRoleOptions = [
-  { label: "Any Roles", value: "all" },
-  { label: "Full-Stack", value: "Full-Stack Engineer" },
-  { label: "Frontend", value: "Frontend Engineer" },
-  { label: "Backend", value: "Backend Engineer" },
-];
+// const jobRoleOptions = [
+//   { label: "Any Roles", value: "all" },
+//   { label: "Full-Stack", value: "Full-Stack Engineer" },
+//   { label: "Frontend", value: "Frontend Engineer" },
+//   { label: "Backend", value: "Backend Engineer" },
+// ];
 
 const experienceOptions = [
   { label: "Any Experience", value: "all" },
@@ -31,6 +31,7 @@ const sortOptions = [
 ];
 
 export const JobFilters = ({ jobs, filters, onFilterChange, onReset }) => {
+  // console.log("jobs :: ", jobs)
   return (
     <div className="w-full max-w-4xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
       <div className="space-y-4">

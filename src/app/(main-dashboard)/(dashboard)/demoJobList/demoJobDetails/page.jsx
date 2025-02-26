@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import qs from "qs";
 import CreateJobForm from "../../demoJobFormCreate/components/CreateJobForm";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const JobDetailsPage = () => {
   const router = useRouter();
@@ -84,7 +85,7 @@ const JobDetailsPage = () => {
   }
 
   const job = currentJobInfo;
-  console.log("job ", job);
+  // console.log("jobbbb ", job);
 
   const fomatDate = (dateString) => {
   const date = new Date(dateString);
@@ -113,16 +114,18 @@ const JobDetailsPage = () => {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="max-w-5xl bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-        <div className="flex border-b-2 dark:border-gray-500 items-center justify-between px-4 sm:px-6 py-4">
-          <header className="flex items-center text-xs sm:text-sm">
-            <Image
-              src={"/default-company-logo.png"}
-              alt={"Company Logo"}
-              height={64}
-              width={64}
-              className="rounded-full mr-4"
-            />
+      <div className="max-w-screen bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+        <div className="flex border-b-2 dark:border-gray-500 items-center justify-between px-4 sm:px-6 pb-4">
+          <header className="flex items-center text-xs sm:text-sm gap-2">
+            <Avatar className="h-12 w-12 ">
+              <AvatarImage
+                src={`${process.env.NEXT_PUBLIC_API_URL}${job?.job?.organization?.img?.url}`}
+                alt={job?.job?.organization?.orgName}
+              />
+              <AvatarFallback className="font-semibold text-base sm:text-xs text-yellow-600 bg-yellow-100">
+                {job?.job?.organization?.orgName?.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
             <div>
               <h1 className="text-base sm:text-xl font-bold">
                 {job?.job?.title || "N/A"}
