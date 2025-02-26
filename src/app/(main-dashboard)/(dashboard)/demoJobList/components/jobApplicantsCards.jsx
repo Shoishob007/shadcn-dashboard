@@ -9,9 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  FileText,
-} from "lucide-react";
+import { FileText } from "lucide-react";
 import HiringProgress from "./HiringProgressBar";
 
 const JobApplicantsCards = ({
@@ -26,7 +24,7 @@ const JobApplicantsCards = ({
 }) => {
   const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
 
-  console.log("cuurenmt ::: ", currentPaginatedApplicants)
+  console.log("cuurenmt ::: ", currentPaginatedApplicants);
 
   // Get the latest stage and status for an applicant
   const getLatestStageInfo = (applicant) => {
@@ -108,72 +106,104 @@ const JobApplicantsCards = ({
                   />
 
                   <AvatarFallback className="bg-gray-300 text-xs font-bold text-gray-700">
-                    {applicant.name.charAt(0)}
+                    {applicant?.name?.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col w-full">
-                  <div className="items-center flex gap-2 justify-between">
-                    <h4 className="text-base font-semibold dark:text-white">
-                      {applicant.name}
-                    </h4>
+                <div className="flex flex-1 items-center justify-between">
+                  <div className="flex flex-col w-full">
+                    <div className="items-center flex gap-2 justify-between">
+                      <h4 className="text-base font-semibold dark:text-white">
+                        {applicant?.name}
+                      </h4>
+                    </div>
+
+                    <div className="flex items-center gap-4 w-full justify-between">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {applicant?.experiences?.[0]?.position || "N/A"}
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-4 w-full justify-between">
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      {applicant.experiences?.[0]?.position || "N/A"}
-                    </p>
-                    <div className="flex flex-col items-center gap-2">
-                      <div
-                        className={`px-2 py-1 rounded-full text-[10px] font-semibold mx-auto ${bgColor} ${textColor}`}
-                      >
-                        {latestStatus
-                          ? latestStatus.charAt(0).toUpperCase() +
-                            latestStatus.slice(1)
-                          : "applied"}
-                      </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <div
+                      className={`px-2 py-1 rounded-full text-[10px] font-semibold mx-auto ${bgColor} ${textColor}`}
+                    >
+                      {latestStatus
+                        ? latestStatus.charAt(0).toUpperCase() +
+                          latestStatus.slice(1)
+                        : "applied"}
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Render hiring stages */}
-              {renderHiringStages(applicant)}
-
               <div className="text-gray-700 text-sm dark:text-gray-300 mb-3">
-                <div className="flex flex-col text-sm mb-3">
+                <div className="flex flex-col text-sm mb-2 gap-2">
                   <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
-                    {applicant.education?.map((degree, index) => (
-                      <li key={index} className="text-sm md:text-[12px]">
-                        {degree.degree}
-                      </li>
-                    )) || <li>No education data</li>}
+                    {applicant?.education?.length !== 0 ? (
+                      applicant?.education?.map((degree, index) => (
+                        <li key={index} className="text-sm md:text-[12px]">
+                          {degree.degree}
+                        </li>
+                      ))
+                    ) : (
+                      <span>
+                        <span className="font-semibold">No</span> educational
+                        data for this applicant
+                      </span>
+                    )}
                   </ul>
                 </div>
-                <p>
-                  Experience:<strong> {totalExperience}</strong>
-                </p>
-                <p>
-                  Certifications:
-                  <strong> {applicant.certifications?.length || 0}</strong>
-                </p>
-                <div className="flex gap-2 items-center">
-                  <p>Resume:</p>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          onClick={() => handleViewCV(applicant?.CV)}
-                          className="p-2 rounded-full transition-colors border-none"
-                          variant="outline"
-                        >
-                          <FileText className="h-5 w-5 text-gray-600" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>View CV</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                <div className="flex flex-col gap-2">
+                  <p>
+                    {totalExperience != `${0} years ${0} months` ? (
+                      <p>
+                        <span className="font-semibold">Experience : </span>
+                        {totalExperience}{" "}
+                      </p>
+                    ) : (
+                      <span>
+                        <span className="font-semibold">No</span> Experience
+                        added
+                      </span>
+                    )}
+                  </p>
+                  <p>
+                    {applicant.certifications?.length !== 0 ? (
+                      <p>
+                        <span className="font-semibold">Certification : </span>
+                        {applicant.certifications?.length}
+                      </p>
+                    ) : (
+                      <span>
+                        <span className="font-semibold">No</span> Certification
+                        added
+                      </span>
+                    )}
+                  </p>
+                  <div className="flex gap-2 items-center">
+                    <p>Resume:</p>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            onClick={() => handleViewCV(applicant?.CV)}
+                            className="rounded-full transition-colors border-none p-0"
+                            variant="outline"
+                          >
+                            <FileText className="h-5 w-5 text-gray-600" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>View CV</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                  <div className="w-full">
+                    {/* Render hiring stages */}
+                    {renderHiringStages(applicant)}
+                  </div>
                 </div>
               </div>
 
@@ -213,7 +243,7 @@ const JobApplicantsCards = ({
                         applicant.applicantProfileID,
                         applicant.id,
                         applicant.applicationId,
-                        applicant.applicationStatus,
+                        applicant.applicationStatus
                       );
                     }
                   }}

@@ -296,8 +296,8 @@ const ApplicantsTable = ({
               <th className="pl-3 pr-2 py-3">Applicant</th>
               <th className="px-2 py-3">Education</th>
               <th className="px-2 py-3">Certifications</th>
-              <th className="px-2 py-3 text-center">Hiring Progress</th>
-              <th className="px-2 py-3 text-center">Action</th>
+              <th className="px-2 py-3">Hiring Progress</th>
+              <th className="px-2 py-3">Action</th>
               <th className="pl-2 pr-3 py-3 text-center">Details</th>
             </tr>
           </thead>
@@ -308,7 +308,7 @@ const ApplicantsTable = ({
                 className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900"
               >
                 {/* Name */}
-                <td className="pl-3 pr-2 py-2">
+                <td className="pl-3 pr-2 py-3">
                   <div className="flex items-center gap-3">
                     <Avatar className="h-10 w-10">
                       <AvatarImage
@@ -321,7 +321,7 @@ const ApplicantsTable = ({
                     </Avatar>
                     <div className="flex flex-col">
                       <span className="font-semibold text-base text-gray-800 dark:text-gray-300">
-                        {application.name}
+                        {application?.name}
                       </span>
                       <span className="text-xs text-gray-600 dark:text-gray-400">
                         {application?.experiences
@@ -342,7 +342,7 @@ const ApplicantsTable = ({
                 </td>
 
                 {/* Education */}
-                <td className="px-2 py-2">
+                <td className="px-2 py-3">
                   {application?.education?.length > 0 ? (
                     <ul className="list-disc list-inside space-y-1 text-xs">
                       {application?.education?.slice(-2).map((edu, index) => (
@@ -353,12 +353,14 @@ const ApplicantsTable = ({
                       ))}
                     </ul>
                   ) : (
-                    "N/A"
+                    <span>
+                      <span className="font-semibold">No</span> educational data
+                    </span>
                   )}
                 </td>
 
                 {/* Certifications */}
-                <td className="px-2 py-2">
+                <td className="px-2 py-3">
                   {application?.certifications?.length > 0 ? (
                     <ul className="list-disc list-inside space-y-1 text-xs">
                       {application?.certifications
@@ -371,7 +373,9 @@ const ApplicantsTable = ({
                         ))}
                     </ul>
                   ) : (
-                    "N/A"
+                    <span>
+                      <span className="font-semibold">No</span> Experience added
+                    </span>
                   )}
                 </td>
 
@@ -404,12 +408,12 @@ const ApplicantsTable = ({
                 </td>
 
                 {/* Details */}
-                <td className="pl-2 pr-3 py-2 text-center">
+                <td className="pl-2 pr-3 py-3 text-center">
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <div
-                          className={`text-blue-500 hover:text-blue-700 inline-block ${
+                          className={`text-gray-500 hover:text-gray-600 inline-block ${
                             viewCount >= maxViews ? "cursor-pointer" : ""
                           }`}
                           onClick={(e) => {
@@ -419,7 +423,10 @@ const ApplicantsTable = ({
                             } else {
                               setViewCount((prev) => prev + 1);
                               handleViewDetails(
-                                application.applicantProfileID , application.id, application.applicationId, application.applicationStatus
+                                application.applicantProfileID,
+                                application.id,
+                                application.applicationId,
+                                application.applicationStatus
                               );
                             }
                           }}
@@ -437,7 +444,7 @@ const ApplicantsTable = ({
                     <Tooltip>
                       <TooltipTrigger asChild className="ml-2">
                         <span
-                          className={`cursor-pointer text-red-400 hover:text-red-500 inline-block ${
+                          className={`cursor-pointer text-gray-500 hover:text-gray-600 inline-block ${
                             viewCount >= maxViews ? "cursor-pointer" : ""
                           }`}
                           onClick={() => {
