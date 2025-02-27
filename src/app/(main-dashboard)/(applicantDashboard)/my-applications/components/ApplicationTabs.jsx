@@ -11,8 +11,18 @@ const ApplicationTabs = ({ activeTab }) => {
   const { data: session, status } = useSession();
   const accessToken = session?.access_token;
   const [selectedStatus, setSelectedStatus] = useState(activeTab);
+
   const [myApplications, setMyApplications] = useState([]);
   const [loading, setLoading] = useState(true);
+
+
+    // Extra validation for active tabs
+    useEffect(() => {
+      if (activeTab) {
+        setSelectedStatus(activeTab);
+      }
+    }, [activeTab]);
+
 
   // Fetch job applications
   useEffect(() => {

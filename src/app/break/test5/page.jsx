@@ -1,253 +1,264 @@
-"use client";
-import OurPagination from "@/components/Pagination";
-import { useState } from "react";
-import ComboBox from "./components/ComboBox";
+"use client"
 
-const jobs = [
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+import { Badge } from "@/components/ui/badge"
+import { Building2, Plus } from "lucide-react"
+// import { toast } from "sonner"
+
+// Sample job data
+const initialJobs = [
   {
     id: 1,
-    jobTitle: "Frontend Developer",
-    companyName: "Google",
-    location: "Remote",
-    employmentType: "Full-Time",
-    jobCategory: "Software Development",
-    salary: "$5,000 - $6,000",
-    deadline: "December 31, 2024",
-    skills: ["React.js", "JavaScript", "CSS"],
-    description:
-      "We are looking for a passionate frontend developer to join our team and build amazing web experiences.",
-    logo: "/assets/google.png",
-    jobStatus: "Open",
-    experience: "2+ years",
+    title: "UI/UX Designer",
+    company: "Epic Coders",
+    type: "hourly",
+    typeColor: "default",
+    rate: 55,
+    skills: ["UI", "UX", "Photoshop"],
+    extraSkills: 4,
+    description: "We are looking for an experienced UI and UX designer to work on our new projects...",
   },
   {
     id: 2,
-    jobTitle: "UI/UX Designer",
-    companyName: "Netflix",
-    location: "California, USA",
-    employmentType: "Part-Time",
-    jobCategory: "Design",
-    salary: "$4,500 - $5,000",
-    deadline: "January 15, 2025",
-    skills: ["Figma", "Sketch", "Prototyping"],
-    description:
-      "Join our design team to create stunning user interfaces and enhance user experiences.",
-    logo: "/assets/netflix.png",
-    jobStatus: "Open",
-    experience: "3+ years",
+    title: "Branding Expert",
+    company: "Hubstaff",
+    type: "part-time",
+    typeColor: "warning",
+    rate: 32,
+    skills: ["PHP", "Android", "iOS"],
+    extraSkills: 2,
+    description: "Looking for an experienced person to help us with rebranding our business. We are interested in a...",
   },
   {
     id: 3,
-    jobTitle: "Backend Engineer",
-    companyName: "Amazon",
-    location: "Seattle, USA",
-    employmentType: "Full-Time",
-    jobCategory: "Software Development",
-    salary: "$7,000 - $8,000",
-    deadline: "December 20, 2024",
-    skills: ["Node.js", "Express", "MongoDB"],
-    description:
-      "We need a backend engineer to help us scale and improve our server infrastructure.",
-    logo: "/assets/amazon.png",
-    jobStatus: "Closed",
-    experience: "3+ years",
+    title: "Frontend Developer",
+    company: "TechNova",
+    type: "full-time",
+    typeColor: "success",
+    rate: 45,
+    skills: ["React", "Tailwind", "TypeScript"],
+    extraSkills: 3,
+    description: "Seeking a talented frontend developer to join our team and help build responsive web applications...",
   },
-  {
-    id: 4,
-    jobTitle: "Marketing Manager",
-    companyName: "Facebook",
-    location: "New York, USA",
-    employmentType: "Contractual",
-    jobCategory: "Marketing",
-    salary: "$6,000 - $7,000",
-    deadline: "January 5, 2025",
-    skills: ["SEO", "Campaign Management", "Analytics"],
-    description:
-      "We are hiring a marketing manager to lead our campaigns and boost our online presence.",
-    logo: "/assets/facebook.png",
-    jobStatus: "Pending",
-    experience: "5+ years",
-  },
-  {
-    id: 5,
-    jobTitle: "Mobile App Developer",
-    companyName: "Spotify",
-    location: "Remote",
-    employmentType: "Freelance",
-    jobCategory: "Software Development",
-    salary: "$4,000 - $5,000",
-    deadline: "February 10, 2025",
-    skills: ["Flutter", "React Native", "API Integration"],
-    description:
-      "Develop innovative and user-friendly mobile applications for millions of music lovers worldwide.",
-    logo: "/assets/spotify.png",
-    jobStatus: "Open",
-    experience: "2+ years",
-  },
-  {
-    id: 6,
-    jobTitle: "Data Scientist",
-    companyName: "IBM",
-    location: "Texas, USA",
-    employmentType: "Full-Time",
-    jobCategory: "Data Analysis",
-    salary: "$8,000 - $10,000",
-    deadline: "January 20, 2025",
-    skills: ["Python", "Machine Learning", "SQL"],
-    description:
-      "Analyze complex datasets and create predictive models to drive business decisions.",
-    logo: "/assets/ibm.png",
-    jobStatus: "Closed",
-    experience: "4+ years",
-  },
-  {
-    id: 7,
-    jobTitle: "Product Manager",
-    companyName: "Apple",
-    location: "California, USA",
-    employmentType: "Full-Time",
-    jobCategory: "Management",
-    salary: "$9,000 - $11,000",
-    deadline: "December 25, 2024",
-    skills: ["Product Strategy", "Agile", "Leadership"],
-    description:
-      "Lead cross-functional teams to design and launch groundbreaking products for global audiences.",
-    logo: "/assets/apple.png",
-    jobStatus: "Open",
-    experience: "6+ years",
-  },
-  {
-    id: 8,
-    jobTitle: "Content Writer",
-    companyName: "HubSpot",
-    location: "Remote",
-    employmentType: "Part-Time",
-    jobCategory: "Content Creation",
-    salary: "$2,500 - $3,000",
-    deadline: "February 1, 2025",
-    skills: ["SEO Writing", "Research", "Creativity"],
-    description:
-      "Craft engaging blog posts, articles, and website content to attract and retain readers.",
-    logo: "/assets/hubspot.png",
-    jobStatus: "Pending",
-    experience: "1+ years",
-  },
-  {
-    id: 9,
-    jobTitle: "DevOps Engineer",
-    companyName: "Slack",
-    location: "Remote",
-    employmentType: "Full-Time",
-    jobCategory: "Operations",
-    salary: "$7,500 - $8,500",
-    deadline: "January 30, 2025",
-    skills: ["AWS", "Docker", "Kubernetes"],
-    description:
-      "Automate and streamline infrastructure to support high-availability systems for millions of users.",
-    logo: "/assets/slack.png",
-    jobStatus: "Open",
-    experience: "3+ years",
-  },
-  {
-    id: 10,
-    jobTitle: "Graphic Designer",
-    companyName: "Adobe",
-    location: "New York, USA",
-    employmentType: "Full-Time",
-    jobCategory: "Design",
-    salary: "$5,000 - $6,500",
-    deadline: "January 10, 2025",
-    skills: ["Photoshop", "Illustrator", "Creativity"],
-    description:
-      "Create visually stunning designs that elevate branding and marketing efforts.",
-    logo: "/assets/adobe.png",
-    jobStatus: "Closed",
-    experience: "4+ years",
-  },
-  {
-    id: 11,
-    jobTitle: "Cybersecurity Analyst",
-    companyName: "Cisco",
-    location: "Remote",
-    employmentType: "Full-Time",
-    jobCategory: "Security",
-    salary: "$6,000 - $7,500",
-    deadline: "February 15, 2025",
-    skills: ["Network Security", "Penetration Testing", "SIEM Tools"],
-    description:
-      "Protect critical systems and networks from threats while ensuring data integrity.",
-    logo: "/assets/cisco.png",
-    jobStatus: "Open",
-    experience: "3+ years",
-  },
-  {
-    id: 12,
-    jobTitle: "Digital Marketing Specialist",
-    companyName: "Twitter",
-    location: "San Francisco, USA",
-    employmentType: "Full-Time",
-    jobCategory: "Marketing",
-    salary: "$5,500 - $6,500",
-    deadline: "January 25, 2025",
-    skills: ["PPC Campaigns", "Social Media Ads", "Analytics"],
-    description:
-      "Plan and execute marketing campaigns to drive user engagement and growth.",
-    logo: "/assets/twitter.png",
-    jobStatus: "Pending",
-    experience: "2+ years",
-  },
-];
+]
 
-const EducationPage = () => {
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const filteredJobs = jobs.filter((job) => {
-  //   return (
-  //     (filters.location ? job.location.includes(filters.location) : true) &&
-  //     (filters.employmentType
-  //       ? job.employmentType.includes(filters.employmentType)
-  //       : true) &&
-  //     (filters.jobCategory
-  //       ? job.jobCategory.includes(filters.jobCategory)
-  //       : true)
-  //   );
-  // });
 
-  // const jobsPerPage = 6;
-  // const indexOfLastJob = currentPage * jobsPerPage;
-  // const indexOfFirstJob = indexOfLastJob - jobsPerPage;
-  // const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
+const JobCard = ({ job }) => {
+  const getBadgeVariant = (color) => {
+    switch (color) {
+      case "warning":
+        return "warning"
+      case "success":
+        return "success"
+      case "destructive":
+        return "destructive"
+      default:
+        return "default"
+    }
+  }
 
-  // const handlePageChange = (pageNumber) => {
-  //   setCurrentPage(pageNumber);
-  // };
-
-  // const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
   return (
-    <div>
-      <ComboBox />
-      <ComboBox />
-      <ComboBox />
-      <ComboBox />
-      <ComboBox />
-      <ComboBox />
+    <Card className="flex flex-col h-full transition-all hover:shadow-lg">
+      <CardHeader>
+        <div className="flex justify-between items-center mb-2">
+          <Badge variant={getBadgeVariant(job.typeColor)}>{job.type}</Badge>
+          <span className="font-semibold">${job.rate}/hr</span>
+        </div>
+        <CardTitle className="text-xl">{job.title}</CardTitle>
+        <div className="flex items-center text-muted-foreground">
+          <Building2 className="w-4 h-4 mr-2" />
+          <span className="text-sm">{job.company}</span>
+        </div>
+      </CardHeader>
+      <CardContent className="flex-grow">
+        <div className="flex flex-wrap gap-2 mb-4">
+          {job.skills.map((skill, index) => (
+            <Badge key={index} variant="outline">
+              {skill}
+            </Badge>
+          ))}
+          {job.extraSkills > 0 && <Badge variant="secondary">+{job.extraSkills}</Badge>}
+        </div>
+        <p className="text-sm text-muted-foreground">{job.description}</p>
+      </CardContent>
+      <CardFooter>
+        <Button className="w-full" variant="outline">
+          View Details
+        </Button>
+      </CardFooter>
+    </Card>
+  )
+}
 
-      {/* <div className="my-24">
-        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {currentJobs.length === 0 ? (
-            <p>No jobs found based on your filters.</p>
-          ) : (
-            currentJobs.map((job) => <JobSearchCard key={job.id} job={job} />)
-          )}
+const JobForm = ({ onSubmit, onCancel }) => {
+  const [newJob, setNewJob] = useState<JobType>({
+    id: Date.now(),
+    title: "",
+    company: "",
+    type: "hourly",
+    typeColor: "default",
+    rate: 0,
+    skills: [],
+    extraSkills: 0,
+    description: "",
+  })
+  const [newSkill, setNewSkill] = useState("")
+
+  const handleAddSkill = () => {
+    if (newSkill.trim() && !newJob.skills.includes(newSkill.trim())) {
+      setNewJob({
+        ...newJob,
+        skills: [...newJob.skills, newSkill.trim()],
+      })
+      setNewSkill("")
+    }
+  }
+
+  const handleSubmit = () => {
+    if (!newJob.title || !newJob.company || newJob.rate <= 0) {
+      toast.error("Please fill in all required fields")
+      return
+    }
+    onSubmit(newJob)
+  }
+
+  return (
+    <Card className="mb-6">
+      <CardHeader>
+        <CardTitle>Add New Job</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="title">Job Title</Label>
+            <Input
+              id="title"
+              value={newJob.title}
+              onChange={(e) => setNewJob({ ...newJob, title: e.target.value })}
+              placeholder="e.g. UI/UX Designer"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="company">Company</Label>
+            <Input
+              id="company"
+              value={newJob.company}
+              onChange={(e) => setNewJob({ ...newJob, company: e.target.value })}
+              placeholder="e.g. Epic Coders"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="type">Job Type</Label>
+            <Select value={newJob.type} onValueChange={(value) => setNewJob({ ...newJob, type: value })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="hourly">Hourly</SelectItem>
+                <SelectItem value="part-time">Part-time</SelectItem>
+                <SelectItem value="full-time">Full-time</SelectItem>
+                <SelectItem value="contract">Contract</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="rate">Hourly Rate ($)</Label>
+            <Input
+              id="rate"
+              type="number"
+              value={newJob.rate || ""}
+              onChange={(e) => setNewJob({ ...newJob, rate: Number(e.target.value) })}
+              placeholder="e.g. 55"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label>Skills</Label>
+          <div className="flex flex-wrap gap-2 mb-2">
+            {newJob.skills.map((skill, index) => (
+              <Badge
+                key={index}
+                variant="outline"
+                className="cursor-pointer"
+                onClick={() =>
+                  setNewJob({
+                    ...newJob,
+                    skills: newJob.skills.filter((_, i) => i !== index),
+                  })
+                }
+              >
+                {skill} ×
+              </Badge>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <Input
+              value={newSkill}
+              onChange={(e) => setNewSkill(e.target.value)}
+              placeholder="e.g. React"
+              onKeyDown={(e) => e.key === "Enter" && handleAddSkill()}
+            />
+            <Button type="button" onClick={handleAddSkill} size="icon">
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="description">Description</Label>
+          <Textarea
+            id="description"
+            value={newJob.description}
+            onChange={(e) => setNewJob({ ...newJob, description: e.target.value })}
+            placeholder="Brief job description..."
+            rows={3}
+          />
+        </div>
+      </CardContent>
+      <CardFooter className="flex justify-end gap-2">
+        <Button variant="outline" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button onClick={handleSubmit}>Add Job</Button>
+      </CardFooter>
+    </Card>
+  )
+}
+
+export default function JobListings() {
+  const [jobs, setJobs] = useState(initialJobs)
+  const [showForm, setShowForm] = useState(false)
+
+  const handleAddJob = (job) => {
+    setJobs([...jobs, job])
+    setShowForm(false)
+    // toast.success("Job added successfully")
+  }
+
+  return (
+    <div className="min-h-screen p-8 bg-background">
+      <div className="max-w-7xl mx-auto space-y-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold">Job Listings</h1>
+          <Button onClick={() => setShowForm(!showForm)}>{showForm ? "Cancel" : "Add New Job"}</Button>
+        </div>
+
+        {showForm && <JobForm onSubmit={handleAddJob} onCancel={() => setShowForm(false)} />}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {jobs.map((job) => (
+            <JobCard key={job.id} job={job} />
+          ))}
         </div>
       </div>
-
-      <OurPagination
-        totalPages={totalPages}
-        currentPage={currentPage}
-        onPageChange={(page) => setCurrentPage(page)}
-      /> */}
     </div>
-  );
-};
+  )
+}
 
-export default EducationPage;

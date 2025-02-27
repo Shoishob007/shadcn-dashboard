@@ -13,7 +13,7 @@ import { useSearchParams } from "next/navigation";
 
 const MyApplicationPage = () => {
   const searchParams = useSearchParams();
-  const activeTab = searchParams.get("tab") || "applied";
+  const activeTab = searchParams.get("tab") || "Applied";
   
   return (
     <div>
