@@ -1,0 +1,43 @@
+{
+  "jobs": [
+    {
+      "id": 1,
+      "companyName": "Google",
+      "position": "Senior Software Engineer",
+      "jobType": "Full-time",
+      "location": "Remote",
+      "companyRating": 4.8,
+      "salaryRange": {
+        "min": 120,
+        "max": 180
+      },
+      "applied": false
+    },
+    {
+      "id": 2,
+      "companyName": "Amazon",
+      "position": "Frontend Developer",
+      "jobType": "Full-time",
+      "location": "Seattle, WA",
+      "companyRating": 4.2,
+      "salaryRange": {
+        "min": 110,
+        "max": 150
+      },
+      "applied": false
+    },
+    {
+      "id": 3,
+      "companyName": "Microsoft",
+      "position": "Product Manager",
+      "jobType": "Contract",
+      "location": "New York, NY",
+      "companyRating": 4.5,
+      "salaryRange": {
+        "min": 130,
+        "max": 160
+      },
+      "applied": true
+    }
+  ]
+}
