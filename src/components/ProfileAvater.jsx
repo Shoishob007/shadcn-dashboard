@@ -62,7 +62,7 @@ export default function ProfileAvater() {
               href={`${
                 currentRole === "organization"
                   ? "/profile-settings"
-                  : "/profile"
+                  : "/profile-demo"
               }`}
             >
               {currentRole === "organization"
@@ -97,11 +97,10 @@ export default function ProfileAvater() {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
-            // console.log("Signing out...");
             signOut();
           }}
           disabled={status === "unauthenticated"}
-          className="flex items-center gap-1.5"
+          className="flex items-center gap-1.5 cursor-pointer"
         >
           <LogOutIcon
             disabled={status === "unauthenticated"}
