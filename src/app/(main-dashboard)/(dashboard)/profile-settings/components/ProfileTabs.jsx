@@ -25,9 +25,6 @@ const ProfileTabs = () => {
           <TabsTrigger className="" value="socials">
             Our Social Media
           </TabsTrigger>
-          {/* <TabsTrigger className="" value="branches">
-            Branches
-          </TabsTrigger> */}
           <TabsTrigger className="" value="hiringStages">
             Hiring Stages
           </TabsTrigger>
@@ -50,9 +47,6 @@ const ProfileTabs = () => {
           <TabsContent value="socials">
             <Socials imageId={imageId} />
           </TabsContent>
-          {/* <TabsContent value="branches">
-            <Branches />
-          </TabsContent> */}
           <TabsContent value="hiringStages">
             <HiringStages />
           </TabsContent>

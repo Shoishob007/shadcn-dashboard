@@ -13,7 +13,7 @@ export const handleStepChange = async (applications, applicantId, applicationId,
                     },
                     body: JSON.stringify({
                         jobApplication: applicantId,
-                        hiringStage: hiringStages.docs[0].id,
+                        hiringStage: hiringStages?.docs[0]?.id,
                         status: "shortlisted",
                         timeStamp: new Date().toISOString(),
                     }),

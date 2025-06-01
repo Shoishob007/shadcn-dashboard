@@ -46,7 +46,7 @@ const calculateTotalExperience = (experiences) => {
 };
 
 const DemoApplicants = () => {
-  const [jobComponent, setJobComponent] = useState(true)
+  const [jobComponent, setJobComponent] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams();
   const jobId = searchParams.get("jobId");
@@ -76,11 +76,11 @@ const DemoApplicants = () => {
     orgSettings.docs[0]?.numberOfCvViewed
   );
   const [selectedApplicantId, setSelectedApplicantId] = useState(null);
-  const [currentApplicant, setCurrentApplicant] = useState(null)
+  const [currentApplicant, setCurrentApplicant] = useState(null);
   const [selectedJobApplicationId, setSelectedJobApplicationId] =
     useState(null);
-    const [selectedApplicationStatus, setSelectedApplicationStatus] =
-      useState(null);
+  const [selectedApplicationStatus, setSelectedApplicationStatus] =
+    useState(null);
   const [selectedApplicationStatusId, setSelectedApplicationStatusId] =
     useState(null);
   const maxViews = orgSettings.docs[0]?.subscriptionId === 1 ? 3 : Infinity;
@@ -177,7 +177,7 @@ const DemoApplicants = () => {
     }
   };
 
-  // more applicant profiles when scrolling or changing page
+  // more applicant profiles when scrolling
   useEffect(() => {
     const startIndex = (page - 1) * APPLICANTS_PER_PAGE;
     const applicantIdsToFetch = jobApplications
@@ -187,6 +187,8 @@ const DemoApplicants = () => {
 
     if (applicantIdsToFetch.length > 0) {
       fetchApplicantProfiles(applicantIdsToFetch);
+    } else {
+      setIsLoadingProfiles(false);
     }
   }, [page, jobApplications]);
 
@@ -204,8 +206,8 @@ const DemoApplicants = () => {
         }
       );
       const data = await response.json();
+      console.log("Hiring Stages :: ", data);
       setHiringStages(data);
-      // console.log("Hiring Stages :: ", data);
     } catch (error) {
       console.error("Error fetching hiring stages :", error);
     }
@@ -215,7 +217,7 @@ const DemoApplicants = () => {
     fetchHiringStages();
   }, [organizationID]);
 
-  // Transforming applicant data to match the component's expected format
+  // transforming applicant data as per the format
   const transformedApplications = jobApplications
     .map((application) => {
       // console.log("application in the scope:: ", application);
@@ -258,7 +260,7 @@ const DemoApplicants = () => {
     })
     .filter(Boolean);
 
-  // Infinite scroll handler
+  // Infinite scroll
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop ===
@@ -266,7 +268,7 @@ const DemoApplicants = () => {
       hasMoreApplicants &&
       !isLoadingProfiles
     ) {
-      setPage((prev) => prev + 1); // Loading the next page
+      setPage((prev) => prev + 1);
     }
   };
 
@@ -276,7 +278,6 @@ const DemoApplicants = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  // job info
   const transformJobInfo = (jobDetails) => {
     if (!jobDetails) return null;
 
@@ -340,10 +341,10 @@ const DemoApplicants = () => {
     selectedJobApplicationId ||
     selectedApplicationStatusId
   ) {
-    // Render ApplicantDetails component if an applicant is selected
+    // applicant-details component
     return (
       <ApplicantDetails
-      currentApplicant={currentApplicant}
+        currentApplicant={currentApplicant}
         applicantId={selectedApplicantId}
         jobApplicationId={selectedJobApplicationId}
         applicationStatus={selectedApplicationStatus}
@@ -354,13 +355,11 @@ const DemoApplicants = () => {
     );
   }
 
-  if (!currentJobInfo || isLoadingOrg) {
+  if (isLoadingProfiles || isLoadingOrg) {
     return <div className="text-center p-8">Loading...</div>;
   }
 
-  const hiringSteps = hiringStages.docs
-    .sort((a, b) => a.order - b.order)
-    .map((stage) => stage.title);
+  const hiringSteps = hiringStages?.docs?.sort((a, b) => a.order - b.order).map((stage) => stage.title);
 
   const filteredApplications = transformedApplications.filter((application) => {
     if (!selectedStatus) {
@@ -394,7 +393,7 @@ const DemoApplicants = () => {
   });
 
   const handleUpdateApplication = (updatedApplication) => {
-    // Updating the jobApplications state with the new applicant data
+    // Updating the jobApplications state
     setJobApplications((prevApplications) => {
       return prevApplications.map((application) => {
         if (application.applicant.id === updatedApplication.id) {
@@ -416,9 +415,6 @@ const DemoApplicants = () => {
       });
     });
   };
-
-  // console.log("filteredApplications :: ", filteredApplications);
-  // console.log("Hiring stages :: ",hiringStages)
 
   return (
     <>

@@ -70,7 +70,7 @@ const CreateJobForm = ({
       jobType: initialData?.jobType?.id || "",
       designation: initialData?.designation?.id || "",
       jobRole: initialData?.jobRole || [],
-      employeeType: initialData?.employeeType.id || "",
+      employeeType: initialData?.employeeType?.id || "",
       skills: initialData?.skills || [],
       degreeLevel: initialData?.degreeLevel || [],
       fieldOfStudy: initialData?.fieldOfStudy || [],

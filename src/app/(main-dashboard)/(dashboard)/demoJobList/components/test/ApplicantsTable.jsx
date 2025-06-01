@@ -52,7 +52,7 @@ const ApplicantsTable = ({
             },
             body: JSON.stringify({
               jobApplication: applicantId,
-              hiringStage: hiringStages.docs[0].id,
+              hiringStage: hiringStages?.docs[0]?.id,
               status: "shortlisted",
               timeStamp: new Date().toISOString(),
             }),
@@ -63,7 +63,7 @@ const ApplicantsTable = ({
           const updatedApplicant = {
             ...applicant,
             applicationStatus: "shortlisted",
-            hiringStep: hiringStages.docs[0],
+            hiringStep: hiringStages?.docs[0],
           };
           onUpdateApplicant(updatedApplicant);
           toast({
@@ -144,8 +144,8 @@ const ApplicantsTable = ({
             Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
-            jobApplication: scheduleModal.applicantId,
-            hiringStage: selectedStage.id,
+            jobApplication: scheduleModal?.applicantId,
+            hiringStage: selectedStage?.id,
             timeStamp: timestamp,
           }),
         }
@@ -154,7 +154,7 @@ const ApplicantsTable = ({
       if (response.ok) {
         // Updating the applicant's hiring stage in the state
         const updatedApplicant = applications.find(
-          (app) => app.id === scheduleModal.applicantId
+          (app) => app.id === scheduleModal?.applicantId
         );
         updatedApplicant.hiringStep = selectedStage;
         updatedApplicant.applicationStatus = "scheduled";
@@ -272,14 +272,14 @@ const ApplicantsTable = ({
   };
 
   const renderHiringStages = (applicant) => {
-    const latestStageOrder = applicant.hiringStep?.order || 0;
+    const latestStageOrder = applicant?.hiringStep?.order || 0;
     const latestStatus = applicant?.applicationStatus || "applied";
 
     return (
       <HiringProgress
         currentStage={latestStageOrder}
-        totalStages={hiringStages.docs.length}
-        stages={hiringStages.docs}
+        totalStages={hiringStages?.docs.length}
+        stages={hiringStages?.docs}
         status={latestStatus}
       />
     );

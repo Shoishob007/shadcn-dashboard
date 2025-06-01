@@ -77,12 +77,12 @@ const JobCards = ({
                         <AvatarImage
                           src={`${process.env.NEXT_PUBLIC_API_URL}${document.job.organization?.img?.url}` || ""}
                           alt={
-                            document.job.organization?.orgName[0] ||
+                            document?.job?.organization?.orgName ||
                             "Unknown Organization"
                           }
                         />
                         <AvatarFallback className="font-semibold text-base sm:text-xs text-yellow-600 bg-yellow-100">
-                          {document.job.organization?.orgName[0]}
+                          {document?.job?.organization?.orgName}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex gap-4 md:gap-0 items-center md:flex-col dark:text-gray-200">

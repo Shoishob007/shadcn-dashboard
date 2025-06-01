@@ -36,6 +36,7 @@ const ProfileSetting = () => {
 
           if (response.ok) {
             const userData = await response.json();
+            console.log("User data ::: ", userData)
             const fullImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${userData?.img?.url}`;
             setCoverPhoto(fullImageUrl || "");
             setLoadingCoverPhoto(false);
@@ -153,7 +154,7 @@ const ProfileSetting = () => {
           {/* Profile Logo */}
           <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 md:left-16 md:translate-x-0 flex flex-col items-center">
             <Avatar className="w-24 h-24 border-2">
-              <AvatarImage src={coverPhoto} alt="Profile logo" />
+              <AvatarImage src={profileImage} alt="Profile logo" />
               <AvatarFallback>
                 {session?.user?.name?.charAt(0) || "U"}
               </AvatarFallback>
@@ -180,7 +181,9 @@ const ProfileSetting = () => {
                 <h1 className="font-semibold text-base md:text-lg">
                   {session?.user?.name || "Your"} / Settings
                 </h1>
-                <p className="text-sm">Manage your profile profile information and settings</p>
+                <p className="text-sm">
+                  Manage your profile profile information and settings
+                </p>
               </div>
             </div>
             <div
