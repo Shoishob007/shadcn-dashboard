@@ -1,10 +1,17 @@
 "use client";
-import React from "react";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { formatRelativeDate } from "@/app/utils/formatRelativeDate";
+import { capitalizeText } from "@/components/Capitalize";
+import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   BriefcaseBusiness,
   CalendarDays,
@@ -13,14 +20,7 @@ import {
   Ellipsis,
   UserCog,
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
-import { capitalizeText } from "@/components/Capitalize";
+import React from "react";
 
 const JobCards = ({
   jobs,
@@ -83,6 +83,11 @@ const JobCards = ({
                         />
                         <AvatarFallback className="font-semibold text-base sm:text-xs text-yellow-600 bg-yellow-100">
                           {document?.job?.organization?.orgName}
+                          src="https://static.vecteezy.com/system/resources/previews/065/319/768/non_2x/modern-profile-picture-icon-business-avatar-blue-theme-vector.jpg"
+                          alt="org image"
+                        />
+                        <AvatarFallback className="font-semibold text-base sm:text-xs text-yellow-600 bg-yellow-100">
+                          Unknown
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex gap-4 md:gap-0 items-center md:flex-col dark:text-gray-200">
