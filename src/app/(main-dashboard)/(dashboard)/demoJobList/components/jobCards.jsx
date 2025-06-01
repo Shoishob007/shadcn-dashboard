@@ -75,6 +75,14 @@ const JobCards = ({
                     <div className="flex space-x-3 md:space-x-3 items-start">
                       <Avatar className="h-16 md:h-16 w-16 md:w-16">
                         <AvatarImage
+                          src={`${process.env.NEXT_PUBLIC_API_URL}${document.job.organization?.img?.url}` || ""}
+                          alt={
+                            document?.job?.organization?.orgName ||
+                            "Unknown Organization"
+                          }
+                        />
+                        <AvatarFallback className="font-semibold text-base sm:text-xs text-yellow-600 bg-yellow-100">
+                          {document?.job?.organization?.orgName}
                           src="https://static.vecteezy.com/system/resources/previews/065/319/768/non_2x/modern-profile-picture-icon-business-avatar-blue-theme-vector.jpg"
                           alt="org image"
                         />

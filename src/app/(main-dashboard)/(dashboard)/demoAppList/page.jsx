@@ -56,7 +56,6 @@ const DemoAppList = ({ inHome = false }) => {
   const observerRef = useRef(null);
   const loadingRef = useRef(null);
 
-  // State for job applications and applicants
   const [jobApplications, setJobApplications] = useState([]);
   const [hiringStages, setHiringStages] = useState([]);
   const [applicantProfiles, setApplicantProfiles] = useState({});
@@ -64,7 +63,7 @@ const DemoAppList = ({ inHome = false }) => {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [selectedApplicantId, setSelectedApplicantId] = useState(null);
-  const [currentApplicant, setCurrentApplicant] = useState(null)
+  const [currentApplicant, setCurrentApplicant] = useState(null);
   const [selectedJobApplicationId, setSelectedJobApplicationId] =
     useState(null);
   const [selectedApplicationStatusId, setSelectedApplicationStatusId] =
@@ -72,13 +71,11 @@ const DemoAppList = ({ inHome = false }) => {
   const [selectedApplicationStatus, setSelectedApplicationStatus] =
     useState(null);
 
-  // UI states
   const [selectedStatus, setSelectedStatus] = useState("applied");
   const [selectedStep, setSelectedStep] = useState("");
   const [viewMode, setViewMode] = useState("card");
   const [viewCount, setViewCount] = useState(1);
 
-  // Filter states
   const [filters, setFilters] = useState({
     searchQuery: "",
     selectedJobRole: "all",
@@ -99,7 +96,7 @@ const DemoAppList = ({ inHome = false }) => {
       );
       const data = await response.json();
 
-      // Append new applications to existing ones
+      // new applications to existing
       if (page === 1) {
         setJobApplications(data.docs || []);
       } else {
@@ -107,7 +104,7 @@ const DemoAppList = ({ inHome = false }) => {
       }
       setHasMore(data.hasNextPage || false);
 
-      // If it's the home page, disable infinite scroll after the first fetch
+      // If it's the home page, disabling infinite scroll after the first fetch
       if (inHome) {
         setHasMore(false);
       }
@@ -116,7 +113,7 @@ const DemoAppList = ({ inHome = false }) => {
     }
   };
 
-  // Function to fetch applicant profiles
+  // applicant profiles
   const fetchApplicantProfiles = async (applicantIds) => {
     setIsLoadingProfiles(true);
     try {
@@ -136,7 +133,7 @@ const DemoAppList = ({ inHome = false }) => {
         })
       );
 
-      // Update applicantProfiles state
+      // applicantProfiles state
       setApplicantProfiles((prev) => ({
         ...prev,
         ...Object.fromEntries(profiles.map(({ id, profile }) => [id, profile])),
@@ -183,17 +180,17 @@ const DemoAppList = ({ inHome = false }) => {
     };
   }, [handleObserver]);
 
-  // Fetch initial job applications
+  // initial job applications
   useEffect(() => {
     if (orgId && accessToken) {
       fetchJobApplications();
     }
   }, [orgId, accessToken, page]);
 
-  // Fetch applicant profiles for new applications
+  // applicant profiles for new applications
   useEffect(() => {
     const newApplicantIds = jobApplications
-      .map((app) => app.applicant.id)
+      .map((app) => app?.applicant?.id)
       .filter((id) => !applicantProfiles[id]);
 
     if (newApplicantIds.length > 0) {
@@ -201,7 +198,7 @@ const DemoAppList = ({ inHome = false }) => {
     }
   }, [jobApplications]);
 
-  // Fetch hiring stages for the company
+  // hiring stages for the company
   const fetchHiringStages = async () => {
     try {
       const response = await fetch(
@@ -224,11 +221,11 @@ const DemoAppList = ({ inHome = false }) => {
     fetchHiringStages();
   }, [orgId, accessToken]);
 
-  // Transform applicant data
+  // transforming applicant data
   const transformedApplicants = jobApplications
     .map((application) => {
       // console.log("applicatiosn :: ", application.applicant?.cv);
-      const profile = applicantProfiles[application.applicant.id];
+      const profile = applicantProfiles[application?.applicant?.id];
       if (!profile) return null;
       // console.log("profile  ::: ", profile);
 
@@ -242,7 +239,7 @@ const DemoAppList = ({ inHome = false }) => {
 
       return {
         id: application.id,
-        applicantProfileID: getSafeValue(application.applicant.id),
+        applicantProfileID: getSafeValue(application?.applicant?.id),
         name: getSafeValue(profile.name, "N/A"),
         CVScore: getSafeValue(profile.CVScore, profile?.cv ? 75 : 0),
         CV: cvUrl,
@@ -281,7 +278,6 @@ const DemoAppList = ({ inHome = false }) => {
   // console.log("Transformed Apps :: ", transformedApplicants);
 
   const filteredApplicants = transformedApplicants.filter((applicant) => {
-    // Apply status and step filters
     // console.log("applicant in the filer logic :: ", applicant?.name);
     let statusMatch = false;
 
@@ -315,7 +311,7 @@ const DemoAppList = ({ inHome = false }) => {
       return false;
     }
 
-    // Apply additional filters (search query, job role, time)
+    // filters
     if (
       filters.searchQuery &&
       !applicant?.name.toLowerCase().includes(filters.searchQuery.toLowerCase())
@@ -356,10 +352,6 @@ const DemoAppList = ({ inHome = false }) => {
     return true;
   });
 
-  // const handleViewDetails = (applicantProfileID) => {
-  //   router.push(`/demoAppList/demoAppDetails?id=${applicantProfileID}`);
-  // };
-
   const handleViewDetails = (
     applicant,
     applicantProfileID,
@@ -367,8 +359,7 @@ const DemoAppList = ({ inHome = false }) => {
     applicationStatusId,
     applicationStatus
   ) => {
-    // Set the selected IDs
-    setCurrentApplicant(applicant)
+    setCurrentApplicant(applicant);
     setSelectedApplicantId(applicantProfileID);
     setSelectedJobApplicationId(jobApplicationId);
     setSelectedApplicationStatusId(applicationStatusId);
@@ -380,10 +371,10 @@ const DemoAppList = ({ inHome = false }) => {
     selectedJobApplicationId ||
     selectedApplicationStatusId
   ) {
-    // Render ApplicantDetails component if an applicant is selected
+    // applicant-details component if an applicant is selected
     return (
       <ApplicantDetails
-      currentApplicant = {currentApplicant}
+        currentApplicant={currentApplicant}
         applicantId={selectedApplicantId}
         jobApplicationId={selectedJobApplicationId}
         applicationStatus={selectedApplicationStatus}
@@ -528,7 +519,7 @@ const DemoAppList = ({ inHome = false }) => {
                 </>
               )}
 
-              {/* Loading indicator and observer target */}
+              {/* loading indicator and observer target */}
               <div ref={loadingRef} className="h-10 w-full">
                 {hasMore && (
                   <div className="text-center py-4">

@@ -101,11 +101,6 @@ export default function ProfileOverview() {
     return filteredIds;
   }, [formData.industryType, industryTypes]);
 
-  // console.log("selectedIndustryValues :: ", selectedIndustryValues);
-  // console.log("formData.industryType :: ", formData.industryType);
-  // console.log("industryTypes :: ", industryTypes);
-
-
   if (loading && !profileDetails) {
     return <div>Loading profile details...</div>;
   }
