@@ -46,7 +46,7 @@ const JobCards = ({
 
           return (
             <React.Fragment key={document.id}>
-              <Card className="flex flex-col border dark:border dark:border-gray-500 relative mx-auto md:flex-row items-center justify-between hover:shadow-lg py-6 md:p-6 px-2 rounded-lg transition-shadow gap-6 md:gap-4 max-w-5xl">
+              <Card className="flex flex-col border dark:border dark:border-gray-500 relative mx-auto md:flex-row items-center justify-between hover:shadow-lg py-6 md:p-6 px-2 rounded-lg transition-shadow gap-6 md:gap-4 max-w-6xl">
                 {/* Dropdown Menu */}
                 <div className="absolute top-2 right-2">
                   <DropdownMenu>
@@ -73,21 +73,28 @@ const JobCards = ({
                 <div className="jobListCard flex items-center justify-around md:justify-start w-full md:w-fit">
                   <div className="flex flex-col gap-3 md:gap-5">
                     <div className="flex space-x-3 md:space-x-3 items-start">
-                      <Avatar className="h-16 md:h-16 w-16 md:w-16">
+                      <Avatar className="h-16 w-16">
                         <AvatarImage
-                          src={`${process.env.NEXT_PUBLIC_API_URL}${document.job.organization?.img?.url}` || ""}
+                          src={
+                            document.job.organization?.img?.url
+                              ? `${process.env.NEXT_PUBLIC_API_URL}${document.job.organization.img.url}`
+                              : "https://static.vecteezy.com/system/resources/previews/065/319/768/non_2x/modern-profile-picture-icon-business-avatar-blue-theme-vector.jpg"
+                          }
                           alt={
                             document?.job?.organization?.orgName ||
-                            "Unknown Organization"
+                            "Organization logo"
                           }
+                          onError={(e) => {
+                            e.currentTarget.src =
+                              "https://static.vecteezy.com/system/resources/previews/065/319/768/non_2x/modern-profile-picture-icon-business-avatar-blue-theme-vector.jpg";
+                          }}
                         />
                         <AvatarFallback className="font-semibold text-base sm:text-xs text-yellow-600 bg-yellow-100">
-                          {document?.job?.organization?.orgName}
-                          src="https://static.vecteezy.com/system/resources/previews/065/319/768/non_2x/modern-profile-picture-icon-business-avatar-blue-theme-vector.jpg"
-                          alt="org image"
-                        />
-                        <AvatarFallback className="font-semibold text-base sm:text-xs text-yellow-600 bg-yellow-100">
-                          Unknown
+                          {document?.job?.organization?.orgName
+                            ? document.job.organization.orgName
+                                .charAt(0)
+                                .toUpperCase()
+                            : "U"}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex gap-4 md:gap-0 items-center md:flex-col dark:text-gray-200">
@@ -211,7 +218,7 @@ const JobCards = ({
                 </div>
                 <div className="flex items-center gap-6 md:gap-0 px-2 md:px-0">
                   <div className="flex flex-col gap-5 justify-center mt-2">
-                    {/* Applicants Section (if available) */}
+                    {/* Applicants Section */}
                     {appCount > 0 ? (
                       <div className="flex justify-center md:justify-start sm:flex-row text-emerald-600 font-semibold">
                         <div className="flex flex-row items-center justify-center w-full sm:mr-4">
