@@ -33,8 +33,8 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { orgSettings } from "../../demoAppList/components/org-settings";
-import PricingDialogue from "../../demoJobList/components/pricingDialogue";
+import { orgSettings } from "../../ApplicantList/components/org-settings";
+import PricingDialogue from "../../JobList/components/pricingDialogue";
 import { useSession } from "next-auth/react";
 import qs from "qs";
 import { BasicInfoTab } from "../BasicInfoTab";
@@ -245,7 +245,6 @@ const CreateJobForm = ({
     console.log("Unga Bunga Data :: ", data);
   }, []);
 
-
   return (
     <>
       {!isEditing && (
@@ -258,9 +257,7 @@ const CreateJobForm = ({
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/demoJobFormCreate">
-                Job Form
-              </BreadcrumbLink>
+              <BreadcrumbLink href="/JobCreateForm">Job Form</BreadcrumbLink>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>

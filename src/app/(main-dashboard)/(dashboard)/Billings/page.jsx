@@ -27,7 +27,7 @@ const test = () => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/demoBillings">Billings</BreadcrumbLink>
+            <BreadcrumbLink href="/Billings">Billings</BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

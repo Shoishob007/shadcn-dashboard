@@ -28,7 +28,7 @@ import ScheduleModal from "./components/ScheduleModal";
 import { useToast } from "@/hooks/use-toast";
 import { useParams } from "next/navigation";
 import { useSearchParams } from "next/navigation";
-import HiringProgress from "../../demoJobList/components/HiringProgressBar";
+import HiringProgress from "../../JobList/components/HiringProgressBar";
 
 const ApplicantDetails = ({
   currentApplicant,
@@ -93,7 +93,7 @@ const ApplicantDetails = ({
     }
   }, [applicantId, accessToken, applicationStatus]);
 
-  console.log("Applicants i am sending :: ", applicant)
+  console.log("Applicants i am sending :: ", applicant);
 
   // Get the latest stage and status for an applicant
   const getLatestStageInfo = (applicant) => {
@@ -397,14 +397,14 @@ const ApplicantDetails = ({
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/demoAppList">
+              <BreadcrumbLink href="/ApplicantList">
                 Applicants List
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink
-                href={`/demoAppList/demoAppDetails?id=${applicantId}`}
+                href={`/ApplicantList/ApplicantDetails?id=${applicantId}`}
               >
                 {displayName}
               </BreadcrumbLink>
@@ -421,19 +421,17 @@ const ApplicantDetails = ({
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/demoJobList">Job List</BreadcrumbLink>
+              <BreadcrumbLink href="/JobList">Job List</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/demoJobList/demoJobApplicants">
+              <BreadcrumbLink href="/JobList/JobApplicants">
                 Job Applicants
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink
-                href={`/demoJobList/demoJobApplicants?id=${applicantId}`}
-              >
+              <BreadcrumbLink href={`/JobList/JobApplicants?id=${applicantId}`}>
                 {displayName}
               </BreadcrumbLink>
             </BreadcrumbItem>

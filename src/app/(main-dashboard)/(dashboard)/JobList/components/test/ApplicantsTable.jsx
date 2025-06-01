@@ -11,8 +11,8 @@ import Link from "next/link";
 import PricingDialogue from "../pricingDialogue";
 import HiringProgress from "../HiringProgressBar";
 import { useSession } from "next-auth/react";
-import StepSelector from "../../../demoAppList/demoAppDetails/components/StepSelector";
-import ScheduleModal from "../../../demoAppList/demoAppDetails/components/ScheduleModal";
+import StepSelector from "../../../ApplicantList/ApplicantDetails/components/StepSelector";
+import ScheduleModal from "../../../ApplicantList/ApplicantDetails/components/ScheduleModal";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 

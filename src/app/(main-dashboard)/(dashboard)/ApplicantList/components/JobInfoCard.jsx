@@ -10,7 +10,7 @@ import {
   UserCog,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import CreateJobForm from "../../demoJobFormCreate/components/CreateJobForm";
+import CreateJobForm from "../../JobCreateForm/components/CreateJobForm";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 
@@ -26,7 +26,7 @@ const JobInfoCard = ({ job }) => {
   };
 
   const handleViewJobDetails = (jobId) => {
-    router.push(`/demoJobList/demoJobDetails?jobId=${jobId}`);
+    router.push(`/JobList/JobDetails?jobId=${jobId}`);
   };
 
   const customImageUrl = `${process.env.NEXT_PUBLIC_API_URL}${job?.job?.organization?.img?.url}`;

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { plans } from "../components/subscriptionData";
-import { orgSettings } from "@/app/(main-dashboard)/(dashboard)/demoAppList/components/org-settings";
+import { orgSettings } from "@/app/(main-dashboard)/(dashboard)/ApplicantList/components/org-settings";
 import { useEffect, useState } from "react";
 
 const enterprisePlan = plans.find((plan) => plan.title === "Enterprise");
@@ -84,7 +84,7 @@ const PricingCards = () => {
             <Button
               onClick={() =>
                 router.push(
-                  `/demoBillings/pricing/payment?amount=${plan.price}`
+                  `/Billings/pricing/payment?amount=${plan.price}`
                 )
               }
               className={`w-full py-2 text-white rounded-md font-normal text-sm ${

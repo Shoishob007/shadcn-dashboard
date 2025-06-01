@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
 import { useEffect, useState, useCallback } from "react";
-import { orgSettings } from "@/app/(main-dashboard)/(dashboard)/demoAppList/components/org-settings";
+import { orgSettings } from "@/app/(main-dashboard)/(dashboard)/ApplicantList/components/org-settings";
 import { X } from "lucide-react";
 import {
   allDesignation,

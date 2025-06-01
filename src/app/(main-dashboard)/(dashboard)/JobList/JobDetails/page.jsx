@@ -12,7 +12,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import qs from "qs";
-import CreateJobForm from "../../demoJobFormCreate/components/CreateJobForm";
+import CreateJobForm from "../../JobCreateForm/components/CreateJobForm";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const JobDetailsPage = () => {
@@ -70,7 +70,7 @@ const JobDetailsPage = () => {
   }
 
   const handleViewApplicantList = () => {
-    router.push(`/demoJobList/demoJobApplicants?jobId=${jobId}`);
+    router.push(`/JobList/JobApplicants?jobId=${jobId}`);
   };
 
   if (isEditing) {
@@ -88,10 +88,10 @@ const JobDetailsPage = () => {
   // console.log("jobbbb ", job);
 
   const fomatDate = (dateString) => {
-  const date = new Date(dateString);
+    const date = new Date(dateString);
 
-  return date.toLocaleDateString("en-CA");
-  }
+    return date.toLocaleDateString("en-CA");
+  };
 
   return (
     <>
@@ -104,11 +104,11 @@ const JobDetailsPage = () => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/demoJobList">Job List</BreadcrumbLink>
+            <BreadcrumbLink href="/JobList">Job List</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/demoJobList/demoJobDetails">
+            <BreadcrumbLink href="/JobList/JobDetails">
               {job?.job?.title || "Job Details"}
             </BreadcrumbLink>
           </BreadcrumbItem>
