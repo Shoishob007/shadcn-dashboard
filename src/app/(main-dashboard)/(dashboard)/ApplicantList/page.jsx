@@ -4,7 +4,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { FaFacebook, FaGoogle, FaLinkedin } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import ToggleGroupComponent from "../demoJobList/components/ToggleGroup";
+import ToggleGroupComponent from "../JobList/components/ToggleGroup";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,12 +14,12 @@ import {
 } from "@/components/ui/breadcrumb";
 import { House } from "lucide-react";
 import { useSession } from "next-auth/react";
-import ApplicantsTable from "../demoJobList/components/test/ApplicantsTable";
+import ApplicantsTable from "../JobList/components/test/ApplicantsTable";
 import GridListTooltip from "@/components/GridListTooltip";
-import JobApplicantsCards from "../demoJobList/components/jobApplicantsCards";
+import JobApplicantsCards from "../JobList/components/jobApplicantsCards";
 import { ApplicantFilterSheet } from "@/components/filters/ApplicantFilterSheet";
 import { getSafeValue } from "@/lib/helper";
-import ApplicantDetails from "./demoAppDetails/page";
+import ApplicantDetails from "./ApplicantDetails/page";
 import { Button } from "@/components/ui/button";
 
 const HOME_PAGE_ITEMS = 6;
@@ -438,7 +438,7 @@ const DemoAppList = ({ inHome = false }) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/demoAppList">
+              <BreadcrumbLink href="/ApplicantList">
                 Applicants List
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -509,7 +509,7 @@ const DemoAppList = ({ inHome = false }) => {
                   {/* Button to see all apps */}
                   {inHome && (
                     <Button
-                      onClick={() => router.push("/demoAppList")}
+                      onClick={() => router.push("/ApplicantList")}
                       className="!mt-4 float-right"
                       size="sm"
                     >

@@ -90,7 +90,7 @@ export default function ProfileAvater() {
           {currentRole === "organization" && (
             <DropdownMenuItem className="flex items-center gap-1.5">
               <Ticket className="h-4 w-4 text-gray-800 dark:text-gray-300" />
-              <Link href="/demoBillings/pricing">Try Enterprize</Link>
+              <Link href="/Billings/pricing">Try Enterprize</Link>
             </DropdownMenuItem>
           )}
         </DropdownMenuGroup>

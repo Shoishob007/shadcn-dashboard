@@ -4,11 +4,11 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { FaFacebook, FaGoogle, FaLinkedin } from "react-icons/fa";
 import { useRouter, useSearchParams } from "next/navigation";
-import JobInfoCard from "../../demoAppList/components/JobInfoCard";
+import JobInfoCard from "../../ApplicantList/components/JobInfoCard";
 import ToggleGroupComponent from "../components/ToggleGroup";
 import JobApplicantsCards from "../components/jobApplicantsCards";
 import ApplicantsTable from "../components/test/ApplicantsTable";
-import { orgSettings } from "../../demoAppList/components/org-settings";
+import { orgSettings } from "../../ApplicantList/components/org-settings";
 import GridListTooltip from "@/components/GridListTooltip";
 import {
   Breadcrumb,
@@ -19,7 +19,15 @@ import {
 } from "@/components/ui/breadcrumb";
 import { House } from "lucide-react";
 import { useSession } from "next-auth/react";
-import ApplicantDetails from "../../demoAppList/demoAppDetails/page";
+import ApplicantDetails from "../../ApplicantList/ApplicantDetails/page";
+import {
+  calculateTotalExperience,
+  fetchApplicantProfiles,
+  fetchHiringStages,
+  fetchJobApplications,
+  transformApplications,
+  transformJobInfo,
+} from "./actions/page";
 
 const APPLICANTS_PER_PAGE = 10;
 
@@ -27,22 +35,6 @@ const socialMediaIcons = {
   linkedin: FaLinkedin,
   google: FaGoogle,
   facebook: FaFacebook,
-};
-
-const calculateTotalExperience = (experiences) => {
-  if (!experiences) return "No Experience!";
-
-  const totalMonths = experiences.reduce((acc, exp) => {
-    const start = new Date(exp.startDate);
-    const end = new Date(exp.endDate);
-    const duration =
-      (end.getFullYear() - start.getFullYear()) * 12 +
-      (end.getMonth() - start.getMonth());
-    return acc + duration;
-  }, 0);
-  const years = Math.floor(totalMonths / 12);
-  const months = totalMonths % 12;
-  return `${years} years ${months} months`;
 };
 
 const DemoApplicants = () => {
@@ -54,7 +46,6 @@ const DemoApplicants = () => {
   const accessToken = session?.access_token;
   const organizationID = session?.organizationId;
 
-  // State for job applications and applicants
   const [jobApplications, setJobApplications] = useState([]);
   const [hiringStages, setHiringStages] = useState([]);
   const [applicantProfiles, setApplicantProfiles] = useState({});
@@ -62,11 +53,9 @@ const DemoApplicants = () => {
   const [hasMoreApplicants, setHasMoreApplicants] = useState(true);
   const [page, setPage] = useState(1);
 
-  // State for organization details
   const [organizationDetails, setOrganizationDetails] = useState(null);
   const [isLoadingOrg, setIsLoadingOrg] = useState(false);
 
-  // UI states
   const [selectedStatus, setSelectedStatus] = useState("applied");
   const [selectedStep, setSelectedStep] = useState("");
   const [currentJobInfo, setCurrentJobInfo] = useState(null);
@@ -85,21 +74,11 @@ const DemoApplicants = () => {
     useState(null);
   const maxViews = orgSettings.docs[0]?.subscriptionId === 1 ? 3 : Infinity;
 
-  // Fetch job applications
+  // job applications
   useEffect(() => {
-    const fetchJobApplications = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?where[jobDetails.job.id][equals]=${jobId}&limit=${APPLICANTS_PER_PAGE}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        const data = await response.json();
-        // console.log("Data response for the job applications:", data);
+        const data = await fetchJobApplications(jobId, accessToken, page);
 
         if (page === 1) {
           setJobApplications(data.docs || []);
@@ -109,159 +88,77 @@ const DemoApplicants = () => {
         setCurrentJobInfo(data.docs[0]?.jobDetails);
 
         if (data.docs[0]?.jobDetails?.job?.organization) {
-          fetchOrganizationDetails(data.docs[0].jobDetails.job.organization);
+          const orgData = await fetchOrganizationDetails(
+            data.docs[0].jobDetails.job.organization,
+            accessToken
+          );
+          setOrganizationDetails(orgData);
         }
 
-        // Check if there are more applicants to load
         setHasMoreApplicants(data.docs.length === APPLICANTS_PER_PAGE);
       } catch (error) {
-        console.error("Error fetching job applications:", error);
+        console.error("Error:", error);
       }
     };
 
     if (jobId) {
-      fetchJobApplications();
+      fetchData();
     }
   }, [jobId, accessToken, page]);
 
-  // Fetch organization details
-  const fetchOrganizationDetails = async (orgId) => {
-    setIsLoadingOrg(true);
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${orgId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-      const data = await response.json();
-      setOrganizationDetails(data);
-    } catch (error) {
-      console.error("Error fetching organization details:", error);
-    } finally {
-      setIsLoadingOrg(false);
-    }
-  };
-
-  // Function to fetch applicant profiles in chunks
-  const fetchApplicantProfiles = async (applicantIds) => {
-    // console.log("applicantIds :: ", applicantIds)
-    setIsLoadingProfiles(true);
-    try {
-      const profiles = await Promise.all(
-        applicantIds.map(async (id) => {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/applicants/${id}`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
-              },
-            }
-          );
-          const data = await response.json();
-          return { id, profile: data };
-        })
-      );
-
-      setApplicantProfiles((prev) => ({
-        ...prev,
-        ...Object.fromEntries(profiles.map(({ id, profile }) => [id, profile])),
-      }));
-    } catch (error) {
-      console.error("Error fetching applicant profiles:", error);
-    } finally {
-      setIsLoadingProfiles(false);
-    }
-  };
-
-  // more applicant profiles when scrolling
+  // more applicant when scrolling
   useEffect(() => {
-    const startIndex = (page - 1) * APPLICANTS_PER_PAGE;
-    const applicantIdsToFetch = jobApplications
-      .slice(startIndex, startIndex + APPLICANTS_PER_PAGE)
-      .map((app) => app.applicant.id)
-      .filter((id) => !applicantProfiles[id]);
+    const fetchProfiles = async () => {
+      const startIndex = (page - 1) * APPLICANTS_PER_PAGE;
+      const applicantIdsToFetch = jobApplications
+        .slice(startIndex, startIndex + APPLICANTS_PER_PAGE)
+        .map((app) => app.applicant.id)
+        .filter((id) => !applicantProfiles[id]);
 
-    if (applicantIdsToFetch.length > 0) {
-      fetchApplicantProfiles(applicantIdsToFetch);
-    } else {
-      setIsLoadingProfiles(false);
-    }
+      if (applicantIdsToFetch.length > 0) {
+        setIsLoadingProfiles(true);
+        try {
+          const profiles = await fetchApplicantProfiles(
+            applicantIdsToFetch,
+            accessToken
+          );
+          setApplicantProfiles((prev) => ({
+            ...prev,
+            ...Object.fromEntries(
+              profiles.map(({ id, profile }) => [id, profile])
+            ),
+          }));
+        } catch (error) {
+          console.error("Error:", error);
+        } finally {
+          setIsLoadingProfiles(false);
+        }
+      } else {
+        setIsLoadingProfiles(false);
+      }
+    };
+
+    fetchProfiles();
   }, [page, jobApplications]);
 
-  // console.log("job Applications :: ", jobApplications);
-
-  // fetching hiring stages for the company
-  const fetchHiringStages = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/hiring-stages?where[organization.id][equals]=${organizationID}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-      const data = await response.json();
-      console.log("Hiring Stages :: ", data);
-      setHiringStages(data);
-    } catch (error) {
-      console.error("Error fetching hiring stages :", error);
-    }
-  };
-
+  // hiring stages
   useEffect(() => {
-    fetchHiringStages();
+    const fetchStages = async () => {
+      try {
+        const data = await fetchHiringStages(organizationID, accessToken);
+        setHiringStages(data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    if (organizationID) {
+      fetchStages();
+    }
   }, [organizationID]);
 
-  // transforming applicant data as per the format
-  const transformedApplications = jobApplications
-    .map((application) => {
-      // console.log("application in the scope:: ", application);
-      const profile = applicantProfiles[application.applicant.id];
-      if (!profile) return null;
-
-      // console.log("profile :: ", profile);
-      const latestStatus =
-        application.applicationStatus?.docs?.[0]?.status || "applied";
-      const applicationId = application.applicationStatus?.docs?.[0]?.id;
-
-      const cvUrl = `${process.env.NEXT_PUBLIC_API_URL}${profile?.cv?.url}`;
-      const profilePicture = `${process.env.NEXT_PUBLIC_API_URL}${profile?.img?.url}`;
-
-      return {
-        id: application.id,
-        jobId: application.jobDetails.job.id,
-        applicantProfileID: application.applicant.id,
-        name: profile.name || "N/A",
-        CVScore: profile.CVScore || (profile.cv ? 75 : 0),
-        CV: cvUrl,
-        certifications: profile.trainingAndCertifications || [],
-        experiences: profile.experiences || [],
-        socialLinks: profile.socialLinks || [],
-        education: profile.educations || [],
-        skills: profile.skills || [],
-        contactInfo: {
-          email: profile.email,
-          phone: profile.phone,
-          address: profile.address,
-        },
-        applicant: {
-          pictureUrl: profilePicture || null,
-          websiteUrl: profile.applicantWebsiteUrl || null,
-        },
-        applicationStatus: latestStatus,
-        applicationId: applicationId,
-        hiringStep: application.applicationStatus?.docs[0]?.hiringStage,
-      };
-    })
-    .filter(Boolean);
-
   // Infinite scroll
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     if (
       window.innerHeight + document.documentElement.scrollTop ===
         document.documentElement.offsetHeight &&
@@ -270,58 +167,13 @@ const DemoApplicants = () => {
     ) {
       setPage((prev) => prev + 1);
     }
-  };
+  }, [hasMoreApplicants, isLoadingProfiles]);
 
-  // scroll event listener
+  // Scroll event listener
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
-
-  const transformJobInfo = (jobDetails) => {
-    if (!jobDetails) return null;
-
-    // console.log("job details ::: ", jobDetails)
-
-    return {
-      title: jobDetails.job.title,
-      job: {
-        id: jobDetails.job.id,
-        organization: {
-          id: jobDetails.job.organization,
-          orgName: organizationDetails?.orgName || "Organization Name",
-          orgTagline: organizationDetails?.orgTagline || "",
-          orgAddress: organizationDetails?.orgAddress || "",
-          orgEmail: organizationDetails?.orgEmail || "",
-          orgPhone: organizationDetails?.orgPhone || "",
-          orgWebsiteUrl: organizationDetails?.orgWebsiteUrl || "",
-          img: organizationDetails?.img || null,
-          socialLinks: organizationDetails?.socialLinks || [],
-        },
-      },
-      jobType: jobDetails.jobType?.id || "",
-      employeeType: jobDetails.employeeType?.id || "",
-      jobTypeTitle: jobDetails.jobType?.title || "",
-      employeeTypeTitle: jobDetails.employeeType?.title || "",
-      jobRole: jobDetails.jobRole?.[0]?.title || "",
-      designation: jobDetails.designation?.title || "",
-      location: jobDetails.location || "",
-      salary: jobDetails.salary || "",
-      description: jobDetails.description || "",
-      requirements: jobDetails.requirements || "",
-      employeeBenefits: jobDetails.employeeBenefits || "",
-      skills: jobDetails?.skills || [],
-      degreeLevel: jobDetails?.degreeLevel || [],
-      fieldOfStudy: jobDetails?.fieldOfStudy || [],
-      deadline: jobDetails.deadline || "",
-      createdAt: jobDetails.createdAt || "",
-      industry:
-        organizationDetails?.industryType
-          ?.map((type) => type.title)
-          .join(", ") || "",
-      establishedYear: organizationDetails?.orgEstablishedYear || "",
-    };
-  };
 
   const handleViewDetails = (
     application,
@@ -336,12 +188,12 @@ const DemoApplicants = () => {
     setSelectedApplicationStatusId(applicationStatusId);
     setSelectedApplicationStatus(applicationStatus);
   };
+
   if (
     selectedApplicantId ||
     selectedJobApplicationId ||
     selectedApplicationStatusId
   ) {
-    // applicant-details component
     return (
       <ApplicantDetails
         currentApplicant={currentApplicant}
@@ -359,15 +211,27 @@ const DemoApplicants = () => {
     return <div className="text-center p-8">Loading...</div>;
   }
 
-  const hiringSteps = hiringStages?.docs?.sort((a, b) => a.order - b.order).map((stage) => stage.title);
+  const hiringSteps = hiringStages?.docs
+    ?.sort((a, b) => a.order - b.order)
+    .map((stage) => stage.title);
+
+  const transformedApplications = transformApplications(
+    jobApplications,
+    applicantProfiles
+  );
+  const transformedJobInfo = transformJobInfo(
+    currentJobInfo,
+    organizationDetails
+  );
 
   const filteredApplications = transformedApplications.filter((application) => {
     if (!selectedStatus) {
-      statusMatch =
+      return (
         application.applicationStatus === "applied" ||
         application.applicationStatus === "hired" ||
         application.applicationStatus === "rejected" ||
-        application.applicationStatus === "shortlisted";
+        application.applicationStatus === "shortlisted"
+      );
     } else if (selectedStatus === "applied") {
       return (
         application.applicationStatus === "applied" ||
@@ -393,7 +257,6 @@ const DemoApplicants = () => {
   });
 
   const handleUpdateApplication = (updatedApplication) => {
-    // Updating the jobApplications state
     setJobApplications((prevApplications) => {
       return prevApplications.map((application) => {
         if (application.applicant.id === updatedApplication.id) {
@@ -427,11 +290,11 @@ const DemoApplicants = () => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/demoJobList">Job List</BreadcrumbLink>
+            <BreadcrumbLink href="/JobList">Job List</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/demoJobApplicants">
+            <BreadcrumbLink href="/JobApplicants">
               Job Applicants
             </BreadcrumbLink>
           </BreadcrumbItem>
@@ -441,7 +304,7 @@ const DemoApplicants = () => {
       <div className="space-y-6">
         <JobInfoCard
           applicants={transformedApplications}
-          job={transformJobInfo(currentJobInfo)}
+          job={transformedJobInfo}
           isEditing={isEditing}
           setIsEditing={setIsEditing}
         />

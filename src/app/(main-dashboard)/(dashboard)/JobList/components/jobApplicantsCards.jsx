@@ -29,7 +29,7 @@ const JobApplicantsCards = ({
 
   // console.log("cuurenmt ::: ", currentPaginatedApplicants);
 
-  // Get the latest stage and status for an applicant
+  // latest stage and status for an applicant
   const getLatestStageInfo = (applicant) => {
     const latestStatus = applicant.applicationStatus;
     const latestHiringStage = applicant.hiringStep?.title;
@@ -42,7 +42,7 @@ const JobApplicantsCards = ({
     };
   };
 
-  // Render the hiring stages progress bar with circular indicators
+  // hiring stages progress bar
   const renderHiringStages = (applicant) => {
     const {
       stage: latestStage,
@@ -94,7 +94,6 @@ const JobApplicantsCards = ({
           );
           const latestStatus = applicant?.applicationStatus ?? "applied";
           const { bgColor, textColor } = getStatusBadgeProps(latestStatus);
-          // console.log("Applicant ::::: ", applicant)
 
           return (
             <Card
@@ -206,7 +205,7 @@ const JobApplicantsCards = ({
                       </TooltipProvider>
                     </div>
                     <div className="">
-                      {/* Render hiring stages */}
+                      {/* hiring stages */}
                       {renderHiringStages(applicant)}
                     </div>
                   </div>
@@ -273,7 +272,7 @@ const JobApplicantsCards = ({
         })}
       </div>
 
-      {/* Rendering the Modal */}
+      {/* modal */}
       {isPricingDialogOpen && (
         <PricingDialogue onClose={() => setIsPricingDialogOpen(false)} />
       )}

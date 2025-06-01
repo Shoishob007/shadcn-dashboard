@@ -53,32 +53,32 @@ export const SidebarLinks = () => {
       submenu: [
         {
           title: "Create Job",
-          href: "/demoJobFormCreate",
+          href: "/JobCreateForm",
           icon: Circle,
         },
         {
           title: "View All Jobs",
-          href: "/demoJobList",
+          href: "/JobList",
           icon: Circle,
         },
       ],
     },
     {
       title: "Applicants",
-      href: "/demoAppList",
+      href: "/ApplicantList",
       icon: UsersRound,
       variant: "ghost",
     },
 
     {
       title: "Schedule",
-      href: "/demoSchedule",
+      href: "/Schedules",
       icon: CalendarDays,
       variant: "ghost",
     },
     {
       title: "My Billings",
-      href: "/demoBillings",
+      href: "/Billings",
       icon: ReceiptText,
       variant: "default",
     },

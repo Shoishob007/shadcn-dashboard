@@ -111,7 +111,7 @@ const ProfileSetting = () => {
   }, []);
 
   const handleClick = () => {
-    router.push("/demoBillings/pricing");
+    router.push("/Billings/pricing");
   };
 
   return (

@@ -28,11 +28,11 @@ const MyPackage = () => {
   const bestPlanFeatures = determineBestPlan(multiplePlans);
 
   const handleNavigateToPackages = () => {
-    router.push("/demoBillings/pricing");
+    router.push("/Billings/pricing");
   };
 
   const handleRenewPlan = (plan) => {
-    router.push(`/demoBillings/pricing/payment?amount=${plan.price}`);
+    router.push(`/Billings/pricing/payment?amount=${plan.price}`);
   };
 
   const handleCancelPlan = (plan) => {

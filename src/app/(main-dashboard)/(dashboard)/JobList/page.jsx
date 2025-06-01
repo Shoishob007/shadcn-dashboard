@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { JobFilters } from "@/components/filters/JobFilters";
 import { filterJobs } from "../../../utils/filters";
-import CreateJobForm from "../demoJobFormCreate/components/CreateJobForm";
+import CreateJobForm from "../JobCreateForm/components/CreateJobForm";
 import {
   Dialog,
   DialogContent,
@@ -158,15 +158,15 @@ const JobList = ({ showFilters = true }) => {
   };
 
   const handleViewJobDetails = (jobId) => {
-    router.push(`/demoJobList/demoJobDetails?jobId=${jobId}`);
+    router.push(`/JobList/JobDetails?jobId=${jobId}`);
   };
 
   const handleViewApplicantList = (jobId) => {
-    router.push(`/demoJobList/demoJobApplicants?jobId=${jobId}`);
+    router.push(`/JobList/JobApplicants?jobId=${jobId}`);
   };
 
   const handleCreateJob = () => {
-    router.push("/demoJobFormCreate");
+    router.push("/JobCreateForm");
   };
 
   const handleEditJob = (job) => {
@@ -242,7 +242,7 @@ const JobList = ({ showFilters = true }) => {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href="/demoJobList">Job List</BreadcrumbLink>
+                <BreadcrumbLink href="/JobList">Job List</BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -280,7 +280,7 @@ const JobList = ({ showFilters = true }) => {
             {/* Button to see all jobs */}
             {!showFilters && (
               <Button
-                onClick={() => router.push("/demoJobList")}
+                onClick={() => router.push("/JobList")}
                 className="!mt-4 float-right"
                 size="sm"
               >

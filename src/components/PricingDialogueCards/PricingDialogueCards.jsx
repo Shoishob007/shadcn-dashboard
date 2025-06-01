@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check } from "lucide-react";
-import { plans } from "@/app/(main-dashboard)/(dashboard)/demoBillings/components/subscriptionData";
-import { orgSettings } from "@/app/(main-dashboard)/(dashboard)/demoAppList/components/org-settings";
+import { plans } from "@/app/(main-dashboard)/(dashboard)/Billings/components/subscriptionData";
+import { orgSettings } from "@/app/(main-dashboard)/(dashboard)/ApplicantList/components/org-settings";
 
 const PricingDialogueCards = () => {
   const router = useRouter();
@@ -116,7 +116,7 @@ const PricingDialogueCards = () => {
                   e.stopPropagation();
                   if (!isCurrentPlan) {
                     router.push(
-                      `/demoBillings/pricing/payment?amount=${plan.price}`
+                      `/Billings/pricing/payment?amount=${plan.price}`
                     );
                   }
                 }}

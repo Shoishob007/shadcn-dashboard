@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 "use client";
-import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/demoAppList/components/applicantsData";
+import { applicantsData } from "@/app/(main-dashboard)/(dashboard)/ApplicantList/components/applicantsData";
 import ApplicantDashboardPage from "@/components/ApplicantDashboardUI/ApplicantDashboardPage";
 import Card, { CardContent } from "@/components/Card";
 import {
@@ -15,10 +15,10 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import ApplicantsList from "./(main-dashboard)/(dashboard)/demoAppList/page";
-import { documents as jobApplicants } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobApplicants";
-import { documents as jobData } from "./(main-dashboard)/(dashboard)/demoJobList/components/jobData";
-import JobList from "./(main-dashboard)/(dashboard)/demoJobList/page";
+import ApplicantsList from "./(main-dashboard)/(dashboard)/ApplicantList/page";
+import { documents as jobApplicants } from "./(main-dashboard)/(dashboard)/JobList/components/jobApplicants";
+import { documents as jobData } from "./(main-dashboard)/(dashboard)/JobList/components/jobData";
+import JobList from "./(main-dashboard)/(dashboard)/JobList/page";
 
 const totalSchedules = applicantsData.filter(
   (applicant) => applicant.schedule
@@ -98,10 +98,10 @@ export default function Home() {
   }, [session]);
 
   const handleClick = () => {
-    router.push("/demoBillings/pricing");
+    router.push("/Billings/pricing");
   };
 
-//   console.log("shortlistedCount :: ", shortlistedCount);
+  //   console.log("shortlistedCount :: ", shortlistedCount);
 
   const cardData = [
     {
@@ -110,7 +110,7 @@ export default function Home() {
       discription: "+2 from last three months",
       icon: Briefcase,
       header: "Total number of active jobs:",
-      href: "/demoJobList",
+      href: "/JobList",
     },
     {
       label: "Total Applicants",
@@ -118,7 +118,7 @@ export default function Home() {
       discription: "+5 from last three months",
       icon: Users,
       header: "Total number of applicants:",
-      href: "/demoAppList",
+      href: "/ApplicantList",
     },
     {
       label: "Upcoming Schedule",
@@ -126,7 +126,7 @@ export default function Home() {
       discription: "+3 since last month",
       icon: CalendarDays,
       header: "Total events for shortlisted applicants:",
-      href: "/demoSchedule",
+      href: "/Schedules",
     },
   ];
 
