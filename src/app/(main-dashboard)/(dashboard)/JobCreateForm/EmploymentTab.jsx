@@ -1,3 +1,4 @@
+// components/EmploymentTab.js
 import {
   FormField,
   FormItem,
@@ -13,57 +14,75 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { allEmploymentTypes, allJobTypes } from "@/stores/job-createStore/component/JobCreateData";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useJobTypesStore } from "@/stores/jobTypesStore";
+import { useEmployeeTypesStore } from "@/stores/employeeTypesStore";
 
-export function EmploymentTab({ form, callback }) {
-    const [selectedEmployeeType, setSelectedEmployeeType] = useState(null);
-    const [employeeTypeInputValue, setEmployeeTypeInputValue] = useState("");
-    const [employeeTypeSuggestions, setEmployeeTypeSuggestions] = useState([]);
+export function EmploymentTab({ form, accessToken }) {
+  // data from stores
+  const {
+    jobTypes,
+    isLoading: typesLoading,
+    error: typesError,
+    fetchJobTypes,
+  } = useJobTypesStore();
 
-      const [selectedJobType, setSelectedJobType] = useState(null);
-      const [jobTypeInputValue, setJobTypeInputValue] = useState("");
-      const [jobTypeSuggestions, setJobTypeSuggestions] = useState([]);
+  const {
+    employeeTypes,
+    isLoading: empTypesLoading,
+    error: empTypesError,
+    fetchEmployeeTypes,
+  } = useEmployeeTypesStore();
 
-       // Initialize Job Roles and Designation from Form Values
-        useEffect(() => {
-          const formValues = form.getValues();
+  // data on component mount
+  useEffect(() => {
+    if (accessToken) {
+      fetchJobTypes(accessToken);
+      fetchEmployeeTypes(accessToken);
+    }
+  }, [accessToken, fetchJobTypes, fetchEmployeeTypes]);
 
-          // Initialize employeeType
-          if (formValues?.employeeType) {
-            const initialEmployeeType =
-              typeof formValues.employeeType === "object" &&
-              formValues.employeeType.id
-                ? formValues.employeeType
-                : allEmploymentTypes.docs.find(
-                    (d) => d.id === formValues.employeeType
-                  ) || null;
-            setSelectedEmployeeType(initialEmployeeType);
-            setEmployeeTypeInputValue(initialEmployeeType?.title || "");
-          }
+  // Initializing from form default values
+  useEffect(() => {
+    const formValues = form.getValues();
 
-          // Initialize employeeType
-          if (formValues?.jobType) {
-            const initialJobType =
-              typeof formValues.jobType === "object" && formValues.jobType.id
-                ? formValues.employeeType
-                : allJobTypes.docs.find((d) => d.id === formValues.jobType) ||
-                  null;
-            setSelectedJobType(initialJobType);
-            setJobTypeInputValue(initialJobType?.title || "");
-          }
-        }, [form]);
+    if (formValues?.jobType) {
+      const initialJobType =
+        typeof formValues.jobType === "object" && formValues.jobType.id
+          ? formValues.jobType
+          : jobTypes.docs.find((j) => j.id === formValues.jobType) || null;
+      if (initialJobType) {
+        form.setValue("jobType", initialJobType.id);
+      }
+    }
 
-        // useEffect(() => {
-        //   const callbackData = {
-        //     employeeType: selectedEmployeeType?.id || null,
-        //     jobType: selectedJobType?.id || null,
-        //   };
-        //   callback(callbackData);
-        // }, [callback, selectedEmployeeType?.id, selectedJobType?.id]);
-      
+    if (formValues?.employeeType) {
+      const initialEmployeeType =
+        typeof formValues.employeeType === "object" &&
+        formValues.employeeType.id
+          ? formValues.employeeType
+          : employeeTypes.docs.find((e) => e.id === formValues.employeeType) ||
+            null;
+      if (initialEmployeeType) {
+        form.setValue("employeeType", initialEmployeeType.id);
+      }
+    }
+  }, [form, jobTypes.docs, employeeTypes.docs]);
+
   return (
     <div className="space-y-4">
+      {/* Error messages */}
+      {typesError && (
+        <div className="text-sm text-red-500">
+          Job types error: {typesError}
+        </div>
+      )}
+      {empTypesError && (
+        <div className="text-sm text-red-500">
+          Employee types error: {empTypesError}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <FormField
           control={form.control}
@@ -71,23 +90,30 @@ export function EmploymentTab({ form, callback }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Employment Type</FormLabel>
-              <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value || ""}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Employment Type" />
-                  </SelectTrigger>
-                  <SelectContent area-label="employeeType">
-                    {allEmploymentTypes.docs?.map((type) => (
-                      <SelectItem key={type.id} value={type.id}>
-                        {type.title}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
+              {empTypesLoading ? (
+                <div className="text-sm text-muted-foreground">
+                  Loading employee types...
+                </div>
+              ) : (
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value || ""}
+                    disabled={empTypesLoading}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Employment Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {employeeTypes.docs?.map((type) => (
+                        <SelectItem key={type.id} value={type.id}>
+                          {type.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+              )}
               <FormMessage />
             </FormItem>
           )}
@@ -99,23 +125,30 @@ export function EmploymentTab({ form, callback }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Job Type</FormLabel>
-              <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value || ""}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Job Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {allJobTypes.docs?.map((type) => (
-                      <SelectItem key={type.id} value={type.id}>
-                        {type.title}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
+              {typesLoading ? (
+                <div className="text-sm text-muted-foreground">
+                  Loading job types...
+                </div>
+              ) : (
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value || ""}
+                    disabled={typesLoading}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Job Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {jobTypes.docs?.map((type) => (
+                        <SelectItem key={type.id} value={type.id}>
+                          {type.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+              )}
               <FormMessage />
             </FormItem>
           )}

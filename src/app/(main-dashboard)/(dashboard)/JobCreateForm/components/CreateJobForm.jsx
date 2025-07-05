@@ -51,10 +51,11 @@ const CreateJobForm = ({
   isEditing,
   isDialogOpen = false,
 }) => {
-  console.log("Initial Data ::: ", initialData);
+  // console.log("Initial Data ::: ", initialData);
   const { toast } = useToast();
   const { data: session } = useSession();
   const accessToken = session?.access_token;
+  const orgID = session?.organizationId;
   const [isEditMode, setIsEditMode] = useState(isEditing);
   const [formData, setFormData] = useState({
     skills: initialData?.skills || [],
@@ -242,7 +243,7 @@ const CreateJobForm = ({
 
   const handleCallback = useCallback((data) => {
     setFormData(data);
-    console.log("Unga Bunga Data :: ", data);
+    // console.log("Unga Bunga Data :: ", data);
   }, []);
 
   return (
@@ -305,6 +306,8 @@ const CreateJobForm = ({
                   <BasicInfoTab
                     form={form}
                     callback={(x) => handleCallback(x)}
+                    accessToken={accessToken}
+                    orgID={orgID}
                   />
                 </TabsContent>
 
@@ -312,6 +315,7 @@ const CreateJobForm = ({
                   <EmploymentTab
                     form={form}
                     callback={(x) => handleCallback(x)}
+                    accessToken={accessToken}
                   />
                 </TabsContent>
 
@@ -319,6 +323,7 @@ const CreateJobForm = ({
                   <RequirementsTab
                     form={form}
                     callback={(x) => handleCallback(x)}
+                    accessToken={accessToken}
                   />
                 </TabsContent>
 

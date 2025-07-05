@@ -21,29 +21,33 @@ const useLoginStore = create((set) => ({
     }),
 
     loginUser: async (data, router) => {
-        const result = await signIn("credentials", {
-            redirect: false,
-            email: data.email,
-            password: data.password,
-            callbackUrl: "/",
-        });
-
-        if (result?.error) {
-            console.error(result.error);
-            toast({
-                title: "Can't Sign in!",
-                description: "Invalid credentials",
-                variant: "ourDestructive",
+        try {
+            const result = await signIn("credentials", {
+                redirect: false,
+                email: data.email,
+                password: data.password,
+                callbackUrl: "/",
             });
-        } else if (result?.url) {
-            router.push(result.url);
+
+            if (result?.error) {
+                throw new Error(result.error);
+            }
+
+            router.push(result?.url || "/");
             toast({
                 title: "Signed In!",
                 description: "You have signed in successfully.",
                 variant: "ourSuccess",
             });
+        } catch (error) {
+            console.error('Login error:', error);
+            toast({
+                title: "Can't Sign in!",
+                description: error.message || "Invalid credentials",
+                variant: "ourDestructive",
+            });
         }
-    },
+      },
 }));
 
 export default useLoginStore;
