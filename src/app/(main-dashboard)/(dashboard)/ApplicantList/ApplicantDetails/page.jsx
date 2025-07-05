@@ -29,6 +29,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useParams } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import HiringProgress from "../../JobList/components/HiringProgressBar";
+import { fetchApplicantStatusWithQs } from "../actions/page";
 
 const ApplicantDetails = ({
   currentApplicant,
@@ -39,11 +40,11 @@ const ApplicantDetails = ({
   hiringStages,
   jobComponent,
 }) => {
-  // console.log("Applicant Profile ID:", applicantId);
-  // console.log("Job Application ID:", jobApplicationId);
+  console.log("Applicant Profile ID:", applicantId);
+  // console.log("currentApplicant:", currentApplicant);
   // console.log("Application Status ID:", applicationStatusId);
   // console.log("Hiring stages :: ", hiringStages);
-  console.log("Application Status :: ", applicationStatus);
+  console.log("jobApplicationId :: ", jobApplicationId);
   const searchParams = useSearchParams();
   // const jobApplication = searchParams.get("jobId");
   // console.log("jobApplication :: ", jobApplication)
@@ -61,6 +62,7 @@ const ApplicantDetails = ({
     applicationId: null,
     step: null,
   });
+  const [effectiveStatusID, setEffectiveStatusID] = useState(null)
 
   useEffect(() => {
     const fetchApplicantData = async () => {
@@ -78,7 +80,7 @@ const ApplicantDetails = ({
         }
         const data = await response.json();
         setApplicant(data);
-        // console.log("Applicants status :: ", data)
+        console.log("Applicants status :: ", data)
         setStatus(applicationStatus || "applied");
         setSelectedStep(data?.steps || "");
       } catch (err) {
@@ -93,7 +95,29 @@ const ApplicantDetails = ({
     }
   }, [applicantId, accessToken, applicationStatus]);
 
-  console.log("Applicants i am sending :: ", applicant);
+  useEffect(() => {
+    const loadApplicantStatus = async () => {
+      if (jobApplicationId && accessToken) {
+        try {
+          const { statusData, newApplicationStatusID } =
+            await fetchApplicantStatusWithQs(jobApplicationId, accessToken);
+
+          console.log("Status Data:", statusData);
+          console.log("Application Status ID:", newApplicationStatusID);
+          setEffectiveStatusID(newApplicationStatusID);
+
+          // Use the applicationStatusId as needed
+          // This is the ID from: "applicationStatus": { "docs": [{ "id": "df5d28f0-5ffb-46f6-a27a-3d5cf084602d" }]}
+        } catch (error) {
+          console.error("Failed to load applicant status:", error);
+        }
+      }
+    };
+
+    loadApplicantStatus();
+  }, [applicantId, accessToken, jobApplicationId]);
+
+  // console.log("Applicants i am sending :: ", applicant);
 
   // Get the latest stage and status for an applicant
   const getLatestStageInfo = (applicant) => {
@@ -128,10 +152,10 @@ const ApplicantDetails = ({
 
   const handleStepChange = async (
     jobApplicationId,
-    applicationStatusId,
+    effectiveStatusID,
     newStage
   ) => {
-    if (!applicationStatusId) {
+    if (!effectiveStatusID) {
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status`,
@@ -173,16 +197,27 @@ const ApplicantDetails = ({
       setScheduleModal({
         isOpen: true,
         applicantId: jobApplicationId,
-        applicationStatusId: applicationStatusId,
+        applicationStatusId: effectiveStatusID,
         step: newStage,
       });
     }
   };
 
-  const handleReject = async (jobApplicationId, applicationStatusId) => {
+  const handleReject = async (jobApplicationId, effectiveStatusID) => {
+
+    if (!effectiveStatusID) {
+      toast({
+        title: "Error",
+        description:
+          "Unable to determine application status. Please try again.",
+        variant: "ourDestructive",
+      });
+      return;
+    }
+
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status/${applicationStatusId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status/${effectiveStatusID}`,
         {
           method: "PATCH",
           headers: {
@@ -216,10 +251,10 @@ const ApplicantDetails = ({
     }
   };
 
-  const handleHire = async (jobApplicationId, applicationStatusId) => {
+  const handleHire = async (jobApplicationId, effectiveStatusID) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status/${applicationStatusId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status/${effectiveStatusID}`,
         {
           method: "PATCH",
           headers: {
@@ -295,7 +330,7 @@ const ApplicantDetails = ({
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status/${applicationStatusId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status/${effectiveStatusID}`,
         {
           method: "PATCH",
           headers: {
@@ -535,14 +570,14 @@ const ApplicantDetails = ({
                 onStepChange={(newStage) =>
                   handleStepChange(
                     jobApplicationId,
-                    applicationStatusId,
+                    effectiveStatusID,
                     newStage
                   )
                 }
                 onReject={() =>
-                  handleReject(jobApplicationId, applicationStatusId)
+                  handleReject(jobApplicationId, effectiveStatusID)
                 }
-                onHire={() => handleHire(jobApplicationId, applicationStatusId)}
+                onHire={() => handleHire(jobApplicationId, effectiveStatusID)}
                 hiringStages={hiringStages.docs}
                 applicationId={applicationStatusId}
                 applicationStatus={status}

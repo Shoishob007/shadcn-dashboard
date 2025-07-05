@@ -26,6 +26,7 @@ export default function ScheduleModal({
   const [selectedDate, setSelectedDate] = useState();
   const [selectedTime, setSelectedTime] = useState();
   const [selectedStage, setSelectedStage] = useState(step);
+  // console.log("Hiring Stages in the schedule modal:: ", hiringStages)
 
   useEffect(() => {
     if (isOpen) {
