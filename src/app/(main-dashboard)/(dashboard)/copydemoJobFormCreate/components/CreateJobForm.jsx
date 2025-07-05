@@ -242,7 +242,7 @@ const CreateJobForm = ({
 
   const handleCallback = useCallback((data) => {
     setFormData(data);
-    console.log("Unga Bunga Data :: ", data);
+    // console.log("Unga Bunga Data :: ", data);
   }, []);
 
   return (

@@ -68,20 +68,29 @@ export const authOptions = {
             },
             async authorize(credentials) {
                 try {
-                    const res = await fetch(
-                        `${process.env.NEXT_PUBLIC_API_URL}/api/users/login`,
-                        {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                email: credentials.email,
-                                password: credentials.password,
-                            }),
-                        }
-                    );
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/login`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            email: credentials.email,
+                            password: credentials.password,
+                        }),
+                    });
+
+                    if (!res.ok) {
+                        const errorData = await res.json();
+                        console.error('API Error:', errorData);
+                        throw new Error(errorData.message || 'Authentication failed');
+                    }
 
                     const user = await res.json();
-                    // console.log("User Authorized :", user);
+
+                    if (!user) {
+                        throw new Error("User data not found in response");
+                    }
+
+                    // const user = await res.json();
+                    console.log("User Authorized :", user);
 
                     if (res.ok && user) {
                         if (user.user.role == "org") {
