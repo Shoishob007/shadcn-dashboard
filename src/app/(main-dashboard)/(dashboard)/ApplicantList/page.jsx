@@ -203,6 +203,8 @@ const DemoAppList = ({ inHome = false }) => {
     selectedStep
   );
 
+  console.log("Filtered applicants:: ", filteredApplicants);
+
   const handleViewDetails = (
     applicant,
     applicantProfileID,
@@ -216,6 +218,8 @@ const DemoAppList = ({ inHome = false }) => {
     setSelectedApplicationStatusId(applicationStatusId);
     setSelectedApplicationStatus(applicationStatus);
   };
+
+  console.log("Current applicant :: ", currentApplicant);
 
   if (
     selectedApplicantId ||
@@ -273,7 +277,7 @@ const DemoAppList = ({ inHome = false }) => {
     });
   };
 
-  console.log("filtered applicants :: ", filteredApplicants);
+  // console.log("filtered applicants :: ", filteredApplicants);
   // console.log("transformed Applicants :: ", transformedApplicants)
 
   return (

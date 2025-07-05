@@ -1,3 +1,5 @@
+import qs from "qs";
+
 export const fetchJobApplications = async (orgId, accessToken, page) => {
   try {
     const response = await fetch(
@@ -81,7 +83,9 @@ export const transformApplicantData = (
 
   const latestStatus =
     application.applicationStatus?.docs?.[0]?.status || "applied";
-  const applicationId = application.applicationStatus?.docs?.[0]?.id;
+  const applicationStatusId = application.applicationStatus?.docs?.[0]?.id;
+  // console.log("Application status id in the action:: ", applicationId);
+  const newApplicationStatusId = application.applicationStatus?.docs?.[0]?.id;
   const cvUrl = profile?.cv?.url
     ? `${process.env.NEXT_PUBLIC_API_URL}${profile?.cv?.url}`
     : null;
@@ -110,9 +114,11 @@ export const transformApplicantData = (
     jobTitle: application.jobDetails?.job?.title || "N/A",
     jobRole: application.jobDetails?.jobRole?.[0]?.title || "N/A",
     applicationStatus: latestStatus,
-    applicationId: applicationId,
+    jobApplicationId: application.id, // This is the job application ID
+    applicationStatusId: applicationStatusId,
     hiringStep: application.applicationStatus?.docs[0]?.hiringStage,
     createdAt: application.createdAt,
+    newApplicationStatusId: newApplicationStatusId,
   };
 };
 
@@ -193,4 +199,46 @@ export const filterApplicants = (
 
     return true;
   });
+};
+
+export const fetchApplicantStatusWithQs = async (jobApplicationId, accessToken) => {
+  try {
+    const query = qs.stringify({
+      where: {
+        jobApplication: {
+          equals: jobApplicationId,
+        },
+      },
+    });
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/applicant-status?${query}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch applicant status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    // console.log("fetched status:: ", data);
+
+    // Extract the applicationStatus ID from the response
+    const applicationStatusId = data.docs?.[0]?.id || null;
+    console.log("applicationStatusId ::: ", applicationStatusId);
+
+    return {
+      statusData: data,
+      newApplicationStatusID: applicationStatusId,
+    };
+  } catch (error) {
+    console.error("Error fetching applicant status:", error);
+    throw error;
+  }
 };
