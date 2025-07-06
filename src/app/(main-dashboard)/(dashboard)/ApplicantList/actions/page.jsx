@@ -231,7 +231,7 @@ export const fetchApplicantStatusWithQs = async (jobApplicationId, accessToken) 
 
     // Extract the applicationStatus ID from the response
     const applicationStatusId = data.docs?.[0]?.id || null;
-    console.log("applicationStatusId ::: ", applicationStatusId);
+    // console.log("applicationStatusId ::: ", applicationStatusId);
 
     return {
       statusData: data,

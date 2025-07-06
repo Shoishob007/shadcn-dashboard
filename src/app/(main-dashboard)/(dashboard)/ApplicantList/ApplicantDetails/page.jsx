@@ -40,11 +40,11 @@ const ApplicantDetails = ({
   hiringStages,
   jobComponent,
 }) => {
-  console.log("Applicant Profile ID:", applicantId);
+  // console.log("Applicant Profile ID:", applicantId);
   // console.log("currentApplicant:", currentApplicant);
   // console.log("Application Status ID:", applicationStatusId);
   // console.log("Hiring stages :: ", hiringStages);
-  console.log("jobApplicationId :: ", jobApplicationId);
+  // console.log("jobApplicationId :: ", jobApplicationId);
   const searchParams = useSearchParams();
   // const jobApplication = searchParams.get("jobId");
   // console.log("jobApplication :: ", jobApplication)
@@ -80,7 +80,7 @@ const ApplicantDetails = ({
         }
         const data = await response.json();
         setApplicant(data);
-        console.log("Applicants status :: ", data)
+        // console.log("Applicants status :: ", data)
         setStatus(applicationStatus || "applied");
         setSelectedStep(data?.steps || "");
       } catch (err) {
@@ -102,12 +102,10 @@ const ApplicantDetails = ({
           const { statusData, newApplicationStatusID } =
             await fetchApplicantStatusWithQs(jobApplicationId, accessToken);
 
-          console.log("Status Data:", statusData);
-          console.log("Application Status ID:", newApplicationStatusID);
+          // console.log("Status Data:", statusData);
+          // console.log("Application Status ID:", newApplicationStatusID);
           setEffectiveStatusID(newApplicationStatusID);
 
-          // Use the applicationStatusId as needed
-          // This is the ID from: "applicationStatus": { "docs": [{ "id": "df5d28f0-5ffb-46f6-a27a-3d5cf084602d" }]}
         } catch (error) {
           console.error("Failed to load applicant status:", error);
         }
@@ -119,7 +117,7 @@ const ApplicantDetails = ({
 
   // console.log("Applicants i am sending :: ", applicant);
 
-  // Get the latest stage and status for an applicant
+  // Latest stage and status for an applicant
   const getLatestStageInfo = (applicant) => {
     const latestStatus = applicant.applicationStatus;
     const latestHiringStage = applicant.hiringStep?.title;
