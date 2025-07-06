@@ -45,6 +45,7 @@ const JobDetailsPage = () => {
 
         //finding matched job
         const matchedJob = data?.docs?.find((doc) => doc?.job?.id === jobId);
+        console.log("Matched Job :: ", matchedJob)
 
         if (matchedJob) {
           setCurrentJobInfo(matchedJob);

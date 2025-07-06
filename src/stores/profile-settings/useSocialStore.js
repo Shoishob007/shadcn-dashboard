@@ -2,23 +2,25 @@ import { create } from "zustand";
 import { toast } from "@/hooks/use-toast";
 
 const socialMediaIds = {
-    facebook: "49dd568e-60cf-4f75-b310-be373e19daba",
-    linkedin: "49dd568e-60cf-4f75-b310-be373e19daba",
-    twitter: "49dd568e-60cf-4f75-b310-be373e19daba",
-    github: "49dd568e-60cf-4f75-b310-be373e19daba",
-    instagram: "49dd568e-60cf-4f75-b310-be373e19daba",
-    youtube: "49dd568e-60cf-4f75-b310-be373e19daba"
+    facebook: "7e71605f-b150-4e5c-974c-ede2451546d1",
+    // linkedin: "49dd568e-60cf-4f75-b310-be373e19daba",
+    // twitter: "49dd568e-60cf-4f75-b310-be373e19daba",
+    // github: "49dd568e-60cf-4f75-b310-be373e19daba",
+    // instagram: "49dd568e-60cf-4f75-b310-be373e19daba",
+    // youtube: "49dd568e-60cf-4f75-b310-be373e19daba",
+    google: "a2f29cb6-70ca-4ee0-b203-13114d95861f"
 };
 
 const useSocialStore = create((set, get) => ({
     socialDetails: null,
     formData: {
-        github: "",
-        twitter: "",
-        linkedin: "",
+        // github: "",
+        // twitter: "",
+        // linkedin: "",
         facebook: "",
-        instagram: "",
-        youtube: "",
+        // instagram: "",
+        // youtube: "",
+        google: ""
     },
     loading: false,
 
@@ -53,12 +55,13 @@ const useSocialStore = create((set, get) => ({
             }, {});
 
             const resetFormData = {
-                github: "",
-                twitter: "",
-                linkedin: "",
+                // github: "",
+                // twitter: "",
+                // linkedin: "",
                 facebook: "",
-                instagram: "",
-                youtube: "",
+                // instagram: "",
+                // youtube: "",
+                google: ""
             };
 
             set({
@@ -129,12 +132,13 @@ const useSocialStore = create((set, get) => ({
             }, {});
 
             const resetFormData = {
-                github: "",
-                twitter: "",
-                linkedin: "",
+                // github: "",
+                // twitter: "",
+                // linkedin: "",
                 facebook: "",
-                instagram: "",
-                youtube: "",
+                // instagram: "",
+                // youtube: "",
+                google: ""
             };
 
             set({
