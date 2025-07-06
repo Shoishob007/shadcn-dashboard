@@ -8,11 +8,11 @@ import {
 } from "@/components/ui/form";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
-import {
-  allSkills,
-  degreeLevelData,
-  fieldOfStudyData,
-} from "@/stores/job-createStore/component/JobCreateData";
+// import {
+//   allSkills,
+//   degreeLevelData,
+//   fieldOfStudyData,
+// } from "@/stores/job-createStore/component/JobCreateData";
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import { useFormContext } from "react-hook-form";

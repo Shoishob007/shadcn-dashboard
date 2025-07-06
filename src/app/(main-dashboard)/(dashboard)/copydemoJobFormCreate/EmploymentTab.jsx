@@ -13,7 +13,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { allEmploymentTypes, allJobTypes } from "@/stores/job-createStore/component/JobCreateData";
+// import { allEmploymentTypes, allJobTypes } from "@/stores/job-createStore/component/JobCreateData";
 import { useEffect, useState } from "react";
 
 export function EmploymentTab({ form, callback }) {
