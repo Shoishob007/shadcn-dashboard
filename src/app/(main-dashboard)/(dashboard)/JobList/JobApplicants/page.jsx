@@ -27,7 +27,7 @@ import {
   fetchJobApplications,
   transformApplications,
   transformJobInfo,
-} from "./actions/page";
+} from "./actions/utils";
 
 const APPLICANTS_PER_PAGE = 10;
 

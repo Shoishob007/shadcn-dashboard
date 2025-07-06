@@ -26,7 +26,7 @@ import {
   fetchJobApplications,
   filterApplicants,
   transformApplicantData,
-} from "./actions/page";
+} from "./actions/utils";
 
 const HOME_PAGE_ITEMS = 6;
 

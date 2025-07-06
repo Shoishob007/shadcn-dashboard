@@ -29,7 +29,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useParams } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import HiringProgress from "../../JobList/components/HiringProgressBar";
-import { fetchApplicantStatusWithQs } from "../actions/page";
+import { fetchApplicantStatusWithQs } from "../actions/utils";
 
 const ApplicantDetails = ({
   currentApplicant,
@@ -62,7 +62,7 @@ const ApplicantDetails = ({
     applicationId: null,
     step: null,
   });
-  const [effectiveStatusID, setEffectiveStatusID] = useState(null)
+  const [effectiveStatusID, setEffectiveStatusID] = useState(null);
 
   useEffect(() => {
     const fetchApplicantData = async () => {
@@ -105,7 +105,6 @@ const ApplicantDetails = ({
           // console.log("Status Data:", statusData);
           // console.log("Application Status ID:", newApplicationStatusID);
           setEffectiveStatusID(newApplicationStatusID);
-
         } catch (error) {
           console.error("Failed to load applicant status:", error);
         }
@@ -202,7 +201,6 @@ const ApplicantDetails = ({
   };
 
   const handleReject = async (jobApplicationId, effectiveStatusID) => {
-
     if (!effectiveStatusID) {
       toast({
         title: "Error",
