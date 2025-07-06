@@ -219,7 +219,7 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
         name="jobRole"
         render={({ field }) => (
           <div>
-            <FormLabel className="font-medium">Required Job Roles</FormLabel>
+            <FormLabel className="font-medium">Job Roles</FormLabel>
             {rolesLoading ? (
               <div className="text-sm text-muted-foreground">
                 Loading job roles...

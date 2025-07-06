@@ -68,7 +68,7 @@ export default function CreateJobCard() {
       reset();
 
       const newJobId = responseData.doc.id;
-      console.log("New Job Id :: ", newJobId);
+      // console.log("New Job Id :: ", newJobId);
       // console.log("New Job.job Id :: ", responseData.doc.job.id);
 
       const query = qs.stringify(
