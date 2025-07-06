@@ -1,4 +1,3 @@
-// components/BasicInfoTab.js
 import {
   FormField,
   FormItem,
@@ -10,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { X } from "lucide-react";
 import { useJobRolesStore } from "@/stores/jobRolesStore";
 import { useDesignationsStore } from "@/stores/designationsStore";
@@ -35,13 +34,9 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
 
   const [responsibilitiesContent, setResponsibilitiesContent] = useState("");
   const [benefitsContent, setBenefitsContent] = useState("");
-
-  // Job Role state
   const [jobRoleInputValue, setJobRoleInputValue] = useState("");
   const [jobRoleSuggestions, setJobRoleSuggestions] = useState([]);
   const [selectedJobRoles, setSelectedJobRoles] = useState([]);
-
-  // Designation state
   const [designationInputValue, setDesignationInputValue] = useState("");
   const [designationSuggestions, setDesignationSuggestions] = useState([]);
 
@@ -85,14 +80,12 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
 
     // Initialize designation
     if (formValues?.designation) {
-      const initialDesignation =
-        typeof formValues.designation === "object" && formValues.designation.id
-          ? formValues.designation
-          : designations.docs.find((d) => d.id === formValues.designation) ||
-            null;
-
+      const initialDesignation = designations.docs.find(
+        (d) => d.id === formValues.designation
+      );
       if (initialDesignation) {
         setDesignationInputValue(initialDesignation.title);
+        form.setValue("designation", initialDesignation.id);
       }
     }
 
@@ -101,17 +94,16 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
     setBenefitsContent(formValues.employeeBenefits || "");
   }, [form, jobRoles.docs, designations.docs]);
 
+  // Stable callback reference
+  const stableCallback = useCallback(callback, [callback]);
+
   // Update Callback when selections change
   useEffect(() => {
-    const callbackData = {
+    stableCallback({
       jobRole: selectedJobRoles.map((role) => role.id),
-      designation: designationInputValue
-        ? designations.docs.find((d) => d.title === designationInputValue)
-            ?.id || null
-        : null,
-    };
-    callback(callbackData);
-  }, [callback, selectedJobRoles, designationInputValue, designations.docs]);
+      designation: form.getValues("designation"),
+    });
+  }, [selectedJobRoles, form, stableCallback]);
 
   // Input change handlers
   const handleJobRoleInputChange = (e) => {
@@ -145,6 +137,7 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
       setDesignationSuggestions(filtered);
     } else {
       setDesignationSuggestions([]);
+      form.setValue("designation", ""); // Clear form value when input is cleared
     }
   };
 
@@ -157,6 +150,7 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
 
   const handleDesignationSelect = (designation) => {
     setDesignationInputValue(designation.title);
+    form.setValue("designation", designation.id); // Update form value
     setDesignationSuggestions([]);
   };
 
@@ -167,6 +161,7 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
 
   const removeDesignation = () => {
     setDesignationInputValue("");
+    form.setValue("designation", ""); // Clear form value
   };
 
   // Content change handlers
@@ -271,7 +266,7 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
         )}
       />
 
-      {/* Designation */}
+      {/* Designation - Maintained input field style with suggestions */}
       <FormField
         control={form.control}
         name="designation"
@@ -306,10 +301,14 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
                     </ul>
                   )}
                 </div>
-                {designationInputValue && (
+                {form.getValues("designation") && (
                   <div className="flex flex-wrap gap-2 mt-1">
                     <div className="relative h-7 bg-gray-100 dark:bg-gray-500 dark:text-gray-200 border border-input rounded-md font-medium text-xs ps-2 pe-7 flex items-center">
-                      {designationInputValue}
+                      {
+                        designations.docs.find(
+                          (d) => d.id === form.getValues("designation")
+                        )?.title
+                      }
                       <button
                         type="button"
                         className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
@@ -322,6 +321,7 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
                 )}
               </>
             )}
+            <FormMessage />
           </div>
         )}
       />
