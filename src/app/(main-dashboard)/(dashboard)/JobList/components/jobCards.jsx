@@ -167,7 +167,7 @@ const JobCards = ({
                             <div className="flex items-center gap-2">
                               <UserCog className="h-4 w-4" />
                               {capitalizeText(
-                                document.jobRole?.[0]?.title || "Job Role N/A"
+                                document.designation?.title || "No Designation"
                               )}
                             </div>
                           </Badge>
