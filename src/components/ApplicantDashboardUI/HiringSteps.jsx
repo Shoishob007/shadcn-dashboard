@@ -21,7 +21,7 @@ const HiringSteps = ({ applicationStatus }) => {
           Hiring Process
         </h2> */}
 
-        <div className="relative flex flex-col gap-6">
+        <div className="relative flex gap-6">
           {steps.map((step, index) => {
             const isCompleted =
               index < steps.findIndex((s) => s.id === applicationStatus.id);
