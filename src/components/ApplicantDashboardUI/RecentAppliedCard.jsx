@@ -4,57 +4,57 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { BriefcaseBusiness } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import HiringSteps from "./HiringSteps";
-import { BriefcaseBusiness } from "lucide-react";
 
 const RecentAppliedCard = ({ app }) => {
   const [storeOrgName, setstoreOrgName] = useState("");
-   const [dataStore, setDataStore] = useState([]);
+  const [dataStore, setDataStore] = useState([]);
   const { data: session } = useSession();
   const accessToken = session?.access_token;
- 
-    // console.log("Recent Applied job data: ", app);
-    const {
-      id = app?.id,
-      jobDetailsId = app?.jobDetails?.id,
-      address = app?.jobDetails?.address,
-      title = app?.jobDetails?.job?.title,
-      organizationId = app?.jobDetails?.job?.organization,
-      jobType = app?.jobDetails?.jobType?.title,
-      salary = app?.jobDetails?.salary,
-      yearOfExperience = app?.jobDetails?.yearOfExperience,
-      appliedDate = app?.createdAt,
-      status = app?.applicationStatus?.docs,
-    } = app;
 
-    const applicationStatus = app?.applicationStatus || {}; 
+  // console.log("Recent Applied job data: ", app);
+  const {
+    id = app?.id,
+    jobDetailsId = app?.jobDetails?.id,
+    address = app?.jobDetails?.address,
+    title = app?.jobDetails?.job?.title,
+    organizationId = app?.jobDetails?.job?.organization,
+    jobType = app?.jobDetails?.jobType?.title,
+    salary = app?.jobDetails?.salary,
+    yearOfExperience = app?.jobDetails?.yearOfExperience,
+    appliedDate = app?.createdAt,
+    status = app?.applicationStatus?.docs,
+  } = app;
 
-    // Organization name
-    useEffect(() => {
-      const getOrgName = async () => {
-        try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${organizationId}`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            }
-          );
-          const data = await response.json();
-          setstoreOrgName(data.orgName);
-          //   console.log("org data: ", data.orgName);
-        } catch (error) {
-          console.error("Error fetching organization:", error);
-        }
-      };
-      getOrgName();
-    }, [organizationId, accessToken]);
+  const applicationStatus = app?.applicationStatus || {};
+
+  // Organization name
+  useEffect(() => {
+    const getOrgName = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/${organizationId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setstoreOrgName(data.orgName);
+        //   console.log("org data: ", data.orgName);
+      } catch (error) {
+        console.error("Error fetching organization:", error);
+      }
+    };
+    getOrgName();
+  }, [organizationId, accessToken]);
   return (
     <div key={id}>
       <Card className="1w-full hover:border hover:border-black duration-300 cursor-pointer">
