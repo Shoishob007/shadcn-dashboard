@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { Button } from "../../../../../../components/ui/button";
+import { useToast } from "../../../../../../hooks/use-toast";
 import { SendHorizontal } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
