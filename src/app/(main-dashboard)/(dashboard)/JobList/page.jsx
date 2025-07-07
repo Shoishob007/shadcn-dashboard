@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../../components/ui/button";
 import { Input } from "@/components/ui/input";
 import JobCards from "./components/jobCards";
 import {
@@ -22,11 +22,11 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+} from "../../../../components/ui/breadcrumb";
 import { House, Plus } from "lucide-react";
-import { FilterSheet } from "@/components/filters/FilterSheet";
+import { FilterSheet } from "../../../../components/filters/FilterSheet";
 import qs from "qs";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "../../../../hooks/use-toast";
 
 const JobList = ({ showFilters = true }) => {
   const router = useRouter();
