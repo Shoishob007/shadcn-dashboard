@@ -49,6 +49,8 @@ const useRegisterStore = create((set) => ({
         }
       );
 
+      console.log("Response JSON :: ", response.json())
+
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error response:", errorData);
