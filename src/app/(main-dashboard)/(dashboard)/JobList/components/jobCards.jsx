@@ -32,7 +32,7 @@ const JobCards = ({
   applicationsCount,
   applicantProfiles,
 }) => {
-  console.log("jobs :: ", jobs);
+  // console.log("jobs :: ", jobs);
   return (
     <>
       {jobs.length > 0 ? (

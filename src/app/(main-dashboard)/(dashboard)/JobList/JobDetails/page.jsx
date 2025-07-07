@@ -90,6 +90,7 @@ const JobDetailsPage = () => {
   if (isEditing) {
     return (
       <CreateJobForm
+      jobDetailsId = {currentJobInfo.id}
         jobId={jobId}
         initialData={currentJobInfo}
         isEditing={isEditing}
