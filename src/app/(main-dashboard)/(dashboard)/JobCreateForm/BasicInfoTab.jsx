@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   FormField,
   FormItem,
@@ -9,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { X } from "lucide-react";
 import { useJobRolesStore } from "@/stores/jobRolesStore";
 import { useDesignationsStore } from "@/stores/designationsStore";
@@ -32,13 +33,16 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
     fetchDesignations,
   } = useDesignationsStore();
 
-  const [responsibilitiesContent, setResponsibilitiesContent] = useState("");
   const [benefitsContent, setBenefitsContent] = useState("");
   const [jobRoleInputValue, setJobRoleInputValue] = useState("");
   const [jobRoleSuggestions, setJobRoleSuggestions] = useState([]);
   const [selectedJobRoles, setSelectedJobRoles] = useState([]);
   const [designationInputValue, setDesignationInputValue] = useState("");
   const [designationSuggestions, setDesignationSuggestions] = useState([]);
+
+  // Track initialization state
+  const hasInitialized = useRef(false);
+  const lastCallbackData = useRef("");
 
   const modules = {
     toolbar: [
@@ -57,12 +61,15 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
     }
   }, [accessToken, orgID, fetchJobRoles, fetchDesignations]);
 
-  // Initialize from form default values
+  // Initialize from form default values - only once
   useEffect(() => {
+    if (hasInitialized.current) return;
+    if (jobRoles.docs.length === 0 || designations.docs.length === 0) return;
+
     const formValues = form.getValues();
 
     // Initialize job roles
-    if (formValues?.jobRole && Array.isArray(formValues.jobRole)) {
+    if (formValues?.jobRole?.length > 0) {
       const initialJobRoles = formValues.jobRole
         .map((jobRole) => {
           if (typeof jobRole === "object" && jobRole.id) {
@@ -75,37 +82,60 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
           }
         })
         .filter(Boolean);
-      setSelectedJobRoles(initialJobRoles);
+
+      if (initialJobRoles.length > 0) {
+        setSelectedJobRoles(initialJobRoles);
+      }
     }
 
     // Initialize designation
     if (formValues?.designation) {
+      const designationId = formValues.designation;
       const initialDesignation = designations.docs.find(
-        (d) => d.id === formValues.designation
+        (d) => d.id === designationId
       );
       if (initialDesignation) {
         setDesignationInputValue(initialDesignation.title);
-        form.setValue("designation", initialDesignation.id);
       }
     }
 
-    // Initialize content fields
-    setResponsibilitiesContent(formValues.responsibilities || "");
     setBenefitsContent(formValues.employeeBenefits || "");
-  }, [form, jobRoles.docs, designations.docs]);
+    hasInitialized.current = true;
+  }, [jobRoles.docs, designations.docs, form]);
 
-  // Stable callback reference
-  const stableCallback = useCallback(callback, [callback]);
+  // Memoized callback to prevent recreation on every render
+  const stableCallback = useCallback(callback, []);
 
-  // Update Callback when selections change
+  // Handle callback updates with deduplication
+  const updateCallback = useCallback(
+    (data) => {
+      const dataString = JSON.stringify(data);
+      if (lastCallbackData.current !== dataString) {
+        lastCallbackData.current = dataString;
+        stableCallback(data);
+      }
+    },
+    [stableCallback]
+  );
+
+  // Update callback when selectedJobRoles changes
   useEffect(() => {
-    stableCallback({
-      jobRole: selectedJobRoles.map((role) => role.id),
-      designation: form.getValues("designation"),
-    });
-  }, [selectedJobRoles, form, stableCallback]);
+    if (!hasInitialized.current) return;
 
-  // Input change handlers
+    const jobRoleIds = selectedJobRoles.map((role) => role.id);
+    const designationValue = form.getValues("designation");
+
+    // Update form value
+    form.setValue("jobRole", jobRoleIds);
+
+    // Update callback
+    updateCallback({
+      jobRole: jobRoleIds,
+      designation: designationValue,
+    });
+  }, [selectedJobRoles, form, updateCallback]);
+
+  // Job role input change handler
   const handleJobRoleInputChange = (e) => {
     const value = e.target.value;
     setJobRoleInputValue(value);
@@ -124,6 +154,19 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
     }
   };
 
+  // Job role selection handler
+  const handleJobRoleSelect = (role) => {
+    setSelectedJobRoles((prev) => [...prev, role]);
+    setJobRoleInputValue("");
+    setJobRoleSuggestions([]);
+  };
+
+  // Remove job role
+  const removeJobRole = (roleId) => {
+    setSelectedJobRoles((prev) => prev.filter((role) => role.id !== roleId));
+  };
+
+  // Designation handlers
   const handleDesignationInputChange = (e) => {
     const value = e.target.value;
     setDesignationInputValue(value);
@@ -137,39 +180,37 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
       setDesignationSuggestions(filtered);
     } else {
       setDesignationSuggestions([]);
-      form.setValue("designation", ""); // Clear form value when input is cleared
     }
   };
 
-  // Selection handlers
-  const handleJobRoleSelect = (role) => {
-    setSelectedJobRoles((prev) => [...prev, role]);
-    setJobRoleInputValue("");
-    setJobRoleSuggestions([]);
-  };
-
   const handleDesignationSelect = (designation) => {
+    form.setValue("designation", designation.id);
     setDesignationInputValue(designation.title);
-    form.setValue("designation", designation.id); // Update form value
     setDesignationSuggestions([]);
-  };
 
-  // Removal handlers
-  const removeJobRole = (roleId) => {
-    setSelectedJobRoles((prev) => prev.filter((role) => role.id !== roleId));
+    // Update callback immediately
+    if (hasInitialized.current) {
+      updateCallback({
+        jobRole: selectedJobRoles.map((role) => role.id),
+        designation: designation.id,
+      });
+    }
   };
 
   const removeDesignation = () => {
+    form.setValue("designation", "");
     setDesignationInputValue("");
-    form.setValue("designation", ""); // Clear form value
+
+    // Update callback immediately
+    if (hasInitialized.current) {
+      updateCallback({
+        jobRole: selectedJobRoles.map((role) => role.id),
+        designation: "",
+      });
+    }
   };
 
-  // Content change handlers
-  const handleResponsibilitiesChange = (content) => {
-    setResponsibilitiesContent(content);
-    form.setValue("responsibilities", content);
-  };
-
+  // Benefits handler
   const handleBenefitsChange = (content) => {
     setBenefitsContent(content);
     form.setValue("employeeBenefits", content);
@@ -266,7 +307,7 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
         )}
       />
 
-      {/* Designation - Maintained input field style with suggestions */}
+      {/* Designation */}
       <FormField
         control={form.control}
         name="designation"
@@ -341,28 +382,6 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
                 theme="snow"
                 className="dark:bg-gray-800 dark:text-gray-400"
                 placeholder="Detailed Employee Benefits..."
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      {/* Job Responsibilities */}
-      <FormField
-        control={form.control}
-        name="responsibilities"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Job Responsibilities</FormLabel>
-            <FormControl>
-              <ReactQuill
-                value={responsibilitiesContent}
-                onChange={handleResponsibilitiesChange}
-                modules={modules}
-                theme="snow"
-                className="dark:bg-gray-800 dark:text-gray-400 react-quill"
-                placeholder="Detailed Job Responsibilities..."
               />
             </FormControl>
             <FormMessage />

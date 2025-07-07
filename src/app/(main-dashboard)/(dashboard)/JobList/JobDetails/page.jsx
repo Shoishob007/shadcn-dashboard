@@ -100,11 +100,6 @@ const JobDetailsPage = () => {
 
   const job = currentJobInfo;
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-CA");
-  };
-
   const formatDateLong = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -119,7 +114,7 @@ const JobDetailsPage = () => {
     if (!content)
       return <p className="text-gray-500 dark:text-gray-400">{fallback}</p>;
 
-    // Check if content is HTML
+    // if content is HTML
     if (content.includes("<") && content.includes(">")) {
       return <div dangerouslySetInnerHTML={{ __html: content }} />;
     }
@@ -218,10 +213,10 @@ const JobDetailsPage = () => {
               </p>
             </div>
 
-            <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
+            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <GraduationCap className="h-5 w-5 text-purple-600" />
-                <h3 className="font-semibold text-purple-800 dark:text-purple-300">
+                <GraduationCap className="h-5 w-5 text-blue-600" />
+                <h3 className="font-semibold text-blue-800 dark:text-blue-300">
                   Designation
                 </h3>
               </div>
@@ -230,10 +225,10 @@ const JobDetailsPage = () => {
               </p>
             </div>
 
-            <div className="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg">
+            <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <DollarSign className="h-5 w-5 text-orange-600" />
-                <h3 className="font-semibold text-orange-800 dark:text-orange-300">
+                <DollarSign className="h-5 w-5 text-green-600" />
+                <h3 className="font-semibold text-green-800 dark:text-green-300">
                   Salary
                 </h3>
               </div>
@@ -317,7 +312,7 @@ const JobDetailsPage = () => {
                       job.degreeLevel.map((degree, index) => (
                         <span
                           key={index}
-                          className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded text-sm"
+                          className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded text-sm font-semibold"
                         >
                           {degree?.title}
                         </span>
@@ -338,7 +333,7 @@ const JobDetailsPage = () => {
                       job.fieldOfStudy.map((field, index) => (
                         <span
                           key={index}
-                          className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded text-sm"
+                          className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded text-sm font-semibold"
                         >
                           {field?.title}
                         </span>
@@ -394,11 +389,11 @@ const JobDetailsPage = () => {
           </section>
 
           {/* Job Status and Dates */}
-          <section className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 p-6 rounded-lg text-sm">
+          <section className="mb-6 text-sm">
             <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
               Job Timeline & Status
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 p-4 rounded-lg">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-red-500" />
                 <div>

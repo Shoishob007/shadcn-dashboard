@@ -89,9 +89,6 @@ const CreateJobForm = ({
     orgSettings.docs[0]?.numberOfJobPosted
   );
   const maxPost = orgSettings.docs[0]?.subscriptionId === 1 ? 3 : Infinity;
-  // const industryTypeIds = useMemo(() => {
-  //   return session?.industryType?.map((industry) => industry.id) || [];
-  // }, [session?.industryType]);
 
   const nextTab = () =>
     setCurrentTab((prev) => (prev < tabs.length - 1 ? prev + 1 : prev));

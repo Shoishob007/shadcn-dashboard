@@ -90,7 +90,7 @@ const VerticalNavbar = () => {
                       href="/my-applications"
                       className={cn("hover:underline")}
                     >
-                      View Applications
+                      Applications
                     </Link>
                   </>
                 )}
