@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   FormField,
   FormItem,
@@ -9,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { X } from "lucide-react";
 import { useJobRolesStore } from "@/stores/jobRolesStore";
 import { useDesignationsStore } from "@/stores/designationsStore";
@@ -39,6 +40,10 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
   const [designationInputValue, setDesignationInputValue] = useState("");
   const [designationSuggestions, setDesignationSuggestions] = useState([]);
 
+  // Track initialization state
+  const hasInitialized = useRef(false);
+  const lastCallbackData = useRef("");
+
   const modules = {
     toolbar: [
       ["bold", "italic", "underline", "strike"],
@@ -56,12 +61,15 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
     }
   }, [accessToken, orgID, fetchJobRoles, fetchDesignations]);
 
-  // Initialize from form default values - similar to RequirementsTab
+  // Initialize from form default values - only once
   useEffect(() => {
+    if (hasInitialized.current) return;
+    if (jobRoles.docs.length === 0 || designations.docs.length === 0) return;
+
     const formValues = form.getValues();
 
-    // Initialize job roles - handle both object and ID formats
-    if (formValues?.jobRole?.length > 0 && jobRoles.docs.length > 0) {
+    // Initialize job roles
+    if (formValues?.jobRole?.length > 0) {
       const initialJobRoles = formValues.jobRole
         .map((jobRole) => {
           if (typeof jobRole === "object" && jobRole.id) {
@@ -81,41 +89,51 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
     }
 
     // Initialize designation
-    if (formValues?.designation && designations.docs.length > 0) {
+    if (formValues?.designation) {
       const designationId = formValues.designation;
       const initialDesignation = designations.docs.find(
         (d) => d.id === designationId
       );
       if (initialDesignation) {
         setDesignationInputValue(initialDesignation.title);
-        form.setValue("designation", designationId);
       }
     }
 
     setBenefitsContent(formValues.employeeBenefits || "");
-  }, [form, jobRoles.docs, designations.docs]);
+    hasInitialized.current = true;
+  }, [jobRoles.docs, designations.docs, form]);
 
-  // Update form value and callback whenever selectedJobRoles changes
+  // Memoized callback to prevent recreation on every render
+  const stableCallback = useCallback(callback, []);
+
+  // Handle callback updates with deduplication
+  const updateCallback = useCallback(
+    (data) => {
+      const dataString = JSON.stringify(data);
+      if (lastCallbackData.current !== dataString) {
+        lastCallbackData.current = dataString;
+        stableCallback(data);
+      }
+    },
+    [stableCallback]
+  );
+
+  // Update callback when selectedJobRoles changes
   useEffect(() => {
+    if (!hasInitialized.current) return;
+
     const jobRoleIds = selectedJobRoles.map((role) => role.id);
+    const designationValue = form.getValues("designation");
 
     // Update form value
     form.setValue("jobRole", jobRoleIds);
 
     // Update callback
-    callback({
+    updateCallback({
       jobRole: jobRoleIds,
-      designation: form.getValues("designation"),
+      designation: designationValue,
     });
-  }, [selectedJobRoles, form, callback]);
-
-  // Also update callback when designation changes
-  useEffect(() => {
-    callback({
-      jobRole: selectedJobRoles.map((role) => role.id),
-      designation: form.getValues("designation"),
-    });
-  }, [form.watch("designation"), selectedJobRoles, callback]);
+  }, [selectedJobRoles, form, updateCallback]);
 
   // Job role input change handler
   const handleJobRoleInputChange = (e) => {
@@ -169,11 +187,27 @@ export function BasicInfoTab({ form, callback, orgID, accessToken }) {
     form.setValue("designation", designation.id);
     setDesignationInputValue(designation.title);
     setDesignationSuggestions([]);
+
+    // Update callback immediately
+    if (hasInitialized.current) {
+      updateCallback({
+        jobRole: selectedJobRoles.map((role) => role.id),
+        designation: designation.id,
+      });
+    }
   };
 
   const removeDesignation = () => {
     form.setValue("designation", "");
     setDesignationInputValue("");
+
+    // Update callback immediately
+    if (hasInitialized.current) {
+      updateCallback({
+        jobRole: selectedJobRoles.map((role) => role.id),
+        designation: "",
+      });
+    }
   };
 
   // Benefits handler

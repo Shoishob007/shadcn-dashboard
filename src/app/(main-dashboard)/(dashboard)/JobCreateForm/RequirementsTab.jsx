@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // components/RequirementsTab.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   FormField,
   FormItem,
@@ -51,6 +52,10 @@ export function RequirementsTab({ callback, accessToken }) {
   const [selectedFieldsOfStudy, setSelectedFieldsOfStudy] = useState([]);
   const [requirementsContent, setRequirementsContent] = useState("");
 
+  // Track initialization state
+  const hasInitialized = useRef(false);
+  const lastCallbackData = useRef("");
+
   const modules = {
     toolbar: [
       ["bold", "italic", "underline", "strike"],
@@ -60,7 +65,7 @@ export function RequirementsTab({ callback, accessToken }) {
     ],
   };
 
-  // all data on component mount
+  // Fetch all data on component mount
   useEffect(() => {
     if (accessToken) {
       fetchSkills(accessToken);
@@ -69,11 +74,15 @@ export function RequirementsTab({ callback, accessToken }) {
     }
   }, [accessToken, fetchSkills, fetchDegreeLevels, fetchFieldOfStudies]);
 
+  // Initialize from form default values - only once
   useEffect(() => {
+    if (hasInitialized.current) return;
+    if (skills.docs.length === 0 || degreeLevels.docs.length === 0 || fieldOfStudies.docs.length === 0) return;
+
     const defaultValues = formContext.getValues();
 
     if (defaultValues?.skills?.length > 0) {
-      const skills = defaultValues.skills
+      const skillsData = defaultValues.skills
         .map((skill) => {
           if (typeof skill === "object" && skill.id) {
             return skill;
@@ -85,7 +94,7 @@ export function RequirementsTab({ callback, accessToken }) {
           }
         })
         .filter(Boolean);
-      setSelectedSkills(skills);
+      setSelectedSkills(skillsData);
     }
 
     if (defaultValues?.degreeLevel?.length > 0) {
@@ -122,23 +131,39 @@ export function RequirementsTab({ callback, accessToken }) {
 
     const requirements = defaultValues?.requirements || "";
     setRequirementsContent(requirements);
+    hasInitialized.current = true;
   }, [formContext, skills.docs, degreeLevels.docs, fieldOfStudies.docs]);
 
-  // Updating callback
+  // Memoized callback to prevent recreation on every render
+  const stableCallback = useCallback(callback, []);
+
+  // Handle callback updates with deduplication
+  const updateCallback = useCallback((data) => {
+    const dataString = JSON.stringify(data);
+    if (lastCallbackData.current !== dataString) {
+      lastCallbackData.current = dataString;
+      stableCallback(data);
+    }
+  }, [stableCallback]);
+
+  // Update callback when selections change
   useEffect(() => {
+    if (!hasInitialized.current) return;
+
     const callbackData = {
       skills: selectedSkills.map((skill) => skill.id),
       degreeLevel: selectedDegrees.map((degree) => degree.id),
       fieldOfStudy: selectedFieldsOfStudy.map((field) => field.id),
     };
-    callback(callbackData);
-  }, [callback, selectedDegrees, selectedFieldsOfStudy, selectedSkills]);
+    
+    updateCallback(callbackData);
+  }, [selectedDegrees, selectedFieldsOfStudy, selectedSkills, updateCallback]);
 
-  // Handle requirements
-  const handleRequirementsChange = (content) => {
+  // Handle requirements - prevent event bubbling
+  const handleRequirementsChange = useCallback((content) => {
     setRequirementsContent(content);
     formContext.setValue("requirements", content);
-  };
+  }, [formContext]);
 
   // Skill handlers
   const handleSkillInputChange = (e) => {
@@ -241,7 +266,7 @@ export function RequirementsTab({ callback, accessToken }) {
         </div>
       )}
 
-      {/* Requirements editor */}
+      {/* Requirements editor - Completely isolated */}
       <FormField
         control={formContext.control}
         name="requirements"
@@ -249,13 +274,27 @@ export function RequirementsTab({ callback, accessToken }) {
           <FormItem>
             <FormLabel>Job Requirements</FormLabel>
             <FormControl>
-              <ReactQuill
-                value={requirementsContent}
-                onChange={handleRequirementsChange}
-                modules={modules}
-                theme="snow"
-                placeholder="Detailed Job Requirements..."
-              />
+              <div 
+                className="requirements-editor-container"
+                style={{ 
+                  isolation: 'isolate',
+                  position: 'relative',
+                  zIndex: 1,
+                  pointerEvents: 'auto'
+                }}
+                onMouseDown={(e) => e.stopPropagation()}
+                onMouseUp={(e) => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ReactQuill
+                  value={requirementsContent}
+                  onChange={handleRequirementsChange}
+                  modules={modules}
+                  theme="snow"
+                  placeholder="Detailed Job Requirements..."
+                  style={{ pointerEvents: 'auto' }}
+                />
+              </div>
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -306,7 +345,7 @@ export function RequirementsTab({ callback, accessToken }) {
                     className="border text-sm w-full rounded-md px-3 py-2"
                   />
                   {skillSuggestions.length > 0 && (
-                    <ul className="absolute bg-white dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
+                    <ul className="absolute bg-white dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-50 w-full">
                       {skillSuggestions.map((skill) => (
                         <li
                           key={skill.id}
@@ -348,7 +387,7 @@ export function RequirementsTab({ callback, accessToken }) {
                       className="border text-sm w-full rounded-md px-3 py-2"
                     />
                     {degreeSuggestions.length > 0 && (
-                      <ul className="absolute bg-white dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
+                      <ul className="absolute bg-white dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-50 w-full">
                         {degreeSuggestions.map((degree) => (
                           <li
                             key={degree.id}
@@ -411,7 +450,7 @@ export function RequirementsTab({ callback, accessToken }) {
                       className="border text-sm w-full rounded-md px-3 py-2"
                     />
                     {studySuggestions.length > 0 && (
-                      <ul className="absolute bg-white dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-10 w-full">
+                      <ul className="absolute bg-white dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-50 w-full">
                         {studySuggestions.map((field) => (
                           <li
                             key={field.id}
