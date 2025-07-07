@@ -1,27 +1,9 @@
-// Dependencies: pnpm install lucide-react
-
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { LoaderCircle, Mic, Search } from "lucide-react";
-import { useEffect, useState } from "react";
 
-export default function SearchBar() {
-  const [inputValue, setInputValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (inputValue) {
-      setIsLoading(true);
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-    setIsLoading(false);
-  }, [inputValue]);
-
+export default function SearchBar({ value, onChange, isLoading }) {
   return (
     <div className="space-y-2">
       <div className="relative bg-white dark:bg-gray-800">
@@ -30,8 +12,8 @@ export default function SearchBar() {
           className="peer pe-9 ps-9"
           placeholder="Search..."
           type="search"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
         />
         <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
           {isLoading ? (
@@ -47,9 +29,9 @@ export default function SearchBar() {
           )}
         </div>
         <button
-          className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+          className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 outline-offset-2 transition-colors hover:text-foreground"
           aria-label="Press to speak"
-          type="submit"
+          type="button"
         >
           <Mic size={16} strokeWidth={2} aria-hidden="true" />
         </button>

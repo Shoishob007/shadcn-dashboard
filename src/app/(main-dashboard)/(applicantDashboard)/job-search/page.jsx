@@ -15,11 +15,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { House } from "lucide-react";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import JobFilter from "./components/JobFilter";
 import JobSearchCard from "./components/JobSearchCard";
 import SearchBar from "./components/SearchBar";
-import { useInView } from "react-intersection-observer";
 
 const JobSearch = () => {
   const itemsPerPage = 6;
@@ -29,8 +29,11 @@ const JobSearch = () => {
     jobCategory: "",
     sortBy: "newest",
   });
+  const [searchTerm, setSearchTerm] = useState("");
   const [jobData, setJobData] = useState([]);
+  const [filteredJobs, setFilteredJobs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const { ref, inView } = useInView();
@@ -67,6 +70,36 @@ const JobSearch = () => {
     }
   }, [inView, loading]);
 
+  useEffect(() => {
+    if (!searchTerm) {
+      setFilteredJobs(jobData);
+      return;
+    }
+
+    setSearchLoading(true);
+
+    const timeout = setTimeout(() => {
+      const filtered = jobData.filter((job) => {
+        const title = job?.job?.title || "";
+        const org = job?.job?.organization?.orgName || "";
+        const address = job?.address || "";
+
+        const lowerTerm = searchTerm.toLowerCase();
+
+        return (
+          title.toLowerCase().includes(lowerTerm) ||
+          org.toLowerCase().includes(lowerTerm) ||
+          address.toLowerCase().includes(lowerTerm)
+        );
+      });
+
+      setFilteredJobs(filtered);
+      setSearchLoading(false);
+    }, 400); // debounce
+
+    return () => clearTimeout(timeout);
+  }, [searchTerm, jobData]);
+
   return (
     <>
       <Breadcrumb className="mb-4">
@@ -86,7 +119,11 @@ const JobSearch = () => {
       <div className="overflow-hidden">
         {error && <p className="text-red-500">{error}</p>}
         <div className="flex justify-between gap-4 px-1">
-          <SearchBar />
+          <SearchBar
+            value={searchTerm}
+            onChange={(value) => setSearchTerm(value)}
+            isLoading={searchLoading}
+          />
           <div className="flex items-center gap-2">
             <Select
               onValueChange={(value) =>
@@ -108,7 +145,7 @@ const JobSearch = () => {
           </div>
         </div>
 
-        <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {jobData.length === 0 && !loading && <p>No jobs found.</p>}
           {jobData.map((job) => (
             <JobSearchCard key={job.id} job={job} />

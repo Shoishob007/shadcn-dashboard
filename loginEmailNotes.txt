@@ -16,7 +16,19 @@ applicant: [
         password: demoPass@
     },
     {
+        email: lesiweso@forexnews.bg,
+        password: demo@pass
+    },
+    {
         email: sasipo7085@btcours.com,
+        password: demoPass@,
+        role: org
+    },
+]
+
+organization : [
+    {
+        email: zalogyty@thetechnext.net,
         password: demoPass@,
         role: org
     },
