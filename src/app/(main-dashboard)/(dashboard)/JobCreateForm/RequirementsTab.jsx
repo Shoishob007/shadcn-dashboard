@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-// components/RequirementsTab.js
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   FormField,
@@ -65,7 +64,7 @@ export function RequirementsTab({ callback, accessToken }) {
     ],
   };
 
-  // Fetch all data on component mount
+  // all data on component mount
   useEffect(() => {
     if (accessToken) {
       fetchSkills(accessToken);
@@ -74,10 +73,15 @@ export function RequirementsTab({ callback, accessToken }) {
     }
   }, [accessToken, fetchSkills, fetchDegreeLevels, fetchFieldOfStudies]);
 
-  // Initialize from form default values - only once
+  // Initialize form data once
   useEffect(() => {
     if (hasInitialized.current) return;
-    if (skills.docs.length === 0 || degreeLevels.docs.length === 0 || fieldOfStudies.docs.length === 0) return;
+    if (
+      skills.docs.length === 0 ||
+      degreeLevels.docs.length === 0 ||
+      fieldOfStudies.docs.length === 0
+    )
+      return;
 
     const defaultValues = formContext.getValues();
 
@@ -137,33 +141,54 @@ export function RequirementsTab({ callback, accessToken }) {
   // Memoized callback to prevent recreation on every render
   const stableCallback = useCallback(callback, []);
 
-  // Handle callback updates with deduplication
-  const updateCallback = useCallback((data) => {
-    const dataString = JSON.stringify(data);
-    if (lastCallbackData.current !== dataString) {
-      lastCallbackData.current = dataString;
-      stableCallback(data);
-    }
-  }, [stableCallback]);
+  const updateCallback = useCallback(
+    (data) => {
+      const dataString = JSON.stringify(data);
+      if (lastCallbackData.current !== dataString) {
+        lastCallbackData.current = dataString;
+        stableCallback(data);
+      }
+    },
+    [stableCallback]
+  );
 
-  // Update callback when selections change
+  // Updating form values whenever selections change
   useEffect(() => {
     if (!hasInitialized.current) return;
 
-    const callbackData = {
-      skills: selectedSkills.map((skill) => skill.id),
-      degreeLevel: selectedDegrees.map((degree) => degree.id),
-      fieldOfStudy: selectedFieldsOfStudy.map((field) => field.id),
-    };
-    
-    updateCallback(callbackData);
-  }, [selectedDegrees, selectedFieldsOfStudy, selectedSkills, updateCallback]);
+    const skillIds = selectedSkills.map((skill) => skill.id);
+    const degreeIds = selectedDegrees.map((degree) => degree.id);
+    const fieldIds = selectedFieldsOfStudy.map((field) => field.id);
 
-  // Handle requirements - prevent event bubbling
-  const handleRequirementsChange = useCallback((content) => {
-    setRequirementsContent(content);
-    formContext.setValue("requirements", content);
-  }, [formContext]);
+    formContext.setValue("skills", skillIds);
+    formContext.setValue("degreeLevel", degreeIds);
+    formContext.setValue("fieldOfStudy", fieldIds);
+
+    const callbackData = {
+      skills: skillIds,
+      degreeLevel: degreeIds,
+      fieldOfStudy: fieldIds,
+    };
+
+    updateCallback(callbackData);
+  }, [
+    selectedDegrees,
+    selectedFieldsOfStudy,
+    selectedSkills,
+    updateCallback,
+    formContext,
+  ]);
+
+  // Handling requirements
+  const handleRequirementsChange = useCallback(
+    (content) => {
+      setRequirementsContent(content);
+      formContext.setValue("requirements", content);
+      // Triggerring form validation
+      formContext.trigger("requirements");
+    },
+    [formContext]
+  );
 
   // Skill handlers
   const handleSkillInputChange = (e) => {
@@ -191,7 +216,12 @@ export function RequirementsTab({ callback, accessToken }) {
     setSkillSuggestions([]);
   };
 
-  // Degree level handlers
+  const removeSkill = (skillId) => {
+    const newSkills = selectedSkills.filter((s) => s.id !== skillId);
+    setSelectedSkills(newSkills);
+  };
+
+  // Degree level
   const handleDegreeInputChange = (e) => {
     const value = e.target.value;
     setDegreeInputValue(value);
@@ -220,7 +250,12 @@ export function RequirementsTab({ callback, accessToken }) {
     setDegreeSuggestions([]);
   };
 
-  // Field of study handlers
+  const removeDegree = (degreeId) => {
+    const newDegrees = selectedDegrees.filter((d) => d.id !== degreeId);
+    setSelectedDegrees(newDegrees);
+  };
+
+  // fileds of study handlers
   const handleStudyFieldInputChange = (e) => {
     const value = e.target.value;
     setStudyInputValue(value);
@@ -249,6 +284,11 @@ export function RequirementsTab({ callback, accessToken }) {
     setStudySuggestions([]);
   };
 
+  const removeFieldOfStudy = (fieldId) => {
+    const newFields = selectedFieldsOfStudy.filter((f) => f.id !== fieldId);
+    setSelectedFieldsOfStudy(newFields);
+  };
+
   return (
     <div className="space-y-4">
       {/* Error messages */}
@@ -266,7 +306,7 @@ export function RequirementsTab({ callback, accessToken }) {
         </div>
       )}
 
-      {/* Requirements editor - Completely isolated */}
+      {/* Requirements editor*/}
       <FormField
         control={formContext.control}
         name="requirements"
@@ -274,13 +314,13 @@ export function RequirementsTab({ callback, accessToken }) {
           <FormItem>
             <FormLabel>Job Requirements</FormLabel>
             <FormControl>
-              <div 
+              <div
                 className="requirements-editor-container"
-                style={{ 
-                  isolation: 'isolate',
-                  position: 'relative',
+                style={{
+                  isolation: "isolate",
+                  position: "relative",
                   zIndex: 1,
-                  pointerEvents: 'auto'
+                  pointerEvents: "auto",
                 }}
                 onMouseDown={(e) => e.stopPropagation()}
                 onMouseUp={(e) => e.stopPropagation()}
@@ -292,7 +332,7 @@ export function RequirementsTab({ callback, accessToken }) {
                   modules={modules}
                   theme="snow"
                   placeholder="Detailed Job Requirements..."
-                  style={{ pointerEvents: 'auto' }}
+                  style={{ pointerEvents: "auto" }}
                 />
               </div>
             </FormControl>
@@ -324,11 +364,14 @@ export function RequirementsTab({ callback, accessToken }) {
                       <button
                         type="button"
                         className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
-                        onClick={() => {
-                          const newSkills = selectedSkills.filter(
-                            (s) => s.id !== skill.id
-                          );
-                          setSelectedSkills(newSkills);
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          removeSkill(skill.id);
+                        }}
+                        style={{
+                          zIndex: 1001,
+                          pointerEvents: "auto",
                         }}
                       >
                         <X className="h-4 w-4" />
@@ -345,12 +388,19 @@ export function RequirementsTab({ callback, accessToken }) {
                     className="border text-sm w-full rounded-md px-3 py-2"
                   />
                   {skillSuggestions.length > 0 && (
-                    <ul className="absolute bg-white dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-50 w-full">
+                    <ul className="absolute bg-white dark:bg-gray-800 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-50 w-full">
                       {skillSuggestions.map((skill) => (
                         <li
                           key={skill.id}
-                          onClick={() => handleSkillSelect(skill)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleSkillSelect(skill);
+                          }}
                           className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                          style={{
+                            pointerEvents: "auto",
+                          }}
                         >
                           {skill.title}
                         </li>
@@ -387,12 +437,19 @@ export function RequirementsTab({ callback, accessToken }) {
                       className="border text-sm w-full rounded-md px-3 py-2"
                     />
                     {degreeSuggestions.length > 0 && (
-                      <ul className="absolute bg-white dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-50 w-full">
+                      <ul className="absolute bg-white dark:bg-gray-800 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-50 w-full">
                         {degreeSuggestions.map((degree) => (
                           <li
                             key={degree.id}
-                            onClick={() => handleDegreeSelect(degree)}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleDegreeSelect(degree);
+                            }}
                             className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                            style={{
+                              pointerEvents: "auto",
+                            }}
                           >
                             {degree.title}
                           </li>
@@ -410,11 +467,14 @@ export function RequirementsTab({ callback, accessToken }) {
                         <button
                           type="button"
                           className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
-                          onClick={() => {
-                            const newDegrees = selectedDegrees.filter(
-                              (d) => d.id !== degree.id
-                            );
-                            setSelectedDegrees(newDegrees);
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            removeDegree(degree.id);
+                          }}
+                          style={{
+                            zIndex: 1001,
+                            pointerEvents: "auto",
                           }}
                         >
                           <X className="h-4 w-4" />
@@ -450,12 +510,19 @@ export function RequirementsTab({ callback, accessToken }) {
                       className="border text-sm w-full rounded-md px-3 py-2"
                     />
                     {studySuggestions.length > 0 && (
-                      <ul className="absolute bg-white dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-50 w-full">
+                      <ul className="absolute bg-white dark:bg-gray-800 border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto z-50 w-full">
                         {studySuggestions.map((field) => (
                           <li
                             key={field.id}
-                            onClick={() => handleStudyFieldSelect(field)}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleStudyFieldSelect(field);
+                            }}
                             className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                            style={{
+                              pointerEvents: "auto",
+                            }}
                           >
                             {field.title}
                           </li>
@@ -473,11 +540,13 @@ export function RequirementsTab({ callback, accessToken }) {
                         <button
                           type="button"
                           className="absolute top-2/3 -right-1 -translate-y-1/2 rounded-full flex size-6 transition-colors outline-none text-muted-foreground/80 hover:text-foreground"
-                          onClick={() => {
-                            const newFields = selectedFieldsOfStudy.filter(
-                              (f) => f.id !== field.id
-                            );
-                            setSelectedFieldsOfStudy(newFields);
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            removeDegree(field.id);
+                          }}
+                          style={{
+                            pointerEvents: "auto",
                           }}
                         >
                           <X className="h-4 w-4" />
