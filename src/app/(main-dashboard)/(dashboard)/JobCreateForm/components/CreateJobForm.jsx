@@ -45,11 +45,12 @@ import { LocationTab } from "../LocationTab";
 const tabs = ["Basic Info", "Employment", "Requirements", "Location"];
 
 const CreateJobForm = ({
-  onClose,
+  jobDetailsId,
   jobId,
   initialData,
   isEditing,
   isDialogOpen = false,
+  onClose,
 }) => {
   // console.log("Initial Data ::: ", initialData);
   const { toast } = useToast();
@@ -157,11 +158,11 @@ const CreateJobForm = ({
         ...formData,
       };
 
-      console.log("Payload sent :: ", payload);
+      // console.log("Payload sent :: ", payload);
 
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/job-details/${jobId}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/job-details/${jobDetailsId}`,
           {
             method: "PATCH",
             headers: {

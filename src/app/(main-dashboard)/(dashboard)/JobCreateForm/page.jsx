@@ -196,7 +196,7 @@ export default function CreateJobCard() {
           <CreateJobForm
             isDialogOpen={true}
             onClose={() => setShowForm(false)}
-            jobId={docId}
+            jobDetailsId={docId}
           />
         </DialogContent>
       </Dialog>

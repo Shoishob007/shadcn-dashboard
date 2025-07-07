@@ -152,7 +152,7 @@ const ProfileSetting = () => {
           </div>
 
           {/* Profile Logo */}
-          <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 md:left-16 md:translate-x-0 flex flex-col items-center">
+          {/* <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 md:left-16 md:translate-x-0 flex flex-col items-center">
             <Avatar className="w-24 h-24 border-2">
               <AvatarImage src={profileImage} alt="Profile logo" />
               <AvatarFallback>
@@ -172,7 +172,7 @@ const ProfileSetting = () => {
               className="hidden"
               onChange={handleLogoChange}
             />
-          </div>
+          </div> */}
         </div>
         <div className="p-4 rounded-lg">
           <div className="flex gap-3 md:gap-0 flex-col-reverse md:flex-row md:justify-between items-center p-6">
