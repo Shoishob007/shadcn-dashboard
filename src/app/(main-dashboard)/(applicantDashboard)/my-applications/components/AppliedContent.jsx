@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import HiringSteps from "./HiringSteps";
 
 const AppliedContent = ({ appliedJob }) => {
+  console.log("Applied Jobs :: ", appliedJob);
   const [storeOrgName, setstoreOrgName] = useState("");
   const { data: session } = useSession();
   const accessToken = session?.access_token;
@@ -22,7 +23,7 @@ const AppliedContent = ({ appliedJob }) => {
     organizationId = appliedJob?.jobDetails?.job?.organization,
     jobType = appliedJob?.jobDetails?.jobType?.title,
     salary = appliedJob?.jobDetails?.salary,
-    yearOfExperience = appliedJob?.jobDetails?.yearOfExperience,
+    employeeType = appliedJob?.jobDetails?.employeeType?.title,
     appliedDate = appliedJob?.createdAt,
     status = appliedJob?.applicationStatus?.docs,
   } = appliedJob;
@@ -94,11 +95,7 @@ const AppliedContent = ({ appliedJob }) => {
                   <BriefcaseBusiness size={16} />
                 </span>
                 <span className="text-xs">
-                  {yearOfExperience === null
-                    ? "experience not found"
-                    : yearOfExperience == 1
-                    ? yearOfExperience + "Year"
-                    : yearOfExperience + "Years"}
+                  {employeeType === null ? "employee type N/A" : employeeType}
                 </span>
               </div>
               <div className="flex items-center gap-1">

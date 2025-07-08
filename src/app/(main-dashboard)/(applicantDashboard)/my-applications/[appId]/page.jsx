@@ -4,15 +4,27 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import companyLogo from "../../../../../../public/assests/company.png";
 
+const RichTextDisplay = ({ content, fallback = "Not specified" }) => {
+  if (!content)
+    return <p className="text-gray-500 dark:text-gray-400">{fallback}</p>;
+  if (content.includes("<") && content.includes(">")) {
+    return <div dangerouslySetInnerHTML={{ __html: content }} />;
+  }
+  return <p>{content}</p>;
+};
+
 const MyAppDetails = ({ params }) => {
   const { appId } = params;
   const { data: session, status } = useSession();
   const accessToken = session?.access_token;
   const [appData, setAppData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchAppDetails = async () => {
       try {
+        setLoading(true);
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications/${appId}`,
           {
@@ -22,139 +34,166 @@ const MyAppDetails = ({ params }) => {
             },
           }
         );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch application details");
+        }
+
         const data = await response.json();
         setAppData(data);
-        console.log("Application details data:: ", data);
+        clg("Application data fetched:", data);
       } catch (error) {
-        console.log("Error fetching application details: ", error.message);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
     fetchAppDetails();
   }, [appId, accessToken]);
 
-  console.log("App data:: ", appData);
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-gray-500">Loading application details...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-red-500">Error: {error}</p>
+      </div>
+    );
+  }
+
+  if (!appData) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-gray-500">No application data found</p>
+      </div>
+    );
+  }
 
   return (
-    <div className=" bg-white dark:bg-gray-800 rounded-lg">
+    <div className="bg-white dark:bg-gray-800 rounded-lg min-h-screen">
       <div className="flex border-y-2 dark:border-gray-500 items-center justify-between px-4 sm:px-6 py-4">
         <header className="flex items-center text-xs sm:text-sm">
           <Image
             src={companyLogo}
-            alt={"Company Logo"} // organization ||
+            alt="Company Logo"
             height={72}
             width={72}
             className="rounded-full"
           />
           <div className="ml-3">
             <h1 className="text-base sm:text-xl font-bold">
-              {appData?.jobDetails?.job?.title
-                ? appData?.jobDetails?.job?.title
-                : "N/A"}
+              {appData?.jobDetails?.job?.title || "N/A"}
             </h1>
             <p className="text-gray-700 dark:text-gray-300">
-              {appData?.jobDetails?.designation?.title
-                ? appData?.jobDetails?.designation?.title
-                : "Designation not found"}
+              {appData?.jobDetails?.designation?.title ||
+                "Designation not found"}
             </p>
             <p className="text-gray-700 dark:text-gray-300">
-              {appData?.jobDetails?.address
-                ? appData?.jobDetails?.address
-                : "address not found"}
+              {appData?.jobDetails?.address || "Address not found"}
             </p>
           </div>
         </header>
       </div>
 
       <div className="px-6 sm:px-10 py-3">
-        <section className="mb-4 text-xs sm:text-sm">
-          <h2 className="text-base sm:text-lg font-semibold mb-2">
+        {/* Job Description */}
+        <section className="mb-6 text-sm">
+          <h2 className="text-xl font-semibold mb-3 text-gray-900 dark:text-gray-100">
             Job Description
           </h2>
-          <p>
-            {appData?.jobDetails?.description
-              ? appData?.jobDetails?.description
-              : "No description available."}
-          </p>
+          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+            <RichTextDisplay
+              content={appData?.jobDetails?.description}
+              fallback="No description available"
+            />
+          </div>
         </section>
 
-        <section className="mb-4 text-xs sm:text-sm">
-          <h2 className="text-base sm:text-lg font-semibold mb-2">
+        {/* Requirements */}
+        <section className="mb-6 text-sm">
+          <h2 className="text-xl font-semibold mb-3 text-gray-900 dark:text-gray-100">
             Requirements
           </h2>
-          {/* <ul className="list-disc list-inside space-y-1">
-            {appData?.requirements?.length
-              ? appData?.requirements?.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))
-              : "No requirements specified."}
-          </ul> */}
-          <p>
-            {appData?.jobDetails?.requirements
-              ? appData?.jobDetails?.requirements
-              : "Requirments not found"}
-          </p>
-        </section>
-
-        <section className="mb-4 text-xs sm:text-sm">
-          <h2 className="text-base sm:text-lg font-semibold mb-2">Skills</h2>
-          {/* <ul className="list-disc list-inside space-y-1">
-            {appData?.skills?.length
-              ? appData?.skills.map((item, index) => <li key={index}>{item}</li>)
-              : "No skills mentioned."}
-          </ul> */}
-          <div>
-            {appData?.jobDetails?.skills
-              ? appData?.jobDetails?.skills.map((skill) => (
-                  <span
-                    key={skill.id}
-                    className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-full mr-2 mb-2"
-                  >
-                    {skill?.title}
-                  </span>
-                ))
-              : "Skills not found"}
+          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg prose dark:prose-invert max-w-none">
+            <RichTextDisplay
+              content={appData?.jobDetails?.requirements}
+              fallback="No requirements specified"
+            />
           </div>
         </section>
 
-        <section className="mb-4 text-xs sm:text-sm">
-          <h2 className="text-base sm:text-lg font-semibold mb-2">
+        {/* Skills Section */}
+        <section className="mb-6 text-sm">
+          <h2 className="text-xl font-semibold mb-3 text-gray-900 dark:text-gray-100">
+            Skills
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {appData?.jobDetails?.skills?.length > 0 ? (
+              appData.jobDetails.skills.map((skill) => (
+                <span
+                  key={skill.id}
+                  className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium"
+                >
+                  {skill.title}
+                </span>
+              ))
+            ) : (
+              <span className="text-gray-500 dark:text-gray-400">
+                No skills mentioned
+              </span>
+            )}
+          </div>
+        </section>
+
+        {/* Employee Benefits */}
+        <section className="mb-6 text-sm">
+          <h2 className="text-xl font-semibold mb-3 text-gray-900 dark:text-gray-100">
             Employee Benefits
           </h2>
-          {/* <ul className="list-disc list-inside space-y-1">
-            {appData?.employeeBenefits?.length
-              ? appData?.employeeBenefits.map((benefit, index) => (
-                  <li key={index}>{benefit}</li>
-                ))
-              : "No benefits listed."}
-          </ul> */}
-          <div>
-            {appData?.jobDetails?.employeeBenefits
-              ? appData?.jobDetails?.employeeBenefits
-              : "Employee Benefits not found"}
+          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg prose dark:prose-invert max-w-none">
+            <RichTextDisplay
+              content={appData?.jobDetails?.employeeBenefits}
+              fallback="No benefits listed"
+            />
           </div>
         </section>
 
-        <section className="mb-4">
-          <h2 className="text-lg font-semibold">Salary</h2>
-          <p>
-            {appData?.jobDetails?.salary
-              ? `৳ ${appData?.jobDetails?.salary}/month`
-              : "Not specified"}
-          </p>
+        {/* Salary */}
+        <section className="mb-6 text-sm">
+          <h2 className="text-xl font-semibold mb-3 text-gray-900 dark:text-gray-100">
+            Salary
+          </h2>
+          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+            <p>
+              {appData?.jobDetails?.salary
+                ? `৳ ${appData.jobDetails.salary}/month`
+                : "Not specified"}
+            </p>
+          </div>
         </section>
 
-        <section className="mb-4">
-          <h2 className="text-lg font-semibold">Contact Information</h2>
-          <p>
-            <strong>Email:</strong>{" "}
-            {appData?.jobDetails?.email || "Not provided"}
-          </p>
-          <p>
-            <strong>Phone:</strong>{" "}
-            {appData?.jobDetails?.phone || "Not provided"}
-          </p>
+        {/* Contact Information */}
+        <section className="mb-6 text-sm">
+          <h2 className="text-xl font-semibold mb-3 text-gray-900 dark:text-gray-100">
+            Contact Information
+          </h2>
+          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+            <p>
+              <strong>Email:</strong>{" "}
+              {appData?.jobDetails?.email || "Not provided"}
+            </p>
+            <p>
+              <strong>Phone:</strong>{" "}
+              {appData?.jobDetails?.phone || "Not provided"}
+            </p>
+          </div>
         </section>
-        <section className="flex items-center justify-end fixed bottom-20 right-20"></section>
       </div>
     </div>
   );

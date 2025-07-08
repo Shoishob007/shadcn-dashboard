@@ -22,7 +22,7 @@ const ShortlistedContent = ({ shortlistedJob }) => {
     organizationId = shortlistedJob?.jobDetails?.job?.organization,
     jobType = shortlistedJob?.jobDetails?.jobType?.title,
     salary = shortlistedJob?.jobDetails?.salary,
-    yearOfExperience = shortlistedJob?.jobDetails?.yearOfExperience,
+    employeeType = shortlistedJob?.jobDetails?.employeeType?.title,
     appliedDate = shortlistedJob?.createdAt,
     status = shortlistedJob?.applicationStatus?.docs,
   } = shortlistedJob;
@@ -94,11 +94,7 @@ const applicationStatus = shortlistedJob?.applicationStatus || {};
                   <BriefcaseBusiness size={16} />
                 </span>
                 <span className="text-xs">
-                  {yearOfExperience === null || yearOfExperience === null
-                    ? "experience not found"
-                    : yearOfExperience == 1
-                    ? yearOfExperience + "Year"
-                    : yearOfExperience + "Years"}
+                  {employeeType === null ? "employee type N/A" : employeeType}
                 </span>
               </div>
               <div className="flex items-center gap-1">
