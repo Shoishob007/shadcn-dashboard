@@ -165,7 +165,7 @@ export default function Home() {
                 <Card
                   amount={d.amount}
                   header={d.header}
-                  discription={d.discription}
+                  // discription={d.discription}
                   icon={d.icon}
                   label={d.label}
                 />
