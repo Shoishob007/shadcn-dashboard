@@ -138,7 +138,7 @@ const ProfileSetting = () => {
                 />
 
                 <p className="font-semibold hidden sm:block">
-                  Change cover photo
+                  Change photo
                 </p>
               </div>
             </label>
