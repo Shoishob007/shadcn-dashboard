@@ -23,7 +23,7 @@ useEffect(() => {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?limit=4`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/job-applications?limit=3`,
         {
           method: "GET",
           headers: {

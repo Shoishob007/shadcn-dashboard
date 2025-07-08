@@ -145,7 +145,7 @@ const JobSearch = () => {
           </div>
         </div>
 
-        <div className="mt-2 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="mt-2 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3  gap-4">
           {jobData.length === 0 && !loading && <p>No jobs found.</p>}
           {jobData.map((job) => (
             <JobSearchCard key={job.id} job={job} />
