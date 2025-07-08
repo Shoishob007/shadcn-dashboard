@@ -11,7 +11,7 @@ const JobDetailsPage = async ({ params }) => {
   console.log("Job Details Response data ::::: ", data);
 
   return (
-    <div className=" bg-white dark:bg-gray-800 rounded-lg">
+    <div className=" bg-white dark:bg-gray-800 rounded-lg min-h-screen">
       <div className="flex border-y-2 dark:border-gray-500 items-center justify-between px-4 sm:px-6 py-4">
         <header className="flex items-center text-xs sm:text-sm">
           <Image
