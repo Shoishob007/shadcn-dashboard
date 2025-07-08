@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
-import useSocialStore from "@/stores/profile-settings/useSocialStore";
+import useSocialStore from "../../../../../stores/profile-settings/useSocialStore";
 import { Facebook, Plus, X, ExternalLink, CheckCircle2 } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
 import { useSession } from "next-auth/react";

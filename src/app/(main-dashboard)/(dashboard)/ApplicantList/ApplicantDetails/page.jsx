@@ -37,7 +37,7 @@ const ApplicantDetails = ({
   jobApplicationId,
   applicationStatus,
   applicationStatusId,
-  hiringStages,
+  hiringStages = { docs: [] },
   jobComponent,
 }) => {
   // console.log("Applicant Profile ID:", applicantId);

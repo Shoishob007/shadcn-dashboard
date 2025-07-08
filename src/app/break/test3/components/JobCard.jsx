@@ -1,9 +1,9 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Badge } from "../../../../components/ui/badge";
+import { Button } from "../../../../components/ui/button";
+import { Card, CardContent } from "../../../../components/ui/card";
+import { Separator } from "../../../../components/ui/separator";
 import { Bookmark } from "lucide-react";
 import { useState } from "react";
 

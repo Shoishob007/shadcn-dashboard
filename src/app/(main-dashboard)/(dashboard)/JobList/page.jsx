@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../../components/ui/button";
 import { Input } from "@/components/ui/input";
 import JobCards from "./components/jobCards";
 import {
@@ -22,29 +22,20 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+} from "../../../../components/ui/breadcrumb";
 import { House, Plus } from "lucide-react";
-import { FilterSheet } from "@/components/filters/FilterSheet";
+import { FilterSheet } from "../../../../components/filters/FilterSheet";
 import qs from "qs";
-
-const getJobRoles = (docs) => {
-  const jobRoles = new Set();
-  docs.forEach((applicantDoc) => {
-    const jobId = applicantDoc.job.id;
-    const matchingJob = docs.find((job) => job.job.id === jobId);
-    if (matchingJob) {
-      jobRoles.add(matchingJob.jobRole);
-    }
-  });
-  return Array.from(jobRoles);
-};
+import { useToast } from "../../../../hooks/use-toast";
 
 const JobList = ({ showFilters = true }) => {
   const router = useRouter();
+  const { toast } = useToast();
   const { data: session } = useSession();
   const [isEditing, setIsEditing] = useState(false);
   const [id, setId] = useState(null);
-  const [job, setJob] = useState("");
+  const [job, setJob] = useState(null);
+  const [jobDetailsId, setJobDetailsId] = useState(null);
   const [filters, setFilters] = useState({
     searchQuery: "",
     status: "all",
@@ -55,8 +46,6 @@ const JobList = ({ showFilters = true }) => {
   const [deleteDialog, setDeleteDialog] = useState({
     isOpen: false,
     job: null,
-    password: "",
-    reason: "",
   });
   const [documents, setDocuments] = useState({ docs: [] });
   const [loading, setLoading] = useState(true);
@@ -76,7 +65,6 @@ const JobList = ({ showFilters = true }) => {
         },
         { encode: false }
       );
-      // console.log("Query ::", query);
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/job-details?${query}&limit=1000`,
@@ -91,7 +79,6 @@ const JobList = ({ showFilters = true }) => {
         }
         const data = await response.json();
         setDocuments(data);
-        console.log("Response from job details :: ", data);
         fetchApplicationsCount(data.docs);
       } catch (error) {
         setError(error.message);
@@ -121,7 +108,6 @@ const JobList = ({ showFilters = true }) => {
           }
         );
         const data = await response.json();
-        console.log("Application Response :: ", data);
         counts[job.job.id] = data.docs.length;
         applicantProfiles[job.job.id] = data.docs.slice(0, 5).map((doc) => ({
           id: doc.applicant.id,
@@ -141,6 +127,50 @@ const JobList = ({ showFilters = true }) => {
     }
     setApplicationsCount(counts);
     setApplicantProfiles(applicantProfiles);
+  };
+
+  const handleDeleteJob = async () => {
+    if (!deleteDialog.job) return;
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/jobs/${deleteDialog.job.job.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete job");
+      }
+
+      // Update the local state to remove the deleted job
+      setDocuments((prev) => ({
+        ...prev,
+        docs: prev.docs.filter((doc) => doc.job.id !== deleteDialog.job.job.id),
+      }));
+
+      // Update applications count
+      const newApplicationsCount = { ...applicationsCount };
+      delete newApplicationsCount[deleteDialog.job.job.id];
+      setApplicationsCount(newApplicationsCount);
+
+      // Update applicant profiles
+      const newApplicantProfiles = { ...applicantProfiles };
+      delete newApplicantProfiles[deleteDialog.job.job.id];
+      setApplicantProfiles(newApplicantProfiles);
+
+      toast.success("Job deleted successfully");
+    } catch (error) {
+      console.error("Error deleting job:", error);
+      toast.error("Failed to delete job");
+    } finally {
+      setDeleteDialog({ isOpen: false, job: null });
+    }
   };
 
   const handleFilterChange = (filterName, value) => {
@@ -170,29 +200,14 @@ const JobList = ({ showFilters = true }) => {
   };
 
   const handleEditJob = (job) => {
-    // console.log(job);
     setId(job.job.id);
+    setJobDetailsId(job.id);
     setJob(job);
     setIsEditing(true);
   };
 
   const handleShareJob = () => {
     // console.log("Share Job clicked");
-  };
-
-  const handleDeleteJob = (job) => {
-    setDeleteDialog({ isOpen: true, job });
-  };
-
-  const handleConfirmDelete = () => {
-    if (!deleteDialog.job.published) {
-      console.log("Password provided:", deleteDialog.password);
-      // API call
-    } else {
-      console.log("Reason provided:", deleteDialog.reason);
-      // have to implement logic to move job to junk box
-    }
-    setDeleteDialog({ isOpen: false, job: null, password: "", reason: "" });
   };
 
   if (loading) {
@@ -205,9 +220,6 @@ const JobList = ({ showFilters = true }) => {
 
   let filteredJobs = filterJobs(documents.docs, filters);
 
-  // console.log("filteredJobs :: ", filteredJobs);
-
-  // Sorting jobs
   if (filters.sortBy === "latest") {
     filteredJobs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   } else if (filters.sortBy === "oldest") {
@@ -221,7 +233,7 @@ const JobList = ({ showFilters = true }) => {
   if (isEditing) {
     return (
       <CreateJobForm
-        jobId={id}
+        jobDetailsId={jobDetailsId}
         initialData={job}
         isEditing={isEditing}
         onClose={() => setIsEditing(false)}
@@ -272,12 +284,11 @@ const JobList = ({ showFilters = true }) => {
               handleViewApplicantList={handleViewApplicantList}
               handleViewJobDetails={handleViewJobDetails}
               handleEditJob={handleEditJob}
-              handleDeleteJob={handleDeleteJob}
+              handleDeleteJob={(job) => setDeleteDialog({ isOpen: true, job })}
               handleShareJob={handleShareJob}
               applicationsCount={applicationsCount}
               applicantProfiles={applicantProfiles}
             />
-            {/* Button to see all jobs */}
             {!showFilters && (
               <Button
                 onClick={() => router.push("/JobList")}
@@ -294,7 +305,6 @@ const JobList = ({ showFilters = true }) => {
           </p>
         )}
 
-        {/* Delete Dialog */}
         <Dialog
           open={deleteDialog.isOpen}
           onOpenChange={(isOpen) =>
@@ -304,56 +314,24 @@ const JobList = ({ showFilters = true }) => {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Delete Job</DialogTitle>
-              {!deleteDialog.job?.published ? (
-                <>
-                  <DialogDescription>
-                    Please enter your password to confirm deletion:
-                  </DialogDescription>
-                  <Input
-                    type="password"
-                    placeholder="Enter password"
-                    value={deleteDialog?.password}
-                    onChange={(e) =>
-                      setDeleteDialog((prev) => ({
-                        ...prev,
-                        password: e.target.value,
-                      }))
-                    }
-                    className="mt-2"
-                  />
-                  <Button
-                    onClick={handleConfirmDelete}
-                    disabled={!deleteDialog?.password?.trim()}
-                    className="mt-4"
-                  >
-                    Delete
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <DialogDescription>
-                    Please explain why you&apos;re deleting this job:
-                  </DialogDescription>
-                  <Input
-                    placeholder="Enter reason"
-                    value={deleteDialog.reason}
-                    onChange={(e) =>
-                      setDeleteDialog((prev) => ({
-                        ...prev,
-                        reason: e.target.value,
-                      }))
-                    }
-                    className="mt-2"
-                  />
-                  <Button
-                    onClick={handleConfirmDelete}
-                    disabled={!deleteDialog?.reason?.trim()}
-                    className="mt-4"
-                  >
-                    Move to Junk Box
-                  </Button>
-                </>
-              )}
+              <DialogDescription>
+                Are you sure you want to delete this job? This action cannot be
+                undone.
+              </DialogDescription>
+              <div className="flex justify-end gap-2 mt-4">
+                <Button
+                  variant="outline"
+                  onClick={() => setDeleteDialog({ isOpen: false, job: null })}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleDeleteJob}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Delete
+                </Button>
+              </div>
             </DialogHeader>
           </DialogContent>
         </Dialog>

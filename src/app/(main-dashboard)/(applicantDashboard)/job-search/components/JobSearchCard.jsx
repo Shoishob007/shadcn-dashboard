@@ -1,8 +1,8 @@
 "use client";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Badge } from "../../../../../components/ui/badge";
+import { Button } from "../../../../../components/ui/button";
+import { Card, CardContent } from "../../../../../components/ui/card";
+import { Separator } from "../../../../../components/ui/separator";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import useSocialStore from "@/stores/profile-settings/useSocialStore";
+import useSocialStore from "../../../stores/profile-settings/useSocialStore";
 import { Facebook, Github, Linkedin, Plus, Twitter, X, Youtube } from "lucide-react";
 import React, { useEffect, useState } from "react";
 

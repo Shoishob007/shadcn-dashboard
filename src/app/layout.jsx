@@ -15,7 +15,7 @@ import "./globals.css";
 const SideNavbar = dynamic(() => import('@/components/SideNavbar'), {
   ssr: false,
 });
-const VerticalNavbar = dynamic(() => import('@/components/VerticalNavbar'), {
+const VerticalNavbar = dynamic(() => import('../components/VerticalNavbar'), {
   ssr: false,
 });
 
