@@ -24,7 +24,7 @@ const FeaturedJobs = () => {
       <div className="flex flex-col gap-4">
         <h1 className="text-lg font-semibold text-center">Featured Jobs</h1>
         <section>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3  gap-4">
             {jobs?.map((job) => (
               <JobCard key={job?.id} job={job} />
             ))}
